@@ -261,7 +261,7 @@ def file_dict_of_folder_simple(path, args, logging, fastqdict):
     return file_list_dict
 
 
-def parse_fastq_file(fastqfileList,args,logging,masterdf,taxID_set, counter):
+def parse_fastq_file(fastqfileList,args,logging,masterdf,taxID_set, counter, messageport):
     logger = logging.getLogger("ParseFastq")
     logger.info(fastqfileList)
     logger.info(args.toml['conditions']['reference'])
@@ -550,7 +550,15 @@ class FastqHandler(FileSystemEventHandler):
                     # print (fastqfile,md5Checksum(fastqfile), "\n\n\n\n")
             # as long as there are files within the args.watch directory to parse
             if fastqfilelist:
-                targets, self.masterdf, self.downloaded_set, self.taxid_entries = parse_fastq_file(fastqfilelist, self.args, logging, self.masterdf, self.downloaded_set, self.taxid_entries)
+                targets, self.masterdf, self.downloaded_set, self.taxid_entries = parse_fastq_file(
+                    fastqfilelist,
+                    self.args,
+                    logging,
+                    self.masterdf,
+                    self.downloaded_set,
+                    self.taxid_entries,
+                    self.messageport
+                )
                 print(targets)
                 print(self.targets)
 
