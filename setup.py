@@ -24,12 +24,13 @@ setup(
     packages=find_packages(exclude=["*.test", "*.test.*", "test.*", "test"]),
     entry_points={
         "console_scripts": [
-            "ru3_validate={}.validate:main".format(PKG_NAME),
-            "ru3_alex={}.alex:main".format(PKG_NAME),
-            "ru3_generators={}.alex_refactor:main".format(PKG_NAME),
-            "ru3_raw_signal_log={}.get_raw_len:main".format(PKG_NAME),
-            "ru3_iteralign={}.iteralign:main".format(PKG_NAME),
-            "ru3_unblock_all={}.unblock_all:main".format(PKG_NAME),
+            "ru_validate={}.validate:main".format(PKG_NAME),
+            "ru_alex={}.alex:main".format(PKG_NAME),
+            "ru_generators={}.alex_refactor:main".format(PKG_NAME),
+            "ru_raw_signal_log={}.get_raw_len:main".format(PKG_NAME),
+            "ru_iteralign={}.iteralign:main".format(PKG_NAME),
+            "ru_iteralign_centrifuge={}.iteralign_centrifuge:main".format(PKG_NAME),
+            "ru_unblock_all={}.unblock_all:main".format(PKG_NAME),
         ],
     },
     install_requires=install_requires
