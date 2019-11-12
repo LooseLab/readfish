@@ -390,7 +390,9 @@ def get_run_info(toml_dict_or_filepath, num_channels=512):
         for channel in channels
     }
 
-    return run_info, split_conditions
+    reference = toml_dict["conditions"].get("reference")
+
+    return run_info, split_conditions, reference
 
 
 def between(pos, coords):
