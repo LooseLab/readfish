@@ -21,9 +21,10 @@ import toml
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers.polling import PollingObserver as Observer
 
-from read_until.arguments import get_parser
-from read_until.utils import nice_join, print_args
-from .load_mk_rpc import get_rpc_connection, send_message_port, parse_message
+from ru.arguments import get_parser
+from ru.utils import nice_join, print_args, send_message_port
+from read_until_api_v2.load_minknow_rpc import get_rpc_connection, parse_message
+
 
 DEFAULT_SERVER_HOST = "127.0.0.1"
 DEFAULT_LOG_FORMAT = "%(asctime)s - %(name)-20s - %(message)s"
