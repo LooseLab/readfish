@@ -92,8 +92,11 @@ def simple_analysis(
     live_file = Path("{}_live".format(toml_path))
     if live_file.is_file():
         live_file.unlink()
-    run_info, conditions = get_run_info(toml_dict, num_channels=flowcell_size)
-    reference = toml_dict["conditions"].get("reference")
+
+    # There may or may not be a reference
+    run_info, conditions, reference = get_run_info(toml_dict, num_channels=flowcell_size)
+
+
     guppy_kwargs = toml_dict.get(
         "guppy_connection",
         {
@@ -106,6 +109,7 @@ def simple_analysis(
     )
 
     caller = Caller(**guppy_kwargs)
+    #What if there is no reference or an empty MMI
     mapper = CustomMapper(reference)
 
     # DefaultDict[int: collections.deque[Tuple[str, ndarray]]]
@@ -161,9 +165,23 @@ def simple_analysis(
     loop_counter = 0
     while client.is_running:
         if live_file.is_file():
-            run_info, conditions = get_run_info(live_file, flowcell_size)
+            # We may want to update the reference under certain conditions here.
+            run_info, conditions, new_reference = get_run_info(live_file, flowcell_size)
+            if new_reference != reference:
+                logger.info("Reloading mapper")
+                #We need to update our mapper client.
+                mapper = CustomMapper(new_reference)
+                logger.info("Reloaded mapper")
+                logger.info("Deleting old mmi {}".format(reference))
+                #We now delete the old mmi file.
+                Path(reference).unlink()
+                logger.info("Old mmi deleted.")
+
         # TODO: Fix the logging to just one of the two in use
 
+        if not reference:
+            time.sleep(throttle)
+            continue
         loop_counter += 1
         t0 = timer()
         r = 0
