@@ -406,13 +406,6 @@ def main():
                 default="chunk_log.log",
             )
         ),
-        (
-            "--chunk-log",
-            dict(
-                help="Chunk log",
-                default="chunk_log.log",
-            )
-        ),
     )
     parser, args = get_parser(extra_args=extra_args, file=__file__)
 
