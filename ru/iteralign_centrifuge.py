@@ -669,13 +669,13 @@ def main():
     connection = None
     if args.watch is None:
         args.simulation = False
-        # logger.info("Creating rpc connection for device {}.".format(args.device))
-        # try:
-        #     connection, messageport = get_rpc_connection(args.device)
-        # except ValueError as e:
-        #     print(e)
-        #     sys.exit(1)
-        #
+        logger.info("Creating rpc connection for device {}.".format(args.device))
+        try:
+            connection, messageport = get_rpc_connection(args.device)
+        except ValueError as e:
+            print(e)
+            sys.exit(1)
+
         send_message_port("Iteralign Connected to MinKNOW", args.host, messageport)
 
         logger.info("Loaded RPC")
