@@ -4,6 +4,7 @@ numpy
 google
 protobuf
 toml
+jsonschema
 watchdog
 pandas
 mappy
