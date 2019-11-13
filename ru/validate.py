@@ -14,8 +14,8 @@ def any_full_match(patterns, string):
 
 def main():
     parser = argparse.ArgumentParser("RU3 TOML Validator ({})".format(__file__))
+    parser.add_argument("toml", help="TOML file")
     parser.add_argument("schema", help="JSON schema")
-    parser.add_argument("-i", help="TOML file", dest="toml", required=True)
     parser.add_argument("-t", help="Validate target file", action="store_true")
     args = parser.parse_args()
 
