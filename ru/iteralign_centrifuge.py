@@ -218,6 +218,14 @@ base_args=(
         ),
     ),
     (
+        "--device",
+        dict(
+            required=True,
+            action="store",
+            help="The sequencing position being addressed"
+        ),
+    ),
+    (
         "--threshold",
         dict(
             action="store",
@@ -402,6 +410,7 @@ def parse_fastq_file(fastqfileList,args,logging,masterdf,taxID_set, counter, mes
 
                 # download the reference genomes into a single file
                 for links in url_set:
+                    logging.info("Fetching {}".format(links))
                     with closing(request.urlopen(links)) as req, open(args.path + args.prefix + args.gfasta, "ab") as fh:
                         shutil.copyfileobj(req, fh)
 
@@ -446,7 +455,7 @@ def parse_fastq_file(fastqfileList,args,logging,masterdf,taxID_set, counter, mes
         Working on a fix.
         """
 
-        minimapcmd = ["minimap2","-ax","map-ont","-t {}".format(args.threads),args.toml['conditions']['reference']] #" ".join(fastqfilelist)]
+        minimapcmd = ["minimap2","-ax","map-ont","-N","50","-t {}".format(args.threads),args.toml['conditions']['reference']] #" ".join(fastqfilelist)]
         minimapcmd.extend(fastqfileList)
         logging.info(" ".join(minimapcmd))
         minimapoutput = subprocess.Popen(minimapcmd, stdout=subprocess.PIPE,stderr=devnull)
@@ -568,6 +577,7 @@ class FastqHandler(FileSystemEventHandler):
                     self.logger.info(update_message)
                     if not self.args.simulation:
                         send_message_port(update_message, self.args.host, self.messageport)
+                    self.logger.info(targets)
                     write_new_toml(self.args, targets)
                     self.targets = []
                     self.targets = targets.copy()
@@ -688,7 +698,7 @@ def main():
             print(e)
             sys.exit(1)
 
-        send_message_port("Iteralign Connected to MinKNOW", args.host, messageport)
+        send_message_port("Iter Align Centrifuge Connected to MinKNOW", args.host, messageport)
 
         logger.info("Loaded RPC")
         while parse_message(connection.acquisition.current_status())['status'] != "PROCESSING":
