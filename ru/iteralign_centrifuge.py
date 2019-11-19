@@ -250,6 +250,14 @@ base_args=(
             type=int,
         ),
     ),
+    (
+        "--device",
+        dict(
+            required=True,
+            action="store",
+            help="The sequencing position being addressed"
+        ),
+    ),
 )
 
 
