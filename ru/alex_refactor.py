@@ -94,6 +94,14 @@ def simple_analysis(
 
     # There may or may not be a reference
     run_info, conditions, reference = get_run_info(toml_dict, num_channels=flowcell_size)
+    # TODO: test this
+    # Write channels.toml
+    d = {"conditions": {str(v): {"channels": [], "name": conditions[v].name} for k, v in run_info.items()}}
+    for k, v in run_info.items():
+        d["conditions"][str(v)]["channels"].append(k)
+    channels_out = str(client.mk_run_dir / "channels.toml")
+    with open(channels_out, "w") as fh:
+        toml.dump(d, fh)
 
     guppy_kwargs = toml_dict.get(
         "guppy_connection",
