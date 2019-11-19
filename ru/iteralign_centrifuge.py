@@ -20,11 +20,8 @@ import time
 from io import StringIO, BytesIO
 from gzip import open as gzopen
 
-import argparse
 from pathlib import Path
-import shutil
 import urllib.request as request
-from contextlib import closing
 
 import pandas as pd
 import toml
