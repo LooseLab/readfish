@@ -20,11 +20,8 @@ import time
 from io import StringIO, BytesIO
 import gzip
 
-import argparse
 from pathlib import Path
-import shutil
 import urllib.request as request
-from contextlib import closing
 
 import pandas as pd
 import toml
@@ -253,6 +250,14 @@ base_args=(
             help="The threshold length of an assembly to be incorporated into the reference file",
             default=DEFAULT_SEQUENCE_LENGTH,
             type=int,
+        ),
+    ),
+    (
+        "--device",
+        dict(
+            required=True,
+            action="store",
+            help="The sequencing position being addressed"
         ),
     ),
 )

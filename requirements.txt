@@ -8,3 +8,4 @@ jsonschema
 watchdog
 pandas
 mappy
+biopython
