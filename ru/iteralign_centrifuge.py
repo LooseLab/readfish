@@ -53,6 +53,7 @@ DEFAULT_READS = "out.tsv"
 DEFAULT_MINDEX = "mindex.mmi"
 DEFAULT_GENOME = "genome.fna.gz"
 DEFAULT_TIDFILE = "taxids.toml"
+DEFAULT_COVERAGE_FILE = "coverage.tsv"
 DEFAULT_SEQUENCE_LENGTH = 100000
 
 
@@ -86,14 +87,14 @@ base_args=(
             type=float,
         ),
     ),
-    (
-        "--device",
-        dict(
-            required=True,
-            action="store",
-            help="The sequencing position being addressed"
-        ),
-    ),
+    # (
+    #     "--device",
+    #     dict(
+    #         required=True,
+    #         action="store",
+    #         help="The sequencing position being addressed"
+    #     ),
+    # ),
     (
         "--depth",
         dict(
@@ -263,6 +264,14 @@ base_args=(
             type=int,
         ),
     ),
+    (
+        "--coveragefile",
+        dict(
+            action="store",
+            help="the file suffix containing 3 tab separated columns: iteration, referenceid, coverage (%)",
+            default=DEFAULT_COVERAGE_FILE,
+        ),
+    ),
 )
 
 
@@ -364,7 +373,7 @@ def generate_mmi(args, counter):
     minimap_db.stdout.close()
 
 
-def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, counter):
+def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, counter, coverage_sum):
     logger = logging.getLogger("ParseFastq")
     logger.info(fastqfileList)
     logger.info(args.toml['conditions']['reference'])
@@ -491,7 +500,6 @@ def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, count
                         d = {"taxid": {"iteration.{}".format(counter): difference_set}}
                     toml.dump(d, f)
                 f.close()
-                counter += 1
 
                 logging.info("new taxids found: {}".format(difference_set))
                 logging.info("Downloading reference genomes")
@@ -534,18 +542,25 @@ def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, count
         parse_iter = ((x[0], int(x[-1])) for x in iter_depth)
 
         d = defaultdict(int)
+        d.update(coverage_sum)
         for name, depth in parse_iter:
             d[name] += depth
 
         depth_dict = {k: 100 * d[k]/length_dict[k] for k in length_dict.keys() & d}
 
+        with open(args.path + args.prefix + args.coveragefile, "a") as fh:
+            for k, v in depth_dict.items():
+                fh.write("{}\t{}\t{}\n".format(counter, k, v))
+
         targets = [k for k, v in depth_dict.items() if v > args.depth]
 
         logging.info(targets)
 
+        counter += 1
+
         logging.info("Finished processing {}.".format(" ".join(fastqfileList)))
 
-    return targets, downloaded_set, counter
+    return targets, downloaded_set, counter, d
 
 
 def write_new_toml(args,targets):
@@ -585,12 +600,13 @@ class FastqHandler(FileSystemEventHandler):
 
     def processfiles(self):
         self.logger.info("Process Files Inititated")
-        self.counter = 0
+        self.counter = 1
         self.targets = []
         self.masterdf = pd.DataFrame(columns=['seqid', 'position', 'coverage'])
         self.taxid_entries = 0
         self.downloaded_set = set()
         self.length_dict = {}
+        self.coverage_sum = {}
 
         if self.args.references:
             logging.info("References argument provided. Will download references genomes.")
@@ -620,7 +636,7 @@ class FastqHandler(FileSystemEventHandler):
             # as long as there are files within the args.watch directory to parse
             if fastqfilelist:
                 print(self.downloaded_set)
-                targets, self.downloaded_set, self.taxid_entries = parse_fastq_file(fastqfilelist, self.args, logging, self.length_dict, self.downloaded_set, self.taxid_entries)
+                targets, self.downloaded_set, self.taxid_entries, self.coverage_sum = parse_fastq_file(fastqfilelist, self.args, logging, self.length_dict, self.downloaded_set, self.taxid_entries, self.coverage_sum)
                 print(targets)
                 print(self.targets)
 
