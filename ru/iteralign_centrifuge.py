@@ -18,7 +18,7 @@ import threading
 import time
 
 from io import StringIO, BytesIO
-from gzip import open as gzopen
+import gzip
 
 import argparse
 from pathlib import Path
@@ -35,7 +35,8 @@ from ru.arguments import get_parser
 from ru.utils import nice_join, print_args, send_message_port
 from read_until_api_v2.load_minknow_rpc import get_rpc_connection, parse_message
 
-from Bio import SeqIO, bgzf
+from Bio import SeqIO
+from collections import defaultdict
 
 DEFAULT_SERVER_HOST = "127.0.0.1"
 DEFAULT_LOG_FORMAT = "%(asctime)s - %(name)-20s - %(message)s"
@@ -50,7 +51,7 @@ DEFAULT_REJECT = "reject.tsv"
 DEFAULT_CREPORT = "centrifuge_report.tsv"
 DEFAULT_READS = "out.tsv"
 DEFAULT_MINDEX = "mindex.mmi"
-DEFAULT_GENOME = "genome.fna"
+DEFAULT_GENOME = "genome.fna.gz"
 DEFAULT_TIDFILE = "taxids.toml"
 DEFAULT_SEQUENCE_LENGTH = 100000
 
@@ -242,6 +243,7 @@ base_args=(
             action="store",
             help="At least 1 taxID must be provided to be downloaded for mmi generation.",
             nargs="+",
+            type=int,
         ),
     ),
     (
@@ -298,22 +300,41 @@ def url_list_generation(args,difference_set):
     return url_list
 
 
-def download_references(args,url_list):
+def download_references(args, url_list, taxid_set):
 
+    lengths = {}
     for link in url_list:
-        response = request.urlopen(link)
+        print("Attempting to download: {}".format(link), end="\n")
+        try:
+            response = request.urlopen(link)
+        except url_error.URLError as e:
+            print(e)
+            print("Closing script")
+            break
         compressed_file = BytesIO(response.read())
-        record = SeqIO.parse(
-            gzopen(compressed_file, "rt"),
-            format="fasta",
-        )
-
-        for seq_record in record:
-            with open(args.path + args.prefix + args.gfasta, "a") as fasta_seq:
+        with gzip.open(compressed_file, "rt") as fh, gzip.open(args.path + args.prefix + args.gfasta, "at") as fasta_seq:
+            for seq_record in SeqIO.parse(fh, "fasta"):
                 if len(seq_record) > args.seqlength:
+                    lengths[seq_record.id] = len(seq_record)
                     SeqIO.write(seq_record, fasta_seq, "fasta")
 
+    if args.plasmids:
+        r = ("name", "path")
+        logging.info("Obtaining the plasmids for the following taxids: {}".format(taxid_set))
+        with open(args.csummary) as f:
+            d = {int(x[0]): dict(zip(r, x[1:])) for i, l in enumerate(f) for x in (l.strip().split("\t"),)
+                 if i > 0}
+
+            for taxid in taxid_set:
+                with gzip.open(args.plasmids, "rt") as fh, gzip.open(args.path + args.prefix + args.gfasta, "at") as fasta_seq:
+                    for seq_record in SeqIO.parse(fh, "fasta"):
+                        if d[taxid]["name"] in seq_record.description and len(seq_record) > args.seqlength:
+                            lengths[seq_record.id] = len(seq_record)
+                            SeqIO.write(seq_record, fasta_seq, "fasta")
+
     logging.info("Genome file generated")
+
+    return lengths
 
 
 def generate_mmi(args, counter):
@@ -335,7 +356,7 @@ def generate_mmi(args, counter):
     minimap_db.stdout.close()
 
 
-def parse_fastq_file(fastqfileList,args,logging,masterdf,taxID_set, counter):
+def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, counter):
     logger = logging.getLogger("ParseFastq")
     logger.info(fastqfileList)
     logger.info(args.toml['conditions']['reference'])
@@ -470,7 +491,8 @@ def parse_fastq_file(fastqfileList,args,logging,masterdf,taxID_set, counter):
                 url_list = url_list_generation(args, difference_set)
 
                 # download the reference genomes into a single file
-                download_references(args, url_list)
+
+                length_dict.update(download_references(args, url_list, difference_set))
 
                 logging.info("Generating mmi")
 
@@ -494,32 +516,28 @@ def parse_fastq_file(fastqfileList,args,logging,masterdf,taxID_set, counter):
         #samsortcmd = ["samtools", "sort", "-@2", "-o", "sortedbam.bam"]
         samsortcmd = ["samtools", "sort", "-@{}".format(args.threads)]
         samsortoutput = subprocess.Popen(samsortcmd, stdin=samoutput.stdout, stdout=subprocess.PIPE, stderr=devnull)
-        samdepthcmd = ["samtools", "depth", "-a", "/dev/stdin"]
+        samdepthcmd = ["samtools", "depth", "/dev/stdin"]
         samdepthoutput = subprocess.Popen(samdepthcmd, stdin=samsortoutput.stdout,stdout=subprocess.PIPE, stderr=devnull, universal_newlines=True)
         minimapoutput.stdout.close()
         samoutput.stdout.close()
         samsortoutput.stdout.close()
-        output,err = samdepthoutput.communicate()
 
-        coveragedf = pd.read_csv(StringIO(output),sep="\t",names=['seqid','position','coverage'])
+        iter_depth = (l.strip().split("\t") for l in samdepthoutput.stdout)
+        parse_iter = ((x[0], int(x[-1])) for x in iter_depth)
 
-        summarydf = coveragedf.groupby('seqid', as_index=False).agg({'position':'max','coverage':'sum'})
+        d = defaultdict(int)
+        for name, depth in parse_iter:
+            d[name] += depth
 
-        tempsummarydf = pd.concat([masterdf,summarydf])
-        masterdf = tempsummarydf.groupby('seqid', as_index=False).agg({'position': 'max', 'coverage': 'sum'})
-        masterdf["tmp"] = masterdf["coverage"]/masterdf['position']
-        # Calculate depth at every position
-        targets = masterdf[masterdf["tmp"].ge(args.depth)]
+        depth_dict = {k: 100 * d[k]/length_dict[k] for k in length_dict.keys() & d}
+
+        targets = [k for k, v in depth_dict.items() if v > args.depth]
 
         logging.info(targets)
 
-        targets = targets['seqid'].tolist()
-
-        masterdf.drop(['tmp'], axis=1, inplace=True)
-
         logging.info("Finished processing {}.".format(" ".join(fastqfileList)))
 
-    return targets, masterdf, downloaded_set, counter
+    return targets, downloaded_set, counter
 
 
 def write_new_toml(args,targets):
@@ -564,23 +582,14 @@ class FastqHandler(FileSystemEventHandler):
         self.masterdf = pd.DataFrame(columns=['seqid', 'position', 'coverage'])
         self.taxid_entries = 0
         self.downloaded_set = set()
-
-        if self.args.plasmids:
-            logging.info("Plasmid argument received, retreiving plasmids for index")
-            with open(self.args.plasmids, "r") as fh:
-                fh_content = fh.read()
-                with open(self.args.path + self.args.prefix + self.args.gfasta, "a") as fasta_seq:
-                    fasta_seq.write(fh_content)
-                    fasta_seq.close()
-            fh.close()
-            generate_mmi(self.args, self.counter)
+        self.length_dict = {}
 
         if self.args.references:
             logging.info("References argument provided. Will download references genomes.")
             self.downloaded_set = set(self.args.references)
-            print(self.downloaded_set)
+            logging.info(self.downloaded_set)
             self.url_list = url_list_generation(self.args, self.args.references)
-            download_references(self.args, self.url_list)
+            self.length_dict.update(download_references(self.args, self.url_list, self.downloaded_set))
             generate_mmi(self.args, self.counter)
 
 
@@ -602,7 +611,8 @@ class FastqHandler(FileSystemEventHandler):
                     # print (fastqfile,md5Checksum(fastqfile), "\n\n\n\n")
             # as long as there are files within the args.watch directory to parse
             if fastqfilelist:
-                targets, self.masterdf, self.downloaded_set, self.taxid_entries = parse_fastq_file(fastqfilelist, self.args, logging, self.masterdf, self.downloaded_set, self.taxid_entries)
+                print(self.downloaded_set)
+                targets, self.downloaded_set, self.taxid_entries = parse_fastq_file(fastqfilelist, self.args, logging, self.length_dict, self.downloaded_set, self.taxid_entries)
                 print(targets)
                 print(self.targets)
 
@@ -757,22 +767,24 @@ def main():
         observer.stop()
         observer.join()
 
-        outfile_list = [
-            args.path + args.prefix + args.reject,
-            args.creport,
-            args.path + args.prefix + args.readfile,
-            args.path + args.prefix + args.mindex,
-            args.path + args.prefix + args.gfasta,
-            args.path + args.prefix + args.tidfile
-        ]
         if args.keepfiles:
             logging.info("The 'keepfiles' argument was set, files generated by classifier have been retained")
         else:
-            for file in outfile_list:
-                if os.path.isfile(file):
-                    os.unlink(file)
-                    logging.info("file removed: {}".format(file))
-            logging.info("All files generated by classifier have been removed.")
+            if os.path.isdir(args.path):
+                for path, dirs, files in os.walk(args.path):
+                    for f in files:
+                        if f.startswith(args.prefix):
+                            os.unlink(f)
+                            logging.info("file removed: {}".format(f))
+
+            if os.path.isdir("./"):
+                for path, dirs, files in os.walk("./"):
+                    for f in files:
+                        if f.endswith(args.creport):
+                            os.unlink(f)
+                            logging.info("file removed: {}".format(f))
+
+        logging.info("All files generated by classifier have been removed.")
 
         os._exit(0)
 
