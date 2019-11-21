@@ -87,6 +87,14 @@ base_args=(
         ),
     ),
     (
+        "--device",
+        dict(
+            required=True,
+            action="store",
+            help="The sequencing position being addressed"
+        ),
+    ),
+    (
         "--depth",
         dict(
             metavar="DEPTH",
