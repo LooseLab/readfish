@@ -546,7 +546,7 @@ def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, count
         for name, depth in parse_iter:
             d[name] += depth
 
-        depth_dict = {k: 100 * d[k]/length_dict[k] for k in length_dict.keys() & d}
+        depth_dict = {k: d[k]/length_dict[k] for k in length_dict.keys() & d}
 
         with open(args.path + args.prefix + args.coveragefile, "a") as fh:
             for k, v in depth_dict.items():
