@@ -268,7 +268,7 @@ base_args=(
         "--coveragefile",
         dict(
             action="store",
-            help="the file suffix containing 3 tab separated columns: iteration, referenceid, coverage (%)",
+            help="the file suffix containing 3 tab separated columns: iteration, referenceid, coverage (percent)",
             default=DEFAULT_COVERAGE_FILE,
         ),
     ),
