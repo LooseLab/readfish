@@ -12,22 +12,21 @@ import concurrent.futures
 import functools
 import logging
 import sys
-from pathlib import Path
 import time
-from timeit import default_timer as timer
 import traceback
+from collections import defaultdict, deque, Counter
 from multiprocessing import TimeoutError
 from multiprocessing.pool import ThreadPool
-from collections import defaultdict, deque, Counter
+from pathlib import Path
+from timeit import default_timer as timer
 
-# Pypi imports
+# Third party imports
+import read_until_api_v2 as read_until
 import toml
 
-# Read Until imports
-import read_until_api_v2 as read_until
-from ru.basecall import PerpetualCaller as Caller
-from ru.basecall import Mapper as CustomMapper
 from ru.arguments import get_parser
+from ru.basecall import Mapper as CustomMapper
+from ru.basecall import PerpetualCaller as Caller
 from ru.utils import print_args, get_run_info, between, setup_logger
 
 
@@ -53,14 +52,14 @@ class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
 
 
 def simple_analysis(
-    client,
-    batch_size=512,
-    throttle=0.1,
-    unblock_duration=0.5,
-    chunk_log=None,
-    toml_path=None,
-    flowcell_size=512,
-    dry_run=False,
+        client,
+        batch_size=512,
+        throttle=0.1,
+        unblock_duration=0.5,
+        chunk_log=None,
+        toml_path=None,
+        flowcell_size=512,
+        dry_run=False,
 ):
     """Analysis function
 
@@ -95,7 +94,14 @@ def simple_analysis(
 
     # There may or may not be a reference
     run_info, conditions, reference = get_run_info(toml_dict, num_channels=flowcell_size)
-
+    # TODO: test this
+    # Write channels.toml
+    d = {"conditions": {str(v): {"channels": [], "name": conditions[v].name} for k, v in run_info.items()}}
+    for k, v in run_info.items():
+        d["conditions"][str(v)]["channels"].append(k)
+    channels_out = str(client.mk_run_dir / "channels.toml")
+    with open(channels_out, "w") as fh:
+        toml.dump(d, fh)
 
     guppy_kwargs = toml_dict.get(
         "guppy_connection",
@@ -109,7 +115,7 @@ def simple_analysis(
     )
 
     caller = Caller(**guppy_kwargs)
-    #What if there is no reference or an empty MMI
+    # What if there is no reference or an empty MMI
     mapper = CustomMapper(reference)
 
     # DefaultDict[int: collections.deque[Tuple[str, ndarray]]]
@@ -169,13 +175,15 @@ def simple_analysis(
             run_info, conditions, new_reference = get_run_info(live_file, flowcell_size)
             if new_reference != reference:
                 logger.info("Reloading mapper")
-                #We need to update our mapper client.
+                # We need to update our mapper client.
                 mapper = CustomMapper(new_reference)
                 logger.info("Reloaded mapper")
-                logger.info("Deleting old mmi {}".format(reference))
-                #We now delete the old mmi file.
-                Path(reference).unlink()
-                logger.info("Old mmi deleted.")
+                if reference:
+                    logger.info("Deleting old mmi {}".format(reference))
+                    # We now delete the old mmi file.
+                    Path(reference).unlink()
+                    logger.info("Old mmi deleted.")
+            reference = new_reference
 
         # TODO: Fix the logging to just one of the two in use
 
@@ -207,7 +215,7 @@ def simple_analysis(
 
             log_decision = lambda: cl.debug(
                 l_string.format(
-                    loop_counter, 
+                    loop_counter,
                     r,
                     read_id,
                     channel,
@@ -219,7 +227,7 @@ def simple_analysis(
                     conditions[run_info[channel]].name,
                     below_threshold,
                     exceeded_threshold,
-                    read_start_time, 
+                    read_start_time,
                     timer(),
                     time.time(),
                 )
@@ -316,7 +324,7 @@ def simple_analysis(
 
         t1 = timer()
         s1 = "Took {:.5f} to call and map {} reads"
-        logger.info(s1.format(t1-t0, r))
+        logger.info(s1.format(t1 - t0, r))
         # limit the rate at which we make requests
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
@@ -398,13 +406,6 @@ def main():
                 required=True,
                 help="TOML file specifying experimental parameters",
             ),
-        ),
-        (
-            "--chunk-log",
-            dict(
-                help="Chunk log",
-                default="chunk_log.log",
-            )
         ),
         (
             "--chunk-log",

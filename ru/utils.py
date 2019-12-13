@@ -274,7 +274,7 @@ def generate_flowcell(flowcell_size, split=1, axis=1, odd_even=False):
     except ValueError:
         # The number of targets cannot be split evenly over the flowcell.
         #   For MinION flowcells the number of targets must be a factor of 16 or
-        #   32 for axis 0 or 1 respectively;\nfor PromethION flowcells the number
+        #   32 for axis 0 or 1 respectively; for PromethION flowcells the number
         #   of targets must be a factor of 25 or 120 for axis 0 or 1 respectively.
         raise ValueError("The flowcell cannot be split evenly")
 
@@ -337,6 +337,8 @@ def get_run_info(toml_dict_or_filepath, num_channels=512):
         dict with a key per channel, the value maps to an index in `split_conditions`
     split_conditions : list
         List of namedtuples with conditions specified in the TOML file
+    reference : str
+        The path to the reference MMI file
     """
     if not isinstance(toml_dict_or_filepath, dict):
         toml_dict = toml.load(toml_dict_or_filepath)

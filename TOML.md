@@ -56,14 +56,14 @@ procs = 4
 
 Conditions
 ---
-The `conditions` table holds the location of your minimap2 reference file and sets 
-out the experimental conditions across the flowcell.
+The `conditions` table holds the location of your minimap2 reference file and 
+sets out the experimental conditions across the flowcell. The allowed keys are:
 
 |          Key |       Type      | Values | Description |
 |-------------:|:---------------:|:------:|:------------|
 | reference | string | N/A | Required the absolute path for a minimap2 index |
-| maintain_order | bool| N/A | (Optional) If `true` region conditions are ordered by their sequential numbering in the TOML file|
-| axis | int | [0, 1] | (Optional) The axis that the flowcell is divided on. 0 is rows (left -> right), 1 is columns (top -> bottom) |
+| maintain_order | bool| N/A | (Optional) If `true` condition regions are ordered by their sequential numbering in the TOML file|
+| axis | int | [0, 1] | (Optional) The axis that the flowcell is divided on. 0 is rows (left -> right), 1 is columns (top -> bottom); default is 1|
 
 
 ```toml
@@ -82,51 +82,50 @@ to apply to the flowcell, these should be sequentially numbered like so:
 # ...
 ```
 
-Each conditions table must contain:
+Each conditions sub-table must contain all of the following keys:
 
 |          Key |       Type      | Values | Description |
 |-------------:|:---------------:|:------:|:------------|
-|name|string | N/A | The name given to this condition |
-| control| bool| N/A | Is this a control condition. If `true` all reads will be ignored in this region|
-|min_chunks| int | N/A | The minimum number of read chunks to evaluate |
-|max_chunks| int | N/A | The maximum number of read chunks to evaluate |
-| targets| string or array | N/A | The genomic targets to accept or reject |
-| single_on| string | [unblock, stop_receiving, proceed]| The action to take when a read is assigned this classification |
-|multi_on| string | [unblock, stop_receiving, proceed]| The action to take when a read is assigned this classification |
-|single_off| string | [unblock, stop_receiving, proceed]| The action to take when a read is assigned this classification |
-| multi_off| string | [unblock, stop_receiving, proceed]| The action to take when a read is assigned this classification |
-|no_seq| string | [unblock, stop_receiving, proceed]| The action to take when a read is assigned this classification |
-|no_map| string | [unblock, stop_receiving, proceed]| The action to take when a read is assigned this classification |
+|name|string|N/A|The name given to this condition|
+|control|bool|N/A|Is this a control condition. If `true` all reads will be ignored in this region|
+|min_chunks|int|N/A|The minimum number of read chunks to evaluate|
+|max_chunks|int|N/A|The maximum number of read chunks to evaluate|
+|targets|string or array|N/A|The genomic targets to accept or reject|
+|single_on|string|[unblock, stop_receiving, proceed]|The action to take when a read has a single on-target mapping|
+|multi_on|string|[unblock, stop_receiving, proceed]|The action to take when a read has multiple on-target mappings|
+|single_off|string|[unblock, stop_receiving, proceed]|The action to take when a read has a single off-target mapping|
+|multi_off|string|[unblock, stop_receiving, proceed]|The action to take when a read has multiple off-target mappings|
+|no_seq|string|[unblock, stop_receiving, proceed]|The action to take when a read does not basecall|
+|no_map|string|[unblock, stop_receiving, proceed]|The action to take when a read does not map to your reference|
 
-Describe how the number of `conditions` tables relates to the flowcell splitting...  
+The physical layout of each flowcell constrains how many experimental conditions 
+can be used; the number of sub-tables in the `conditions` section determines how 
+the flowcell is divided. 
 
-The number of experimental conditions is limited by the number of arrays
-of channels  
+The maximum number of conditions for MinION and PromethION flowcells is given in 
+the table below. The number of conditions must be a factor of the number for the
+selected combination.
 
-The number of sub-conditions given determines how the flowcell is split: 
-
-```text
-+--------+--------+--------+--------+
-|        |        |        |        |
-|        |        |        |        |
-+        +        +        +        +
-|        |        |        |        |
-|        |        |        |        |
-+--------+--------+--------+--------+
-```
-
-<details>
-    <summary>JSON representation</summary>
-    <p>
-    A JSON representation may help visualise:
-    <pre>
-    {
-        "fruit": "Apple",
-        "size": "Large",
-        "color": "Red"
-    }
-    </pre>
-</details>
+<table>
+  <tr>
+    <td rowspan="2"></td>
+    <th colspan="2">Axis</th>
+  </tr>
+  <tr>
+    <th>0</th>
+    <th>1</th>
+  </tr>
+  <tr>
+    <th>MinION</th>
+    <td>16</td>
+    <td>32</td>
+  </tr>
+  <tr>
+    <th>PromethION</th>
+    <td>25</td>
+    <td>120</td>
+  </tr>
+</table>
 
 Validating a TOML
 ===
@@ -134,14 +133,14 @@ Validating a TOML
 We provide a JSON schema for validating configuration files:
 
 ```bash
-ru3_validate -i experiment_conf.toml ru_toml.schema.json
+ru_validate experiment_conf.toml ru_toml.schema.json
 ```
 
 If you are providing targets using a text file the flag `-t` will attempt to 
 check that these are compatible:
 
 ```bash
-ru3_validate -ti experiment_conf.toml ru_toml.schema.json
+ru_validate -t experiment_conf.toml ru_toml.schema.json
 ```
 
 Any errors with the configuration will be written to the terminal. 
