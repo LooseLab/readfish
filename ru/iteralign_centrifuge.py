@@ -427,7 +427,7 @@ def parse_fastq_file(fastqfileList,args,logging,masterdf,taxID_set, counter):
                 out, err = minimap_db.communicate()
 
                 minimap_db.stdout.close()
-                update_message = "Updated the minimap MMI to {}".format(args.toml['conditions']['reference']))
+                update_message = "Updated the minimap MMI to {}".format(args.toml['conditions']['reference'])
                 logging.info(update_message)
                 if not args.simulation:
                     send_message_port(update_message, args.host, messageport)
