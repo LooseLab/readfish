@@ -453,6 +453,8 @@ def main():
         cache_size=args.cache_size,
     )
 
+    # FIXME: currently flowcell size is not included, this should be pulled from
+    #  the read_until_client
     analysis_worker = functools.partial(
         simple_analysis,
         read_until_client,

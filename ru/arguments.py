@@ -49,6 +49,7 @@ BASE_ARGS = (
             default=DEFAULT_SERVER_PORT,
         ),
     ),
+    # TODO: update to reflect current device names
     (
         "--device",
         dict(
@@ -113,6 +114,7 @@ BASE_ARGS = (
                  "are controls while odd channels are selecting.",
         ),
     ),
+    # TODO: remove this param, it is not used
     (
         "--delay",
         dict(
@@ -179,6 +181,8 @@ BASE_ARGS = (
             default=DEFAULT_THROTTLE,
         ),
     ),
+    # This is a hold over from the previous read_until_client. We haven't used
+    #  it at all yet.
     (
         "--one-chunk",
         dict(
