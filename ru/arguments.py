@@ -49,13 +49,12 @@ BASE_ARGS = (
             default=DEFAULT_SERVER_PORT,
         ),
     ),
-    # TODO: update to reflect current device names
     (
         "--device",
         dict(
             metavar="DEVICE",
             type=str,
-            help="Name of the sequencing position e.g. MS29042 or GA10000 etc.",
+            help="Name of the sequencing position e.g. MS29042 or X1 etc.",
             required=True,
         ),
     ),
@@ -89,8 +88,6 @@ BASE_ARGS = (
             default=DEFAULT_WORKERS,
         ),
     ),
-    # TODO: Make channels more explicit as this param is used to determine the flowcell size
-    #  even though we can opt to run on a subset of channels
     (
         "--channels",
         dict(
@@ -102,28 +99,6 @@ BASE_ARGS = (
                     DEFAULT_CHANNELS
             ),
             default=DEFAULT_CHANNELS,
-        ),
-    ),
-    # FIXME: This is now handled by the TOML file, but we may still want to use an
-    #  odd/even configuration, this should be removed
-    (
-        "--split",
-        dict(
-            action="store_true",
-            help="Split the flowcell into odd/even categories. Even channels "
-                 "are controls while odd channels are selecting.",
-        ),
-    ),
-    # TODO: remove this param, it is not used
-    (
-        "--delay",
-        dict(
-            metavar="DELAY",
-            type=int,
-            help="Period, in seconds, to wait before starting analysis (default: {})".format(
-                DEFAULT_DELAY
-            ),
-            default=DEFAULT_DELAY,
         ),
     ),
     (
@@ -179,30 +154,6 @@ BASE_ARGS = (
                 DEFAULT_THROTTLE
             ),
             default=DEFAULT_THROTTLE,
-        ),
-    ),
-    # This is a hold over from the previous read_until_client. We haven't used
-    #  it at all yet.
-    (
-        "--one-chunk",
-        dict(
-            action="store_true",
-            help="Attempt to receive only one chunk per read. When enabled a request "
-                 "to stop receiving more data for a read is immediately staged when "
-                 "the first chunk is cached. (default: False)"
-        ),
-    ),
-    # FIXME: Marked for removal, min_chunk_size is set as a MinKNOW configuration setting
-    #  and we receive chunks in the smallest available size. It doesn't make sense to add
-    #  extra filters
-    (
-        "--min-chunk-size",
-        dict(
-            metavar="MIN-CHUNK-SIZE",
-            type=int,
-            help="Minimum read chunk size to receive. NOTE: this functionality "
-            "is currently disabled; read chunks received will be unfiltered",
-            default=DEFAULT_MIN_CHUNK,
         ),
     ),
     (

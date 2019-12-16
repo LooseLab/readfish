@@ -446,7 +446,7 @@ def main():
         mk_host=args.host,
         mk_port=args.port,
         device=args.device,
-        one_chunk=args.one_chunk,
+        # one_chunk=args.one_chunk,
         filter_strands=True,
         # TODO: test cache_type by passing a function here
         cache_type=args.read_cache,
@@ -472,7 +472,7 @@ def main():
         args.workers,
         args.run_time,
         runner_kwargs={
-            "min_chunk_size": args.min_chunk_size,
+            # "min_chunk_size": args.min_chunk_size,
             "first_channel": min(args.channels),
             "last_channel": max(args.channels),
         },
