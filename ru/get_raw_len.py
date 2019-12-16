@@ -375,7 +375,7 @@ def main():
     read_until_client = read_until.ReadUntilClient(
         mk_host=args.host,
         device=args.device,
-        one_chunk=args.one_chunk,
+        # one_chunk=args.one_chunk,
         filter_strands=True,
         cache_type=args.read_cache,
         cache_size=args.cache_size,
@@ -398,7 +398,7 @@ def main():
         args.workers,
         args.run_time,
         runner_kwargs={
-            "min_chunk_size": args.min_chunk_size,
+            # "min_chunk_size": args.min_chunk_size,
             "first_channel": args.channels[0],
             "last_channel": args.channels[-1],
         },
