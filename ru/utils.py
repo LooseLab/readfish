@@ -28,7 +28,7 @@ def execute_command_as_string(data, host=None, port=None):
 
 def send_message_port(message, ip_address, port):
     message_to_send = (
-            '{"id":"1", "method":"user_message","params":{"content":"%s"}}' % message
+            '{"id":"2", "method":"user_message","params":{"content":"%s"}}' % message
     )
     results = ""
     try:
