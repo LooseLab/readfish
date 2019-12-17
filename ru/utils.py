@@ -28,7 +28,7 @@ def execute_command_as_string(data, host=None, port=None):
 
 def send_message_port(message, ip_address, port):
     message_to_send = (
-            '{"id":"2", "method":"user_message","params":{"content":"%s"}}' % message
+            '{"id":"1", "severity": "2", "method":"user_message","params":{"content":"%s"}}' % message
     )
     results = ""
     try:
@@ -37,6 +37,9 @@ def send_message_port(message, ip_address, port):
         # FIXME: raise
         print("message send fail", err)
     return results
+
+def sendmessage(rpc_connection,severitylevel,message):
+    rpc_connection.log.send_user_message(severity=severitylevel, user_message=message)
 
 
 def dynamic_import(name):
