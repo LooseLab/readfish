@@ -32,7 +32,7 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers.polling import PollingObserver as Observer
 
 from ru.arguments import get_parser
-from ru.utils import nice_join, print_args, sendmessage
+from ru.utils import nice_join, print_args, send_message, Severity
 from read_until_api_v2.load_minknow_rpc import get_rpc_connection, parse_message
 
 from Bio import SeqIO
@@ -520,7 +520,7 @@ def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, count
                 logging.info(update_message)
                 if not args.simulation:
                     #send_message_port(update_message, args.host, messageport)
-                    sendmessage(connection,2,update_message)
+                    send_message(connection, update_message, Severity.WARN)
 
 
             else:
@@ -594,7 +594,6 @@ class FastqHandler(FileSystemEventHandler):
         self.args = args
         self.messageport = messageport
         self.connection = rpc_connection
-        self.severity = 2
         self.logger = logging.getLogger("FastqHandler")
         self.running = True
         self.fastqdict = dict()
@@ -656,7 +655,7 @@ class FastqHandler(FileSystemEventHandler):
                     self.logger.info(update_message)
                     if not self.args.simulation:
                         #send_message_port(update_message, self.args.host, self.messageport)
-                        sendmessage(self.connection,self.severity,update_message)
+                        send_message(self.connection, update_message, Severity.WARN)
                     write_new_toml(self.args, targets)
                     self.targets = []
                     self.targets = targets.copy()
@@ -669,8 +668,8 @@ class FastqHandler(FileSystemEventHandler):
                         #send_message_port(
                         #    "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
                         #        self.args.depth), self.args.host, self.messageport)
-                        sendmessage(self.connection, self.severity, "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
-                                self.args.depth))
+                        send_message(self.connection, "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
+                                self.args.depth), Severity.WARN)
 
                 # parse_fastq_file(fastqfile, self.rundict, self.fastqdict, self.args, self.header, self.MinotourConnection)
 
@@ -777,7 +776,7 @@ def main():
             sys.exit(1)
 
         #send_message_port("Iteralign Connected to MinKNOW", args.host, messageport)
-        sendmessage(connection,severity,"Iteralign Connected to MinKNOW.")
+        send_message(connection, "Iteralign Connected to MinKNOW.", Severity.WARN)
 
         logger.info("Loaded RPC")
         while parse_message(connection.acquisition.current_status())['status'] != "PROCESSING":
