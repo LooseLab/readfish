@@ -87,14 +87,14 @@ base_args=(
             type=float,
         ),
     ),
-    # (
-    #     "--device",
-    #     dict(
-    #         required=True,
-    #         action="store",
-    #         help="The sequencing position being addressed"
-    #     ),
-    # ),
+    (
+        "--device",
+        dict(
+            required=True,
+            action="store",
+            help="The sequencing position being addressed"
+        ),
+    ),
     (
         "--depth",
         dict(
