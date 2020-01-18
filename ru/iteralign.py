@@ -22,7 +22,7 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers.polling import PollingObserver as Observer
 
 from ru.arguments import get_parser
-from ru.utils import nice_join, print_args, send_message_port
+from ru.utils import nice_join, print_args, send_message, Severity
 from read_until_api_v2.load_minknow_rpc import get_rpc_connection, parse_message
 
 
@@ -264,7 +264,7 @@ class FastqHandler(FileSystemEventHandler):
                 update_message = "Updating targets with {}".format(nice_join(updated_targets, conjunction="and"))
                 self.logger.info(update_message)
                 if not self.args.simulation:
-                    send_message_port(update_message, self.args.host, self.messageport)
+                    send_message(self.connection, update_message, Severity.WARN)
                 write_new_toml(self.args,targets)
                 self.targets = []
                 self.targets = targets.copy()
@@ -274,7 +274,13 @@ class FastqHandler(FileSystemEventHandler):
                 self.logger.info("Every target is covered at at least {}x".format(self.args.depth))
                 if not self.args.simulation:
                    self.connection.protocol.stop_protocol()
-                   send_message_port("Iter Align has stopped the run as all targets should be covered by at least {}x".format(self.args.depth),self.args.host,self.messageport)
+                   send_message(
+                       self.connection,
+                       "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
+                           self.args.depth
+                       ),
+                       Severity.WARN,
+                   )
 
 
             #parse_fastq_file(fastqfile, self.rundict, self.fastqdict, self.args, self.header, self.MinotourConnection)
@@ -378,7 +384,7 @@ def main():
             print(e)
             sys.exit(1)
 
-        send_message_port("Iteralign Connected to MinKNOW", args.host, messageport)
+        send_message(connection, "Iteralign Connected to MinKNOW", Severity.WARN)
 
         logger.info("Loaded RPC")
         while parse_message(connection.acquisition.current_status())['status'] != "PROCESSING":

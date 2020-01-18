@@ -32,7 +32,7 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers.polling import PollingObserver as Observer
 
 from ru.arguments import get_parser
-from ru.utils import nice_join, print_args, send_message_port
+from ru.utils import nice_join, print_args, send_message, Severity
 from read_until_api_v2.load_minknow_rpc import get_rpc_connection, parse_message
 
 from Bio import SeqIO
@@ -55,6 +55,8 @@ DEFAULT_GENOME = "genome.fna.gz"
 DEFAULT_TIDFILE = "taxids.toml"
 DEFAULT_COVERAGE_FILE = "coverage.tsv"
 DEFAULT_SEQUENCE_LENGTH = 100000
+
+
 
 
 def get_fq(s, pattern="*.fq"):
@@ -268,7 +270,7 @@ base_args=(
         "--coveragefile",
         dict(
             action="store",
-            help="the file suffix containing 3 tab separated columns: iteration, referenceid, coverage (%)",
+            help="the file suffix containing 3 tab separated columns: iteration, referenceid, coverage (percent)",
             default=DEFAULT_COVERAGE_FILE,
         ),
     ),
@@ -373,7 +375,7 @@ def generate_mmi(args, counter):
     minimap_db.stdout.close()
 
 
-def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, counter, coverage_sum):
+def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, counter, coverage_sum, connection):
     logger = logging.getLogger("ParseFastq")
     logger.info(fastqfileList)
     logger.info(args.toml['conditions']['reference'])
@@ -512,7 +514,14 @@ def parse_fastq_file(fastqfileList, args, logging, length_dict, taxID_set, count
 
                 logging.info("Generating mmi")
 
-                generate_mmi(args,counter)
+                generate_mmi(args, counter)
+
+                update_message = "Updated the minimap MMI to {}".format(args.toml['conditions']['reference'])
+                logging.info(update_message)
+                if not args.simulation:
+                    #send_message_port(update_message, args.host, messageport)
+                    send_message(connection, update_message, Severity.WARN)
+
 
             else:
                 # show in terminal that no new taxIDs were found
@@ -636,7 +645,7 @@ class FastqHandler(FileSystemEventHandler):
             # as long as there are files within the args.watch directory to parse
             if fastqfilelist:
                 print(self.downloaded_set)
-                targets, self.downloaded_set, self.taxid_entries, self.coverage_sum = parse_fastq_file(fastqfilelist, self.args, logging, self.length_dict, self.downloaded_set, self.taxid_entries, self.coverage_sum)
+                targets, self.downloaded_set, self.taxid_entries, self.coverage_sum = parse_fastq_file(fastqfilelist, self.args, logging, self.length_dict, self.downloaded_set, self.taxid_entries, self.coverage_sum, self.connection)
                 print(targets)
                 print(self.targets)
 
@@ -645,7 +654,8 @@ class FastqHandler(FileSystemEventHandler):
                     update_message = "Updating targets with {}".format(nice_join(updated_targets, conjunction="and"))
                     self.logger.info(update_message)
                     if not self.args.simulation:
-                        send_message_port(update_message, self.args.host, self.messageport)
+                        #send_message_port(update_message, self.args.host, self.messageport)
+                        send_message(self.connection, update_message, Severity.WARN)
                     write_new_toml(self.args, targets)
                     self.targets = []
                     self.targets = targets.copy()
@@ -655,9 +665,11 @@ class FastqHandler(FileSystemEventHandler):
                     self.logger.info("Every target is covered at at least {}x".format(self.args.depth))
                     if not self.args.simulation:
                         self.connection.protocol.stop_protocol()
-                        send_message_port(
-                            "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
-                                self.args.depth), self.args.host, self.messageport)
+                        #send_message_port(
+                        #    "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
+                        #        self.args.depth), self.args.host, self.messageport)
+                        send_message(self.connection, "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
+                                self.args.depth), Severity.WARN)
 
                 # parse_fastq_file(fastqfile, self.rundict, self.fastqdict, self.args, self.header, self.MinotourConnection)
 
@@ -750,6 +762,10 @@ def main():
 
     args.simulation = True
     connection = None
+
+    #set default message severity level.
+    severity = 2
+
     if args.watch is None:
         args.simulation = False
         logger.info("Creating rpc connection for device {}.".format(args.device))
@@ -759,7 +775,8 @@ def main():
             print(e)
             sys.exit(1)
 
-        send_message_port("Iteralign Connected to MinKNOW", args.host, messageport)
+        #send_message_port("Iteralign Connected to MinKNOW", args.host, messageport)
+        send_message(connection, "Iteralign Connected to MinKNOW.", Severity.WARN)
 
         logger.info("Loaded RPC")
         while parse_message(connection.acquisition.current_status())['status'] != "PROCESSING":

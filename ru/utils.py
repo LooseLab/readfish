@@ -7,36 +7,34 @@ import toml
 from operator import itemgetter
 import requests
 import json
+from enum import IntEnum
 
 from ru.channels import MINION_CHANNELS, FLONGLE_CHANNELS
 
 
-def execute_command_as_string(data, host=None, port=None):
-    """"""
-    r = requests.post(
-        "http://{}:{}/jsonrpc".format(host, port),
-        data=data,
-        headers={"Content-Length": str(len(data)), "Content-Type": "application/json"},
-    )
-    try:
-        json_respond = json.loads(r.text)
-        return json_respond
-    except Exception as err:
-        # FIXME: raise
-        print(err)
+class Severity(IntEnum):
+    INFO = 1
+    WARN = 2
+    ERROR = 3
 
 
-def send_message_port(message, ip_address, port):
-    message_to_send = (
-            '{"id":"1", "method":"user_message","params":{"content":"%s"}}' % message
-    )
-    results = ""
-    try:
-        results = execute_command_as_string(message_to_send, ip_address, port)
-    except Exception as err:
-        # FIXME: raise
-        print("message send fail", err)
-    return results
+def send_message(rpc_connection, message, severity):
+    """Send a message to MinKNOW
+
+    Parameters
+    ----------
+    rpc_connection
+        An instance of the rpc.Connection
+    message : str
+        The message to send
+    severity : int
+        The severity to use for the message: 1=info, 2=warning, 3=error
+
+    Returns
+    -------
+    None
+    """
+    rpc_connection.log.send_user_message(severity=severity, user_message=message)
 
 
 def dynamic_import(name):
