@@ -32,6 +32,7 @@ pip install -r requirements.txt
 python setup.py develop
 ```
 
+**This program requires PyGuppy**  
 PyGuppy is available request from Oxford Nanopore Technologies
 
 You can now use `pip list` to check that the repos are installed with the correct directories.
