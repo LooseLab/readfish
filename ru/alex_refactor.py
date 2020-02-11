@@ -26,7 +26,7 @@ import toml
 
 from ru.arguments import get_parser
 from ru.basecall import Mapper as CustomMapper
-from ru.basecall import PerpetualCaller as Caller
+from ru.basecall import CPUPerpetualCaller as Caller
 from ru.utils import print_args, get_run_info, between, setup_logger
 
 

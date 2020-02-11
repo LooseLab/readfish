@@ -9,6 +9,9 @@ import mappy as mp
 import numpy as np
 import logging
 
+import deepnano2
+import os
+
 from pyguppy.io import GuppyRead
 from pyguppy.client import GuppyClient, load_config
 
@@ -55,6 +58,54 @@ def _parse_minknow_read(reads, signal_dtype, previous_signal):
         read_obj.total_samples = len(read_obj.raw_read)
         yield channel, read.number, read_obj
 
+def med_mad(x, factor=1.4826):
+    """
+    Calculate signal median and median absolute deviation
+    """
+    med = np.median(x)
+    mad = np.median(np.absolute(x - med)) * factor
+    return med, mad
+
+def rescale_signal(signal):
+    signal = signal.astype(np.float32)
+    med, mad = med_mad(signal)
+    signal -= med
+    signal /= mad
+    return signal
+
+
+class CPUPerpetualCaller:
+    def __init__(
+            self,
+            config,
+            host=None,
+            port=None,
+            snooze=None,
+            inflight=None,
+            procs=1
+    ):
+        network_type = "96"
+        beam_size = 20
+        beam_cut_threshold = 0.01
+        weights = os.path.join(deepnano2.__path__[0], "weights", "rnn%s.txt" % network_type)
+        self.caller = deepnano2.Caller(network_type, weights, beam_size, beam_cut_threshold)
+        logging.info("CPU Caller Up")
+
+    def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
+        hold = {}
+        for channel, read_number, read in _parse_minknow_read(reads, signal_dtype, prev_signal):
+            if read.read_id == decided_reads.get(channel, ""):
+                continue
+
+            #if len(read.raw_read) > 16000:
+            #    continue
+
+            signal = rescale_signal(read.raw_read)
+
+            hold[read.read_id] = (channel, read_number)
+            sequence = self.caller.call_raw_signal(signal)
+            lenseq = len(sequence)
+            yield hold.pop(read.read_id), read.read_id, sequence, lenseq, ""
 
 class PerpetualCaller:
     def __init__(
