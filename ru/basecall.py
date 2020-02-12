@@ -84,8 +84,8 @@ class CPUPerpetualCaller:
             inflight=None,
             procs=1
     ):
-        network_type = "96"
-        beam_size = 20
+        network_type = "48"
+        beam_size = 5
         beam_cut_threshold = 0.01
         weights = os.path.join(deepnano2.__path__[0], "weights", "rnn%s.txt" % network_type)
         self.caller = deepnano2.Caller(network_type, weights, beam_size, beam_cut_threshold)
@@ -106,6 +106,10 @@ class CPUPerpetualCaller:
             sequence = self.caller.call_raw_signal(signal)
             lenseq = len(sequence)
             yield hold.pop(read.read_id), read.read_id, sequence, lenseq, ""
+
+    def disconnect(self):
+        pass
+
 
 class PerpetualCaller:
     def __init__(
