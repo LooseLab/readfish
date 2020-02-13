@@ -26,8 +26,8 @@ import toml
 
 from ru.arguments import get_parser
 from ru.basecall import Mapper as CustomMapper
-from ru.basecall import CPUPerpetualCaller as Caller
-from ru.utils import print_args, get_run_info, between, setup_logger
+from ru.basecall import __all__ as callers
+from ru.utils import print_args, get_run_info, between, setup_logger, dynamic_import
 
 
 class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
@@ -53,10 +53,12 @@ class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
 
 def simple_analysis(
         client,
+        caller="GPU",
         batch_size=512,
         throttle=0.1,
         unblock_duration=0.5,
         chunk_log=None,
+        paf_log=None,
         toml_path=None,
         flowcell_size=512,
         dry_run=False,
@@ -67,6 +69,8 @@ def simple_analysis(
     ----------
     client : read_until.ReadUntilClient
         An instance of the ReadUntilClient object
+    caller : str
+        Base caller to use, one of CPU or GPU
     batch_size : int
         The number of reads to be retrieved from the ReadUntilClient at a time
     throttle : int or float
@@ -75,6 +79,8 @@ def simple_analysis(
         Time, in seconds, to apply unblock voltage
     chunk_log : str
         Log file to log chunk data to
+    paf_log : str
+        Log file to log alignments to
     toml_path : str
         Path to a TOML configuration file for read until
     flowcell_size : int
@@ -86,6 +92,7 @@ def simple_analysis(
     -------
     None
     """
+    Caller = dynamic_import("ru.basecall.{}".format(caller))
     logger = logging.getLogger(__name__)
     toml_dict = toml.load(toml_path)
     live_file = Path("{}_live".format(toml_path))
@@ -148,7 +155,7 @@ def simple_analysis(
     exceeded_threshold = False
 
     cl = setup_logger("DEC", log_file=chunk_log)
-    pf = setup_logger("PAF", log_file="paflog.paf")
+    pf = setup_logger("PAF", log_file=paf_log)
     l_string = (
         "client_iteration",
         "read_in_loop",
@@ -400,12 +407,28 @@ def run_workflow(client, analysis_worker, n_workers, run_time, runner_kwargs=Non
 def main():
     extra_args = (
         (
+            "--caller",
+            dict(
+                metavar="CALLER",
+                default=callers[0],
+                choices=callers,
+                help="Base calling system to use: CPU or GPU",
+            ),
+        ),
+        (
             "--toml",
             dict(
                 metavar="TOML",
                 required=True,
                 help="TOML file specifying experimental parameters",
             ),
+        ),
+        (
+            "--paf-log",
+            dict(
+                help="PAF log",
+                default="paflog.log",
+            )
         ),
         (
             "--chunk-log",
