@@ -10,7 +10,7 @@ from time import sleep
 import mappy as mp
 import numpy as np
 
-# import deepnano2
+import deepnano2
 from pyguppy.client import GuppyClient, load_config
 from pyguppy.io import GuppyRead
 

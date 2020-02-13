@@ -481,10 +481,12 @@ def main():
     analysis_worker = functools.partial(
         simple_analysis,
         read_until_client,
+        caller = args.caller,
         unblock_duration=args.unblock_duration,
         throttle=args.throttle,
         batch_size=args.batch_size,
         chunk_log=args.chunk_log,
+        paf_log=args.paf_log,
         toml_path=args.toml,
         dry_run=args.dry_run,
     )
