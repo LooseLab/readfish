@@ -3,23 +3,23 @@
 Extension of pyguppy Caller that maintains a connection to the basecaller
 
 """
+import logging
+import os
 from time import sleep
 
 import mappy as mp
 import numpy as np
-import logging
 
-import deepnano2
-import os
-
-from pyguppy.io import GuppyRead
+# import deepnano2
 from pyguppy.client import GuppyClient, load_config
+from pyguppy.io import GuppyRead
 
+__all__ = ["GPU", "CPU"]
 
 logger = logging.getLogger("RU_basecaller")
 
 
-def _parse_minknow_read(reads, signal_dtype, previous_signal):
+def _create_guppy_read(reads, signal_dtype, previous_signal):
     """Convert a read from MinKNOW RPC to GuppyRead
 
     Parameters
@@ -37,81 +37,89 @@ def _parse_minknow_read(reads, signal_dtype, previous_signal):
     read_number : int
     GuppyRead
     """
-    for channel, read in reads:
-        read_obj = GuppyRead(read.id)
+    for read_id, channel, read_number, signal in _concat_signal(reads, signal_dtype, previous_signal):
+        read_obj = GuppyRead(read_id)
 
-        # A little bit of a hack, but works with the deque
-        #  really should just replace tuples in the dict but :shrug:
-        #  or even have len of 2 on the deque ?
+        # # A little bit of a hack, but works with the deque
+        # #  really should just replace tuples in the dict but :shrug:
+        # #  or even have len of 2 on the deque ?
+        # old_read_id, old_signal = previous_signal.get(channel, (("", np.empty(0, dtype=signal_dtype)),))[0]
+        # if old_read_id == read.id:
+        #     signal = np.concatenate((old_signal, np.frombuffer(read.raw_data, dtype=signal_dtype)))
+        # else:
+        #     signal = np.frombuffer(read.raw_data, dtype=signal_dtype)
+
+        read_obj.raw_read = signal
+
+        previous_signal[channel].append((read_id, read_obj.raw_read))
+
+        read_obj.daq_scaling = 1
+        read_obj.daq_offset = 0
+        read_obj.total_samples = len(read_obj.raw_read)
+        yield channel, read_number, read_obj
+
+
+def _concat_signal(reads, signal_dtype, previous_signal):
+    for channel, read in reads:
         old_read_id, old_signal = previous_signal.get(channel, (("", np.empty(0, dtype=signal_dtype)),))[0]
+
         if old_read_id == read.id:
             signal = np.concatenate((old_signal, np.frombuffer(read.raw_data, dtype=signal_dtype)))
         else:
             signal = np.frombuffer(read.raw_data, dtype=signal_dtype)
 
-        read_obj.raw_read = signal
+        yield read.id, channel, read.number, signal
 
-        previous_signal[channel].append((read.id, read_obj.raw_read))
 
-        read_obj.daq_scaling = 1
-        read_obj.daq_offset = 0
-        read_obj.total_samples = len(read_obj.raw_read)
-        yield channel, read.number, read_obj
-
-def med_mad(x, factor=1.4826):
-    """
-    Calculate signal median and median absolute deviation
-    """
-    med = np.median(x)
-    mad = np.median(np.absolute(x - med)) * factor
-    return med, mad
-
-def rescale_signal(signal):
+def _rescale_signal(signal):
+    """Rescale signal for DeepNano"""
     signal = signal.astype(np.float32)
-    med, mad = med_mad(signal)
+    med, mad = _med_mad(signal)
     signal -= med
     signal /= mad
     return signal
 
 
-class CPUPerpetualCaller:
-    def __init__(
-            self,
-            config,
-            host=None,
-            port=None,
-            snooze=None,
-            inflight=None,
-            procs=1
-    ):
+def _med_mad(x, factor=1.4826):
+    """Calculate signal median and median absolute deviation"""
+    med = np.median(x)
+    mad = np.median(np.absolute(x - med)) * factor
+    return med, mad
+
+
+class _Caller:
+    def basecall_minknow(self, *args, **kwargs):
+        """Raise NotImplemented"""
+        raise NotImplementedError("basecall_minknow needs to be overwritten")
+
+    def disconnect(self):
+        """Fallback disconnect"""
+        pass
+
+
+class CPU(_Caller):
+    def __init__(self, **kwargs):
         network_type = "48"
         beam_size = 5
         beam_cut_threshold = 0.01
         weights = os.path.join(deepnano2.__path__[0], "weights", "rnn%s.txt" % network_type)
         self.caller = deepnano2.Caller(network_type, weights, beam_size, beam_cut_threshold)
-        logging.info("CPU Caller Up")
+        logger.info("CPU Caller Up")
 
     def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
         hold = {}
-        for channel, read_number, read in _parse_minknow_read(reads, signal_dtype, prev_signal):
-            if read.read_id == decided_reads.get(channel, ""):
+        for read_id, channel, read_number, signal in _concat_signal(reads, signal_dtype, prev_signal):
+            if read_id == decided_reads.get(channel, ""):
                 continue
 
-            #if len(read.raw_read) > 16000:
-            #    continue
+            signal = _rescale_signal(signal)
 
-            signal = rescale_signal(read.raw_read)
-
-            hold[read.read_id] = (channel, read_number)
-            sequence = self.caller.call_raw_signal(signal)
-            lenseq = len(sequence)
-            yield hold.pop(read.read_id), read.read_id, sequence, lenseq, ""
-
-    def disconnect(self):
-        pass
+            hold[read_id] = (channel, read_number)
+            seq = self.caller.call_raw_signal(signal)
+            yield hold.pop(read_id), read_id, seq, len(seq), ""
 
 
-class PerpetualCaller:
+class GPU(_Caller):
     def __init__(
             self,
             config,
@@ -161,7 +169,7 @@ class PerpetualCaller:
         read_counter = 0
 
         hold = {}
-        for channel, read_number, read in _parse_minknow_read(reads, signal_dtype, prev_signal):
+        for channel, read_number, read in _create_guppy_read(reads, signal_dtype, prev_signal):
             if read.read_id == decided_reads.get(channel, ""):
                 continue
 
@@ -183,53 +191,9 @@ class PerpetualCaller:
                 try:
                     read, meta, data = self.client.get_called_read(events=False)
                     done += 1
-                    yield hold.pop(read.read_id), read.read_id, data.seq, meta.seqlen, data.qual
+                    yield hold.pop(read.read_id), read.read_id, data.seq, len(data.seq), data.qual
                 except TypeError:
                     pass
-
-    def basecall_read_until(self, reads):
-        """
-
-        Parameters
-        ----------
-        reads : iterable
-            Iterable of GuppyRead objects
-
-        Returns
-        -------
-        List
-            List of Tuple, (read_id, read_seq)
-        """
-        done = 0
-        basecalls = []
-
-        read_counter = 0
-        for read in reads:
-            # Sleep if client cannot accept reads
-            while not self.client.can_accept_read():
-                sleep(self.snooze)
-
-            self.client.pass_read(read)
-            read_counter += 1
-
-        while done < read_counter:
-            completed_reads = self.client.num_reads_done()
-
-            if not completed_reads:
-                sleep(self.snooze)
-                continue
-            # logger.info("completed_reads: {}".format(completed_reads))
-            for completed in range(completed_reads):
-                try:
-                    read, meta, data = self.client.get_called_read(events=False)
-                    basecalls.append((read.read_id, data.seq))
-                    done += 1
-                except Exception as e:
-                    # TODO: Specify what exception are we expecting here
-                    logger.debug("PerpetualCaller got exception: {}".format(e))
-                    pass
-
-        return basecalls
 
 
 class Mapper:
