@@ -32,8 +32,7 @@ pip install -r requirements.txt
 python setup.py develop
 ```
 
-**This program requires PyGuppy**  
-PyGuppy is available request from Oxford Nanopore Technologies
+[**pyguppyclient** is available here](https://github.com/nanoporetech/pyguppyclient). This version is currently incompatible with our Read Until implementation. This should be fixed by next Monday (17/02/2020).
 
 You can now use `pip list` to check that the repos are installed with the correct directories.
 
