@@ -10,9 +10,9 @@ from time import sleep
 import mappy as mp
 import numpy as np
 
-import deepnano2
-from pyguppy.client import GuppyClient, load_config
-from pyguppy.io import GuppyRead
+# import deepnano2
+from pyguppyclient.client import GuppyBasecallerClient as GuppyClient
+from pyguppyclient.decode import ReadData as GuppyRead
 
 __all__ = ["GPU", "CPU"]
 
@@ -38,7 +38,8 @@ def _create_guppy_read(reads, signal_dtype, previous_signal):
     GuppyRead
     """
     for read_id, channel, read_number, signal in _concat_signal(reads, signal_dtype, previous_signal):
-        read_obj = GuppyRead(read_id)
+        read_obj = GuppyRead(signal, read_id, 0, 1)
+        previous_signal[channel].append((read_id, read_obj.signal))
 
         # # A little bit of a hack, but works with the deque
         # #  really should just replace tuples in the dict but :shrug:
@@ -49,13 +50,10 @@ def _create_guppy_read(reads, signal_dtype, previous_signal):
         # else:
         #     signal = np.frombuffer(read.raw_data, dtype=signal_dtype)
 
-        read_obj.raw_read = signal
-
-        previous_signal[channel].append((read_id, read_obj.raw_read))
-
-        read_obj.daq_scaling = 1
-        read_obj.daq_offset = 0
-        read_obj.total_samples = len(read_obj.raw_read)
+        # read_obj.raw_read = signal
+        # read_obj.daq_scaling = 1
+        # read_obj.daq_offset = 0
+        # read_obj.total_samples = len(read_obj.raw_read)
         yield channel, read_number, read_obj
 
 
@@ -135,7 +133,7 @@ class GPU(_Caller):
         self.config = config
         self.snooze = snooze
         self.inflight = inflight
-        load_config(config, host, port)
+        # load_config(config, host, port)
         self.client = GuppyClient(self.config, host=self.host, port=self.port)
         self.client.connect()
 
@@ -173,27 +171,38 @@ class GPU(_Caller):
             if read.read_id == decided_reads.get(channel, ""):
                 continue
 
-            while not self.client.can_accept_read():
-                sleep(self.snooze)
+            # while not self.client.can_accept_read():
+            #     sleep(self.snooze)
 
             hold[read.read_id] = (channel, read_number)
             self.client.pass_read(read)
             read_counter += 1
 
         while done < read_counter:
-            completed_reads = self.client.num_reads_done()
+            """
+            res = self.client._get_called)_read() 
+            # res is a tuple, (read, called)
+            # called is the CalledReadData object
+            """
+            res = self.client._get_called_read()
 
-            if not completed_reads:
+            if res is not None:
                 sleep(self.snooze)
                 continue
 
-            for completed in range(completed_reads):
-                try:
-                    read, meta, data = self.client.get_called_read(events=False)
-                    done += 1
-                    yield hold.pop(read.read_id), read.read_id, data.seq, len(data.seq), data.qual
-                except TypeError:
-                    pass
+            read, called = res
+            # print(read, type(read), dir(read))
+            # print(called, type(called), dir(called))
+            yield hold.pop(read.read_id), read.read_id, called.seq, called.seqlen, called.qual
+            #     done +=1
+            #
+            # for completed in range(completed_reads):
+            #     try:
+            #         read, meta, data = self.client._get_called_read()
+            #         done += 1
+            #         yield hold.pop(read.read_id), read.read_id, data.seq, len(data.seq), data.qual
+            #     except TypeError:
+            #         pass
 
 
 class Mapper:
