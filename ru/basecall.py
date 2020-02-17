@@ -97,6 +97,7 @@ class _Caller:
 
 class CPU(_Caller):
     def __init__(self, **kwargs):
+        import deepnano2
         network_type = "48"
         beam_size = 5
         beam_cut_threshold = 0.01
