@@ -69,6 +69,39 @@ def _concat_signal(reads, signal_dtype, previous_signal):
         yield read.id, channel, read.number, signal
 
 
+def _trim_blank(sig, window=300):
+    N = len(sig)
+    variances = [np.var(sig[i:i+window]) for i in range(N//2, N-window, window)]
+    mean_var = np.mean(variances)
+    trim_idx = 20
+    while window > 5:
+        while np.var(sig[trim_idx: trim_idx + window]) < 0.3*mean_var:
+            trim_idx += 1
+        window //= 2
+
+    return trim_idx
+
+def _trim(signal, window_size=40, threshold_factor=3.0, min_elements=3):
+
+    med, mad = _med_mad(signal[-(window_size*25):])
+    threshold = med + mad * threshold_factor
+    num_windows = len(signal) // window_size
+
+    for pos in range(num_windows):
+
+        start = pos * window_size
+        end = start + window_size
+
+        window = signal[start:end]
+
+        if len(window[window > threshold]) > min_elements:
+            if window[-1] > threshold:
+                continue
+            return end
+
+    return 0
+
+
 def _rescale_signal(signal):
     """Rescale signal for DeepNano"""
     signal = signal.astype(np.float32)
@@ -111,7 +144,8 @@ class CPU(_Caller):
             if read_id == decided_reads.get(channel, ""):
                 continue
 
-            signal = _rescale_signal(signal)
+            start = _trim(signal)
+            signal = _rescale_signal(signal[start:])
 
             hold[read_id] = (channel, read_number)
             seq = self.caller.call_raw_signal(signal)
