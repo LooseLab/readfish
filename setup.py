@@ -26,7 +26,7 @@ setup(
         "console_scripts": [
             "ru_validate={}.validate:main".format(PKG_NAME),
             "ru_alex={}.alex:main".format(PKG_NAME),
-            "ru_generators={}.readuntil_generator:main".format(PKG_NAME),
+            "ru_generators={}.ru_gen:main".format(PKG_NAME),
             "ru_raw_signal_log={}.get_raw_len:main".format(PKG_NAME),
             "ru_iteralign={}.iteralign:main".format(PKG_NAME),
             "ru_iteralign_centrifuge={}.iteralign_centrifuge:main".format(PKG_NAME),
