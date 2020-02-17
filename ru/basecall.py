@@ -5,13 +5,12 @@ Extension of pyguppy Caller that maintains a connection to the basecaller
 """
 import logging
 import os
-from time import sleep
 
 import mappy as mp
 import numpy as np
 
-# import deepnano2
-from pyguppyclient.client import GuppyBasecallerClient as GuppyClient
+import deepnano2
+from pyguppyclient.client import GuppyBasecallerClient
 from pyguppyclient.decode import ReadData as GuppyRead
 
 __all__ = ["GPU", "CPU"]
@@ -151,30 +150,12 @@ class CPU(_Caller):
             seq = self.caller.call_raw_signal(signal)
             yield hold.pop(read_id), read_id, seq, len(seq), ""
 
-
-class GPU(_Caller):
-    def __init__(
-            self,
-            config,
-            host='127.0.0.1',
-            port=5555,
-            snooze=1e-4,
-            inflight=512,
-            procs=4,
-    ):
-        self.host = host
-        self.port = port
-        self.procs = procs
-        self.config = config
-        self.snooze = snooze
-        self.inflight = inflight
-        # load_config(config, host, port)
-        self.client = GuppyClient(self.config, host=self.host, port=self.port)
-        self.client.connect()
-
     def disconnect(self):
-        self.client.disconnect()
+        """Pass through to make CPU caller compatible with GPU"""
+        pass
 
+
+class GPU(GuppyBasecallerClient):
     def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
         """Guppy basecaller wrapper for MinKNOW RPC reads
 
@@ -206,38 +187,19 @@ class GPU(_Caller):
             if read.read_id == decided_reads.get(channel, ""):
                 continue
 
-            # while not self.client.can_accept_read():
-            #     sleep(self.snooze)
-
             hold[read.read_id] = (channel, read_number)
-            self.client.pass_read(read)
+            self.pass_read(read)
             read_counter += 1
 
         while done < read_counter:
-            """
-            res = self.client._get_called)_read() 
-            # res is a tuple, (read, called)
-            # called is the CalledReadData object
-            """
-            res = self.client._get_called_read()
+            res = self._get_called_read()
 
-            if res is not None:
-                sleep(self.snooze)
+            if res is None:
                 continue
 
             read, called = res
-            # print(read, type(read), dir(read))
-            # print(called, type(called), dir(called))
+
             yield hold.pop(read.read_id), read.read_id, called.seq, called.seqlen, called.qual
-            #     done +=1
-            #
-            # for completed in range(completed_reads):
-            #     try:
-            #         read, meta, data = self.client._get_called_read()
-            #         done += 1
-            #         yield hold.pop(read.read_id), read.read_id, data.seq, len(data.seq), data.qual
-            #     except TypeError:
-            #         pass
 
 
 class Mapper:
