@@ -334,8 +334,9 @@ def simple_analysis(
             log_decision()
 
         t1 = timer()
-        s1 = "Took {:.5f} to call and map {} reads"
-        logger.info(s1.format(t1 - t0, r))
+        if r > 0:
+            s1 = "{}R/{:.5f}s"
+            logger.info(s1.format(r, t1 - t0))
         # limit the rate at which we make requests
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
