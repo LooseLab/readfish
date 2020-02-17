@@ -28,6 +28,7 @@ from ru.arguments import get_parser
 from ru.basecall import Mapper as CustomMapper
 from ru.basecall import __all__ as callers
 from ru.utils import print_args, get_run_info, between, setup_logger, dynamic_import
+from ru.utils import send_message, Severity
 
 
 class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
@@ -144,12 +145,14 @@ def simple_analysis(
             "proceed": None,
             "unblock": client.stop_receiving_read,
         }
+        send_message(client.connection,"This is a test run. No unblocks will occur.",Severity.WARN)
     else:
         decision_dict = {
             "stop_receiving": client.stop_receiving_read,
             "proceed": None,
             "unblock": lambda c, n: client.unblock_read(c, n, unblock_duration, read_id),
         }
+        send_message(client.connection, "This is a live run. Unblocks will occur.", Severity.WARN)
     decision_str = ""
     below_threshold = False
     exceeded_threshold = False
@@ -182,6 +185,7 @@ def simple_analysis(
             run_info, conditions, new_reference = get_run_info(live_file, flowcell_size)
             if new_reference != reference:
                 logger.info("Reloading mapper")
+                send_message(client.connection,"Reloading mapper. Read Until paused.",Severity.INFO)
                 # We need to update our mapper client.
                 mapper = CustomMapper(new_reference)
                 logger.info("Reloaded mapper")
@@ -336,6 +340,7 @@ def simple_analysis(
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
     else:
+        send_message(client.connection, "Read Until Client Stopped.", Severity.WARN)
         caller.disconnect()
         logger.info("Finished analysis of reads as client stopped.")
 
@@ -465,6 +470,8 @@ def main():
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
 
+
+
     read_until_client = read_until.ReadUntilClient(
         mk_host=args.host,
         mk_port=args.port,
@@ -475,6 +482,8 @@ def main():
         cache_type=args.read_cache,
         cache_size=args.cache_size,
     )
+
+    send_message(read_until_client.connection,"Read Until is controlling sequencing on this device. You use it at your own risk.", Severity.WARN)
 
     # FIXME: currently flowcell size is not included, this should be pulled from
     #  the read_until_client
@@ -504,6 +513,8 @@ def main():
     )
     # describe(results)
     # No results returned
+    send_message(read_until_client.connection,
+                 "Read Until is disconnected from this device. Sequencing will proceed normally.", Severity.WARN)
 
 
 if __name__ == "__main__":
