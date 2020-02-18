@@ -9,7 +9,6 @@ import os
 import mappy as mp
 import numpy as np
 
-import deepnano2
 from pyguppyclient.client import GuppyBasecallerClient
 from pyguppyclient.decode import ReadData as GuppyRead
 
@@ -117,24 +116,14 @@ def _med_mad(x, factor=1.4826):
     return med, mad
 
 
-class _Caller:
-    def basecall_minknow(self, *args, **kwargs):
-        """Raise NotImplemented"""
-        raise NotImplementedError("basecall_minknow needs to be overwritten")
-
-    def disconnect(self):
-        """Fallback disconnect"""
-        pass
-
-
-class CPU(_Caller):
+class CPU:
     def __init__(self, **kwargs):
         import deepnano2
         network_type = "48"
         beam_size = 5
         beam_cut_threshold = 0.01
         weights = os.path.join(deepnano2.__path__[0], "weights", "rnn%s.txt" % network_type)
-        self.caller = deepnano2.Caller(network_type, weights, beam_size, beam_cut_threshold)
+        self.caller = self.deepnano2.Caller(network_type, weights, beam_size, beam_cut_threshold)
         logger.info("CPU Caller Up")
 
     def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
