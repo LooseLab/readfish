@@ -38,20 +38,6 @@ def _create_guppy_read(reads, signal_dtype, previous_signal):
     for read_id, channel, read_number, signal in _concat_signal(reads, signal_dtype, previous_signal):
         read_obj = GuppyRead(signal, read_id, 0, 1)
         previous_signal[channel].append((read_id, read_obj.signal))
-
-        # # A little bit of a hack, but works with the deque
-        # #  really should just replace tuples in the dict but :shrug:
-        # #  or even have len of 2 on the deque ?
-        # old_read_id, old_signal = previous_signal.get(channel, (("", np.empty(0, dtype=signal_dtype)),))[0]
-        # if old_read_id == read.id:
-        #     signal = np.concatenate((old_signal, np.frombuffer(read.raw_data, dtype=signal_dtype)))
-        # else:
-        #     signal = np.frombuffer(read.raw_data, dtype=signal_dtype)
-
-        # read_obj.raw_read = signal
-        # read_obj.daq_scaling = 1
-        # read_obj.daq_offset = 0
-        # read_obj.total_samples = len(read_obj.raw_read)
         yield channel, read_number, read_obj
 
 
@@ -79,8 +65,8 @@ def _trim_blank(sig, window=300):
 
     return trim_idx
 
-def _trim(signal, window_size=40, threshold_factor=3.0, min_elements=3):
 
+def _trim(signal, window_size=40, threshold_factor=3.0, min_elements=3):
     med, mad = _med_mad(signal[-(window_size*25):])
     threshold = med + mad * threshold_factor
     num_windows = len(signal) // window_size
@@ -117,13 +103,23 @@ def _med_mad(x, factor=1.4826):
 
 
 class CPU:
-    def __init__(self, **kwargs):
-        import deepnano2
-        network_type = "48"
-        beam_size = 5
-        beam_cut_threshold = 0.01
-        weights = os.path.join(deepnano2.__path__[0], "weights", "rnn%s.txt" % network_type)
-        self.caller = self.deepnano2.Caller(network_type, weights, beam_size, beam_cut_threshold)
+    import deepnano2
+
+    def __init__(
+            self,
+            network_type="48",
+            beam_size=5,
+            beam_cut_threshold=0.01,
+    ):
+        self.network_type = network_type
+        self.beam_size = beam_size
+        self.beam_cut_threshold = beam_cut_threshold
+        self.caller = self.deepnano2.Caller(
+            self.network_type,
+            os.path.join(self.deepnano2.__path__[0], "weights", "rnn%s.txt" % self.network_type),
+            self.beam_size,
+            self.beam_cut_threshold,
+        )
         logger.info("CPU Caller Up")
 
     def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
