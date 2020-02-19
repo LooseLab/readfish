@@ -12,6 +12,13 @@ import numpy as np
 from pyguppyclient.client import GuppyBasecallerClient
 from pyguppyclient.decode import ReadData as GuppyRead
 
+try:
+    import deepnano2
+except ModuleNotFoundError:
+    deepnano_installed = False
+else:
+    deepnano_installed = True
+
 __all__ = ["GPU", "CPU"]
 
 logger = logging.getLogger("RU_basecaller")
@@ -35,7 +42,9 @@ def _create_guppy_read(reads, signal_dtype, previous_signal):
     read_number : int
     GuppyRead
     """
-    for read_id, channel, read_number, signal in _concat_signal(reads, signal_dtype, previous_signal):
+    for read_id, channel, read_number, signal in _concat_signal(
+        reads, signal_dtype, previous_signal
+    ):
         read_obj = GuppyRead(signal, read_id, 0, 1)
         previous_signal[channel].append((read_id, read_obj.signal))
         yield channel, read_number, read_obj
@@ -43,10 +52,14 @@ def _create_guppy_read(reads, signal_dtype, previous_signal):
 
 def _concat_signal(reads, signal_dtype, previous_signal):
     for channel, read in reads:
-        old_read_id, old_signal = previous_signal.get(channel, (("", np.empty(0, dtype=signal_dtype)),))[0]
+        old_read_id, old_signal = previous_signal.get(
+            channel, (("", np.empty(0, dtype=signal_dtype)),)
+        )[0]
 
         if old_read_id == read.id:
-            signal = np.concatenate((old_signal, np.frombuffer(read.raw_data, dtype=signal_dtype)))
+            signal = np.concatenate(
+                (old_signal, np.frombuffer(read.raw_data, dtype=signal_dtype))
+            )
         else:
             signal = np.frombuffer(read.raw_data, dtype=signal_dtype)
 
@@ -55,11 +68,11 @@ def _concat_signal(reads, signal_dtype, previous_signal):
 
 def _trim_blank(sig, window=300):
     N = len(sig)
-    variances = [np.var(sig[i:i+window]) for i in range(N//2, N-window, window)]
+    variances = [np.var(sig[i : i + window]) for i in range(N // 2, N - window, window)]
     mean_var = np.mean(variances)
     trim_idx = 20
     while window > 5:
-        while np.var(sig[trim_idx: trim_idx + window]) < 0.3*mean_var:
+        while np.var(sig[trim_idx : trim_idx + window]) < 0.3 * mean_var:
             trim_idx += 1
         window //= 2
 
@@ -67,7 +80,7 @@ def _trim_blank(sig, window=300):
 
 
 def _trim(signal, window_size=40, threshold_factor=3.0, min_elements=3):
-    med, mad = _med_mad(signal[-(window_size*25):])
+    med, mad = _med_mad(signal[-(window_size * 25) :])
     threshold = med + mad * threshold_factor
     num_windows = len(signal) // window_size
 
@@ -103,20 +116,19 @@ def _med_mad(x, factor=1.4826):
 
 
 class CPU:
-    import deepnano2
-
     def __init__(
-            self,
-            network_type="48",
-            beam_size=5,
-            beam_cut_threshold=0.01,
+        self, network_type="48", beam_size=5, beam_cut_threshold=0.01,
     ):
+        if not deepnano_installed:
+            raise ModuleNotFoundError("deepnano2 in not installed")
         self.network_type = network_type
         self.beam_size = beam_size
         self.beam_cut_threshold = beam_cut_threshold
-        self.caller = self.deepnano2.Caller(
+        self.caller = deepnano2.Caller(
             self.network_type,
-            os.path.join(self.deepnano2.__path__[0], "weights", "rnn%s.txt" % self.network_type),
+            os.path.join(
+                deepnano2.__path__[0], "weights", "rnn%s.txt" % self.network_type
+            ),
             self.beam_size,
             self.beam_cut_threshold,
         )
@@ -124,7 +136,9 @@ class CPU:
 
     def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
         hold = {}
-        for read_id, channel, read_number, signal in _concat_signal(reads, signal_dtype, prev_signal):
+        for read_id, channel, read_number, signal in _concat_signal(
+            reads, signal_dtype, prev_signal
+        ):
             if read_id == decided_reads.get(channel, ""):
                 continue
 
@@ -141,6 +155,10 @@ class CPU:
 
 
 class GPU(GuppyBasecallerClient):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.connect()
+
     def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
         """Guppy basecaller wrapper for MinKNOW RPC reads
 
@@ -168,7 +186,9 @@ class GPU(GuppyBasecallerClient):
         read_counter = 0
 
         hold = {}
-        for channel, read_number, read in _create_guppy_read(reads, signal_dtype, prev_signal):
+        for channel, read_number, read in _create_guppy_read(
+            reads, signal_dtype, prev_signal
+        ):
             if read.read_id == decided_reads.get(channel, ""):
                 continue
 
@@ -184,12 +204,15 @@ class GPU(GuppyBasecallerClient):
 
             read, called = res
 
-            yield hold.pop(read.read_id), read.read_id, called.seq, called.seqlen, called.qual
+            yield hold.pop(
+                read.read_id
+            ), read.read_id, called.seq, called.seqlen, called.qual
+            done += 1
 
 
 class Mapper:
     def __init__(self, index):
-        self.mapper = mp.Aligner(index, preset='map-ont')
+        self.mapper = mp.Aligner(index, preset="map-ont")
 
     def map_read(self, seq):
         return self.mapper.map(seq)
