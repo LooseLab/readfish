@@ -15,36 +15,28 @@ Installation
 ------------
 
 ```bash
-# Clone repositories
-git clone https://github.com/looselab/read_until_api_v2.git
-git clone https://github.com/looselab/ru.git
+# Make a virtual environment
+python3 -m venv read_until
+. ./read_until/bin/activate
+pip install --upgrade pip
 
-# Build ru code
-cd ru
-python3 -m venv venv3
-source ./venv3/bin/activate
-pip install --upgrade pip -r requirements.txt
-python setup.py develop
+# Install our Read Until API
+pip install git+https://github.com/LooseLab/read_until_api_v2@master
+pip install git+https://github.com/LooseLab/ru@issue15
 
-# Build read until api
-cd ../read_until_api_v2
-pip install -r requirements.txt
-python setup.py develop
+# We use deepnano-blitz, which requires rust
+# Install rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Switch to a nightly build
+rustup default nightly-2019-12-11
+
+# Clone deepnano-blitz
+git clone https://github.com/fmfi-compbio/deepnano-blitz
+
+# Build deepnano-blitz
+cd deepnano-blitz
+python setup.py install
 ```
 
-**This program requires PyGuppy**  
-PyGuppy is available request from Oxford Nanopore Technologies
-
-You can now use `pip list` to check that the repos are installed with the correct directories.
-
-```bash
-$ pip list
-Package                  Version   Location
------------------------- --------- --------------------------------------
-...
-read-until-api-v2        3.0.0     /Users/Alex/projects/read_until_api_v2
-...
-ru                       2.0.0     /Users/Alex/projects/ru
-...
-```
 
