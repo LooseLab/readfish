@@ -26,8 +26,8 @@ import toml
 
 from ru.arguments import get_parser
 from ru.basecall import Mapper as CustomMapper
-from ru.basecall import __all__ as callers
-from ru.utils import print_args, get_run_info, between, setup_logger, dynamic_import
+from ru.basecall import GuppyCaller as Caller
+from ru.utils import print_args, get_run_info, between, setup_logger
 from ru.utils import send_message, Severity
 
 
@@ -54,7 +54,6 @@ class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
 
 def simple_analysis(
         client,
-        caller="GPU",
         batch_size=512,
         throttle=0.1,
         unblock_duration=0.5,
@@ -70,8 +69,6 @@ def simple_analysis(
     ----------
     client : read_until.ReadUntilClient
         An instance of the ReadUntilClient object
-    caller : str
-        Base caller to use, one of CPU or GPU
     batch_size : int
         The number of reads to be retrieved from the ReadUntilClient at a time
     throttle : int or float
@@ -93,7 +90,6 @@ def simple_analysis(
     -------
     None
     """
-    Caller = dynamic_import("ru.basecall.{}".format(caller))
     logger = logging.getLogger(__name__)
     toml_dict = toml.load(toml_path)
     live_file = Path("{}_live".format(toml_path))
@@ -111,18 +107,16 @@ def simple_analysis(
     with open(channels_out, "w") as fh:
         toml.dump(d, fh)
 
-    guppy_kwargs = toml_dict.get(
-        "guppy_connection",
+    caller_kwargs = toml_dict.get(
+        "caller_settings",
         {
-            "config": "dna_r9.4.1_450bps_fast",
+            "config_name": "dna_r9.4.1_450bps_fast",
             "host": "127.0.0.1",
             "port": 5555,
-            "procs": 4,
-            "inflight": 512,
         }
     )
 
-    caller = Caller(**guppy_kwargs)
+    caller = Caller(**caller_kwargs)
     # What if there is no reference or an empty MMI
     mapper = CustomMapper(reference)
 
@@ -391,6 +385,10 @@ def run_workflow(client, analysis_worker, n_workers, run_time, runner_kwargs=Non
     except KeyboardInterrupt:
         logger.info("Caught ctrl-c, terminating workflow.")
         client.reset()
+    except Exception as e:
+        logger.exception("Got exception", exc_info=e)
+        client.reset()
+        raise
 
     # collect results (if any)
     collected = []
@@ -412,15 +410,6 @@ def run_workflow(client, analysis_worker, n_workers, run_time, runner_kwargs=Non
 
 def main():
     extra_args = (
-        (
-            "--caller",
-            dict(
-                metavar="CALLER",
-                default=callers[0],
-                choices=callers,
-                help="Base calling system to use: CPU or GPU",
-            ),
-        ),
         (
             "--toml",
             dict(
@@ -471,8 +460,6 @@ def main():
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
 
-
-
     read_until_client = read_until.ReadUntilClient(
         mk_host=args.host,
         mk_port=args.port,
@@ -484,14 +471,17 @@ def main():
         cache_size=args.cache_size,
     )
 
-    send_message(read_until_client.connection,"Read Until is controlling sequencing on this device. You use it at your own risk.", Severity.WARN)
+    send_message(
+        read_until_client.connection,
+        "Read Until is controlling sequencing on this device. You use it at your own risk.",
+        Severity.WARN,
+    )
 
     # FIXME: currently flowcell size is not included, this should be pulled from
     #  the read_until_client
     analysis_worker = functools.partial(
         simple_analysis,
         read_until_client,
-        caller = args.caller,
         unblock_duration=args.unblock_duration,
         throttle=args.throttle,
         batch_size=args.batch_size,
@@ -512,10 +502,13 @@ def main():
             "last_channel": max(args.channels),
         },
     )
-    # describe(results)
+
     # No results returned
-    send_message(read_until_client.connection,
-                 "Read Until is disconnected from this device. Sequencing will proceed normally.", Severity.WARN)
+    send_message(
+        read_until_client.connection,
+        "Read Until is disconnected from this device. Sequencing will proceed normally.",
+        Severity.WARN,
+    )
 
 
 if __name__ == "__main__":

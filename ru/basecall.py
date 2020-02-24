@@ -4,7 +4,6 @@ Extension of pyguppy Caller that maintains a connection to the basecaller
 
 """
 import logging
-import os
 
 import mappy as mp
 import numpy as np
@@ -12,14 +11,8 @@ import numpy as np
 from pyguppyclient.client import GuppyBasecallerClient
 from pyguppyclient.decode import ReadData as GuppyRead
 
-try:
-    import deepnano2
-except ModuleNotFoundError:
-    deepnano_installed = False
-else:
-    deepnano_installed = True
 
-__all__ = ["GPU", "CPU"]
+__all__ = ["GuppyCaller"]
 
 logger = logging.getLogger("RU_basecaller")
 
@@ -66,95 +59,7 @@ def _concat_signal(reads, signal_dtype, previous_signal):
         yield read.id, channel, read.number, signal
 
 
-def _trim_blank(sig, window=300):
-    N = len(sig)
-    variances = [np.var(sig[i : i + window]) for i in range(N // 2, N - window, window)]
-    mean_var = np.mean(variances)
-    trim_idx = 20
-    while window > 5:
-        while np.var(sig[trim_idx : trim_idx + window]) < 0.3 * mean_var:
-            trim_idx += 1
-        window //= 2
-
-    return trim_idx
-
-
-def _trim(signal, window_size=40, threshold_factor=3.0, min_elements=3):
-    med, mad = _med_mad(signal[-(window_size * 25) :])
-    threshold = med + mad * threshold_factor
-    num_windows = len(signal) // window_size
-
-    for pos in range(num_windows):
-
-        start = pos * window_size
-        end = start + window_size
-
-        window = signal[start:end]
-
-        if len(window[window > threshold]) > min_elements:
-            if window[-1] > threshold:
-                continue
-            return end
-
-    return 0
-
-
-def _rescale_signal(signal):
-    """Rescale signal for DeepNano"""
-    signal = signal.astype(np.float32)
-    med, mad = _med_mad(signal)
-    signal -= med
-    signal /= mad
-    return signal
-
-
-def _med_mad(x, factor=1.4826):
-    """Calculate signal median and median absolute deviation"""
-    med = np.median(x)
-    mad = np.median(np.absolute(x - med)) * factor
-    return med, mad
-
-
-class CPU:
-    def __init__(
-        self, network_type="48", beam_size=5, beam_cut_threshold=0.01,
-    ):
-        if not deepnano_installed:
-            raise ModuleNotFoundError("deepnano2 in not installed")
-        self.network_type = network_type
-        self.beam_size = beam_size
-        self.beam_cut_threshold = beam_cut_threshold
-        self.caller = deepnano2.Caller(
-            self.network_type,
-            os.path.join(
-                deepnano2.__path__[0], "weights", "rnn%s.txt" % self.network_type
-            ),
-            self.beam_size,
-            self.beam_cut_threshold,
-        )
-        logger.info("CPU Caller Up")
-
-    def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
-        hold = {}
-        for read_id, channel, read_number, signal in _concat_signal(
-            reads, signal_dtype, prev_signal
-        ):
-            if read_id == decided_reads.get(channel, ""):
-                continue
-
-            start = _trim(signal)
-            signal = _rescale_signal(signal[start:])
-
-            hold[read_id] = (channel, read_number)
-            seq = self.caller.call_raw_signal(signal)
-            yield hold.pop(read_id), read_id, seq, len(seq), ""
-
-    def disconnect(self):
-        """Pass through to make CPU caller compatible with GPU"""
-        pass
-
-
-class GPU(GuppyBasecallerClient):
+class GuppyCaller(GuppyBasecallerClient):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.connect()
