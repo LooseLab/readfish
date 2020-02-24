@@ -28,3 +28,20 @@ pip install git+https://github.com/LooseLab/ru@master
 Usage
 -----
 
+```bash
+# check install
+$ ru_generators
+usage: Read Until API: ru_generators (/Users/Alex/projects/ru/ru/ru_gen.py)
+       [-h] [--host HOST] [--port PORT] --device DEVICE --experiment-name
+       EXPERIMENT-NAME [--read-cache READ_CACHE] [--workers WORKERS]
+       [--channels CHANNELS CHANNELS] [--run-time RUN-TIME]
+       [--unblock-duration UNBLOCK-DURATION] [--cache-size CACHE-SIZE]
+       [--batch-size BATCH-SIZE] [--throttle THROTTLE] [--dry-run]
+       [--log-level LOG-LEVEL] [--log-format LOG-FORMAT] [--log-file LOG-FILE]
+       --toml TOML [--paf-log PAF_LOG] [--chunk-log CHUNK_LOG]
+Read Until API: ru_generators (/Users/Alex/projects/ru/ru/ru_gen.py): error: 
+    the following arguments are required: --device, --experiment-name, --toml
+
+# example run command:
+$ ru_generators --experiment-name "Test run" --device MN17073 --toml example.toml --log-file RU_log.log
+```
