@@ -9,14 +9,11 @@
                 "proceed"
             ]
         },
-        "guppy_connection": {
+        "caller_settings": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "inflight": {
-                    "type": "number"
-                },
-                "config": {
+                "config_name": {
                     "type": "string"
                 },
                 "host": {
@@ -24,17 +21,12 @@
                 },
                 "port": {
                     "type": "number"
-                },
-                "procs": {
-                    "type": "number"
                 }
             },
             "required": [
-                "inflight",
-                "config",
+                "config_name",
                 "host",
-                "port",
-                "procs"
+                "port"
             ]
         },
         "conditions": {
@@ -135,8 +127,8 @@
         }
     },
     "properties": {
-        "guppy_connection": {
-            "$ref": "#/definitions/guppy_connection"
+        "caller_settings": {
+            "$ref": "#/definitions/caller_settings"
         },
         "conditions": {
             "$ref": "#/definitions/conditions"
