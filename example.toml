@@ -1,9 +1,7 @@
-[guppy_connection]
-config = "dna_r9.4.1_450bps_hac"
+[caller_settings]
+config_name = "dna_r9.4.1_450bps_hac"
 host = "127.0.0.1"
 port = 5555
-procs = 4
-inflight = 512
 
 [conditions]
 reference = "/path/to/reference.mmi"
