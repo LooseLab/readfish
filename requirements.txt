@@ -9,3 +9,4 @@ watchdog
 pandas
 mappy
 biopython
+pyguppyclient>=0.0.5

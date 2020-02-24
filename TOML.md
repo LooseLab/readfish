@@ -26,32 +26,28 @@ Config sections
 
 Guppy connection
 ---
-The `guppy_connection` table specifies the basecalling parameters used by guppy.  
+The `caller_settings` table specifies the basecalling parameters used by guppy.  
 
-The `config` parameter must a valid guppy configuration excluding the file 
+The `config_name` parameter must a valid guppy configuration excluding the file 
 extension; these can be found in the `data` folder of the your guppy installation 
 directory (`/opt/ont/guppy/data/*.cfg`).  
 
 ### Remote basecalling
 
 ```toml
-[guppy_connection]
-inflight = 512
-config = "dna_r9.4.1_450bps_fast"
+[caller_settings]
+config_name = "dna_r9.4.1_450bps_fast"
 host = "REMOTE_SERVER_IP_ADDRESS"
 port = "REMOTE_GUPPY_SERVER_PORT"
-procs = 4
 ``` 
 
 ### Local basecalling
 
 ```toml
-[guppy_connection]
-inflight = 512
-config = "dna_r9.4.1_450bps_fast"
+[caller_settings]
+config_name = "dna_r9.4.1_450bps_fast"
 host = "127.0.0.1"
 port = 5555
-procs = 4
 ```
 
 Conditions

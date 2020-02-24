@@ -3,20 +3,21 @@
 Extension of pyguppy Caller that maintains a connection to the basecaller
 
 """
-from time import sleep
+import logging
 
 import mappy as mp
 import numpy as np
-import logging
 
-from pyguppy.io import GuppyRead
-from pyguppy.client import GuppyClient, load_config
+from pyguppyclient.client import GuppyBasecallerClient
+from pyguppyclient.decode import ReadData as GuppyRead
 
+
+__all__ = ["GuppyCaller"]
 
 logger = logging.getLogger("RU_basecaller")
 
 
-def _parse_minknow_read(reads, signal_dtype, previous_signal):
+def _create_guppy_read(reads, signal_dtype, previous_signal):
     """Convert a read from MinKNOW RPC to GuppyRead
 
     Parameters
@@ -34,50 +35,34 @@ def _parse_minknow_read(reads, signal_dtype, previous_signal):
     read_number : int
     GuppyRead
     """
-    for channel, read in reads:
-        read_obj = GuppyRead(read.id)
+    for read_id, channel, read_number, signal in _concat_signal(
+        reads, signal_dtype, previous_signal
+    ):
+        read_obj = GuppyRead(signal, read_id, 0, 1)
+        previous_signal[channel].append((read_id, read_obj.signal))
+        yield channel, read_number, read_obj
 
-        # A little bit of a hack, but works with the deque
-        #  really should just replace tuples in the dict but :shrug:
-        #  or even have len of 2 on the deque ?
-        old_read_id, old_signal = previous_signal.get(channel, (("", np.empty(0, dtype=signal_dtype)),))[0]
+
+def _concat_signal(reads, signal_dtype, previous_signal):
+    for channel, read in reads:
+        old_read_id, old_signal = previous_signal.get(
+            channel, (("", np.empty(0, dtype=signal_dtype)),)
+        )[0]
+
         if old_read_id == read.id:
-            signal = np.concatenate((old_signal, np.frombuffer(read.raw_data, dtype=signal_dtype)))
+            signal = np.concatenate(
+                (old_signal, np.frombuffer(read.raw_data, dtype=signal_dtype))
+            )
         else:
             signal = np.frombuffer(read.raw_data, dtype=signal_dtype)
 
-        read_obj.raw_read = signal
-
-        previous_signal[channel].append((read.id, read_obj.raw_read))
-
-        read_obj.daq_scaling = 1
-        read_obj.daq_offset = 0
-        read_obj.total_samples = len(read_obj.raw_read)
-        yield channel, read.number, read_obj
+        yield read.id, channel, read.number, signal
 
 
-class PerpetualCaller:
-    def __init__(
-            self,
-            config,
-            host='127.0.0.1',
-            port=5555,
-            snooze=1e-4,
-            inflight=512,
-            procs=4,
-    ):
-        self.host = host
-        self.port = port
-        self.procs = procs
-        self.config = config
-        self.snooze = snooze
-        self.inflight = inflight
-        load_config(config, host, port)
-        self.client = GuppyClient(self.config, host=self.host, port=self.port)
-        self.client.connect()
-
-    def disconnect(self):
-        self.client.disconnect()
+class GuppyCaller(GuppyBasecallerClient):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.connect()
 
     def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
         """Guppy basecaller wrapper for MinKNOW RPC reads
@@ -106,80 +91,33 @@ class PerpetualCaller:
         read_counter = 0
 
         hold = {}
-        for channel, read_number, read in _parse_minknow_read(reads, signal_dtype, prev_signal):
+        for channel, read_number, read in _create_guppy_read(
+            reads, signal_dtype, prev_signal
+        ):
             if read.read_id == decided_reads.get(channel, ""):
                 continue
 
-            while not self.client.can_accept_read():
-                sleep(self.snooze)
-
             hold[read.read_id] = (channel, read_number)
-            self.client.pass_read(read)
+            self.pass_read(read)
             read_counter += 1
 
         while done < read_counter:
-            completed_reads = self.client.num_reads_done()
+            res = self._get_called_read()
 
-            if not completed_reads:
-                sleep(self.snooze)
+            if res is None:
                 continue
 
-            for completed in range(completed_reads):
-                try:
-                    read, meta, data = self.client.get_called_read(events=False)
-                    done += 1
-                    yield hold.pop(read.read_id), read.read_id, data.seq, meta.seqlen, data.qual
-                except TypeError:
-                    pass
+            read, called = res
 
-    def basecall_read_until(self, reads):
-        """
-
-        Parameters
-        ----------
-        reads : iterable
-            Iterable of GuppyRead objects
-
-        Returns
-        -------
-        List
-            List of Tuple, (read_id, read_seq)
-        """
-        done = 0
-        basecalls = []
-
-        read_counter = 0
-        for read in reads:
-            # Sleep if client cannot accept reads
-            while not self.client.can_accept_read():
-                sleep(self.snooze)
-
-            self.client.pass_read(read)
-            read_counter += 1
-
-        while done < read_counter:
-            completed_reads = self.client.num_reads_done()
-
-            if not completed_reads:
-                sleep(self.snooze)
-                continue
-            # logger.info("completed_reads: {}".format(completed_reads))
-            for completed in range(completed_reads):
-                try:
-                    read, meta, data = self.client.get_called_read(events=False)
-                    basecalls.append((read.read_id, data.seq))
-                    done += 1
-                except Exception as e:
-                    # TODO: Specify what exception are we expecting here
-                    logger.debug("PerpetualCaller got exception: {}".format(e))
-                    pass
-
-        return basecalls
+            yield hold.pop(
+                read.read_id
+            ), read.read_id, called.seq, called.seqlen, called.qual
+            done += 1
 
 
 class Mapper:
     def __init__(self, index):
-        self.mapper = mp.Aligner(index, preset='map-ont')
+        self.mapper = mp.Aligner(index, preset="map-ont")
 
     def map_read(self, seq):
         return self.mapper.map(seq)

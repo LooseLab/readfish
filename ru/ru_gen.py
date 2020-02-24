@@ -26,8 +26,9 @@ import toml
 
 from ru.arguments import get_parser
 from ru.basecall import Mapper as CustomMapper
-from ru.basecall import PerpetualCaller as Caller
+from ru.basecall import GuppyCaller as Caller
 from ru.utils import print_args, get_run_info, between, setup_logger
+from ru.utils import send_message, Severity
 
 
 class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
@@ -57,6 +58,7 @@ def simple_analysis(
         throttle=0.1,
         unblock_duration=0.5,
         chunk_log=None,
+        paf_log=None,
         toml_path=None,
         flowcell_size=512,
         dry_run=False,
@@ -75,6 +77,8 @@ def simple_analysis(
         Time, in seconds, to apply unblock voltage
     chunk_log : str
         Log file to log chunk data to
+    paf_log : str
+        Log file to log alignments to
     toml_path : str
         Path to a TOML configuration file for read until
     flowcell_size : int
@@ -103,18 +107,16 @@ def simple_analysis(
     with open(channels_out, "w") as fh:
         toml.dump(d, fh)
 
-    guppy_kwargs = toml_dict.get(
-        "guppy_connection",
+    caller_kwargs = toml_dict.get(
+        "caller_settings",
         {
-            "config": "dna_r9.4.1_450bps_fast",
+            "config_name": "dna_r9.4.1_450bps_fast",
             "host": "127.0.0.1",
             "port": 5555,
-            "procs": 4,
-            "inflight": 512,
         }
     )
 
-    caller = Caller(**guppy_kwargs)
+    caller = Caller(**caller_kwargs)
     # What if there is no reference or an empty MMI
     mapper = CustomMapper(reference)
 
@@ -137,18 +139,20 @@ def simple_analysis(
             "proceed": None,
             "unblock": client.stop_receiving_read,
         }
+        send_message(client.connection,"This is a test run. No unblocks will occur.",Severity.WARN)
     else:
         decision_dict = {
             "stop_receiving": client.stop_receiving_read,
             "proceed": None,
             "unblock": lambda c, n: client.unblock_read(c, n, unblock_duration, read_id),
         }
+        send_message(client.connection, "This is a live run. Unblocks will occur.", Severity.WARN)
     decision_str = ""
     below_threshold = False
     exceeded_threshold = False
 
     cl = setup_logger("DEC", log_file=chunk_log)
-    pf = setup_logger("PAF", log_file="paflog.paf")
+    pf = setup_logger("PAF", log_file=paf_log)
     l_string = (
         "client_iteration",
         "read_in_loop",
@@ -175,6 +179,7 @@ def simple_analysis(
             run_info, conditions, new_reference = get_run_info(live_file, flowcell_size)
             if new_reference != reference:
                 logger.info("Reloading mapper")
+                send_message(client.connection,"Reloading mapper. Read Until paused.",Severity.INFO)
                 # We need to update our mapper client.
                 mapper = CustomMapper(new_reference)
                 logger.info("Reloaded mapper")
@@ -323,12 +328,14 @@ def simple_analysis(
             log_decision()
 
         t1 = timer()
-        s1 = "Took {:.5f} to call and map {} reads"
-        logger.info(s1.format(t1 - t0, r))
+        if r > 0:
+            s1 = "{}R/{:.5f}s"
+            logger.info(s1.format(r, t1 - t0))
         # limit the rate at which we make requests
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
     else:
+        send_message(client.connection, "Read Until Client Stopped.", Severity.WARN)
         caller.disconnect()
         logger.info("Finished analysis of reads as client stopped.")
 
@@ -378,6 +385,10 @@ def run_workflow(client, analysis_worker, n_workers, run_time, runner_kwargs=Non
     except KeyboardInterrupt:
         logger.info("Caught ctrl-c, terminating workflow.")
         client.reset()
+    except Exception as e:
+        logger.exception("Got exception", exc_info=e)
+        client.reset()
+        raise
 
     # collect results (if any)
     collected = []
@@ -406,6 +417,13 @@ def main():
                 required=True,
                 help="TOML file specifying experimental parameters",
             ),
+        ),
+        (
+            "--paf-log",
+            dict(
+                help="PAF log",
+                default="paflog.log",
+            )
         ),
         (
             "--chunk-log",
@@ -453,6 +471,12 @@ def main():
         cache_size=args.cache_size,
     )
 
+    send_message(
+        read_until_client.connection,
+        "Read Until is controlling sequencing on this device. You use it at your own risk.",
+        Severity.WARN,
+    )
+
     # FIXME: currently flowcell size is not included, this should be pulled from
     #  the read_until_client
     analysis_worker = functools.partial(
@@ -462,6 +486,7 @@ def main():
         throttle=args.throttle,
         batch_size=args.batch_size,
         chunk_log=args.chunk_log,
+        paf_log=args.paf_log,
         toml_path=args.toml,
         dry_run=args.dry_run,
     )
@@ -477,8 +502,13 @@ def main():
             "last_channel": max(args.channels),
         },
     )
-    # describe(results)
+
     # No results returned
+    send_message(
+        read_until_client.connection,
+        "Read Until is disconnected from this device. Sequencing will proceed normally.",
+        Severity.WARN,
+    )
 
 
 if __name__ == "__main__":

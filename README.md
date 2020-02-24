@@ -9,41 +9,45 @@ MinKNOW server to obtain read data in real-time. The data can be analysed in the
 way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress.
 
----
+**This implementation of Read Until requires Guppy version 3.4 or newer.**
+
+Citation
+--------
+If you use this software please cite: [10.1101/2020.02.03.926956](https://dx.doi.org/10.1101/2020.02.03.926956)
+
+> Payne A, Holmes N, Clarke T, Munro R, Debebe B and Loose M (2020) Nanopore adaptive sequencing for mixed samples, whole exome capture and targeted panels. Cold Spring Harbor Laboratory.
 
 Installation
 ------------
 
 ```bash
-# Clone repositories
-git clone https://github.com/looselab/read_until_api_v2.git
-git clone https://github.com/looselab/ru.git
+# Make a virtual environment
+python3 -m venv read_until
+. ./read_until/bin/activate
+pip install --upgrade pip
 
-# Build ru code
-cd ru
-python3 -m venv venv3
-source ./venv3/bin/activate
-pip install --upgrade pip -r requirements.txt
-python setup.py develop
-
-# Build read until api
-cd ../read_until_api_v2
-pip install -r requirements.txt
-python setup.py develop
+# Install our Read Until API
+pip install git+https://github.com/LooseLab/read_until_api_v2@master
+pip install git+https://github.com/LooseLab/ru@master
 ```
 
-[**pyguppyclient** is available here](https://github.com/nanoporetech/pyguppyclient). This version is currently incompatible with our Read Until implementation. This should be fixed by next Monday (17/02/2020).
-
-You can now use `pip list` to check that the repos are installed with the correct directories.
+Usage
+-----
 
 ```bash
-$ pip list
-Package                  Version   Location
------------------------- --------- --------------------------------------
-...
-read-until-api-v2        3.0.0     /Users/Alex/projects/read_until_api_v2
-...
-ru                       2.0.0     /Users/Alex/projects/ru
-...
-```
+# check install
+$ ru_generators
+usage: Read Until API: ru_generators (/Users/Alex/projects/ru/ru/ru_gen.py)
+       [-h] [--host HOST] [--port PORT] --device DEVICE --experiment-name
+       EXPERIMENT-NAME [--read-cache READ_CACHE] [--workers WORKERS]
+       [--channels CHANNELS CHANNELS] [--run-time RUN-TIME]
+       [--unblock-duration UNBLOCK-DURATION] [--cache-size CACHE-SIZE]
+       [--batch-size BATCH-SIZE] [--throttle THROTTLE] [--dry-run]
+       [--log-level LOG-LEVEL] [--log-format LOG-FORMAT] [--log-file LOG-FILE]
+       --toml TOML [--paf-log PAF_LOG] [--chunk-log CHUNK_LOG]
+Read Until API: ru_generators (/Users/Alex/projects/ru/ru/ru_gen.py): error: 
+    the following arguments are required: --device, --experiment-name, --toml
 
+# example run command:
+$ ru_generators --experiment-name "Test run" --device MN17073 --toml example.toml --log-file RU_log.log
+```
