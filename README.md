@@ -99,7 +99,7 @@ Now we shall test unblocking by running `ru_unblock_all` which will simply eject
 every single read on the flow cell. 
 1. To do this run:
     ```bash
-    ru_unblock_all --device <YOUR_DEVICE_ID> --experiment_name "Testing Read Until Unblock All"
+    ru_unblock_all --device <YOUR_DEVICE_ID> --experiment-name "Testing Read Until Unblock All"
     ```   
 1. Leave the run for a further 5 minutes and observe the read length histogram. 
 If unblocks are happening correctly you will see something like the below:
