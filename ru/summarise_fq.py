@@ -115,6 +115,9 @@ def main():
     ]
     res = [header]
     for ctg, data in sorted(pre_res.items()):
+        if len(data) < 2:
+            print("Skipping contig {}, too few mappings".format(ctg), file=sys.stderr)
+            continue
         res.append(
             [
                 ctg,
