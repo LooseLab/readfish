@@ -46,7 +46,7 @@ def readfq(fp): # this is a generator function
 
 def get_fq(directory):
     types = ([".fastq"], [".fastq", ".gz"], [".fq"], [".fq", ".gz"])
-    files = (str(p.resolve()) for p in Path(directory).glob("**/*") if p.suffix in types)
+    files = (str(p.resolve()) for p in Path(directory).glob("**/*") if p.suffixes in types)
     yield from files
 
 
