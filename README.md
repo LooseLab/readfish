@@ -112,7 +112,7 @@ If you are happy with the unblock response, move onto testing basecalling.
 #### Testing basecalling and mapping.
 To test selective sequencing you must have access to a 
 [guppy basecall server](https://community.nanoporetech.com/downloads/guppy/release_notes) (>=3.4.0) 
-and configure a [TOML](TOML.md) file. Here we provide an [example TOML file](examples/human_chr_selection.TOML).
+and configure a [TOML](TOML.md) file. Here we provide an [example TOML file](examples/human_chr_selection.toml).
 1. First make a local copy of the example TOML file:
     ```bash
     curl -O https://github.com/LooseLab/ru/blob/master/examples/human_chr_selection.TOML
