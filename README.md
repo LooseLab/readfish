@@ -153,7 +153,7 @@ e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match
         ![alt text](examples/images/PlaybackRunUnblock.png "Playback Unblock Image")
 Zoomed in on the unblocks: 
         ![alt text](examples/images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")
- 4. Run `ru_summarise_fq` to check if your run has performed as expected. This file requires the path to your toml file followed by the path to your fastq reads. Typical results are provided below and show longer mean read lengths for the two selected chromosomes (here chr20 and chr21). Note the mean read lengths observed will be dependent on system performance. Optimal guppy configuration for your system is left to the user.
+ 4. Run `ru_summarise_fq` to check if your run has performed as expected. This file requires the path to your toml file followed by the path to your fastq reads. Typical results are provided below and show longer mean read lengths for the two selected chromosomes (here chr21 and chr22). Note the mean read lengths observed will be dependent on system performance. Optimal guppy configuration for your system is left to the user.
      ```text
      contig  number      sum   min     max    std   mean  median     N50
        chr1    1326  4187614   142  224402  14007   3158     795   48026
