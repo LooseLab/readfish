@@ -144,9 +144,9 @@ e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match
  2. Restart the read until command (as above):
     ```bash
     ru_generators --device <YOUR_DEVICE_ID> \
-                      --experiment-name "RU Test basecall and map" \
-                      --toml <PATH_TO_TOML> \
-                      --log-file ru_test.log
+                  --experiment-name "RU Test basecall and map" \
+                  --toml <PATH_TO_TOML> \
+                  --log-file ru_test.log
     ```
  3. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
  4. After 15 minutes it should look something like this:
