@@ -20,7 +20,7 @@ from read_until_api_v2.utils import run_workflow
 from read_until_api_v2.read_cache import BaseCache
 from ru.arguments import get_parser
 from ru.utils import print_args, setup_logger
-
+from ru.utils import send_message, Severity
 
 def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
     """Analysis function
@@ -41,8 +41,10 @@ def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
     None
     """
     logger = logging.getLogger(__name__)
-
+    send_message(client.connection, "Read Until sending Unblock All Messages. All reads will be prematurely truncated. This will affect a live sequencing run.",
+                 Severity.WARN)
     while client.is_running:
+
         r = 0
         t0 = timer()
 
@@ -64,6 +66,7 @@ def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
     else:
+        send_message(client.connection, "Read Until Unblock All Disconnected.", Severity.WARN)
         logger.info("Finished analysis of reads as client stopped.")
 
 
