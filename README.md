@@ -92,7 +92,7 @@ Your version of MinKNOW will now playback the bulkfile rather than live sequenci
 cell type to the edited script (here FLO-MIN106) as the flowcell type.
 7. The run should start and immediately begin a mux scan. Let it run for around 
 five minutes after which your read length histogram should look as below:
-    ![Control Image](images/control.png)
+    ![alt text](examples/images/control.png "Control Image")
 
 #### Testing unblock response
 Now we shall test unblocking by running `ru_unblock_all` which will simply eject 
@@ -103,9 +103,9 @@ every single read on the flow cell.
     ```   
 1. Leave the run for a further 5 minutes and observe the read length histogram. 
 If unblocks are happening correctly you will see something like the below:
-    ![alt text](images/Unblock.png "Unblock Image")
+    ![alt text](examples/images/Unblock.png "Unblock Image")
 A closeup of the unblock peak shows reads being unblocked quickly:
-    ![alt text](images/Unblock_closeup.png "Closeup Unblock Image")    
+    ![alt text](examples/images/Unblock_closeup.png "Closeup Unblock Image")    
 
 If you are happy with the unblock response, move onto testing basecalling.
 
@@ -115,7 +115,7 @@ To test selective sequencing you must have access to a
 and configure a [TOML](TOML.md) file. Here we provide an [example TOML file](examples/human_chr_selection.toml).
 1. First make a local copy of the example TOML file:
     ```bash
-    curl -O https://github.com/LooseLab/ru/blob/master/examples/human_chr_selection.TOML
+    curl -O https://github.com/LooseLab/ru/blob/master/examples/human_chr_selection.toml
     ```
 1. Modify the `reference` field in the file to be the full path to a [minimap2](https://github.com/lh3/minimap2) index of the human genome.
 1. Modify the `targets` fields for each condition to reflect the naming convention used in your index. This is the sequence name only, up to but not including any whitespace.
@@ -150,9 +150,9 @@ e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match
     ```
  3. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
  4. After 15 minutes it should look something like this:
-        ![alt text](images/PlaybackRunUnblock.png "Playback Unblock Image")
+        ![alt text](examples/images/PlaybackRunUnblock.png "Playback Unblock Image")
 Zoomed in on the unblocks: 
-        ![alt text](images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")
+        ![alt text](examples/images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")
  4. Run `ru_summarise_fq` to check if your run has performed as expected. This file requires the path to your toml file followed by the path to your fastq reads. Typical results are provided below and show longer mean read lengths for the two selected chromosomes (here chr20 and chr21). Note the mean read lengths observed will be dependent on system performance. Optimal guppy configuration for your system is left to the user.
      ```text
      contig  number      sum   min     max    std   mean  median     N50
