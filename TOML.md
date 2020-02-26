@@ -123,6 +123,15 @@ selected combination.
   </tr>
 </table>
 
+### Targets
+
+When specifying the genomic targets to consider in a Read Until experiment we 
+currently accept two formats `chromosome` or `coordinates`. EG: 
+ - `>chr1 Human chromosome 1` becomes `chr1`
+ 
+For `coordinates` the format `contig,start,stop,strand`. EG:
+ - `chr1,10,20,+`
+
 Validating a TOML
 ===
 
