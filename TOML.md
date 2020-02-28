@@ -86,7 +86,7 @@ Each conditions sub-table must contain all of the following keys:
 |control|bool|N/A|Is this a control condition. If `true` all reads will be ignored in this region|
 |min_chunks|int|N/A|The minimum number of read chunks to evaluate|
 |max_chunks|int|N/A|The maximum number of read chunks to evaluate|
-|targets|string or array|N/A|The genomic targets to accept or reject|
+|targets|string or array|N/A|The genomic targets to accept or reject; see [types](#target-types) and [formats](#target-formats)|
 |single_on|string|[unblock, stop_receiving, proceed]|The action to take when a read has a single on-target mapping|
 |multi_on|string|[unblock, stop_receiving, proceed]|The action to take when a read has multiple on-target mappings|
 |single_off|string|[unblock, stop_receiving, proceed]|The action to take when a read has a single off-target mapping|
@@ -122,6 +122,31 @@ selected combination.
     <td>120</td>
   </tr>
 </table>
+
+### Target Types
+
+The targets parameter can accept either a string or an array of strings. If a
+string is provided this should be a fully qualified path to a text file which 
+consists of genomic targets in the [formats outlined below](#target-formats). 
+When an array is given all the elements in the array must conform with the 
+[formats below](#target-formats).
+
+### Target Formats
+
+When specifying the genomic targets to consider in a Read Until experiment we 
+currently accept two formats `chromosome` or `coordinates`. 
+
+EG `chromosome`: 
+ - `>chr1 Human chromosome 1` becomes `chr1`
+ 
+Targets given in this format specify the entire contig as a target to select for 
+or against.
+ 
+Alternatively, for `coordinates` the format `contig,start,stop,strand` is used:
+ - `chr1,10,20,+`
+ 
+Targets given in this format will only select (for or against) reads where the 
+alignment start position is within the region on the given strand. 
 
 Validating a TOML
 ===
