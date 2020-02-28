@@ -5,8 +5,8 @@ from random import random
 import numpy as np
 import toml
 from operator import itemgetter
-import requests
 import json
+import jsonschema
 from enum import IntEnum
 
 from ru.channels import MINION_CHANNELS, FLONGLE_CHANNELS
@@ -314,6 +314,60 @@ def get_targets(targets):
                 t[strand][ctg].append((0, float("inf")))
 
     return t
+
+
+def load_config_toml(filepath, validate=True):
+    """Load a TOML file and check file paths
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the TOML config file
+    validate : bool
+        If True, test TOML file against the JSON schema (./static/ru_toml.schema.json)
+
+    Returns
+    -------
+    dict
+        Returns dict of TOML config
+    """
+    # Check that TOML config file exists
+    p = Path(filepath)
+    if not p.is_file():
+        raise FileNotFoundError("TOML config file not found at '{}'".format(filepath))
+
+    # Load TOML to dict
+    toml_dict = toml.load(p)
+
+    # Check reference path
+    reference = Path(toml_dict.get("conditions", {}).get("reference", ""))
+    if not reference.is_file():
+        raise FileNotFoundError("Reference file not found at '{}'".format(reference))
+
+    # Get keys for all condition tables, allows safe updates
+    conditions = [k for k, cond in toml_dict.get("conditions", {}).items() if isinstance(cond, dict)]
+
+    for k in conditions:
+        targets = toml_dict["conditions"][k].get("targets", [])
+        if isinstance(targets, str):
+            if not Path(targets).is_file():
+                raise FileNotFoundError("Targets file not found at '{}'".format(targets))
+
+            toml_dict["conditions"][k]["targets"] = read_lines_to_list(targets)
+
+    # Validate our TOML file
+    if validate:
+        # Load json schema
+        _f = Path(__file__).parent / "static/ru_toml.schema.json"
+        with _f.resolve().open() as fh:
+            schema = json.load(fh)
+        try:
+            jsonschema.validate(toml_dict, schema)
+        except jsonschema.exceptions.ValidationError as err:
+            print("😾 this TOML file has failed validation. See below for details:")
+            raise
+
+    return toml_dict
 
 
 def get_run_info(toml_dict_or_filepath, num_channels=512):
