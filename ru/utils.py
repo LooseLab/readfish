@@ -340,13 +340,15 @@ def load_config_toml(filepath, validate=True):
     toml_dict = toml.load(p)
 
     # Check reference path
-    reference = Path(toml_dict.get("conditions", {}).get("reference", ""))
-    if not reference.is_file():
-        raise FileNotFoundError("Reference file not found at '{}'".format(reference))
+    reference_text = toml_dict.get("conditions", {}).get("reference", "")
+    reference_path = Path(reference_text)
+    if not reference_path.is_file() and reference_text:
+        raise FileNotFoundError("Reference file not found at '{}'".format(reference_path))
 
     # Get keys for all condition tables, allows safe updates
     conditions = [k for k, cond in toml_dict.get("conditions", {}).items() if isinstance(cond, dict)]
 
+    # Load targets from a file
     for k in conditions:
         targets = toml_dict["conditions"][k].get("targets", [])
         if isinstance(targets, str):
@@ -370,15 +372,14 @@ def load_config_toml(filepath, validate=True):
     return toml_dict
 
 
-def get_run_info(toml_dict_or_filepath, num_channels=512):
+def get_run_info(toml_filepath, num_channels=512):
     """Convert a TOML representation of a Read Until experiment to conditions that
     can be used used by the analysis function
 
     Parameters
     ----------
-    toml_dict_or_filepath : dict or str
-        Dictionary from a TOML file or a path (str) to a TOML file. If a str is given
-        the file will be loaded using toml.load() Expected keys: 'conditions'
+    toml_filepath : str
+        Filepath to a configuration TOML file
     num_channels : int
         Total number of channels on the sequencer, expects 512 for MinION and 3000 for
         PromethION
@@ -392,10 +393,7 @@ def get_run_info(toml_dict_or_filepath, num_channels=512):
     reference : str
         The path to the reference MMI file
     """
-    if not isinstance(toml_dict_or_filepath, dict):
-        toml_dict = toml.load(toml_dict_or_filepath)
-    else:
-        toml_dict = toml_dict_or_filepath
+    toml_dict = load_config_toml(toml_filepath)
 
     # Get condition keys, these should be ascending integers
     conditions = [

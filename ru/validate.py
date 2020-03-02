@@ -21,6 +21,7 @@ def main():
 
     # Run load config to validate
     load_config_toml(args.toml, validate=True)
+    print("😻 Looking good!", file=sys.stderr)
 
 
 if __name__ == "__main__":
