@@ -1,6 +1,12 @@
 Read Until
 ==========
 
+If you are anything like us, reading a README is the last thing you do when running code. 
+PLEASE DON'T DO THAT FOR READ UNTIL. This will effect changes to your sequencing and - 
+if you use it incorrectly - cost you money. We have added a [list of GOTCHAs](#common-gotchas) 
+at the end of this README. We have almost certainly missed some... so - if something goes 
+wrong, let us know so we can add you to the GOTCHA hall of fame!
+
 This is a Python3 package that integrates with the 
 [Read Until API](https://github.com/nanoporetech/read_until_api). However, we use 
 a slightly modified version - [Read Until API V2](https://github.com/looselab/read_until_api_v2).  
@@ -198,6 +204,7 @@ Zoomed in on the unblocks:
     - Double check your reference file is in the correct location.
     - Double check your targets exist in that reference file.
     - Double check your targets are correctly formatted with contig name matching the record names in your reference (Exclude description - i.e the contig name up to the first whitespace). 
+ 6. **Where has my reference gone?** If you are using a _live TOML file - e.g running iter_align or iter_cent, the previous reference MMI file is deleted when a new one is added. This obviosuly saves on disk space use(!) but can lead to unfortunate side effects - i.e you delete yoru MMI file. These can of course be recreated but user **beware**.
  
  Happy Read Untilling!
 
