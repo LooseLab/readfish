@@ -151,17 +151,11 @@ alignment start position is within the region on the given strand.
 Validating a TOML
 ===
 
-We provide a JSON schema for validating configuration files:
+We provide a [JSON schema](ru/static/ru_toml.schema.json) for validating 
+configuration files:
 
 ```bash
-ru_validate experiment_conf.toml ru_toml.schema.json
-```
-
-If you are providing targets using a text file the flag `-t` will attempt to 
-check that these are compatible:
-
-```bash
-ru_validate -t experiment_conf.toml ru_toml.schema.json
+ru_validate experiment_conf.toml
 ```
 
 Any errors with the configuration will be written to the terminal. 
