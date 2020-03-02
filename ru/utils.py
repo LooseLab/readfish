@@ -392,6 +392,9 @@ def get_run_info(toml_filepath, num_channels=512):
         List of namedtuples with conditions specified in the TOML file
     reference : str
         The path to the reference MMI file
+    caller_settings : dict
+        kwargs to pass to the base caller. If not found in the TOML an empty dict
+        is returned
     """
     toml_dict = load_config_toml(toml_filepath)
 
@@ -443,8 +446,9 @@ def get_run_info(toml_filepath, num_channels=512):
     }
 
     reference = toml_dict["conditions"].get("reference")
+    caller_settings = toml_dict.get("caller_settings", {})
 
-    return run_info, split_conditions, reference
+    return run_info, split_conditions, reference, caller_settings
 
 
 def between(pos, coords):
