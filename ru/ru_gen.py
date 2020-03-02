@@ -477,6 +477,7 @@ def main():
     # Parse configuration TOML
     # TODO: num_channels is not configurable here, should be inferred from client
     run_info, conditions, reference, caller_kwargs = get_run_info(args.toml, num_channels=512)
+    live_toml = Path("{}_live".format(args.toml))
 
     # Load Minimap2 index
     mapper = CustomMapper(reference)
@@ -498,6 +499,15 @@ def main():
         Severity.WARN,
     )
 
+    """
+    This experiment has N regions on the flowcell.
+
+    using reference: /path/to/ref.mmi
+
+    Region i:NAME (control=bool) has X targets of which Y are found in the reference.
+    reads will be unblocked when [u,v], sequenced when [w,x] and polled for more data when [y,z].
+    """
+
     # FIXME: currently flowcell size is not included, this should be pulled from
     #  the read_until_client
     analysis_worker = functools.partial(
@@ -508,7 +518,7 @@ def main():
         batch_size=args.batch_size,
         cl=chunk_logger,
         pf=paf_logger,
-        toml_path=args.toml,
+        live_toml_path=live_toml,
         dry_run=args.dry_run,
         run_info=run_info,
         conditions=conditions,
