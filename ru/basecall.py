@@ -117,7 +117,13 @@ class GuppyCaller(GuppyBasecallerClient):
 
 class Mapper:
     def __init__(self, index):
-        self.mapper = mp.Aligner(index, preset="map-ont")
+        self.index = index
+        if self.index:
+            self.mapper = mp.Aligner(self.index, preset="map-ont")
+            self.initialised = True
+        else:
+            self.mapper = None
+            self.initialised = False
 
     def map_read(self, seq):
         return self.mapper.map(seq)
