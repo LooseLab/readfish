@@ -27,7 +27,7 @@ import toml
 from ru.arguments import get_parser
 from ru.basecall import Mapper as CustomMapper
 from ru.basecall import GuppyCaller as Caller
-from ru.utils import print_args, get_run_info, between, setup_logger
+from ru.utils import print_args, get_run_info, between, setup_logger, describe_experiment
 from ru.utils import send_message, Severity
 
 
@@ -480,7 +480,9 @@ def main():
     live_toml = Path("{}_live".format(args.toml))
 
     # Load Minimap2 index
+    logger.info("Initialising minimap2 mapper")
     mapper = CustomMapper(reference)
+    logger.info("Mapper initialised")
 
     read_until_client = read_until.ReadUntilClient(
         mk_host=args.host,
@@ -498,6 +500,15 @@ def main():
         "Read Until is controlling sequencing on this device. You use it at your own risk.",
         Severity.WARN,
     )
+
+    for message in describe_experiment(conditions, mapper):
+        logger.info(message)
+
+        send_message(
+            read_until_client.connection,
+            message,
+            Severity.INFO,
+        )
 
     """
     This experiment has N regions on the flowcell.

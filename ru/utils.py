@@ -372,6 +372,45 @@ def load_config_toml(filepath, validate=True):
     return toml_dict
 
 
+def describe_experiment(conditions, mapper):
+    """
+
+    Parameters
+    ----------
+    conditions : List[NamedTuple, ...]
+        List of named tuples, should be conditions from get_run_info
+    mapper : mappy.mapper
+        Instance of mappy.mapper initialised with the reference passed from
+        get_run_info
+
+    Yields
+    ------
+    str
+
+    """
+    yield "This experiment has {} regions on the flowcell".format(len(conditions))
+    yield "Using reference: {}".format(mapper.index)
+    seq_names = set(mapper.mapper.seq_names)
+
+    for region in conditions:
+        conds = {
+            "unblock": [],
+            "stop_receiving": [],
+            "proceed": [],
+        }
+        for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+            conds[getattr(region, m)].append(m)
+        conds = {k: nice_join(v) for k, v in conds.items()}
+        s = (
+            "Region '{}' (control={}) has {} targets of which {} are in the reference. "
+            "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
+            "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
+                region.name, region.control, len(region.targets), len(region.targets & seq_names), **conds
+            )
+        )
+        yield s
+
+
 def get_run_info(toml_filepath, num_channels=512):
     """Convert a TOML representation of a Read Until experiment to conditions that
     can be used used by the analysis function
