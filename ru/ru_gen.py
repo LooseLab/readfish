@@ -501,13 +501,13 @@ def main():
         Severity.WARN,
     )
 
-    for message in describe_experiment(conditions, mapper):
+    for message, sev in describe_experiment(conditions, mapper):
         logger.info(message)
 
         send_message(
             read_until_client.connection,
             message,
-            Severity.INFO,
+            sev,
         )
 
     """

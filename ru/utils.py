@@ -386,29 +386,65 @@ def describe_experiment(conditions, mapper):
     Yields
     ------
     str
+        Message string
+    severity : Severity
+        One of Severity.INFO, Severity.WARN or Severity.ERROR
 
     """
-    yield "This experiment has {} regions on the flowcell".format(len(conditions))
-    yield "Using reference: {}".format(mapper.index)
-    seq_names = set(mapper.mapper.seq_names)
+    # TODO: conditional 's' here
+    yield "This experiment has {} region{} on the flowcell".format(
+        len(conditions), {1: ""}.get(len(conditions), "s")
+    ), Severity.INFO
 
-    for region in conditions:
-        conds = {
-            "unblock": [],
-            "stop_receiving": [],
-            "proceed": [],
-        }
-        for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
-            conds[getattr(region, m)].append(m)
-        conds = {k: nice_join(v) for k, v in conds.items()}
-        s = (
-            "Region '{}' (control={}) has {} targets of which {} are in the reference. "
-            "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
-            "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
-                region.name, region.control, len(region.targets), len(region.targets & seq_names), **conds
+    if mapper.initialised:
+        yield "Using reference: {}".format(mapper.index), Severity.INFO
+        seq_names = set(mapper.mapper.seq_names)
+
+        for region in conditions:
+            conds = {
+                "unblock": [],
+                "stop_receiving": [],
+                "proceed": [],
+            }
+            for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+                conds[getattr(region, m)].append(m)
+            conds = {k: nice_join(v) for k, v in conds.items()}
+            s = (
+                "Region '{}' (control={}) has {} target{} of which {} are in the reference. "
+                "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
+                "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
+                    region.name,
+                    region.control,
+                    len(region.targets),
+                    {1: ""}.get(len(region.targets), "s"),
+                    len(region.targets & seq_names),
+                    **conds,
+                )
             )
-        )
-        yield s
+            yield s, Severity.INFO
+    else:
+        yield "No reference file provided", Severity.WARN
+        for region in conditions:
+            conds = {
+                "unblock": [],
+                "stop_receiving": [],
+                "proceed": [],
+            }
+            for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+                conds[getattr(region, m)].append(m)
+            conds = {k: nice_join(v) for k, v in conds.items()}
+            s = (
+                "Region '{}' (control={}) has {} target{}. "
+                "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
+                "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
+                    region.name,
+                    region.control,
+                    len(region.targets),
+                    {1: ""}.get(len(region.targets), "s"),
+                    **conds,
+                )
+            )
+            yield s, Severity.WARN
 
 
 def get_run_info(toml_filepath, num_channels=512):
