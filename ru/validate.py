@@ -41,7 +41,7 @@ def main():
     # Run load config to validate
     run_info, conditions, reference, caller_settings = get_run_info(args.toml)
     print("😻 Looking good!", file=sys.stdout)
-
+    print("Generating experiment description - please be patient!", file=sys.stdout)
     mapper = Mapper(reference)
     for message, sev in describe_experiment(conditions, mapper):
         printer(textwrap.fill(message), sev, file=sys.stdout, end="\n\n")
