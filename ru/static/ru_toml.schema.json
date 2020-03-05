@@ -133,5 +133,6 @@
         "conditions": {
             "$ref": "#/definitions/conditions"
         }
-    }
+    },
+    "additionalProperties": false
 }

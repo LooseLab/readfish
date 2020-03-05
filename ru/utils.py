@@ -5,8 +5,8 @@ from random import random
 import numpy as np
 import toml
 from operator import itemgetter
-import requests
 import json
+import jsonschema
 from enum import IntEnum
 
 from ru.channels import MINION_CHANNELS, FLONGLE_CHANNELS
@@ -316,15 +316,145 @@ def get_targets(targets):
     return t
 
 
-def get_run_info(toml_dict_or_filepath, num_channels=512):
+def load_config_toml(filepath, validate=True):
+    """Load a TOML file and check file paths
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the TOML config file
+    validate : bool
+        If True, test TOML file against the JSON schema (./static/ru_toml.schema.json)
+
+    Returns
+    -------
+    dict
+        Returns dict of TOML config
+    """
+    # Check that TOML config file exists
+    p = Path(filepath)
+    if not p.is_file():
+        raise FileNotFoundError("TOML config file not found at '{}'".format(filepath))
+
+    # Load TOML to dict
+    toml_dict = toml.load(p)
+
+    # Check reference path
+    reference_text = toml_dict.get("conditions", {}).get("reference", "")
+    reference_path = Path(reference_text)
+    if not reference_path.is_file() and reference_text:
+        raise FileNotFoundError("Reference file not found at '{}'".format(reference_path))
+
+    # Get keys for all condition tables, allows safe updates
+    conditions = [k for k, cond in toml_dict.get("conditions", {}).items() if isinstance(cond, dict)]
+
+    # Load targets from a file
+    for k in conditions:
+        targets = toml_dict["conditions"][k].get("targets", [])
+        if isinstance(targets, str):
+            if not Path(targets).is_file():
+                raise FileNotFoundError("Targets file not found at '{}'".format(targets))
+
+            toml_dict["conditions"][k]["targets"] = read_lines_to_list(targets)
+
+    # Validate our TOML file
+    if validate:
+        # Load json schema
+        _f = Path(__file__).parent / "static/ru_toml.schema.json"
+        with _f.resolve().open() as fh:
+            schema = json.load(fh)
+        try:
+            jsonschema.validate(toml_dict, schema)
+        except jsonschema.exceptions.ValidationError as err:
+            print("😾 this TOML file has failed validation. See below for details:")
+            raise
+
+    return toml_dict
+
+
+def describe_experiment(conditions, mapper):
+    """
+
+    Parameters
+    ----------
+    conditions : List[NamedTuple, ...]
+        List of named tuples, should be conditions from get_run_info
+    mapper : mappy.mapper
+        Instance of mappy.mapper initialised with the reference passed from
+        get_run_info
+
+    Yields
+    ------
+    str
+        Message string
+    severity : Severity
+        One of Severity.INFO, Severity.WARN or Severity.ERROR
+
+    """
+    # TODO: conditional 's' here
+    yield "This experiment has {} region{} on the flowcell".format(
+        len(conditions), {1: ""}.get(len(conditions), "s")
+    ), Severity.INFO
+
+    if mapper.initialised:
+        yield "Using reference: {}".format(mapper.index), Severity.INFO
+        seq_names = set(mapper.mapper.seq_names)
+
+        for region in conditions:
+            conds = {
+                "unblock": [],
+                "stop_receiving": [],
+                "proceed": [],
+            }
+            for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+                conds[getattr(region, m)].append(m)
+            conds = {k: nice_join(v) for k, v in conds.items()}
+            s = (
+                "Region '{}' (control={}) has {} target{} of which {} are in the reference. "
+                "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
+                "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
+                    region.name,
+                    region.control,
+                    len(region.targets),
+                    {1: ""}.get(len(region.targets), "s"),
+                    len(region.targets & seq_names),
+                    **conds,
+                )
+            )
+            yield s, Severity.INFO
+    else:
+        yield "No reference file provided", Severity.WARN
+        for region in conditions:
+            conds = {
+                "unblock": [],
+                "stop_receiving": [],
+                "proceed": [],
+            }
+            for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+                conds[getattr(region, m)].append(m)
+            conds = {k: nice_join(v) for k, v in conds.items()}
+            s = (
+                "Region '{}' (control={}) has {} target{}. "
+                "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
+                "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
+                    region.name,
+                    region.control,
+                    len(region.targets),
+                    {1: ""}.get(len(region.targets), "s"),
+                    **conds,
+                )
+            )
+            yield s, Severity.WARN
+
+
+def get_run_info(toml_filepath, num_channels=512):
     """Convert a TOML representation of a Read Until experiment to conditions that
     can be used used by the analysis function
 
     Parameters
     ----------
-    toml_dict_or_filepath : dict or str
-        Dictionary from a TOML file or a path (str) to a TOML file. If a str is given
-        the file will be loaded using toml.load() Expected keys: 'conditions'
+    toml_filepath : str
+        Filepath to a configuration TOML file
     num_channels : int
         Total number of channels on the sequencer, expects 512 for MinION and 3000 for
         PromethION
@@ -337,11 +467,11 @@ def get_run_info(toml_dict_or_filepath, num_channels=512):
         List of namedtuples with conditions specified in the TOML file
     reference : str
         The path to the reference MMI file
+    caller_settings : dict
+        kwargs to pass to the base caller. If not found in the TOML an empty dict
+        is returned
     """
-    if not isinstance(toml_dict_or_filepath, dict):
-        toml_dict = toml.load(toml_dict_or_filepath)
-    else:
-        toml_dict = toml_dict_or_filepath
+    toml_dict = load_config_toml(toml_filepath)
 
     # Get condition keys, these should be ascending integers
     conditions = [
@@ -391,8 +521,9 @@ def get_run_info(toml_dict_or_filepath, num_channels=512):
     }
 
     reference = toml_dict["conditions"].get("reference")
+    caller_settings = toml_dict.get("caller_settings", {})
 
-    return run_info, split_conditions, reference
+    return run_info, split_conditions, reference, caller_settings
 
 
 def between(pos, coords):

@@ -32,5 +32,6 @@ setup(
             "ru_unblock_all={}.unblock_all:main".format(PKG_NAME),
         ],
     },
-    install_requires=install_requires
+    install_requires=install_requires,
+    include_package_data=True,
 )
