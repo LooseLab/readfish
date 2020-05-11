@@ -16,8 +16,9 @@ MinKNOW server to obtain read data in real-time. The data can be analysed in the
 way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress and so direct sequencing capacity towards reads of interest.
 
-**This implementation of Read Until requires Guppy version 3.4 or newer. It will 
-not work on earlier versions.**
+**This implementation of Read Until requires Guppy version 3.4.5. It will not work on earlier versions and performance is not currently guranteed on later versions.** 
+
+**Guppy 3.4.5 is available from here https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_3.4.5_linux64.tar.gz **
 
 **Currently we only recommend LINUX for running Read Until. We have not had 
 effective performance on other platforms to date.**
