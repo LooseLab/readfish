@@ -98,7 +98,12 @@ class GuppyCaller(GuppyBasecallerClient):
                 continue
 
             hold[read.read_id] = (channel, read_number)
-            self.pass_read(read)
+            try:
+                self.pass_read(read)
+            except Exception as e:
+                logger.warning("Skipping read: {} due to {}".format(read.read_id, e))
+                hold.pop(read.read_id)
+                continue
             read_counter += 1
 
         while done < read_counter:
