@@ -4,15 +4,6 @@ import importlib
 from ._version import __version__
 
 
-def run_command(parser, args):
-    try:
-        command = importlib.import_module("ru.{}".format(args.commmand))
-    except ImportError:
-        parser.exit(2, "Could not use sub-command: {!r}".format(args.commmand))
-
-    command.run(parser, args)
-
-
 def main():
     parser = argparse.ArgumentParser(
         prog="readfish",
@@ -35,7 +26,7 @@ def main():
         _parser = subparsers.add_parser(cmd, help=_module._help)
         for *flags, opts in _module._cli:
             _parser.add_argument(*flags, **opts)
-        _parser.set_defaults(func=run_command)
+        _parser.set_defaults(func=_module.run)
 
     args = parser.parse_args()
     if args.command is not None:
