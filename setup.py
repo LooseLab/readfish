@@ -30,6 +30,7 @@ setup(
             "ru_iteralign={}.iteralign:main".format(PKG_NAME),
             "ru_iteralign_centrifuge={}.iteralign_centrifuge:main".format(PKG_NAME),
             "ru_unblock_all={}.unblock_all:main".format(PKG_NAME),
+            "readfish={}.cli:main".format(PKG_NAME),
         ],
     },
     install_requires=install_requires,

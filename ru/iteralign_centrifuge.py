@@ -24,6 +24,7 @@ import argparse
 from pathlib import Path
 import shutil
 import urllib.request as request
+import urllib.error as url_error
 from contextlib import closing
 
 import pandas as pd
@@ -63,7 +64,8 @@ def get_fq(s, pattern="*.fq"):
     return [str(f) for f in Path(s).rglob(pattern)]
 
 
-base_args=(
+_help = "Read Until and Run Until, using centrifuge"
+_cli = (
     (
         "--host",
         dict(
@@ -272,6 +274,15 @@ base_args=(
             action="store",
             help="the file suffix containing 3 tab separated columns: iteration, referenceid, coverage (percent)",
             default=DEFAULT_COVERAGE_FILE,
+        ),
+    ),
+    (
+        "--toml",
+        dict(
+            metavar="TOML",
+            required=True,
+            help="The magic TOML file that will save your life?",
+            # type=toml.load,
         ),
     ),
 )
@@ -706,23 +717,11 @@ class FastqHandler(FileSystemEventHandler):
 
 
 def main():
-    extra_args = (
-        (
-            "--toml",
-            dict(
-                metavar="TOML",
-                required=True,
-                help="The magic TOML file that will save your life?",
-                # type=toml.load,
-            ),
-        ),
-    )
-    parser, args = get_parser(
-        extra_args=extra_args,
-        file=__file__,
-        default_args=base_args,
+    sys.exit(
+        "This entry point is deprecated, please use 'readfish centrifuge' instead"
     )
 
+def run(parser, args):
     # new code block: change the reference path within the args.toml file into the args.mindex path
     d = toml.load(args.toml)
 

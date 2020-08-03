@@ -17,10 +17,14 @@ from timeit import default_timer as timer
 # Read Until imports
 import read_until_api_v2 as read_until
 from read_until_api_v2.utils import run_workflow
-from read_until_api_v2.read_cache import BaseCache
-from ru.arguments import get_parser
-from ru.utils import print_args, setup_logger
+from ru.arguments import BASE_ARGS
+from ru.utils import print_args
 from ru.utils import send_message, Severity
+
+
+_help = "Unblock all reads"
+_cli = BASE_ARGS
+
 
 def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
     """Analysis function
@@ -71,8 +75,12 @@ def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
 
 
 def main():
-    parser, args = get_parser(file=__file__)
+    sys.exit(
+        "This entry point is deprecated, please use 'readfish unblock-all' instead"
+    )
 
+
+def run(parser, args):
     # TODO: Move logging config to separate configuration file
     # TODO: use setup_logger here instead?
     # set up logging to file for DEBUG messages and above

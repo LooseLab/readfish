@@ -24,12 +24,38 @@ from timeit import default_timer as timer
 import read_until_api_v2 as read_until
 import toml
 
-from ru.arguments import get_parser
+from ru.arguments import get_parser, BASE_ARGS
 from ru.basecall import Mapper as CustomMapper
 from ru.basecall import GuppyCaller as Caller
 from ru.utils import print_args, get_run_info, between, setup_logger, describe_experiment
 from ru.utils import send_message, Severity
 
+
+_help = "Run targeted sequencing"
+_cli = BASE_ARGS + (
+    (
+        "--toml",
+        dict(
+            metavar="TOML",
+            required=True,
+            help="TOML file specifying experimental parameters",
+        ),
+    ),
+    (
+        "--paf-log",
+        dict(
+            help="PAF log",
+            default="paflog.log",
+        )
+    ),
+    (
+        "--chunk-log",
+        dict(
+            help="Chunk log",
+            default="chunk_log.log",
+        )
+    ),
+)
 
 class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
     """ThreadPoolExecutor records only the text of an exception,
@@ -420,32 +446,12 @@ def run_workflow(client, analysis_worker, n_workers, run_time, runner_kwargs=Non
 
 
 def main():
-    extra_args = (
-        (
-            "--toml",
-            dict(
-                metavar="TOML",
-                required=True,
-                help="TOML file specifying experimental parameters",
-            ),
-        ),
-        (
-            "--paf-log",
-            dict(
-                help="PAF log",
-                default="paflog.log",
-            )
-        ),
-        (
-            "--chunk-log",
-            dict(
-                help="Chunk log",
-                default="chunk_log.log",
-            )
-        ),
+    sys.exit(
+        "This entry point is deprecated, please use 'readfish targets' instead"
     )
-    parser, args = get_parser(extra_args=extra_args, file=__file__)
 
+
+def run(parser, args):
     # set up logging to file for DEBUG messages and above
     logging.basicConfig(
         level=logging.DEBUG,
