@@ -160,7 +160,7 @@ BASE_ARGS = (
         "--dry-run",
         dict(
             action="store_true",
-            help="Run the Read Until experiment without sending unblock commands",
+            help="Run the ReadFish Until experiment without sending unblock commands",
         ),
     ),
     (
@@ -197,7 +197,7 @@ BASE_ARGS = (
 
 
 def get_parser(extra_args=None, file=None, default_args=None):
-    """Generic argument parser for Read Until scripts
+    """Generic argument parser for ReadFish scripts
 
     Parameters
     ----------
@@ -206,7 +206,7 @@ def get_parser(extra_args=None, file=None, default_args=None):
     file : str
         Optional. __file__ from the python script, used for program string
     default_args : Tuple[Tuple[str, dict], ...]
-        Arguments that form the base requirements for all Read Until scripts
+        Arguments that form the base requirements for all ReadFish scripts
 
     Returns
     -------
@@ -224,9 +224,9 @@ def get_parser(extra_args=None, file=None, default_args=None):
         args = args + extra_args
 
     if file is None:
-        prog_string = "Read Until API: {}".format(sys.argv[0].split("/")[-1])
+        prog_string = "ReadFish API: {}".format(sys.argv[0].split("/")[-1])
     else:
-        prog_string = "Read Until API: {} ({})".format(sys.argv[0].split("/")[-1], file)
+        prog_string = "ReadFish API: {} ({})".format(sys.argv[0].split("/")[-1], file)
 
     parser = argparse.ArgumentParser(prog_string)
     for arg in args:

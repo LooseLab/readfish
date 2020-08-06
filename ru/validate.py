@@ -6,7 +6,7 @@ from ru.utils import get_run_info, describe_experiment, Severity
 from ru.basecall import Mapper
 
 
-_help = "Read Until TOML Validator"
+_help = "ReadFish TOML Validator"
 _cli = (
     ("toml", dict(help="TOML file to validate")),
 )

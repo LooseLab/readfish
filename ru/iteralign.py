@@ -34,7 +34,7 @@ DEFAULT_PERCENTAGE_COVERED = 0.99
 DEFAULT_CORES = 2
 
 
-_help = "Read Until and Run Until, using minimap2"
+_help = "ReadFish and Run Until, using minimap2"
 _cli = (
     (
         "--host",

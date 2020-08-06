@@ -11,7 +11,7 @@ import mappy as mp
 _help = "Summary stats from FASTQ files"
 _cli = (
     ("toml", dict(help="TOML configuration file"),),
-    ("dir", dict(help="Called files from the Read Until experiment"),),
+    ("dir", dict(help="Called files from the ReadFish experiment"),),
 )
 
 

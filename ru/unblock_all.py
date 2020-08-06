@@ -45,7 +45,7 @@ def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
     None
     """
     logger = logging.getLogger(__name__)
-    send_message(client.connection, "Read Until sending Unblock All Messages. All reads will be prematurely truncated. This will affect a live sequencing run.",
+    send_message(client.connection, "ReadFish sending Unblock All Messages. All reads will be prematurely truncated. This will affect a live sequencing run.",
                  Severity.WARN)
     while client.is_running:
 
@@ -70,7 +70,7 @@ def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
     else:
-        send_message(client.connection, "Read Until Unblock All Disconnected.", Severity.WARN)
+        send_message(client.connection, "ReadFish Unblock All Disconnected.", Severity.WARN)
         logger.info("Finished analysis of reads as client stopped.")
 
 

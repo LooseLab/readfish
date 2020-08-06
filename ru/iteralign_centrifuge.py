@@ -64,7 +64,7 @@ def get_fq(s, pattern="*.fq"):
     return [str(f) for f in Path(s).rglob(pattern)]
 
 
-_help = "Read Until and Run Until, using centrifuge"
+_help = "ReadFish and Run Until, using centrifuge"
 _cli = (
     (
         "--host",
