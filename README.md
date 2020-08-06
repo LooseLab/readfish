@@ -35,8 +35,9 @@ Citation
 --------
 If you use this software please cite: [10.1101/2020.02.03.926956](https://dx.doi.org/10.1101/2020.02.03.926956)
 
-> Payne A, Holmes N, Clarke T, Munro R, Debebe B and Loose M (2020) Nanopore adaptive sequencing for mixed samples, 
->whole exome capture and targeted panels. Cold Spring Harbor Laboratory.
+> Nanopore adaptive sequencing for mixed samples, whole exome capture and targeted panels
+> Alexander Payne, Nadine Holmes, Thomas Clarke, Rory Munro, Bisrat Debebe, Matthew Loose
+> bioRxiv 2020.02.03.926956; doi: https://doi.org/10.1101/2020.02.03.926956
 
 Installation
 ------------
