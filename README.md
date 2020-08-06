@@ -1,6 +1,4 @@
-![alt text](examples/images/readfish_logo.jpg "ReadFish Logo")
-
-==========
+# ![alt text](examples/images/readfish_logo.jpg "ReadFish Logo")
 
 If you are anything like us, reading a README is the last thing you do when running code. 
 PLEASE DON'T DO THAT FOR READFISH. This will effect changes to your sequencing and - 
