@@ -243,7 +243,7 @@ Zoomed in on the unblocks:
  
  Happy ReadFishing!
 
-  Acknoweldgements
+  Acknowledgements
  ----
 
 We're really grateful to lots of people for help and support. Here's a few of them...
