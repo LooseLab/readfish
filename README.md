@@ -17,11 +17,11 @@ MinKNOW server to obtain read data in real-time. The data can be analysed in the
 way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress and so direct sequencing capacity towards reads of interest.
 
-**This implementation of Read Until requires Guppy version 3.4.5. and MinKNOW version core 3.6. It will not work on earlier versions and performance is not currently guranteed on later versions.** 
+**This implementation of ReadFish requires Guppy version 3.4.5. and MinKNOW version core 3.6. It will not work on earlier versions and performance is not currently guranteed on later versions.** 
 
 **Guppy 3.4.5 is available from here https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_3.4.5_linux64.tar.gz **
 
-**Currently we only recommend LINUX for running Read Until. We have not had 
+**Currently we only recommend LINUX for running ReadFish. We have not had 
 effective performance on other platforms to date.**
 
 The code here has been tested with Guppy in GPU mode using GridION Mk1 and 
@@ -46,7 +46,7 @@ python3 -m venv readfish
 . ./readfish/bin/activate
 pip install --upgrade pip
 
-# Install our Read Until API
+# Install our ReadFish Software
 pip install git+https://github.com/LooseLab/read_until_api_v2@master
 pip install git+https://github.com/LooseLab/readfish@master
 ```
@@ -63,10 +63,10 @@ positional arguments:
   {targets,align,centrifuge,unblock-all,validate,summary}
                         Sub-commands
     targets             Run targeted sequencing
-    align               Read Until and Run Until, using minimap2
-    centrifuge          Read Until and Run Until, using centrifuge
+    align               ReadFish and Run Until, using minimap2
+    centrifuge          ReadFish and Run Until, using centrifuge
     unblock-all         Unblock all reads
-    validate            Read Until TOML Validator
+    validate            ReadFish TOML Validator
     summary             Summary stats from FASTQ files
 
 optional arguments:
@@ -115,7 +115,7 @@ Now we shall test unblocking by running `ru_unblock_all` which will simply eject
 every single read on the flow cell. 
 1. To do this run:
     ```bash
-    readfish unblock-all --device <YOUR_DEVICE_ID> --experiment-name "Testing Read Until Unblock All"
+    readfish unblock-all --device <YOUR_DEVICE_ID> --experiment-name "Testing ReadFish Unblock All"
     ```   
 1. Leave the run for a further 5 minutes and observe the read length histogram. 
 If unblocks are happening correctly you will see something like the below:
@@ -178,7 +178,7 @@ configuration files which will let you check if the toml will drive an experimen
 
  #### Testing expected results from a selection experiment.
  
- The only way to test read until on a playback run is to look at changes in read length for rejected vs accepted reads. To do this:
+ The only way to test readfish on a playback run is to look at changes in read length for rejected vs accepted reads. To do this:
  
  1. Start a fresh simulation run using the bulkfile provided above.
  2. Restart the readfish command (as above):
