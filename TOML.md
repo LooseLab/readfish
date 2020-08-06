@@ -1,7 +1,9 @@
-Read Until Configuration Files
+![alt text](examples/images/readfish_logo.jpg "ReadFish Logo")
+
+Configuration Files
 ===
 
-Specification for the TOML files used to drive read until experiments.
+Specification for the TOML files used to drive readfish experiments.
 
 ---
 
@@ -16,7 +18,7 @@ Table of Contents
  
 TOML files
 ===
-Read Until experiments are configured using TOML files, which are minimal and 
+ReadFish experiments are configured using TOML files, which are minimal and 
 easy-to-read markup files. Each line is either a key-value pair or a 'table' 
 heading. See more in the [TOML specification](https://github.com/toml-lang/toml).
 
@@ -133,7 +135,7 @@ When an array is given all the elements in the array must conform with the
 
 ### Target Formats
 
-When specifying the genomic targets to consider in a Read Until experiment we 
+When specifying the genomic targets to consider in a ReadFish experiment we 
 currently accept two formats `chromosome` or `coordinates`. 
 
 EG `chromosome`: 
@@ -151,7 +153,7 @@ alignment start position is within the region on the given strand.
 Validating a TOML
 ===
 
-We provide a [JSON schema](ru/static/ru_toml.schema.json) for validating 
+We provide a [JSON schema](ru/static/readfish_toml.schema.json) for validating 
 configuration files:
 
 ```bash

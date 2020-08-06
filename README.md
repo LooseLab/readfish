@@ -1,8 +1,9 @@
-Read Until
+![alt text](examples/images/readfish_logo.jpg "ReadFish Logo")
+
 ==========
 
 If you are anything like us, reading a README is the last thing you do when running code. 
-PLEASE DON'T DO THAT FOR READ UNTIL. This will effect changes to your sequencing and - 
+PLEASE DON'T DO THAT FOR READFISH. This will effect changes to your sequencing and - 
 if you use it incorrectly - cost you money. We have added a [list of GOTCHAs](#common-gotchas) 
 at the end of this README. We have almost certainly missed some... so - if something goes 
 wrong, let us know so we can add you to the GOTCHA hall of fame!
@@ -16,7 +17,7 @@ MinKNOW server to obtain read data in real-time. The data can be analysed in the
 way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress and so direct sequencing capacity towards reads of interest.
 
-**This implementation of Read Until requires Guppy version 3.4.5. It will not work on earlier versions and performance is not currently guranteed on later versions.** 
+**This implementation of Read Until requires Guppy version 3.4.5. and MinKNOW version core 3.6. It will not work on earlier versions and performance is not currently guranteed on later versions.** 
 
 **Guppy 3.4.5 is available from here https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_3.4.5_linux64.tar.gz **
 
@@ -41,33 +42,41 @@ Installation
 ------------
 ```bash
 # Make a virtual environment
-python3 -m venv read_until
-. ./read_until/bin/activate
+python3 -m venv readfish
+. ./readfish/bin/activate
 pip install --upgrade pip
 
 # Install our Read Until API
 pip install git+https://github.com/LooseLab/read_until_api_v2@master
-pip install git+https://github.com/LooseLab/ru@master
+pip install git+https://github.com/LooseLab/readfish@master
 ```
 
 Usage
 -----
 ```bash
 # check install
-$ ru_generators
-usage: Read Until API: ru_generators (/Users/Alex/projects/ru/ru/ru_gen.py)
-       [-h] [--host HOST] [--port PORT] --device DEVICE --experiment-name
-       EXPERIMENT-NAME [--read-cache READ_CACHE] [--workers WORKERS]
-       [--channels CHANNELS CHANNELS] [--run-time RUN-TIME]
-       [--unblock-duration UNBLOCK-DURATION] [--cache-size CACHE-SIZE]
-       [--batch-size BATCH-SIZE] [--throttle THROTTLE] [--dry-run]
-       [--log-level LOG-LEVEL] [--log-format LOG-FORMAT] [--log-file LOG-FILE]
-       --toml TOML [--paf-log PAF_LOG] [--chunk-log CHUNK_LOG]
-Read Until API: ru_generators (/Users/Alex/projects/ru/ru/ru_gen.py): error: 
-       the following arguments are required: --device, --experiment-name, --toml
+$ readfish
+usage: readfish [-h] [--version]
+                {targets,align,centrifuge,unblock-all,validate,summary} ...
+
+positional arguments:
+  {targets,align,centrifuge,unblock-all,validate,summary}
+                        Sub-commands
+    targets             Run targeted sequencing
+    align               Read Until and Run Until, using minimap2
+    centrifuge          Read Until and Run Until, using centrifuge
+    unblock-all         Unblock all reads
+    validate            Read Until TOML Validator
+    summary             Summary stats from FASTQ files
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+
+See '<command> --help' to read about a specific sub-command.
 
 # example run command - change arguments as necessary:
-$ ru_generators --experiment-name "Test run" --device MN17073 --toml example.toml --log-file RU_log.log
+$ readfish targets --experiment-name "Test run" --device MN17073 --toml example.toml --log-file RU_log.log
 ```
 
 TOML File
@@ -76,7 +85,7 @@ For information on the TOML files see [TOML.md](TOML.md).
 
 Testing
 -------
-To test Read Until on your configuration we recommend first running a playback 
+To test readfish on your configuration we recommend first running a playback 
 experiment to test unblock speed and then selection.
 
 #### Configuring bulk FAST5 file Playback
@@ -106,7 +115,7 @@ Now we shall test unblocking by running `ru_unblock_all` which will simply eject
 every single read on the flow cell. 
 1. To do this run:
     ```bash
-    ru_unblock_all --device <YOUR_DEVICE_ID> --experiment-name "Testing Read Until Unblock All"
+    readfish unblock-all --device <YOUR_DEVICE_ID> --experiment-name "Testing Read Until Unblock All"
     ```   
 1. Leave the run for a further 5 minutes and observe the read length histogram. 
 If unblocks are happening correctly you will see something like the below:
@@ -122,22 +131,22 @@ To test selective sequencing you must have access to a
 and configure a [TOML](TOML.md) file. Here we provide an [example TOML file](examples/human_chr_selection.toml).
 1. First make a local copy of the example TOML file:
     ```bash
-    curl -O https://github.com/LooseLab/ru/blob/master/examples/human_chr_selection.toml
+    curl -O https://github.com/LooseLab/readfish/blob/master/examples/human_chr_selection.toml
     ```
 1. Modify the `reference` field in the file to be the full path to a [minimap2](https://github.com/lh3/minimap2) index of the human genome.
 1. Modify the `targets` fields for each condition to reflect the naming convention used in your index. This is the sequence name only, up to but not including any whitespace.
 e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match, then target matching will fail.
-1. We provide a [JSON schema](ru/static/ru_toml.schema.json) and a script for validating 
+1. We provide a [JSON schema](readfish/static/readfish_toml.schema.json) and a script for validating 
 configuration files which will let you check if the toml will drive an experiment as you expect:
     
     ```bash
-    ru_validate human_chr_selection.toml
+    readfish validate human_chr_selection.toml
     ```
 
     Errors with the configuration will be written to the terminal along with a text description of the conditions for the experiment as below.
     
     ```text
-    ru_validate examples/human_chr_selection.toml
+    readfish validate examples/human_chr_selection.toml
     😻 Looking good!
     Generating experiment description - please be patient!
     This experiment has 1 region on the flowcell
@@ -151,7 +160,7 @@ configuration files which will let you check if the toml will drive an experimen
     ```         
 1. If your toml file validates then run the following command:
     ```bash
-    ru_generators --device <YOUR_DEVICE_ID> \
+    readfish targets --device <YOUR_DEVICE_ID> \
                   --experiment-name "RU Test basecall and map" \
                   --toml <PATH_TO_TOML> \
                   --log-file ru_test.log
@@ -172,9 +181,9 @@ configuration files which will let you check if the toml will drive an experimen
  The only way to test read until on a playback run is to look at changes in read length for rejected vs accepted reads. To do this:
  
  1. Start a fresh simulation run using the bulkfile provided above.
- 2. Restart the read until command (as above):
+ 2. Restart the readfish command (as above):
     ```bash
-    ru_generators --device <YOUR_DEVICE_ID> \
+    readfish targets --device <YOUR_DEVICE_ID> \
                   --experiment-name "RU Test basecall and map" \
                   --toml <PATH_TO_TOML> \
                   --log-file ru_test.log
@@ -184,7 +193,7 @@ configuration files which will let you check if the toml will drive an experimen
         ![alt text](examples/images/PlaybackRunUnblock.png "Playback Unblock Image")
 Zoomed in on the unblocks: 
         ![alt text](examples/images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")
- 4. Run `ru_summarise_fq` to check if your run has performed as expected. This file requires the path to your toml file followed by the path to your fastq reads. Typical results are provided below and show longer mean read lengths for the two selected chromosomes (here chr21 and chr22). Note the mean read lengths observed will be dependent on system performance. Optimal guppy configuration for your system is left to the user.
+ 4. Run `readfish summary` to check if your run has performed as expected. This file requires the path to your toml file followed by the path to your fastq reads. Typical results are provided below and show longer mean read lengths for the two selected chromosomes (here chr21 and chr22). Note the mean read lengths observed will be dependent on system performance. Optimal guppy configuration for your system is left to the user.
      ```text
      contig  number      sum   min     max    std   mean  median     N50
        chr1    1326  4187614   142  224402  14007   3158     795   48026
@@ -231,6 +240,6 @@ Zoomed in on the unblocks:
     - Double check your targets are correctly formatted with contig name matching the record names in your reference (Exclude description - i.e the contig name up to the first whitespace). 
  6. **Where has my reference gone?** If you are using a _live TOML file - e.g running iter_align or iter_cent, the previous reference MMI file is deleted when a new one is added. This obviosuly saves on disk space use(!) but can lead to unfortunate side effects - i.e you delete yoru MMI file. These can of course be recreated but user **beware**.
  
- Happy Read Untilling!
+ Happy ReadFishing!
 
  
