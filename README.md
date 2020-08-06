@@ -249,7 +249,7 @@ Zoomed in on the unblocks:
 We're really grateful to lots of people for help and support. Here's a few of them...
 
 From the lab:
-Teri Evans, Sam Holt, Lewis Gallagher, Chris Alder
+Teri Evans, Sam Holt, Lewis Gallagher, Chris Alder, Thomas Clarke
 
 From ONT:
 Stu Reid, Chris Wright, Rosemary Dokos, Chris Seymour, Clive Brown, George Pimm, Jon Pugh
