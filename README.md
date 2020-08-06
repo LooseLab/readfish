@@ -245,4 +245,19 @@ Zoomed in on the unblocks:
  
  Happy ReadFishing!
 
- 
+  Acknoweldgements
+ ----
+
+We're really grateful to lots of people for help and support. Here's a few of them...
+
+From the lab:
+Teri Evans, Sam Holt, Lewis Gallagher, Chris Aldher
+
+From ONT:
+Stu Reid, Chris Wright, Rosemary Dokos, Chris Seymour, Clive Brown, George Pimm, Jon Pugh
+
+From the Nanopore World:
+Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, Nick Goldman, Miten Jain
+
+And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com/tim_bassford) from [@TurbineCreative](https://twitter.com/TurbineCreative)!
+  
