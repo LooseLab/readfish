@@ -324,7 +324,7 @@ def load_config_toml(filepath, validate=True):
     filepath : str
         Path to the TOML config file
     validate : bool
-        If True, test TOML file against the JSON schema (./static/ru_toml.schema.json)
+        If True, test TOML file against the JSON schema (./static/readfish_toml.schema.json)
 
     Returns
     -------
@@ -360,7 +360,7 @@ def load_config_toml(filepath, validate=True):
     # Validate our TOML file
     if validate:
         # Load json schema
-        _f = Path(__file__).parent / "static/ru_toml.schema.json"
+        _f = Path(__file__).parent / "static/readfish_toml.schema.json"
         with _f.resolve().open() as fh:
             schema = json.load(fh)
         try:
@@ -448,7 +448,7 @@ def describe_experiment(conditions, mapper):
 
 
 def get_run_info(toml_filepath, num_channels=512):
-    """Convert a TOML representation of a Read Until experiment to conditions that
+    """Convert a TOML representation of a ReadFish experiment to conditions that
     can be used used by the analysis function
 
     Parameters

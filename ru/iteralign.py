@@ -33,7 +33,9 @@ DEFAULT_COVERAGE_DEPTH = 30
 DEFAULT_PERCENTAGE_COVERED = 0.99
 DEFAULT_CORES = 2
 
-base_args=(
+
+_help = "ReadFish and Run Until, using minimap2"
+_cli = (
     (
         "--host",
         dict(
@@ -114,6 +116,15 @@ base_args=(
             action="store",
             default=None,
             help="A filename to write logs to, or None to write to the standard stream (default: None)",
+        ),
+    ),
+    (
+        "--toml",
+        dict(
+            metavar="TOML",
+            required=True,
+            help="The magic TOML file that will save your life?",
+            #type=toml.load,
         ),
     ),
 )
@@ -320,24 +331,12 @@ class FastqHandler(FileSystemEventHandler):
 
 
 def main():
-    extra_args = (
-        (
-            "--toml",
-            dict(
-                metavar="TOML",
-                required=True,
-                help="The magic TOML file that will save your life?",
-                #type=toml.load,
-            ),
-        ),
-    )
-    parser, args = get_parser(
-        extra_args=extra_args,
-        file=__file__,
-        default_args=base_args,
+    sys.exit(
+        "This entry point is deprecated, please use 'readfish align' instead"
     )
 
 
+def run(parser, args):
     args.tomlfile = args.toml
     args.toml = toml.load(args.toml)
     print (args)

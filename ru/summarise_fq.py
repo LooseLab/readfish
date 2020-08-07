@@ -1,5 +1,4 @@
 import gzip
-import argparse
 from pathlib import Path
 from statistics import mean, median, stdev
 from collections import defaultdict
@@ -7,6 +6,13 @@ import sys
 
 import toml
 import mappy as mp
+
+
+_help = "Summary stats from FASTQ files"
+_cli = (
+    ("toml", dict(help="TOML configuration file"),),
+    ("dir", dict(help="Called files from the ReadFish experiment"),),
+)
 
 
 def readfq(fp): # this is a generator function
@@ -66,17 +72,12 @@ def N50(arr):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "toml",
-        help="TOML configuration file",
+    sys.exit(
+       "This entry point is deprecated, please use 'readfish summary' instead"
     )
-    parser.add_argument(
-        "dir",
-        help="Called files from the Read Until experiment",
-    )
-    args = parser.parse_args()
 
+
+def run(parser, args):
     t = toml.load(args.toml)
     reference = t["conditions"].get("reference", "")
 

@@ -24,12 +24,38 @@ from timeit import default_timer as timer
 import read_until_api_v2 as read_until
 import toml
 
-from ru.arguments import get_parser
+from ru.arguments import get_parser, BASE_ARGS
 from ru.basecall import Mapper as CustomMapper
 from ru.basecall import GuppyCaller as Caller
 from ru.utils import print_args, get_run_info, between, setup_logger, describe_experiment
 from ru.utils import send_message, Severity
 
+
+_help = "Run targeted sequencing"
+_cli = BASE_ARGS + (
+    (
+        "--toml",
+        dict(
+            metavar="TOML",
+            required=True,
+            help="TOML file specifying experimental parameters",
+        ),
+    ),
+    (
+        "--paf-log",
+        dict(
+            help="PAF log",
+            default="paflog.log",
+        )
+    ),
+    (
+        "--chunk-log",
+        dict(
+            help="Chunk log",
+            default="chunk_log.log",
+        )
+    ),
+)
 
 class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
     """ThreadPoolExecutor records only the text of an exception,
@@ -84,7 +110,7 @@ def simple_analysis(
     pf : logging.Logger
         Log file to log alignments to
     live_toml_path : str
-        Path to a `live` TOML configuration file for read until. If this exists when
+        Path to a `live` TOML configuration file for ReadFish. If this exists when
         the run starts it will be deleted
     flowcell_size : int
         The number of channels on the flowcell, 512 for MinION and 3000 for PromethION
@@ -118,7 +144,7 @@ def simple_analysis(
     channels_out = str(client.mk_run_dir / "channels.toml")
     with open(channels_out, "w") as fh:
         fh.write("# This file is written as a record of the condition each channel is assigned.\n")
-        fh.write("# It may be changed or overwritten if you restart Read Until.\n")
+        fh.write("# It may be changed or overwritten if you restart ReadFish.\n")
         fh.write("# In the future this file may become a CSV file.\n")
         toml.dump(d, fh)
 
@@ -186,7 +212,7 @@ def simple_analysis(
                 old_reference = mapper.index
                 # Log to file and MinKNOW interface
                 logger.info("Reloading mapper")
-                send_message(client.connection, "Reloading mapper. Read Until paused.", Severity.INFO)
+                send_message(client.connection, "Reloading mapper. ReadFish paused.", Severity.INFO)
 
                 # Update mapper client.
                 mapper = CustomMapper(new_reference)
@@ -346,7 +372,7 @@ def simple_analysis(
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
     else:
-        send_message(client.connection, "Read Until Client Stopped.", Severity.WARN)
+        send_message(client.connection, "ReadFish Client Stopped.", Severity.WARN)
         caller.disconnect()
         logger.info("Finished analysis of reads as client stopped.")
 
@@ -420,32 +446,12 @@ def run_workflow(client, analysis_worker, n_workers, run_time, runner_kwargs=Non
 
 
 def main():
-    extra_args = (
-        (
-            "--toml",
-            dict(
-                metavar="TOML",
-                required=True,
-                help="TOML file specifying experimental parameters",
-            ),
-        ),
-        (
-            "--paf-log",
-            dict(
-                help="PAF log",
-                default="paflog.log",
-            )
-        ),
-        (
-            "--chunk-log",
-            dict(
-                help="Chunk log",
-                default="chunk_log.log",
-            )
-        ),
+    sys.exit(
+        "This entry point is deprecated, please use 'readfish targets' instead"
     )
-    parser, args = get_parser(extra_args=extra_args, file=__file__)
 
+
+def run(parser, args):
     # set up logging to file for DEBUG messages and above
     logging.basicConfig(
         level=logging.DEBUG,
@@ -497,7 +503,7 @@ def main():
 
     send_message(
         read_until_client.connection,
-        "Read Until is controlling sequencing on this device. You use it at your own risk.",
+        "ReadFish is controlling sequencing on this device. You use it at your own risk.",
         Severity.WARN,
     )
 
@@ -552,7 +558,7 @@ def main():
     # No results returned
     send_message(
         read_until_client.connection,
-        "Read Until is disconnected from this device. Sequencing will proceed normally.",
+        "ReadFish is disconnected from this device. Sequencing will proceed normally.",
         Severity.WARN,
     )
 
