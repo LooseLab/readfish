@@ -6,12 +6,8 @@ from threading import RLock
 from ru.utils import setup_logger
 
 from minknow_api.data import get_numpy_types
+from minknow_api.acquisition_pb2 import MinknowStatus
 from read_until import ReadUntilClient
-
-
-def wait_for_processing(connection):
-    while connection.acquisition.current_status().status != "PROCESSING":
-        time.sleep(1)
 
 
 class RUClient(ReadUntilClient):
@@ -26,6 +22,9 @@ class RUClient(ReadUntilClient):
         self.unblock_logger = setup_logger("unblocks", log_file="unblocked_read_ids.txt")
 
         # wait_for_processing(self.connection)
+        while self.connection.current_status().status != MinknowStatus.PROCESSING:
+            time.sleep(1)
+
         self.logger.info("Processing")
 
     def unblock_read(self, read_channel, read_number, duration=0.1, read_id=None):
