@@ -21,8 +21,7 @@ class RUClient(ReadUntilClient):
 
         self.unblock_logger = setup_logger("unblocks", log_file="unblocked_read_ids.txt")
 
-        # wait_for_processing(self.connection)
-        while self.connection.current_status().status != MinknowStatus.PROCESSING:
+        while self.connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
             time.sleep(1)
 
         self.logger.info("Processing")
