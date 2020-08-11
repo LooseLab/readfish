@@ -1,6 +1,7 @@
 import time
 from collections import OrderedDict
 from collections.abc import MutableMapping
+from pathlib import Path
 from threading import RLock
 
 from ru.utils import setup_logger
@@ -19,7 +20,14 @@ class RUClient(ReadUntilClient):
         # Override signal_dtype
         self.signal_dtype = get_numpy_types(self.connection).uncalibrated_signal
 
-        self.unblock_logger = setup_logger("unblocks", log_file="unblocked_read_ids.txt")
+        self.mk_run_dir = self.connection.protocol.get_current_protocol_run().output_path
+        if self.mk_host not in ("localhost", "127.0.0.1"):
+            # running remotely, output in cwd
+            self.mk_run_dir = "."
+        self.unblock_logger = setup_logger(
+            "unblocks",
+            log_file=str(Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt")),
+        )
 
         while self.connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
             time.sleep(1)
