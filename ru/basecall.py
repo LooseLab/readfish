@@ -17,7 +17,7 @@ __all__ = ["GuppyCaller"]
 logger = logging.getLogger("RU_basecaller")
 
 
-def _create_guppy_read(reads, signal_dtype, previous_signal):
+def _create_guppy_read(reads, signal_dtype):
     """Convert a read from MinKNOW RPC to GuppyRead
 
     Parameters
@@ -35,28 +35,10 @@ def _create_guppy_read(reads, signal_dtype, previous_signal):
     read_number : int
     GuppyRead
     """
-    for read_id, channel, read_number, signal in _concat_signal(
-        reads, signal_dtype, previous_signal
-    ):
-        read_obj = GuppyRead(signal, read_id, 0, 1)
-        previous_signal[channel].append((read_id, read_obj.signal))
-        yield channel, read_number, read_obj
-
-
-def _concat_signal(reads, signal_dtype, previous_signal):
     for channel, read in reads:
-        old_read_id, old_signal = previous_signal.get(
-            channel, (("", np.empty(0, dtype=signal_dtype)),)
-        )[0]
-
-        if old_read_id == read.id:
-            signal = np.concatenate(
-                (old_signal, np.frombuffer(read.raw_data, dtype=signal_dtype))
-            )
-        else:
-            signal = np.frombuffer(read.raw_data, dtype=signal_dtype)
-
-        yield read.id, channel, read.number, signal
+        logging.info(read.id)
+        read_obj = GuppyRead(np.frombuffer(read.raw_data, dtype=signal_dtype), read.id, 0, 1)
+        yield channel, read.number, read_obj
 
 
 class GuppyCaller(GuppyBasecallerClient):
@@ -64,7 +46,7 @@ class GuppyCaller(GuppyBasecallerClient):
         super().__init__(**kwargs)
         self.connect()
 
-    def basecall_minknow(self, reads, signal_dtype, prev_signal, decided_reads):
+    def basecall_minknow(self, reads, signal_dtype, decided_reads):
         """Guppy basecaller wrapper for MinKNOW RPC reads
 
         Parameters
@@ -91,9 +73,7 @@ class GuppyCaller(GuppyBasecallerClient):
         read_counter = 0
 
         hold = {}
-        for channel, read_number, read in _create_guppy_read(
-            reads, signal_dtype, prev_signal
-        ):
+        for channel, read_number, read in _create_guppy_read(reads, signal_dtype):
             if read.read_id == decided_reads.get(channel, ""):
                 continue
 

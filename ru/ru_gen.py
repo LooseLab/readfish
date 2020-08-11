@@ -24,11 +24,11 @@ from timeit import default_timer as timer
 from ru.read_until_client import RUClient
 import toml
 
-from ru.arguments import get_parser, BASE_ARGS
+from ru.arguments import BASE_ARGS
 from ru.basecall import Mapper as CustomMapper
 from ru.basecall import GuppyCaller as Caller
 from ru.utils import print_args, get_run_info, between, setup_logger, describe_experiment
-from ru.utils import send_message, Severity
+from ru.utils import send_message, Severity, get_device
 
 
 _help = "Run targeted sequencing"
@@ -141,7 +141,7 @@ def simple_analysis(
     for k, v in run_info.items():
         d["conditions"][str(v)]["channels"].append(k)
 
-    channels_out = str(client.mk_run_dir / "channels.toml")
+    channels_out = str(Path(client.mk_run_dir) / "channels.toml")
     with open(channels_out, "w") as fh:
         fh.write("# This file is written as a record of the condition each channel is assigned.\n")
         fh.write("# It may be changed or overwritten if you restart ReadFish.\n")
@@ -240,7 +240,6 @@ def simple_analysis(
                 caller.basecall_minknow(
                     reads=client.get_read_chunks(batch_size=batch_size, last=True),
                     signal_dtype=client.signal_dtype,
-                    prev_signal=previous_signal,
                     decided_reads=decided_reads,
                 )
         ):
@@ -490,14 +489,12 @@ def run(parser, args):
     mapper = CustomMapper(reference)
     logger.info("Mapper initialised")
 
+    position = get_device(args.device)
+
     read_until_client = RUClient(
-        mk_host=args.host,
-        mk_port=args.port,
-        device=args.device,
-        # one_chunk=args.one_chunk,
+        mk_host=position.host,
+        mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        # TODO: test cache_type by passing a function here
-        cache_type=args.read_cache,
         cache_size=args.cache_size,
     )
 
@@ -527,33 +524,30 @@ def run(parser, args):
 
     # FIXME: currently flowcell size is not included, this should be pulled from
     #  the read_until_client
-    analysis_worker = functools.partial(
-        simple_analysis,
-        read_until_client,
-        unblock_duration=args.unblock_duration,
-        throttle=args.throttle,
-        batch_size=args.batch_size,
-        cl=chunk_logger,
-        pf=paf_logger,
-        live_toml_path=live_toml,
-        dry_run=args.dry_run,
-        run_info=run_info,
-        conditions=conditions,
-        mapper=mapper,
-        caller_kwargs=caller_kwargs,
+
+    read_until_client.run(
+        **{"first_channel": args.channels[0], "last_channel": args.channels[-1]}
     )
 
-    results = run_workflow(
-        read_until_client,
-        analysis_worker,
-        args.workers,
-        args.run_time,
-        runner_kwargs={
-            # "min_chunk_size": args.min_chunk_size,
-            "first_channel": min(args.channels),
-            "last_channel": max(args.channels),
-        },
-    )
+    try:
+        simple_analysis(
+            read_until_client,
+            unblock_duration=args.unblock_duration,
+            throttle=args.throttle,
+            batch_size=args.batch_size,
+            cl=chunk_logger,
+            pf=paf_logger,
+            live_toml_path=live_toml,
+            dry_run=args.dry_run,
+            run_info=run_info,
+            conditions=conditions,
+            mapper=mapper,
+            caller_kwargs=caller_kwargs,
+        )
+    except KeyboardInterrupt:
+        pass
+    finally:
+        read_until_client.reset()
 
     # No results returned
     send_message(

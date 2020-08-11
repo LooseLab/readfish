@@ -39,27 +39,6 @@ def send_message(rpc_connection, message, severity):
     rpc_connection.log.send_user_message(severity=severity, user_message=message)
 
 
-def dynamic_import(name):
-    """Dynamically import modules and classes, used to get the ReadCache
-
-    https://stackoverflow.com/a/547867/3279716
-    https://docs.python.org/2.4/lib/built-in-funcs.html
-
-    Parameters
-    ----------
-    name : str
-        The module/class path. E.g: "read_until.read_cache.{}".format("ReadCache")
-
-    Returns
-    -------
-    module
-    """
-    components = name.split('.')
-    mod = __import__(components[0])
-    for comp in components[1:]:
-        mod = getattr(mod, comp)
-    return mod
-
 
 def named_tuple_generator(dictionary, name='Conditions',):
     """Generate named tuple from dictionary
