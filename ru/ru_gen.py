@@ -21,7 +21,7 @@ from pathlib import Path
 from timeit import default_timer as timer
 
 # Third party imports
-import read_until_api_v2 as read_until
+from ru.read_until_client import RUClient
 import toml
 
 from ru.arguments import get_parser, BASE_ARGS
@@ -490,7 +490,7 @@ def run(parser, args):
     mapper = CustomMapper(reference)
     logger.info("Mapper initialised")
 
-    read_until_client = read_until.ReadUntilClient(
+    read_until_client = RUClient(
         mk_host=args.host,
         mk_port=args.port,
         device=args.device,

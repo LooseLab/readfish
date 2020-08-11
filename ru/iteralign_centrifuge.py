@@ -32,9 +32,8 @@ import toml
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers.polling import PollingObserver as Observer
 
-from ru.arguments import get_parser
 from ru.utils import nice_join, print_args, send_message, Severity
-from read_until_api_v2.load_minknow_rpc import get_rpc_connection, parse_message
+from minknow_api.acquisition_pb2 import MinknowStatus
 
 from Bio import SeqIO
 from collections import defaultdict
@@ -778,11 +777,10 @@ def run(parser, args):
         send_message(connection, "Iteralign Connected to MinKNOW.", Severity.WARN)
 
         logger.info("Loaded RPC")
-        while parse_message(connection.acquisition.current_status())['status'] != "PROCESSING":
+        while connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
             time.sleep(1)
-        ### Check if we know where data is being written to , if not... wait
-        args.watch = parse_message(connection.acquisition.get_acquisition_info())['config_summary'][
-            'reads_directory']
+        #### Check if we know where data is being written to , if not... wait
+        args.watch = connection.acquisition.get_acquisition_info().config_summary.reads_directory
 
     else:
         messageport = ""

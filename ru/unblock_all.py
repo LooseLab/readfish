@@ -15,24 +15,25 @@ import time
 from timeit import default_timer as timer
 
 # Read Until imports
-import read_until_api_v2 as read_until
-from read_until_api_v2.utils import run_workflow
 from ru.arguments import BASE_ARGS
-from ru.utils import print_args
+from ru.utils import print_args, get_device
 from ru.utils import send_message, Severity
+from ru.read_until_client import RUClient
 
 
 _help = "Unblock all reads"
 _cli = BASE_ARGS
 
 
-def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
+def simple_analysis(client, duration, batch_size=512, throttle=0.1, unblock_duration=0.1):
     """Analysis function
 
     Parameters
     ----------
-    client : read_until.ReadUntilClient
+    client : read_until_api.ReadUntilClient
         An instance of the ReadUntilClient object
+    duration : int
+        Time to run for, in seconds
     batch_size : int
         The number of reads to be retrieved from the ReadUntilClient at a time
     throttle : int or float
@@ -44,10 +45,11 @@ def simple_analysis(client, batch_size=512, throttle=0.1, unblock_duration=0.1):
     -------
     None
     """
+    run_duration = time.time() + duration
     logger = logging.getLogger(__name__)
     send_message(client.connection, "ReadFish sending Unblock All Messages. All reads will be prematurely truncated. This will affect a live sequencing run.",
                  Severity.WARN)
-    while client.is_running:
+    while client.is_running and time.time() < run_duration:
 
         r = 0
         t0 = timer()
@@ -109,37 +111,31 @@ def run(parser, args):
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
 
-    read_until_client = read_until.ReadUntilClient(
-        mk_host=args.host,
-        mk_port=args.port,
-        device=args.device,
-        # one_chunk=args.one_chunk,
+    position = get_device(args.device)
+
+    read_until_client = RUClient(
+        mk_host=position.host,
+        mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        # TODO: test cache_type by passing a function here
-        cache_type=args.read_cache,
         cache_size=args.cache_size,
     )
 
-    analysis_worker = functools.partial(
-        simple_analysis,
-        client=read_until_client,
-        batch_size=args.batch_size,
-        throttle=args.throttle,
-        unblock_duration=args.unblock_duration,
+    read_until_client.run(
+        **{"first_channel": args.channels[0], "last_channel": args.channels[-1]}
     )
 
-    results = run_workflow(
-        client=read_until_client,
-        partial_analysis_func=analysis_worker,
-        n_workers=args.workers,
-        run_time=args.run_time,
-        runner_kwargs={
-            # "min_chunk_size": args.min_chunk_size,
-            "first_channel": args.channels[0],
-            "last_channel": args.channels[-1],
-        },
-    )
-    # No results returned
+    try:
+        simple_analysis(
+            client=read_until_client,
+            duration=args.run_time,
+            batch_size=args.batch_size,
+            throttle=args.throttle,
+            unblock_duration=args.unblock_duration,
+        )
+    except KeyboardInterrupt:
+        pass
+    finally:
+        read_until_client.reset()
 
 
 if __name__ == "__main__":

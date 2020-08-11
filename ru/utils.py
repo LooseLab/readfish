@@ -11,6 +11,8 @@ from enum import IntEnum
 
 from ru.channels import MINION_CHANNELS, FLONGLE_CHANNELS
 
+from minknow_api.manager import Manager
+
 
 class Severity(IntEnum):
     INFO = 1
@@ -589,6 +591,15 @@ def setup_logger(name, log_format="%(message)s", log_file=None, level=logging.DE
     logger.addHandler(handler)
 
     return logger
+
+
+def get_device(device, host="127.0.0.1", port=None, use_tls=False):
+    """Get an RPC connection from a device"""
+    manager = Manager(host=host, port=port, use_tls=use_tls)
+    for position in manager.flow_cell_positions():
+        if position.name == device:
+            return position
+    raise ValueError("Could not find device {!r}".format(device))
 
 
 if __name__ == "__main__":

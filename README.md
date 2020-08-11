@@ -7,15 +7,14 @@ at the end of this README. We have almost certainly missed some... so - if somet
 wrong, let us know so we can add you to the GOTCHA hall of fame!
 
 This is a Python3 package that integrates with the 
-[Read Until API](https://github.com/nanoporetech/read_until_api). However, we use 
-a slightly modified version - [Read Until API V2](https://github.com/looselab/read_until_api_v2).  
+[Read Until API](https://github.com/nanoporetech/read_until_api). 
 
 The Read Until API provides a mechanism for an application to connect to a
 MinKNOW server to obtain read data in real-time. The data can be analysed in the
 way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress and so direct sequencing capacity towards reads of interest.
 
-**This implementation of ReadFish requires Guppy version 3.4.5. and MinKNOW version core 3.6. It will not work on earlier versions and performance is not currently guranteed on later versions.** 
+**This implementation of ReadFish requires Guppy version 3.4.5. and MinKNOW version core 4.0.4. It will not work on earlier versions.** 
 
 **Guppy 3.4.5 is available from here https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_3.4.5_linux64.tar.gz **
 
@@ -33,11 +32,9 @@ Citation
 --------
 If you use this software please cite: [10.1101/2020.02.03.926956](https://dx.doi.org/10.1101/2020.02.03.926956)
 
-> Nanopore adaptive sequencing for mixed samples, whole exome capture and targeted panels 
->  
-> Alexander Payne, Nadine Holmes, Thomas Clarke, Rory Munro, Bisrat Debebe, Matthew Loose
-> 
->bioRxiv 2020.02.03.926956; doi: https://doi.org/10.1101/2020.02.03.926956
+> Nanopore adaptive sequencing for mixed samples, whole exome capture and targeted panels  
+> Alexander Payne, Nadine Holmes, Thomas Clarke, Rory Munro, Bisrat Debebe, Matthew Loose  
+> bioRxiv 2020.02.03.926956; doi: https://doi.org/10.1101/2020.02.03.926956
 
 Installation
 ------------
@@ -48,7 +45,7 @@ python3 -m venv readfish
 pip install --upgrade pip
 
 # Install our ReadFish Software
-pip install git+https://github.com/LooseLab/read_until_api_v2@master
+pip install git+https://github.com/nanoporetech/read_until_api
 pip install git+https://github.com/LooseLab/readfish@master
 ```
 

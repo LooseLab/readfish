@@ -1,7 +1,6 @@
 import argparse
 import sys
 
-import read_until_api_v2.read_cache as RC
 from ru.utils import nice_join
 
 # TODO: Add prefix parameter that is applied to all log files
@@ -22,15 +21,6 @@ DEFAULT_MIN_CHUNK = 2000
 DEFAULT_LOG_PREFIX = ""
 
 LOG_LEVELS = ("debug", "info", "warning", "error", "critical")
-READ_CACHE = RC.__all__
-
-if "ONTReadCache" in READ_CACHE:
-    DEFAULT_READ_CACHE = "ONTReadCache"
-else:
-    try:
-        DEFAULT_READ_CACHE = READ_CACHE[0]
-    except IndexError:
-        raise IndexError("No ReadCache classes found")
 
 BASE_ARGS = (
     (
@@ -65,18 +55,6 @@ BASE_ARGS = (
             type=str,
             help="Describe the experiment being run, enclose in quotes",
             required=True,
-        ),
-    ),
-    (
-        "--read-cache",
-        dict(
-            metavar="READ_CACHE",
-            action="store",
-            default=DEFAULT_READ_CACHE,
-            choices=READ_CACHE,
-            help="One of: {} (default: {})".format(
-                nice_join(READ_CACHE), DEFAULT_READ_CACHE
-            ),
         ),
     ),
     (
