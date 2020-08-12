@@ -19,8 +19,9 @@ class RUClient(ReadUntilClient):
 
         self.logger.setLevel(logging.INFO)
 
-        # Override ONT Cache
-        self.CacheType = AccumulatingReadCache
+        # We always want one_chunk to be False
+        self.one_chunk = False
+
         # Override signal_dtype
         self.signal_dtype = get_numpy_types(self.connection).uncalibrated_signal
 
