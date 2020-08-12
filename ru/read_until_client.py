@@ -1,4 +1,6 @@
+import logging
 import time
+import queue
 from collections import OrderedDict
 from collections.abc import MutableMapping
 from pathlib import Path
@@ -14,6 +16,8 @@ from read_until import ReadUntilClient
 class RUClient(ReadUntilClient):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.logger.setLevel(logging.INFO)
 
         # Override ONT Cache
         self.CacheType = AccumulatingReadCache
@@ -34,14 +38,69 @@ class RUClient(ReadUntilClient):
 
         self.logger.info("Processing")
 
+    def _runner(
+        self,
+        first_channel=1,
+        last_channel=512,
+        min_chunk_size=0,
+        action_batch=1000,
+        action_throttle=0.001,
+    ):
+        """Yield the stream initializer request followed by action requests
+        placed into the action_queue.
+        :param first_channel: lowest channel for which to receive raw data.
+        :param last_channel: highest channel (inclusive) for which to receive data.
+        :param min_chunk_size: minimum number of raw samples in a raw data chunk.
+        :param action_batch: maximum number of actions to batch in a single response.
+        """
+        self.logger.info(
+            "Sending init command, channels:{}-{}, min_chunk:{}".format(
+                first_channel, last_channel, min_chunk_size
+            )
+        )
+        yield self.msgs.GetLiveReadsRequest(
+            setup=self.msgs.GetLiveReadsRequest.StreamSetup(
+                first_channel=first_channel,
+                last_channel=last_channel,
+                raw_data_type=self.msgs.GetLiveReadsRequest.UNCALIBRATED,
+                sample_minimum_chunk_size=min_chunk_size,
+            )
+        )
+
+        t0 = time.time()
+        while self.is_running:
+            t0 = time.time()
+            # get as many items as we can up to the maximum, without blocking
+            actions = list()
+            for _ in range(action_batch):
+                try:
+                    action = self.action_queue.get_nowait()
+                except queue.Empty:
+                    break
+                else:
+                    actions.append(action)
+
+            n_actions = len(actions)
+            if n_actions > 0:
+                self.logger.debug("Sending {} actions.".format(n_actions))
+                action_group = self.msgs.GetLiveReadsRequest(
+                    actions=self.msgs.GetLiveReadsRequest.Actions(actions=actions)
+                )
+                yield action_group
+
+            # limit response interval
+            t1 = time.time()
+            if t0 + action_throttle > t1:
+                time.sleep(action_throttle + t0 - t1)
+        else:
+            self.logger.info("Reset signal received by action handler.")
+
     def unblock_read(self, read_channel, read_number, duration=0.1, read_id=None):
         super().unblock_read(
             read_channel=read_channel, read_number=read_number, duration=duration,
         )
         if read_id is not None:
             self.unblock_logger.debug(read_id)
-
-        # Log read id of unblocked read
 
 
 class AccumulatingReadCache(MutableMapping):
