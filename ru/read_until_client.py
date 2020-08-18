@@ -33,6 +33,7 @@ class RUClient(ReadUntilClient):
         self.queue_handler = QueueHandler(self.log_queue)
         self.unblock_logger = logging.getLogger("unblocks")
         self.unblock_logger.setLevel(logging.DEBUG)
+        self.unblock_logger.propagate = False
         self.unblock_logger.addHandler(self.queue_handler)
         fmt = logging.Formatter("%(message)s")
         self.file_handler = logging.FileHandler(
