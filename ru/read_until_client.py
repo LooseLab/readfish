@@ -29,6 +29,8 @@ class RUClient(ReadUntilClient):
             # running remotely, output in cwd
             self.mk_run_dir = "."
 
+        Path(self.mk_run_dir).mkdir(parents=True, exist_ok=True)
+
         self.log_queue = queue.Queue(-1)
         self.queue_handler = QueueHandler(self.log_queue)
         self.unblock_logger = logging.getLogger("unblocks")
