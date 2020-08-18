@@ -1,15 +1,14 @@
 import logging
-import time
 import queue
+import time
 from collections import OrderedDict
 from collections.abc import MutableMapping
+from logging.handlers import QueueHandler, QueueListener
 from pathlib import Path
 from threading import RLock
 
-from ru.utils import setup_logger
-
-from minknow_api.data import get_numpy_types
 from minknow_api.acquisition_pb2 import MinknowStatus
+from minknow_api.data import get_numpy_types
 from read_until import ReadUntilClient
 
 
@@ -17,7 +16,7 @@ class RUClient(ReadUntilClient):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.logger.setLevel(logging.INFO)
+        self.logger.disabled = True
 
         # We always want one_chunk to be False
         self.one_chunk = False
@@ -29,15 +28,22 @@ class RUClient(ReadUntilClient):
         if self.mk_host not in ("localhost", "127.0.0.1"):
             # running remotely, output in cwd
             self.mk_run_dir = "."
-        self.unblock_logger = setup_logger(
-            "unblocks",
-            log_file=str(Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt")),
+
+        self.log_queue = queue.Queue(-1)
+        self.queue_handler = QueueHandler(self.log_queue)
+        self.unblock_logger = logging.getLogger("unblocks")
+        self.unblock_logger.setLevel(logging.DEBUG)
+        self.unblock_logger.addHandler(self.queue_handler)
+        fmt = logging.Formatter("%(message)s")
+        self.file_handler = logging.FileHandler(
+            str(Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt"))
         )
+        self.file_handler.setFormatter(fmt)
+        self.listener = QueueListener(self.log_queue, self.file_handler)
+        self.listener.start()
 
         while self.connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
             time.sleep(1)
-
-        self.logger.info("Processing")
 
     def _runner(
         self,
