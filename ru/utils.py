@@ -87,10 +87,11 @@ def print_args(args, logger=None, exclude=None):
     m = max([len(a) for a in dirs if a[0] != '_'])
     for attr in dirs:
         if attr[0] != '_' and attr not in exclude and attr.lower() == attr:
+            record = "{a}={b}".format(a=attr, m=m, b=getattr(args, attr))
             if logger is not None:
-                logger.info("{a}={b}".format(a=attr, m=m, b=getattr(args, attr)))
+                logger.info(record)
             else:
-                print('{a:<{m}}\t{b}'.format(a=attr, m=m, b=getattr(args, attr)))
+                print(record)
 
 
 def get_coords(channel, flowcell_size):
@@ -539,7 +540,14 @@ def between(pos, coords):
     return min(coords) <= pos <= max(coords)
 
 
-def setup_logger(name, log_format="%(message)s", log_file=None, level=logging.DEBUG):
+def setup_logger(
+    name,
+    log_format="%(message)s",
+    log_file=None,
+    mode="a",
+    level=logging.DEBUG,
+    propagate=False,
+):
     """Setup loggers
 
     Parameters
@@ -550,17 +558,20 @@ def setup_logger(name, log_format="%(message)s", log_file=None, level=logging.DE
         logging format string using % formatting
     log_file : str
         File to record logs to, sys.stderr if not set
+    mode : str
+        Mode to use for FileHandler, default is 'a'
     level : logging.LEVEL
         Where logging.LEVEL is one of (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    propagate : bool
+        Pass through for logger.propagate, default is False
 
     Returns
     -------
     logger
     """
-    """Function setup as many loggers as you want"""
     formatter = logging.Formatter(log_format)
     if log_file is not None:
-        handler = logging.FileHandler(log_file, mode="w")
+        handler = logging.FileHandler(log_file, mode=mode)
     else:
         handler = logging.StreamHandler()
     handler.setFormatter(formatter)
@@ -568,7 +579,7 @@ def setup_logger(name, log_format="%(message)s", log_file=None, level=logging.DE
     logger = logging.getLogger(name)
     logger.setLevel(level)
     logger.addHandler(handler)
-
+    logger.propagate = propagate
     return logger
 
 

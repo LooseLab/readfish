@@ -8,15 +8,11 @@ edited to 0.2-0.4:
 (<MinKNOW_folder>/ont-python/lib/python2.7/site-packages/bream4/configuration)
 """
 # Core imports
-import concurrent.futures
 import functools
 import logging
 import sys
 import time
-import traceback
 from collections import defaultdict, deque, Counter
-from multiprocessing import TimeoutError
-from multiprocessing.pool import ThreadPool
 from pathlib import Path
 from timeit import default_timer as timer
 
@@ -45,38 +41,36 @@ _cli = BASE_ARGS + (
         "--paf-log",
         dict(
             help="PAF log",
-            default="paflog.log",
+            default=None,
         )
     ),
     (
         "--chunk-log",
         dict(
             help="Chunk log",
-            default="chunk_log.log",
+            default=None,
         )
     ),
 )
 
-class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
-    """ThreadPoolExecutor records only the text of an exception,
-    this class will give back a bit more."""
 
-    def submit(self, fn, *args, **kwargs):
-        """Submits the wrapped function instead of `fn`"""
-        return super(ThreadPoolExecutorStackTraced, self).submit(
-            self._function_wrapper, fn, *args, **kwargs
-        )
-
-    def _function_wrapper(self, fn, *args, **kwargs):
-        """Wraps `fn` in order to preserve the traceback of any kind of
-        raised exception
-
-        """
-        try:
-            return fn(*args, **kwargs)
-        except Exception:
-            raise sys.exc_info()[0](traceback.format_exc())
-
+CHUNK_LOG_FIELDS = (
+    "client_iteration",
+    "read_in_loop",
+    "read_id",
+    "channel",
+    "read_number",
+    "seq_len",
+    "counter",
+    "mode",
+    "decision",
+    "condition",
+    "min_threshold",
+    "count_threshold",
+    "start_analysis",
+    "end_analysis",
+    "timestamp",
+)
 
 def simple_analysis(
         client,
@@ -182,25 +176,7 @@ def simple_analysis(
     below_threshold = False
     exceeded_threshold = False
 
-    l_string = (
-        "client_iteration",
-        "read_in_loop",
-        "read_id",
-        "channel",
-        "read_number",
-        "seq_len",
-        "counter",
-        "mode",
-        "decision",
-        "condition",
-        "min_threshold",
-        "count_threshold",
-        "start_analysis",
-        "end_analysis",
-        "timestamp",
-    )
-    cl.debug("\t".join(l_string))
-    l_string = "\t".join(("{}" for _ in l_string))
+    l_string = "\t".join(("{}" for _ in CHUNK_LOG_FIELDS))
     loop_counter = 0
     while client.is_running:
         if live_toml_path.is_file():
@@ -376,74 +352,6 @@ def simple_analysis(
         logger.info("Finished analysis of reads as client stopped.")
 
 
-def run_workflow(client, analysis_worker, n_workers, run_time, runner_kwargs=None):
-    """Run an analysis function against a ReadUntilClient
-
-    Parameters
-    ----------
-    client : read_until.ReadUntilClient
-        An instance of the ReadUntilClient object
-    analysis_worker : partial function
-        Analysis function to process reads, should exit when client.is_running == False
-    n_workers : int
-        Number of analysis worker functions to run
-    run_time : int
-        Time, in seconds, to run the analysis for
-    runner_kwargs : dict
-        Keyword arguments to pass to client.run()
-
-    Returns
-    -------
-    list
-        Results from the analysis function, one item per worker
-
-    """
-    if runner_kwargs is None:
-        runner_kwargs = dict()
-
-    logger = logging.getLogger("Manager")
-
-    results = []
-    pool = ThreadPool(n_workers)
-    logger.info("Creating {} workers".format(n_workers))
-    try:
-        # start the client
-        client.run(**runner_kwargs)
-        # start a pool of workers
-        for _ in range(n_workers):
-            results.append(pool.apply_async(analysis_worker))
-        pool.close()
-        # wait a bit before closing down
-        time.sleep(run_time)
-        logger.info("Sending reset")
-        client.reset()
-        pool.join()
-    except KeyboardInterrupt:
-        logger.info("Caught ctrl-c, terminating workflow.")
-        client.reset()
-    except Exception as e:
-        logger.exception("Got exception", exc_info=e)
-        client.reset()
-        raise
-
-    # collect results (if any)
-    collected = []
-    for result in results:
-        try:
-            res = result.get(3)
-        except TimeoutError:
-            logger.warning("Worker function did not exit successfully.")
-            # collected.append(None)
-        except Exception as e:
-            logger.exception("EXCEPT", exc_info=e)
-            # logger.warning("Worker raise exception: {}".format(repr(e)))
-        else:
-            logger.info("Worker exited successfully.")
-            collected.append(res)
-    pool.terminate()
-    return collected
-
-
 def main():
     sys.exit(
         "This entry point is deprecated, please use 'readfish targets' instead"
@@ -451,33 +359,28 @@ def main():
 
 
 def run(parser, args):
-    # set up logging to file for DEBUG messages and above
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format="%(asctime)s %(name)s %(message)s",
-        filename=args.log_file,
-        filemode="w",
+    if args.chunk_log is not None:
+        chunk_log_exists = Path(args.chunk_log).is_file()
+        chunk_logger = setup_logger("chunk_log", log_file=args.chunk_log)
+        if not chunk_log_exists:
+            chunk_logger.debug("\t".join(CHUNK_LOG_FIELDS))
+    else:
+        chunk_logger = logging.getLogger("chunk_log")
+        chunk_logger.disabled = True
+
+    if args.paf_log is not None:
+        paf_logger = setup_logger("paf_log", log_file=args.paf_log)
+    else:
+        paf_logger = logging.getLogger("paf_log")
+        paf_logger.disabled = True
+
+    logger = setup_logger(
+        __name__, log_format=args.log_format, log_file=args.log_file, level=logging.INFO,
     )
-
-    # define a Handler that writes INFO messages or higher to the sys.stderr
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-
-    # set a format which is simpler for console use
-    formatter = logging.Formatter(args.log_format)
-    console.setFormatter(formatter)
-
-    # add the handler to the root logger
-    logging.getLogger("").addHandler(console)
-
-    # Start by logging sys.argv and the parameters used
-    logger = logging.getLogger("Manager")
+    if args.log_file is not None:
+        logger.addHandler(logging.StreamHandler())
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
-
-    # Setup chunk and paf logs
-    chunk_logger = setup_logger("DEC", log_file=args.chunk_log)
-    paf_logger = setup_logger("PAF", log_file=args.paf_log)
 
     # Parse configuration TOML
     # TODO: num_channels is not configurable here, should be inferred from client
