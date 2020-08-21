@@ -37,7 +37,9 @@ def _create_guppy_read(reads, signal_dtype):
     """
     for channel, read in reads:
         logging.info(read.id)
-        read_obj = GuppyRead(np.frombuffer(read.raw_data, dtype=signal_dtype), read.id, 0, 1)
+        read_obj = GuppyRead(
+            np.frombuffer(read.raw_data, dtype=signal_dtype), read.id, 0, 1
+        )
         yield channel, read.number, read_obj
 
 
@@ -87,17 +89,17 @@ class GuppyCaller(GuppyBasecallerClient):
             read_counter += 1
 
         while done < read_counter:
-            res = self._get_called_read()
+            res = self.pcl_client.get_completed_reads()
 
             if res is None:
                 continue
-
-            read, called = res
-
-            yield hold.pop(
-                read.read_id
-            ), read.read_id, called.seq, called.seqlen, called.qual
-            done += 1
+            reads, called = res
+            for r in reads:
+                r_id = r["metadata"]["read_id"]
+                yield hold.pop(r_id), r_id, r["datasets"]["sequence"], r["metadata"][
+                    "sequence_length"
+                ], r["datasets"]["qstring"]
+                done += 1
 
 
 class Mapper:
