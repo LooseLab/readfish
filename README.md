@@ -17,7 +17,7 @@ the read in progress and so direct sequencing capacity towards reads of interest
 
 **This implementation of ReadFish requires Guppy version 3.4.5. and MinKNOW version core 3.6. It will not work on earlier versions and performance is not currently guranteed on later versions.**
 
-**Update - 21/08/2020 - We currently have a pre-release version of ReadFish available which is compatible with MinKNOW 4.0 and Guppy 4. See the [PyPI](https://pypi.org/project/readfish/0.0.5a1/) page for installation instructions.** 
+**Update - 21/08/2020 - We currently have a pre-release version of ReadFish available which is compatible with MinKNOW 4.0 and Guppy 4. See the [PyPI](https://pypi.org/project/readfish/0.0.5a2/) page for installation instructions.** 
 
 **Guppy 3.4.5 is available from here https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_3.4.5_linux64.tar.gz **
 
