@@ -155,7 +155,7 @@ def simple_analysis(
     # count how often a read is seen
     tracker = defaultdict(Counter)
 
-    interval = 600  # time in seconds we are going to log a message #ToDo: set to be an interval
+    interval = 600  # time in seconds we are going to log a message #ToDo: set to be an interval or supressed
     interval_checker = timer()
 
 
