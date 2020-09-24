@@ -19,6 +19,124 @@ class Severity(IntEnum):
     WARN = 2
     ERROR = 3
 
+class DecisionEvent(IntEnum):
+    stop_receiving = 1
+    proceed = 2
+    unblock = 3
+    exceed_max_chunks_unblocked = 4
+
+class DecisionTracker():
+    """
+    This class will store a dictionary tracking the number of unique events that have occurred in a readuntil experiment.
+    Valid events are:
+    stop_receiving : read has been deliberately kept
+    proceed : more data is requested for a read
+    unblock : read has been unblocked as it isn't wanted
+    exceeded_max_chunks_unblocked : read has been unblocked as it could not be evaluated in time.
+    """
+    def __init__(self):
+        """
+        event_tracker is a dict to store events
+        """
+        self.event_tracker =  defaultdict(int)
+
+    def event_types(self):
+        """
+        Returns
+        -------
+        A list of valid event types.
+        """
+        return  ["stop_receiving","proceed","unblock","exceeded_max_chunks_unblocked"]
+
+    def event_end_types(self):
+        """
+        Returns
+        -------
+        A list of valid event end types.
+        """
+        return ["stop_receiving", "unblock", "exceeded_max_chunks_unblocked"]
+
+    def valid(self,event):
+        """
+        Check if the event seen is valid.
+        Parameters
+        ----------
+        event : A string event name #ToDo: change to an enum?
+
+        Returns
+        -------
+        True
+
+        """
+        if event in self.event_types():
+            return True
+
+
+    def event_seen(self,event):
+        """
+        Logs a specific unique event in the dict. Counts individual entries.
+        Parameters
+        ----------
+        event - event type -  one of stop_receiving, proceed, unblock or exceeded_max_chunks_unblocked
+
+        Returns
+        -------
+
+        """
+        if self.valid(event):
+            self.event_tracker[event]+=1
+
+    def fetch_all(self):
+        """
+        Helper method to return the entire dict.
+        Returns
+        -------
+
+        """
+        return self.event_tracker
+
+    def fetch_total_reads(self):
+        """
+        Calculates the total number of unique reads processed by readfish
+        Returns
+        -------
+        count
+
+        """
+        counter = 0
+        for event_type in self.event_end_types():
+            counter += self.event_tracker[event_type]
+        return counter
+
+    def fetch_unblocks(self):
+        """
+        Returns
+        -------
+        count of reads unblocked
+        """
+        return self.event_tracker["unblock"]
+
+    def fetch_stop_receiving(self):
+        """
+        Returns
+        -------
+        count of reads unblocked
+        """
+        return self.event_tracker["stop_receiving"]
+
+    def fetch_proportion_rejected(self):
+        """
+
+        Returns
+        -------
+        the proportion of reads unblocked.
+        """
+        return self.fetch_unblocks()/self.fetch_total_reads()*100
+
+    def fetch_proportion_accepted(self):
+        return self.fetch_stop_receiving()/self.fetch_total_reads()*100
+
+
 
 def send_message(rpc_connection, message, severity):
     """Send a message to MinKNOW
@@ -381,7 +499,6 @@ def describe_experiment(conditions, mapper):
     if mapper.initialised:
         yield "Using reference: {}".format(mapper.index), Severity.INFO
         seq_names = set(mapper.mapper.seq_names)
-
         for region in conditions:
             conds = {
                 "unblock": [],
@@ -391,8 +508,9 @@ def describe_experiment(conditions, mapper):
             for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
                 conds[getattr(region, m)].append(m)
             conds = {k: nice_join(v) for k, v in conds.items()}
+
             s = (
-                "Region '{}' (control={}) has {} target{} of which {} are in the reference. "
+                "Region '{}' (control={}) has {} contig{} of which {} are in the reference. "
                 "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
                 "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
                     region.name,
@@ -416,7 +534,7 @@ def describe_experiment(conditions, mapper):
                 conds[getattr(region, m)].append(m)
             conds = {k: nice_join(v) for k, v in conds.items()}
             s = (
-                "Region '{}' (control={}) has {} target{}. "
+                "Region '{}' (control={}) has {} contig{}. "
                 "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
                 "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
                     region.name,
@@ -426,6 +544,7 @@ def describe_experiment(conditions, mapper):
                     **conds,
                 )
             )
+
             yield s, Severity.WARN
 
 
