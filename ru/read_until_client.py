@@ -20,7 +20,9 @@ class RUClient(ReadUntilClient):
         # We always want one_chunk to be False
         self.one_chunk = False
 
-        self.mk_run_dir = self.connection.protocol.get_current_protocol_run().output_path
+        self.mk_run_dir = (
+            self.connection.protocol.get_current_protocol_run().output_path
+        )
         if self.mk_host not in ("localhost", "127.0.0.1"):
             # running remotely, output in cwd
             self.mk_run_dir = "."
@@ -41,7 +43,10 @@ class RUClient(ReadUntilClient):
         self.listener = QueueListener(self.log_queue, self.file_handler)
         self.listener.start()
 
-        while self.connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
+        while (
+            self.connection.acquisition.current_status().status
+            != MinknowStatus.PROCESSING
+        ):
             time.sleep(1)
 
     def unblock_read(self, read_channel, read_number, duration=0.1, read_id=None):
