@@ -21,9 +21,8 @@ import toml
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers.polling import PollingObserver as Observer
 
-from ru.arguments import get_parser
-from ru.utils import nice_join, print_args, send_message, Severity
-from read_until_api_v2.load_minknow_rpc import get_rpc_connection, parse_message
+from ru.utils import nice_join, print_args, send_message, Severity, get_device
+from minknow_api.acquisition_pb2 import MinknowStatus
 
 
 DEFAULT_SERVER_HOST = "127.0.0.1"
@@ -378,7 +377,7 @@ def run(parser, args):
         args.simulation = False
         logger.info("Creating rpc connection for device {}.".format(args.device))
         try:
-            connection, messageport = get_rpc_connection(args.device)
+            connection = get_device(args.device).connect()
         except ValueError as e:
             print(e)
             sys.exit(1)
@@ -386,10 +385,10 @@ def run(parser, args):
         send_message(connection, "Iteralign Connected to MinKNOW", Severity.WARN)
 
         logger.info("Loaded RPC")
-        while parse_message(connection.acquisition.current_status())['status'] != "PROCESSING":
+        while connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
             time.sleep(1)
         #### Check if we know where data is being written to , if not... wait
-        args.watch = parse_message(connection.acquisition.get_acquisition_info())['config_summary']['reads_directory']
+        args.watch = connection.acquisition.get_acquisition_info().config_summary.reads_directory
 
     else:
         messageport = ""

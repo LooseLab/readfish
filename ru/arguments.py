@@ -1,7 +1,6 @@
 import argparse
 import sys
 
-import read_until_api_v2.read_cache as RC
 from ru.utils import nice_join
 
 # TODO: Add prefix parameter that is applied to all log files
@@ -17,20 +16,12 @@ DEFAULT_RUN_TIME = 172800
 DEFAULT_UNBLOCK = 0.1
 DEFAULT_CACHE_SIZE = 512
 DEFAULT_BATCH_SIZE = 512
-DEFAULT_THROTTLE = 0.1
+DEFAULT_THROTTLE = 0.4
+DEFAULT_ACTION_THROTTLE = 0.4
 DEFAULT_MIN_CHUNK = 2000
 DEFAULT_LOG_PREFIX = ""
 
 LOG_LEVELS = ("debug", "info", "warning", "error", "critical")
-READ_CACHE = RC.__all__
-
-if "ONTReadCache" in READ_CACHE:
-    DEFAULT_READ_CACHE = "ONTReadCache"
-else:
-    try:
-        DEFAULT_READ_CACHE = READ_CACHE[0]
-    except IndexError:
-        raise IndexError("No ReadCache classes found")
 
 BASE_ARGS = (
     (
@@ -68,17 +59,16 @@ BASE_ARGS = (
         ),
     ),
     (
-        "--read-cache",
+        "--action-throttle",
         dict(
-            metavar="READ_CACHE",
-            action="store",
-            default=DEFAULT_READ_CACHE,
-            choices=READ_CACHE,
-            help="One of: {} (default: {})".format(
-                nice_join(READ_CACHE), DEFAULT_READ_CACHE
-            ),
+            metavar="ACTION_THROTTLE",
+            type=float,
+            help="Frequency that actions are sent to MinKNOW, "
+                 "seconds. (default: {})".format(DEFAULT_ACTION_THROTTLE),
+            default=DEFAULT_ACTION_THROTTLE,
         ),
     ),
+    # TODO: delete workers
     (
         "--workers",
         dict(

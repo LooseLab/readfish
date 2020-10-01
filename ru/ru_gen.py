@@ -8,27 +8,23 @@ edited to 0.2-0.4:
 (<MinKNOW_folder>/ont-python/lib/python2.7/site-packages/bream4/configuration)
 """
 # Core imports
-import concurrent.futures
 import functools
 import logging
 import sys
 import time
-import traceback
 from collections import defaultdict, deque, Counter
-from multiprocessing import TimeoutError
-from multiprocessing.pool import ThreadPool
 from pathlib import Path
 from timeit import default_timer as timer
 
 # Third party imports
-import read_until_api_v2 as read_until
+from ru.read_until_client import RUClient
 import toml
 
-from ru.arguments import get_parser, BASE_ARGS
+from ru.arguments import BASE_ARGS
 from ru.basecall import Mapper as CustomMapper
 from ru.basecall import GuppyCaller as Caller
 from ru.utils import print_args, get_run_info, between, setup_logger, describe_experiment
-from ru.utils import send_message, Severity
+from ru.utils import send_message, Severity, get_device, DecisionTracker
 
 
 _help = "Run targeted sequencing"
@@ -45,38 +41,36 @@ _cli = BASE_ARGS + (
         "--paf-log",
         dict(
             help="PAF log",
-            default="paflog.log",
+            default=None,
         )
     ),
     (
         "--chunk-log",
         dict(
             help="Chunk log",
-            default="chunk_log.log",
+            default=None,
         )
     ),
 )
 
-class ThreadPoolExecutorStackTraced(concurrent.futures.ThreadPoolExecutor):
-    """ThreadPoolExecutor records only the text of an exception,
-    this class will give back a bit more."""
 
-    def submit(self, fn, *args, **kwargs):
-        """Submits the wrapped function instead of `fn`"""
-        return super(ThreadPoolExecutorStackTraced, self).submit(
-            self._function_wrapper, fn, *args, **kwargs
-        )
-
-    def _function_wrapper(self, fn, *args, **kwargs):
-        """Wraps `fn` in order to preserve the traceback of any kind of
-        raised exception
-
-        """
-        try:
-            return fn(*args, **kwargs)
-        except Exception:
-            raise sys.exc_info()[0](traceback.format_exc())
-
+CHUNK_LOG_FIELDS = (
+    "client_iteration",
+    "read_in_loop",
+    "read_id",
+    "channel",
+    "read_number",
+    "seq_len",
+    "counter",
+    "mode",
+    "decision",
+    "condition",
+    "min_threshold",
+    "count_threshold",
+    "start_analysis",
+    "end_analysis",
+    "timestamp",
+)
 
 def simple_analysis(
         client,
@@ -141,15 +135,18 @@ def simple_analysis(
     for k, v in run_info.items():
         d["conditions"][str(v)]["channels"].append(k)
 
-    channels_out = str(client.mk_run_dir / "channels.toml")
+    channels_out = str(Path(client.mk_run_dir) / "channels.toml")
     with open(channels_out, "w") as fh:
         fh.write("# This file is written as a record of the condition each channel is assigned.\n")
         fh.write("# It may be changed or overwritten if you restart ReadFish.\n")
         fh.write("# In the future this file may become a CSV file.\n")
         toml.dump(d, fh)
 
+
     caller = Caller(**caller_kwargs)
     # What if there is no reference or an empty MMI
+
+    decisiontracker = DecisionTracker()
 
     # DefaultDict[int: collections.deque[Tuple[str, ndarray]]]
     #  tuple is (read_id, previous_signal)
@@ -157,6 +154,11 @@ def simple_analysis(
     previous_signal = defaultdict(functools.partial(deque, maxlen=1))
     # count how often a read is seen
     tracker = defaultdict(Counter)
+
+    interval = 600  # time in seconds we are going to log a message #ToDo: set to be an interval or supressed
+    interval_checker = timer()
+
+
     # decided
     decided_reads = {}
     strand_converter = {1: "+", -1: "-"}
@@ -182,25 +184,7 @@ def simple_analysis(
     below_threshold = False
     exceeded_threshold = False
 
-    l_string = (
-        "client_iteration",
-        "read_in_loop",
-        "read_id",
-        "channel",
-        "read_number",
-        "seq_len",
-        "counter",
-        "mode",
-        "decision",
-        "condition",
-        "min_threshold",
-        "count_threshold",
-        "start_analysis",
-        "end_analysis",
-        "timestamp",
-    )
-    cl.debug("\t".join(l_string))
-    l_string = "\t".join(("{}" for _ in l_string))
+    l_string = "\t".join(("{}" for _ in CHUNK_LOG_FIELDS))
     loop_counter = 0
     while client.is_running:
         if live_toml_path.is_file():
@@ -235,12 +219,10 @@ def simple_analysis(
         loop_counter += 1
         t0 = timer()
         r = 0
-
         for read_info, read_id, seq_len, results in mapper.map_reads_2(
                 caller.basecall_minknow(
                     reads=client.get_read_chunks(batch_size=batch_size, last=True),
                     signal_dtype=client.signal_dtype,
-                    prev_signal=previous_signal,
                     decided_reads=decided_reads,
                 )
         ):
@@ -342,7 +324,9 @@ def simple_analysis(
             # If max_chunks has been exceeded AND we don't want to keep sequencing we unblock
             if exceeded_threshold and decision_str != "stop_receiving":
                 mode = "exceeded_max_chunks_unblocked"
+                decisiontracker.event_seen(mode)
                 client.unblock_read(channel, read_number, unblock_duration, read_id)
+
 
             # TODO: WHAT IS GOING ON?!
             #  I think that this needs to change between enrichment and depletion
@@ -356,11 +340,13 @@ def simple_analysis(
             }:
                 mode = "below_min_chunks_unblocked"
                 client.unblock_read(channel, read_number, unblock_duration, read_id)
+                decisiontracker.event_seen(decision_str)
 
             # proceed returns None, so we send no decision; otherwise unblock or stop_receiving
             elif decision is not None:
                 decided_reads[channel] = read_id
                 decision(channel, read_number)
+                decisiontracker.event_seen(decision_str)
 
             log_decision()
 
@@ -371,78 +357,15 @@ def simple_analysis(
         # limit the rate at which we make requests
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
+
+        if interval_checker + interval < t1:
+            interval_checker = t1
+            send_message(client.connection, "ReadFish Stats - accepted {:.2f}% of {} total reads. Unblocked {} reads.".format(decisiontracker.fetch_proportion_accepted(),decisiontracker.fetch_total_reads(), decisiontracker.fetch_unblocks()), Severity.INFO)
+
     else:
         send_message(client.connection, "ReadFish Client Stopped.", Severity.WARN)
         caller.disconnect()
         logger.info("Finished analysis of reads as client stopped.")
-
-
-def run_workflow(client, analysis_worker, n_workers, run_time, runner_kwargs=None):
-    """Run an analysis function against a ReadUntilClient
-
-    Parameters
-    ----------
-    client : read_until.ReadUntilClient
-        An instance of the ReadUntilClient object
-    analysis_worker : partial function
-        Analysis function to process reads, should exit when client.is_running == False
-    n_workers : int
-        Number of analysis worker functions to run
-    run_time : int
-        Time, in seconds, to run the analysis for
-    runner_kwargs : dict
-        Keyword arguments to pass to client.run()
-
-    Returns
-    -------
-    list
-        Results from the analysis function, one item per worker
-
-    """
-    if runner_kwargs is None:
-        runner_kwargs = dict()
-
-    logger = logging.getLogger("Manager")
-
-    results = []
-    pool = ThreadPool(n_workers)
-    logger.info("Creating {} workers".format(n_workers))
-    try:
-        # start the client
-        client.run(**runner_kwargs)
-        # start a pool of workers
-        for _ in range(n_workers):
-            results.append(pool.apply_async(analysis_worker))
-        pool.close()
-        # wait a bit before closing down
-        time.sleep(run_time)
-        logger.info("Sending reset")
-        client.reset()
-        pool.join()
-    except KeyboardInterrupt:
-        logger.info("Caught ctrl-c, terminating workflow.")
-        client.reset()
-    except Exception as e:
-        logger.exception("Got exception", exc_info=e)
-        client.reset()
-        raise
-
-    # collect results (if any)
-    collected = []
-    for result in results:
-        try:
-            res = result.get(3)
-        except TimeoutError:
-            logger.warning("Worker function did not exit successfully.")
-            # collected.append(None)
-        except Exception as e:
-            logger.exception("EXCEPT", exc_info=e)
-            # logger.warning("Worker raise exception: {}".format(repr(e)))
-        else:
-            logger.info("Worker exited successfully.")
-            collected.append(res)
-    pool.terminate()
-    return collected
 
 
 def main():
@@ -452,33 +375,30 @@ def main():
 
 
 def run(parser, args):
-    # set up logging to file for DEBUG messages and above
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format="%(asctime)s %(name)s %(message)s",
-        filename=args.log_file,
-        filemode="w",
+    if args.chunk_log is not None:
+        chunk_log_exists = Path(args.chunk_log).is_file()
+        chunk_logger = setup_logger("chunk_log", log_file=args.chunk_log)
+        if not chunk_log_exists:
+            chunk_logger.debug("\t".join(CHUNK_LOG_FIELDS))
+    else:
+        chunk_logger = logging.getLogger("chunk_log")
+        chunk_logger.disabled = True
+
+    if args.paf_log is not None:
+        paf_logger = setup_logger("paf_log", log_file=args.paf_log)
+    else:
+        paf_logger = logging.getLogger("paf_log")
+        paf_logger.disabled = True
+
+    logger = setup_logger(
+        __name__, log_format=args.log_format, log_file=args.log_file, level=logging.INFO,
     )
-
-    # define a Handler that writes INFO messages or higher to the sys.stderr
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-
-    # set a format which is simpler for console use
-    formatter = logging.Formatter(args.log_format)
-    console.setFormatter(formatter)
-
-    # add the handler to the root logger
-    logging.getLogger("").addHandler(console)
-
-    # Start by logging sys.argv and the parameters used
-    logger = logging.getLogger("Manager")
+    if args.log_file is not None:
+        h = logging.StreamHandler()
+        h.setFormatter(logging.Formatter(args.log_format))
+        logger.addHandler(h)
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
-
-    # Setup chunk and paf logs
-    chunk_logger = setup_logger("DEC", log_file=args.chunk_log)
-    paf_logger = setup_logger("PAF", log_file=args.paf_log)
 
     # Parse configuration TOML
     # TODO: num_channels is not configurable here, should be inferred from client
@@ -490,14 +410,12 @@ def run(parser, args):
     mapper = CustomMapper(reference)
     logger.info("Mapper initialised")
 
-    read_until_client = read_until.ReadUntilClient(
-        mk_host=args.host,
-        mk_port=args.port,
-        device=args.device,
-        # one_chunk=args.one_chunk,
+    position = get_device(args.device,host=args.host)
+
+    read_until_client = RUClient(
+        mk_host=position.host,
+        mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        # TODO: test cache_type by passing a function here
-        cache_type=args.read_cache,
         cache_size=args.cache_size,
     )
 
@@ -527,33 +445,32 @@ def run(parser, args):
 
     # FIXME: currently flowcell size is not included, this should be pulled from
     #  the read_until_client
-    analysis_worker = functools.partial(
-        simple_analysis,
-        read_until_client,
-        unblock_duration=args.unblock_duration,
-        throttle=args.throttle,
-        batch_size=args.batch_size,
-        cl=chunk_logger,
-        pf=paf_logger,
-        live_toml_path=live_toml,
-        dry_run=args.dry_run,
-        run_info=run_info,
-        conditions=conditions,
-        mapper=mapper,
-        caller_kwargs=caller_kwargs,
+
+    read_until_client.run(
+      first_channel=args.channels[0],
+      last_channel=args.channels[-1],
+      action_throttle=args.action_throttle,
     )
 
-    results = run_workflow(
-        read_until_client,
-        analysis_worker,
-        args.workers,
-        args.run_time,
-        runner_kwargs={
-            # "min_chunk_size": args.min_chunk_size,
-            "first_channel": min(args.channels),
-            "last_channel": max(args.channels),
-        },
-    )
+    try:
+        simple_analysis(
+            read_until_client,
+            unblock_duration=args.unblock_duration,
+            throttle=args.throttle,
+            batch_size=args.batch_size,
+            cl=chunk_logger,
+            pf=paf_logger,
+            live_toml_path=live_toml,
+            dry_run=args.dry_run,
+            run_info=run_info,
+            conditions=conditions,
+            mapper=mapper,
+            caller_kwargs=caller_kwargs,
+        )
+    except KeyboardInterrupt:
+        pass
+    finally:
+        read_until_client.reset()
 
     # No results returned
     send_message(
