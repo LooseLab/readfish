@@ -14,7 +14,9 @@ MinKNOW server to obtain read data in real-time. The data can be analysed in the
 way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress and so direct sequencing capacity towards reads of interest.
 
+
 **This implementation of ReadFish requires Guppy version >= 4.0.11 and MinKNOW version core >= 4.0.4 . It will not work on earlier versions.** 
+
 
 **Currently we only recommend LINUX for running ReadFish. We have not had 
 effective performance on other platforms to date.**
