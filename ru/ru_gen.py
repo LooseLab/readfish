@@ -145,7 +145,10 @@ def simple_analysis(
         fh.write("# In the future this file may become a CSV file.\n")
         toml.dump(d, fh)
 
-    caller = Caller(**caller_kwargs)
+    caller = Caller(
+        address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
+        config=caller_kwargs["config_name"],
+    )
     # What if there is no reference or an empty MMI
 
     decisiontracker = DecisionTracker()

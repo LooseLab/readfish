@@ -4,51 +4,40 @@ Extension of pyguppy Caller that maintains a connection to the basecaller
 
 """
 import logging
+import time
+from collections import namedtuple
 
 import mappy as mp
 import numpy as np
 
-from pyguppyclient.client import GuppyBasecallerClient
-from pyguppyclient.decode import ReadData as GuppyRead
-
+from pyguppy_client_lib.pyclient import PyGuppyClient
+from pyguppy_client_lib.helper_functions import package_read
 
 __all__ = ["GuppyCaller"]
 
 logger = logging.getLogger("RU_basecaller")
+CALIBRATION = namedtuple("calibration", "scaling offset")
 
 
-def _create_guppy_read(reads, signal_dtype):
-    """Convert a read from MinKNOW RPC to GuppyRead
+class DefaultDAQValues:
+    """Provides default calibration values
 
-    Parameters
-    ----------
-    reads : List[Tuple[int, minknow.rpc.read]]
-        List of Tuple, containing (channel, read)
-    signal_dtype : np.dtype
-        A dtype that can be used by numpy to convert the raw data
-    previous_signal : dict
-        Dict containing previous signal segments
-
-    Yields
-    ------
-    channel : int
-    read_number : int
-    GuppyRead
+    Mimics the read_until_api calibration dict value from
+    https://github.com/nanoporetech/read_until_api/blob/2319bbe80889a17c4b38dc9cdb45b59558232a7e/read_until/base.py#L34
+    all keys return scaling=1.0 and offset=0.0
     """
-    for channel, read in reads:
-        logging.info(read.id)
-        read_obj = GuppyRead(
-            np.frombuffer(read.raw_data, dtype=signal_dtype), read.id, 0, 1
-        )
-        yield channel, read.number, read_obj
+    calibration = CALIBRATION(1.0, 0.0)
+
+    def __getitem__(self, _):
+        return self.calibration
 
 
-class GuppyCaller(GuppyBasecallerClient):
+class GuppyCaller(PyGuppyClient):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.connect()
 
-    def basecall_minknow(self, reads, signal_dtype, decided_reads):
+    def basecall_minknow(self, reads, signal_dtype, decided_reads, daq_values=None):
         """Guppy basecaller wrapper for MinKNOW RPC reads
 
         Parameters
@@ -57,10 +46,11 @@ class GuppyCaller(GuppyBasecallerClient):
             List or generator of tuples containing (channel, MinKNOW.rpc.Read)
         signal_dtype
             Numpy dtype of the raw data
-        prev_signal : DefaultDict[int: collections.deque[Tuple[str, np.ndarray]]]
-            Dictionary of previous signal fragment from a channel
         decided_reads : Dict[int: str]
             Dictionary of channels with the last read id a decision was made for
+        daq_values : Dict[int: namedtuple]
+            Dictionary of channels with namedtuples containing offset and scaling.
+            If not provided default values of 1.0 and 0.0 are used
 
         Yields
         ------
@@ -71,34 +61,51 @@ class GuppyCaller(GuppyBasecallerClient):
         sequence_length : int
         quality : str
         """
+        hold = {}
         done = 0
         read_counter = 0
 
-        hold = {}
-        for channel, read_number, read in _create_guppy_read(reads, signal_dtype):
-            if read.read_id == decided_reads.get(channel, ""):
-                continue
+        if daq_values is None:
+            daq_values = DefaultDAQValues()
 
-            hold[read.read_id] = (channel, read_number)
-            try:
-                self.pass_read(read)
-            except Exception as e:
-                logger.warning("Skipping read: {} due to {}".format(read.read_id, e))
-                hold.pop(read.read_id)
+        for channel, read in reads:
+            hold[read.id] = (channel, read.number)
+            t0 = time.time()
+            success = self.pass_read(
+                package_read(
+                    read_id=read.id,
+                    raw_data=np.frombuffer(read.raw_data, signal_dtype),
+                    daq_offset=daq_values[channel].offset,
+                    daq_scaling=daq_values[channel].scaling,
+                )
+            )
+            if not success:
+                logging.warning("Skipped a read: {}".format(read.id))
+                hold.pop(read.id)
                 continue
-            read_counter += 1
+            else:
+                read_counter += 1
+
+            sleep_time = self.throttle - t0
+            if sleep_time > 0:
+                time.sleep(sleep_time)
 
         while done < read_counter:
-            res = self.pcl_client.get_completed_reads()
+            results = self.get_completed_reads()
 
-            if res is None:
+            if not results:
+                time.sleep(self.throttle)
                 continue
-            reads, called = res
-            for r in reads:
+
+            for r in results:
                 r_id = r["metadata"]["read_id"]
-                yield hold.pop(r_id), r_id, r["datasets"]["sequence"], r["metadata"][
-                    "sequence_length"
-                ], r["datasets"]["qstring"]
+                yield (
+                    hold.pop(r_id),
+                    r_id,
+                    r["datasets"]["sequence"],
+                    r["metadata"]["sequence_length"],
+                    r["datasets"]["qstring"]
+                )
                 done += 1
 
 
