@@ -33,7 +33,6 @@ DEFAULT_CORES = 2
 
 _help = "ReadFish and Run Until, using minimap2"
 _cli = BASE + (
-
     (
         "--watch",
         dict(
@@ -46,7 +45,9 @@ _cli = BASE + (
         "--percent",
         dict(
             metavar="PERCENT",
-            help="Default percent of target covered at given depth (default {})".format(DEFAULT_PERCENTAGE_COVERED),
+            help="Default percent of target covered at given depth (default {})".format(
+                DEFAULT_PERCENTAGE_COVERED
+            ),
             default=DEFAULT_PERCENTAGE_COVERED,
             type=float,
         ),
@@ -64,7 +65,9 @@ _cli = BASE + (
         "--threads",
         dict(
             metavar="THREADS",
-            help="Set the number of default threads to use for threaded tasks (default {})".format(DEFAULT_CORES),
+            help="Set the number of default threads to use for threaded tasks (default {})".format(
+                DEFAULT_CORES
+            ),
             default=DEFAULT_CORES,
             type=int,
         ),
@@ -72,13 +75,8 @@ _cli = BASE + (
 )
 
 
-
-
-
 def main():
-    sys.exit(
-        "This entry point is deprecated, please use 'readfish align' instead"
-    )
+    sys.exit("This entry point is deprecated, please use 'readfish align' instead")
 
 
 def run(parser, args):
@@ -88,21 +86,23 @@ def run(parser, args):
 
     # TODO: Move logging config to separate configuration file
     # set up logging to file
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(levelname)s::%(asctime)s::%(name)s::%(message)s',
-                        filename=args.log_file,
-                        filemode='w')
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(levelname)s::%(asctime)s::%(name)s::%(message)s",
+        filename=args.log_file,
+        filemode="w",
+    )
 
     # define a Handler that writes INFO messages or higher to the sys.stderr
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)
 
     # set a format which is simpler for console use
-    formatter = logging.Formatter('%(name)-15s: %(levelname)-8s %(message)s')
+    formatter = logging.Formatter("%(name)-15s: %(levelname)-8s %(message)s")
     console.setFormatter(formatter)
 
     # add the handler to the root logger
-    logging.getLogger('').addHandler(console)
+    logging.getLogger("").addHandler(console)
 
     # Start by logging sys.argv and the parameters used
     logger = logging.getLogger("Manager")
@@ -128,20 +128,25 @@ def run(parser, args):
         send_message(connection, "Iteralign Connected to MinKNOW", Severity.WARN)
 
         logger.info("Loaded RPC")
-        while connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
+        while (
+            connection.acquisition.current_status().status != MinknowStatus.PROCESSING
+        ):
             time.sleep(1)
         #### Check if we know where data is being written to , if not... wait
-        args.watch = connection.acquisition.get_acquisition_info().config_summary.reads_directory
+        args.watch = (
+            connection.acquisition.get_acquisition_info().config_summary.reads_directory
+        )
 
     ### Here we configure the code to run either iteralign or itercent. If centrifuge is False it will run iteralign.
-    event_handler = FastQMonitor(args, connection, centrifuge=False, mapper=True,rununtil=True)
+    event_handler = FastQMonitor(
+        args, connection, centrifuge=False, mapper=True, rununtil=True
+    )
 
     # This block handles the fastq
     observer = Observer()
-    print (args.watch)
+    print(args.watch)
     observer.schedule(event_handler, path=args.watch, recursive=True)
     observer.daemon = True
-
 
     try:
 
@@ -162,5 +167,3 @@ def run(parser, args):
         observer.join()
 
         os._exit(0)
-
-

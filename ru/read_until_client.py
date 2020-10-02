@@ -24,7 +24,9 @@ class RUClient(ReadUntilClient):
         # Override signal_dtype
         self.signal_dtype = get_numpy_types(self.connection).uncalibrated_signal
 
-        self.mk_run_dir = self.connection.protocol.get_current_protocol_run().output_path
+        self.mk_run_dir = (
+            self.connection.protocol.get_current_protocol_run().output_path
+        )
         if self.mk_host not in ("localhost", "127.0.0.1"):
             # running remotely, output in cwd
             self.mk_run_dir = "."
@@ -45,7 +47,10 @@ class RUClient(ReadUntilClient):
         self.listener = QueueListener(self.log_queue, self.file_handler)
         self.listener.start()
 
-        while self.connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
+        while (
+            self.connection.acquisition.current_status().status
+            != MinknowStatus.PROCESSING
+        ):
             time.sleep(1)
 
     def _runner(
@@ -107,7 +112,9 @@ class RUClient(ReadUntilClient):
 
     def unblock_read(self, read_channel, read_number, duration=0.1, read_id=None):
         super().unblock_read(
-            read_channel=read_channel, read_number=read_number, duration=duration,
+            read_channel=read_channel,
+            read_number=read_number,
+            duration=duration,
         )
         if read_id is not None:
             self.unblock_logger.debug(read_id)
