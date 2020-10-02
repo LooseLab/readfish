@@ -54,7 +54,9 @@ class RUClient(ReadUntilClient):
 
     def unblock_read(self, read_channel, read_number, duration=0.1, read_id=None):
         super().unblock_read(
-            read_channel=read_channel, read_number=read_number, duration=duration,
+            read_channel=read_channel,
+            read_number=read_number,
+            duration=duration,
         )
         if read_id is not None:
             self.unblock_logger.debug(read_id)

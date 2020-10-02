@@ -39,8 +39,20 @@ _cli = BASE_ARGS + (
             help="TOML file specifying experimental parameters",
         ),
     ),
-    ("--paf-log", dict(help="PAF log", default=None,)),
-    ("--chunk-log", dict(help="Chunk log", default=None,)),
+    (
+        "--paf-log",
+        dict(
+            help="PAF log",
+            default=None,
+        ),
+    ),
+    (
+        "--chunk-log",
+        dict(
+            help="Chunk log",
+            default=None,
+        ),
+    ),
 )
 
 
@@ -457,7 +469,9 @@ def run(parser, args):
         logger.info(message)
 
         send_message(
-            read_until_client.connection, message, sev,
+            read_until_client.connection,
+            message,
+            sev,
         )
 
     """

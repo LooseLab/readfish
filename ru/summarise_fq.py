@@ -14,49 +14,60 @@ import mappy as mp
 
 _help = "Summary stats from FASTQ files"
 _cli = (
-    ("toml", dict(help="TOML configuration file"),),
-    ("dir", dict(help="Called files from the ReadFish experiment"),),
+    (
+        "toml",
+        dict(help="TOML configuration file"),
+    ),
+    (
+        "dir",
+        dict(help="Called files from the ReadFish experiment"),
+    ),
 )
 
 
-def readfq(fp): # this is a generator function
+def readfq(fp):  # this is a generator function
     """Read FASTA/Q records from file handle
     https://github.com/lh3/readfq/blob/091bc699beee3013491268890cc3a7cbf995435b/readfq.py
     """
-    last = None # this is a buffer keeping the last unprocessed line
-    while True: # mimic closure; is it a bad idea?
-        if not last: # the first record or a record following a fastq
-            for l in fp: # search for the start of the next record
-                if l[0] in '>@': # fasta/q header line
-                    last = l[:-1] # save this line
+    last = None  # this is a buffer keeping the last unprocessed line
+    while True:  # mimic closure; is it a bad idea?
+        if not last:  # the first record or a record following a fastq
+            for l in fp:  # search for the start of the next record
+                if l[0] in ">@":  # fasta/q header line
+                    last = l[:-1]  # save this line
                     break
-        if not last: break
+        if not last:
+            break
         name, seqs, last = last[1:].partition(" ")[0], [], None
-        for l in fp: # read the sequence
-            if l[0] in '@+>':
+        for l in fp:  # read the sequence
+            if l[0] in "@+>":
                 last = l[:-1]
                 break
             seqs.append(l[:-1])
-        if not last or last[0] != '+': # this is a fasta record
-            yield name, ''.join(seqs), None # yield a fasta record
-            if not last: break
-        else: # this is a fastq record
-            seq, leng, seqs = ''.join(seqs), 0, []
-            for l in fp: # read the quality
+        if not last or last[0] != "+":  # this is a fasta record
+            yield name, "".join(seqs), None  # yield a fasta record
+            if not last:
+                break
+        else:  # this is a fastq record
+            seq, leng, seqs = "".join(seqs), 0, []
+            for l in fp:  # read the quality
                 seqs.append(l[:-1])
                 leng += len(l) - 1
-                if leng >= len(seq): # have read enough quality
+                if leng >= len(seq):  # have read enough quality
                     last = None
-                    yield name, seq, ''.join(seqs); # yield a fastq record
+                    yield name, seq, "".join(seqs)
+                    # yield a fastq record
                     break
-            if last: # reach EOF before reading enough quality
-                yield name, seq, None # yield a fasta record instead
+            if last:  # reach EOF before reading enough quality
+                yield name, seq, None  # yield a fasta record instead
                 break
 
 
 def get_fq(directory):
     types = ([".fastq"], [".fastq", ".gz"], [".fq"], [".fq", ".gz"])
-    files = (str(p.resolve()) for p in Path(directory).glob("**/*") if p.suffixes in types)
+    files = (
+        str(p.resolve()) for p in Path(directory).glob("**/*") if p.suffixes in types
+    )
     yield from files
 
 
@@ -76,9 +87,7 @@ def N50(arr):
 
 
 def main():
-    sys.exit(
-       "This entry point is deprecated, please use 'readfish summary' instead"
-    )
+    sys.exit("This entry point is deprecated, please use 'readfish summary' instead")
 
 
 def run(parser, args):

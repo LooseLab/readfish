@@ -26,6 +26,7 @@ class DefaultDAQValues:
     https://github.com/nanoporetech/read_until_api/blob/2319bbe80889a17c4b38dc9cdb45b59558232a7e/read_until/base.py#L34
     all keys return scaling=1.0 and offset=0.0
     """
+
     calibration = CALIBRATION(1.0, 0.0)
 
     def __getitem__(self, _):
@@ -104,7 +105,7 @@ class GuppyCaller(PyGuppyClient):
                     r_id,
                     r["datasets"]["sequence"],
                     r["metadata"]["sequence_length"],
-                    r["datasets"]["qstring"]
+                    r["datasets"]["qstring"],
                 )
                 done += 1
 

@@ -28,7 +28,7 @@ def main():
         ("centrifuge", "iteralign_centrifuge"),
         ("unblock-all", "unblock_all"),
         ("validate", "validate"),
-        ("summary", "summarise_fq")
+        ("summary", "summarise_fq"),
     ]
     for cmd, module in cmds:
         _module = importlib.import_module("ru.{}".format(module))

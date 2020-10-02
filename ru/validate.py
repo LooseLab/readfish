@@ -10,17 +10,15 @@ from ru.basecall import Mapper
 
 
 _help = "ReadFish TOML Validator"
-_cli = (
-    ("toml", dict(help="TOML file to validate")),
-)
+_cli = (("toml", dict(help="TOML file to validate")),)
 
 
 class colour:
-   GREEN = '\033[92m'
-   YELLOW = '\033[93m'
-   RED = '\033[91m'
-   BOLD = '\033[1m'
-   END = '\033[0m'
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    RED = "\033[91m"
+    BOLD = "\033[1m"
+    END = "\033[0m"
 
 
 def printer(s, sev, **kwargs):
