@@ -1,11 +1,6 @@
-"""unblock_all.py
-
-ReadUntil implementation that will only unblock reads. This should result in
-a read length histogram that has very short peaks (~280-580bp) as these are the
-smallest chunks that we can acquire. If you are not seeing these peaks, the
-`split_reads_after_seconds` parameter in the configuration file may need to be
-edited to 0.2-0.4:
-(<MinKNOW_folder>/ont-python/lib/python2.7/site-packages/bream4/configuration)
+"""ru_gen.py
+Generator based main read until script. This is where readfish targets code lives. It performs the back bone of the selected
+sequencing.
 """
 # Core imports
 import functools
@@ -18,6 +13,7 @@ from timeit import default_timer as timer
 
 # Third party imports
 from ru.read_until_client import RUClient
+from read_until.read_cache import AccumulatingCache
 import toml
 
 from ru.arguments import BASE_ARGS
@@ -156,7 +152,10 @@ def simple_analysis(
         fh.write("# In the future this file may become a CSV file.\n")
         toml.dump(d, fh)
 
-    caller = Caller(**caller_kwargs)
+    caller = Caller(
+        address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
+        config=caller_kwargs["config_name"],
+    )
     # What if there is no reference or an empty MMI
 
     decisiontracker = DecisionTracker()
@@ -168,7 +167,7 @@ def simple_analysis(
     # count how often a read is seen
     tracker = defaultdict(Counter)
 
-    interval = 600  # time in seconds we are going to log a message #ToDo: set to be an interval
+    interval = 600  # time in seconds we are going to log a message #ToDo: set to be an interval or supressed
     interval_checker = timer()
 
     # decided
@@ -228,11 +227,6 @@ def simple_analysis(
                 mapper = CustomMapper(new_reference)
                 # Log on success
                 logger.info("Reloaded mapper")
-                send_message(
-                    client.connection,
-                    "Mapper reloaded. ReadFish restarted.",
-                    Severity.INFO,
-                )
 
                 # If we've reloaded a reference, delete the previous one
                 if old_reference:
@@ -263,11 +257,9 @@ def simple_analysis(
             if read_number not in tracker[channel]:
                 tracker[channel].clear()
             tracker[channel][read_number] += 1
-
             mode = ""
             exceeded_threshold = False
             below_threshold = False
-
             log_decision = lambda: cl.debug(
                 l_string.format(
                     loop_counter,
@@ -333,7 +325,7 @@ def simple_analysis(
                         # Single match that is within coordinate range
                         mode = "single_on"
                     else:
-                        # Single match to a target outside coordinate range 
+                        # Single match to a target outside coordinate range
                         mode = "single_off"
                 elif len(hits) > 1:
                     if coord_match:
@@ -464,6 +456,7 @@ def run(parser, args):
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
         cache_size=args.cache_size,
+        cache_type=AccumulatingCache,
     )
 
     send_message(

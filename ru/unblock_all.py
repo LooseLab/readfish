@@ -4,8 +4,7 @@ ReadUntil implementation that will only unblock reads. This should result in
 a read length histogram that has very short peaks (~280-580bp) as these are the
 smallest chunks that we can acquire. If you are not seeing these peaks, the
 `split_reads_after_seconds` parameter in the configuration file may need to be
-edited to 0.2-0.4:
-(<MinKNOW_folder>/ont-python/lib/python2.7/site-packages/bream4/configuration)
+edited to 0.2-0.4.
 """
 # Core imports
 import functools
