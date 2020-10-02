@@ -25,7 +25,9 @@ _help = "Unblock all reads"
 _cli = BASE_ARGS
 
 
-def simple_analysis(client, duration, batch_size=512, throttle=0.1, unblock_duration=0.1):
+def simple_analysis(
+    client, duration, batch_size=512, throttle=0.1, unblock_duration=0.1
+):
     """Analysis function
 
     Parameters
@@ -47,32 +49,39 @@ def simple_analysis(client, duration, batch_size=512, throttle=0.1, unblock_dura
     """
     run_duration = time.time() + duration
     logger = logging.getLogger(__name__)
-    send_message(client.connection, "ReadFish sending Unblock All Messages. All reads will be prematurely truncated. This will affect a live sequencing run.",
-                 Severity.WARN)
+    send_message(
+        client.connection,
+        "ReadFish sending Unblock All Messages. All reads will be prematurely truncated. This will affect a live sequencing run.",
+        Severity.WARN,
+    )
     while client.is_running and time.time() < run_duration:
 
         r = 0
         t0 = timer()
 
         for r, (channel, read) in enumerate(
-                client.get_read_chunks(
-                    batch_size=batch_size,
-                    last=True,
-                ),
-                start=1,
+            client.get_read_chunks(
+                batch_size=batch_size,
+                last=True,
+            ),
+            start=1,
         ):
             # pass
-            client.unblock_read(channel, read.number, read_id=read.id, duration=unblock_duration)
+            client.unblock_read(
+                channel, read.number, read_id=read.id, duration=unblock_duration
+            )
             client.stop_receiving_read(channel, read.number)
 
         t1 = timer()
         if r:
-            logger.info("Took {:.6f} for {} reads".format(t1-t0, r))
+            logger.info("Took {:.6f} for {} reads".format(t1 - t0, r))
         # limit the rate at which we make requests
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
     else:
-        send_message(client.connection, "ReadFish Unblock All Disconnected.", Severity.WARN)
+        send_message(
+            client.connection, "ReadFish Unblock All Disconnected.", Severity.WARN
+        )
         logger.info("Finished analysis of reads as client stopped.")
 
 

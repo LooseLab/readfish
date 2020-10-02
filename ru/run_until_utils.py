@@ -35,25 +35,27 @@ def file_dict_of_folder_simple(path, args, fastqdict):
 
     logger.info("processed %s files" % (counter))
 
-    logger.info("found %d existing fastq files to process first." % (len(file_list_dict)))
+    logger.info(
+        "found %d existing fastq files to process first." % (len(file_list_dict))
+    )
 
     return file_list_dict
 
-def write_new_toml(args,targets):
+
+def write_new_toml(args, targets):
     for k in args.toml["conditions"].keys():
         curcond = args.toml["conditions"].get(k)
-        if isinstance(curcond,dict):
+        if isinstance(curcond, dict):
 
-            #newtargets = targets
-            #newtargets.extend(curcond["targets"])
+            # newtargets = targets
+            # newtargets.extend(curcond["targets"])
 
-            #newtargets = list(dict.fromkeys(newtargets))
-            #curcond["targets"]=list(set(newtargets))
-            curcond["targets"]=targets
+            # newtargets = list(dict.fromkeys(newtargets))
+            # curcond["targets"]=list(set(newtargets))
+            curcond["targets"] = targets
 
     with open("{}_live".format(args.tomlfile), "w") as f:
-        toml.dump(args.toml,f)
-
+        toml.dump(args.toml, f)
 
 
 ###Function modified from https://raw.githubusercontent.com/lh3/readfq/master/readfq.py
@@ -115,15 +117,16 @@ def fastq_results(fastq):
 
 
 class FastqHandler(FileSystemEventHandler):
-
     def __init__(self, args, rpc_connection):
         self.args = args
-        #self.messageport = messageport
+        # self.messageport = messageport
         self.connection = rpc_connection
         self.logger = logging.getLogger("FastqHandler")
         self.running = True
         self.fastqdict = dict()
-        self.creates = file_dict_of_folder_simple(self.args.watch, self.args, self.fastqdict)
+        self.creates = file_dict_of_folder_simple(
+            self.args.watch, self.args, self.fastqdict
+        )
         self.t = threading.Thread(target=self.processfiles)
 
         try:
@@ -138,31 +141,45 @@ class FastqHandler(FileSystemEventHandler):
         # if (event.src_path.endswith(".fastq") or event.src_path.endswith(".fastq.gz")):
         #     self.creates[event.src_path] = time.time()
 
-
         # time.sleep(5)
-        if (event.src_path.endswith(".fastq") or event.src_path.endswith(".fastq.gz") or event.src_path.endswith(
-                ".fq") or event.src_path.endswith(".fq.gz")):
+        if (
+            event.src_path.endswith(".fastq")
+            or event.src_path.endswith(".fastq.gz")
+            or event.src_path.endswith(".fq")
+            or event.src_path.endswith(".fq.gz")
+        ):
             self.logger.info("Processing file {}".format(event.src_path))
             self.creates[event.src_path] = time.time()
 
     def on_modified(self, event):
-        if (event.src_path.endswith(".fastq") or event.src_path.endswith(".fastq.gz") or event.src_path.endswith(
-                ".fq") or event.src_path.endswith(".fq.gz")):
+        if (
+            event.src_path.endswith(".fastq")
+            or event.src_path.endswith(".fastq.gz")
+            or event.src_path.endswith(".fq")
+            or event.src_path.endswith(".fq.gz")
+        ):
             self.logger.info("Processing file {}".format(event.src_path))
             self.logger.debug("Modified file {}".format(event.src_path))
             self.creates[event.src_path] = time.time()
 
     def on_moved(self, event):
-        if any((event.dest_path.endswith(".fastq"), event.dest_path.endswith(".fastq,gz"),
-                event.dest_path.endswith(".gq"), event.dest_path.endswith(".fq.gz"))):
+        if any(
+            (
+                event.dest_path.endswith(".fastq"),
+                event.dest_path.endswith(".fastq,gz"),
+                event.dest_path.endswith(".gq"),
+                event.dest_path.endswith(".fq.gz"),
+            )
+        ):
             self.logger.info("Processing file {}".format(event.dest_path))
             self.logger.debug("Modified file {}".format(event.dest_path))
             self.creates[event.dest_path] = time.time()
 
 
-
 class FastQMonitor(FastqHandler):
-    def __init__(self, args, rpc_connection, centrifuge=False, mapper=False,rununtil=False):
+    def __init__(
+        self, args, rpc_connection, centrifuge=False, mapper=False, rununtil=False
+    ):
         if centrifuge:
             self.centrifuge = CentrifugeServer(
                 threshold=args.threshold,
@@ -181,13 +198,12 @@ class FastQMonitor(FastqHandler):
         else:
             self.centrifuge = None
         if mapper:
-            self.mapper=Map()
+            self.mapper = Map()
             self.mapper.set_cov_target(args.depth)
         else:
             self.mapper = None
-        self.rununtil=rununtil
+        self.rununtil = rununtil
         super().__init__(args=args, rpc_connection=rpc_connection)
-
 
     def processfiles(self):
         self.logger.info("Process Files Initiated")
@@ -198,12 +214,14 @@ class FastQMonitor(FastqHandler):
             currenttime = time.time()
 
             fastqfilelist = list()
-            for fastqfile, createtime in sorted(self.creates.items(), key=lambda x: x[1]):
+            for fastqfile, createtime in sorted(
+                self.creates.items(), key=lambda x: x[1]
+            ):
 
                 delaytime = 0
 
                 # file created 5 sec ago, so should be complete. For simulations we make the time longer.
-                if (int(createtime) + delaytime < time.time()):
+                if int(createtime) + delaytime < time.time():
                     self.logger.info(fastqfile)
                     del self.creates[fastqfile]
                     self.counter += 1
@@ -214,17 +232,19 @@ class FastQMonitor(FastqHandler):
             if fastqfilelist:
                 parse_fastq_file(
                     fastqfilelist,
-                    self.args.toml['conditions']['reference'],
+                    self.args.toml["conditions"]["reference"],
                     self.mapper,
-                    self.centrifuge
+                    self.centrifuge,
                 )
                 # This prints those targets with a coverage greater than the threshold set in the arguments
                 if self.mapper:
                     targets = self.mapper.target_coverage().keys()
-                    print (self.mapper.report_coverage())
+                    print(self.mapper.report_coverage())
                     if len(targets) > len(self.targets):
                         updated_targets = set(targets) - set(self.targets)
-                        update_message = "Updating targets with {}".format(nice_join(updated_targets, conjunction="and"))
+                        update_message = "Updating targets with {}".format(
+                            nice_join(updated_targets, conjunction="and")
+                        )
                         self.logger.info(update_message)
                         if not self.args.simulation:
                             send_message(self.connection, update_message, Severity.WARN)
@@ -234,7 +254,11 @@ class FastQMonitor(FastqHandler):
 
                     if len(self.targets) > 0 and self.mapper.check_complete():
 
-                        self.logger.info("Every target is covered at at least {}x".format(self.args.depth))
+                        self.logger.info(
+                            "Every target is covered at at least {}x".format(
+                                self.args.depth
+                            )
+                        )
                         if not self.args.simulation:
                             if self.rununtil:
                                 self.connection.protocol.stop_protocol()
@@ -260,18 +284,16 @@ class FastQMonitor(FastqHandler):
 
 def parse_fastq_file(fastqfilelist, reference_loc, mapper, centrifuge):
     logger = logging.getLogger("ParseFastq")
-    with open(os.devnull, 'w') as devnull:
-        #This function will classify reads and update the mapper if it needs doing so.
+    with open(os.devnull, "w") as devnull:
+        # This function will classify reads and update the mapper if it needs doing so.
         if centrifuge:
             logger.info("Running Centrifuge")
-            reference_loc = centrifuge.classify(fastqfilelist,mapper)
+            reference_loc = centrifuge.classify(fastqfilelist, mapper)
         if mapper:
             if reference_loc:
                 logger.info("Mapping with {}.".format(reference_loc))
-                mapper.add_reference("test",reference_loc)
+                mapper.add_reference("test", reference_loc)
                 for file in fastqfilelist:
                     for desc, name, seq, qual in fastq_results(file):
-                        sequence_list = ({"sequence": seq, "read_id": name})
+                        sequence_list = {"sequence": seq, "read_id": name}
                         mapper.map_sequence("test", sequence_list)
-
-
