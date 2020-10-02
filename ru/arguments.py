@@ -64,7 +64,7 @@ BASE_ARGS = (
             metavar="ACTION_THROTTLE",
             type=float,
             help="Frequency that actions are sent to MinKNOW, "
-                 "seconds. (default: {})".format(DEFAULT_ACTION_THROTTLE),
+            "seconds. (default: {})".format(DEFAULT_ACTION_THROTTLE),
             default=DEFAULT_ACTION_THROTTLE,
         ),
     ),
@@ -85,9 +85,7 @@ BASE_ARGS = (
             type=int,
             nargs=2,
             help="Channel range to use as a sequence, expects two integers "
-                 "separated by a space (default: {})".format(
-                    DEFAULT_CHANNELS
-            ),
+            "separated by a space (default: {})".format(DEFAULT_CHANNELS),
             default=DEFAULT_CHANNELS,
         ),
     ),

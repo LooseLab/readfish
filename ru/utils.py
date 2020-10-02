@@ -19,13 +19,15 @@ class Severity(IntEnum):
     WARN = 2
     ERROR = 3
 
+
 class DecisionEvent(IntEnum):
     stop_receiving = 1
     proceed = 2
     unblock = 3
     exceed_max_chunks_unblocked = 4
 
-class DecisionTracker():
+
+class DecisionTracker:
     """
     This class will store a dictionary tracking the number of unique events that have occurred in a readuntil experiment.
     Valid events are:
@@ -34,11 +36,12 @@ class DecisionTracker():
     unblock : read has been unblocked as it isn't wanted
     exceeded_max_chunks_unblocked : read has been unblocked as it could not be evaluated in time.
     """
+
     def __init__(self):
         """
         event_tracker is a dict to store events
         """
-        self.event_tracker =  defaultdict(int)
+        self.event_tracker = defaultdict(int)
 
     def event_types(self):
         """
@@ -46,7 +49,7 @@ class DecisionTracker():
         -------
         A list of valid event types.
         """
-        return  ["stop_receiving","proceed","unblock","exceeded_max_chunks_unblocked"]
+        return ["stop_receiving", "proceed", "unblock", "exceeded_max_chunks_unblocked"]
 
     def event_end_types(self):
         """
@@ -56,7 +59,7 @@ class DecisionTracker():
         """
         return ["stop_receiving", "unblock", "exceeded_max_chunks_unblocked"]
 
-    def valid(self,event):
+    def valid(self, event):
         """
         Check if the event seen is valid.
         Parameters
@@ -71,8 +74,7 @@ class DecisionTracker():
         if event in self.event_types():
             return True
 
-
-    def event_seen(self,event):
+    def event_seen(self, event):
         """
         Logs a specific unique event in the dict. Counts individual entries.
         Parameters
@@ -84,7 +86,7 @@ class DecisionTracker():
 
         """
         if self.valid(event):
-            self.event_tracker[event]+=1
+            self.event_tracker[event] += 1
 
     def fetch_all(self):
         """
@@ -131,11 +133,10 @@ class DecisionTracker():
         -------
         the proportion of reads unblocked.
         """
-        return self.fetch_unblocks()/self.fetch_total_reads()*100
+        return self.fetch_unblocks() / self.fetch_total_reads() * 100
 
     def fetch_proportion_accepted(self):
-        return self.fetch_stop_receiving()/self.fetch_total_reads()*100
-
+        return self.fetch_stop_receiving() / self.fetch_total_reads() * 100
 
 
 def send_message(rpc_connection, message, severity):
@@ -157,8 +158,10 @@ def send_message(rpc_connection, message, severity):
     rpc_connection.log.send_user_message(severity=severity, user_message=message)
 
 
-
-def named_tuple_generator(dictionary, name='Conditions',):
+def named_tuple_generator(
+    dictionary,
+    name="Conditions",
+):
     """Generate named tuple from dictionary
 
     Parameters
@@ -202,9 +205,9 @@ def print_args(args, logger=None, exclude=None):
     if exclude is None:
         exclude = []
     dirs = dir(args)
-    m = max([len(a) for a in dirs if a[0] != '_'])
+    m = max([len(a) for a in dirs if a[0] != "_"])
     for attr in dirs:
-        if attr[0] != '_' and attr not in exclude and attr.lower() == attr:
+        if attr[0] != "_" and attr not in exclude and attr.lower() == attr:
             record = "{a}={b}".format(a=attr, m=m, b=getattr(args, attr))
             if logger is not None:
                 logger.info(record)
@@ -288,11 +291,8 @@ def get_flowcell_array(flowcell_size):
 
     # Initialise a nd array using the max row and column from coords
     b = np.zeros(
-        (
-            max(coords, key=itemgetter(1))[1] + 1,
-            max(coords, key=itemgetter(0))[0] + 1
-        ),
-        dtype=int
+        (max(coords, key=itemgetter(1))[1] + 1, max(coords, key=itemgetter(0))[0] + 1),
+        dtype=int,
     )
 
     # Mimic flowcell layout in an array
@@ -443,17 +443,25 @@ def load_config_toml(filepath, validate=True):
     reference_text = toml_dict.get("conditions", {}).get("reference", "")
     reference_path = Path(reference_text)
     if not reference_path.is_file() and reference_text:
-        raise FileNotFoundError("Reference file not found at '{}'".format(reference_path))
+        raise FileNotFoundError(
+            "Reference file not found at '{}'".format(reference_path)
+        )
 
     # Get keys for all condition tables, allows safe updates
-    conditions = [k for k, cond in toml_dict.get("conditions", {}).items() if isinstance(cond, dict)]
+    conditions = [
+        k
+        for k, cond in toml_dict.get("conditions", {}).items()
+        if isinstance(cond, dict)
+    ]
 
     # Load targets from a file
     for k in conditions:
         targets = toml_dict["conditions"][k].get("targets", [])
         if isinstance(targets, str):
             if not Path(targets).is_file():
-                raise FileNotFoundError("Targets file not found at '{}'".format(targets))
+                raise FileNotFoundError(
+                    "Targets file not found at '{}'".format(targets)
+                )
 
             toml_dict["conditions"][k]["targets"] = read_lines_to_list(targets)
 
@@ -505,7 +513,14 @@ def describe_experiment(conditions, mapper):
                 "stop_receiving": [],
                 "proceed": [],
             }
-            for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+            for m in (
+                "single_on",
+                "single_off",
+                "multi_on",
+                "multi_off",
+                "no_map",
+                "no_seq",
+            ):
                 conds[getattr(region, m)].append(m)
             conds = {k: nice_join(v) for k, v in conds.items()}
 
@@ -530,7 +545,14 @@ def describe_experiment(conditions, mapper):
                 "stop_receiving": [],
                 "proceed": [],
             }
-            for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+            for m in (
+                "single_on",
+                "single_off",
+                "multi_on",
+                "multi_off",
+                "no_map",
+                "no_seq",
+            ):
                 conds[getattr(region, m)].append(m)
             conds = {k: nice_join(v) for k, v in conds.items()}
             s = (
@@ -576,7 +598,8 @@ def get_run_info(toml_filepath, num_channels=512):
 
     # Get condition keys, these should be ascending integers
     conditions = [
-        k for k in toml_dict["conditions"].keys()
+        k
+        for k in toml_dict["conditions"].keys()
         if isinstance(toml_dict["conditions"].get(k), dict)
     ]
 
@@ -713,4 +736,5 @@ def get_device(device, host="127.0.0.1", port=None, use_tls=False):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

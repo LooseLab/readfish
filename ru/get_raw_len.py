@@ -65,6 +65,8 @@ def setup_logger(name, log_file, level=logging.DEBUG):
 
 from uuid import uuid4
 from fast5_research import Fast5
+
+
 def rpc_to_fast5(channel, read, dtype):
     """
     ['ByteSize', 'Clear', 'ClearExtension', 'ClearField', 'CopyFrom', 'DESCRIPTOR',
@@ -105,35 +107,48 @@ def rpc_to_fast5(channel, read, dtype):
 
     # The following are required meta data
     channel_id = {
-        'digitisation': digitisation,
-        'offset': 0,
-        'range': rng,
-        'sampling_rate': 4000,
-        'channel_number': channel,
+        "digitisation": digitisation,
+        "offset": 0,
+        "range": rng,
+        "sampling_rate": 4000,
+        "channel_number": channel,
     }
     read_id = {
-        'start_time': 0,
-        'duration': len(raw_data),
-        'read_number': read.number,
-        'start_mux': 1,
-        'read_id': str(uuid4()),
-        'scaling_used': 1,
-        'median_before': read.median_before,
+        "start_time": 0,
+        "duration": len(raw_data),
+        "read_number": read.number,
+        "start_mux": 1,
+        "read_id": str(uuid4()),
+        "scaling_used": 1,
+        "median_before": read.median_before,
     }
     tracking_id = {
-        'exp_start_time': '1970-01-01T00:00:00Z',
-        'run_id': str(uuid4()).replace('-', ''),
-        'flow_cell_id': 'FAH00000',
+        "exp_start_time": "1970-01-01T00:00:00Z",
+        "run_id": str(uuid4()).replace("-", ""),
+        "flow_cell_id": "FAH00000",
     }
     context_tags = {}
 
-    with Fast5.New(filename, 'w', tracking_id=tracking_id, context_tags=context_tags, channel_id=channel_id) as h:
+    with Fast5.New(
+        filename,
+        "w",
+        tracking_id=tracking_id,
+        context_tags=context_tags,
+        channel_id=channel_id,
+    ) as h:
         h.set_raw(raw_data, meta=read_id, read_number=1)
     return True
 
 
 def simple_analysis(
-    client, batch_size=512, throttle=0.1, unblock_duration=0.5, chunk_log=None, paf_log=None, toml_path=None, log_level="INFO"
+    client,
+    batch_size=512,
+    throttle=0.1,
+    unblock_duration=0.5,
+    chunk_log=None,
+    paf_log=None,
+    toml_path=None,
+    log_level="INFO",
 ):
     """Analysis function
 
@@ -171,9 +186,8 @@ def simple_analysis(
     # decided
     decided_reads = {}
 
-
-    cl = setup_logger("DEC", chunk_log,level=logging.INFO)
-    pf = setup_logger("PAF", paf_log,level=logging.INFO)
+    cl = setup_logger("DEC", chunk_log, level=logging.INFO)
+    pf = setup_logger("PAF", paf_log, level=logging.INFO)
     l_string = (
         "client_iteration",
         "read_in_loop",
@@ -202,8 +216,7 @@ def simple_analysis(
         t0 = timer()
 
         for r, (channel, read) in enumerate(
-                client.get_read_chunks(batch_size=batch_size, last=True),
-                start=1
+            client.get_read_chunks(batch_size=batch_size, last=True), start=1
         ):
             logger.info("got reads")
             read_start_time = timer()
@@ -211,13 +224,20 @@ def simple_analysis(
                 tracker[channel].clear()
             tracker[channel][read.number] += 1
 
-            old_read_id, old_signal = previous_signal.get(channel, (("", np.empty(0, dtype=client.signal_dtype)),))[0]
+            old_read_id, old_signal = previous_signal.get(
+                channel, (("", np.empty(0, dtype=client.signal_dtype)),)
+            )[0]
             x = np.frombuffer(read.raw_data, dtype=client.signal_dtype)
             logger.info(client.signal_dtype)
             logger.info("{} {}".format(type(old_signal), len(old_signal)))
             logger.info("{} {}".format(type(x), len(x)))
             if old_read_id == read.id:
-                signal = np.concatenate((old_signal, x,))
+                signal = np.concatenate(
+                    (
+                        old_signal,
+                        x,
+                    )
+                )
             else:
                 signal = x
 
@@ -235,7 +255,7 @@ def simple_analysis(
                     read_start_time,
                     timer(),
                     time.time(),
-                    )
+                )
             )
             # print(dir(read))
             if not rpc_to_fast5(channel, read, signal.dtype):
@@ -323,14 +343,14 @@ def main():
             dict(
                 help="Chunk log",
                 default="chunk_log.log",
-            )
+            ),
         ),
         (
             "--paf-log",
             dict(
                 help="PAF log file",
                 default="paf_output_log.paf",
-            )
+            ),
         ),
         (
             "--toml",
@@ -338,14 +358,13 @@ def main():
                 metavar="TOML",
                 required=True,
                 help="TOML file specifying experimental parameters. Here we only "
-                     "use `guppy_connection` and the `reference` location.",
+                "use `guppy_connection` and the `reference` location.",
             ),
         ),
     )
     parser, args = get_parser(extra_args=extra_args, file=__file__)
 
-    print (args)
-
+    print(args)
 
     # TODO: Move logging config to separate configuration file
     # set up logging to file for DEBUG messages and above
