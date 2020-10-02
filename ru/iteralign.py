@@ -186,7 +186,6 @@ def parse_fastq_file(fastqfilelist, args, logging, masterdf):
         samoutput = subprocess.Popen(
             samcmd, stdin=minimapoutput.stdout, stdout=subprocess.PIPE, stderr=devnull
         )
-        # samsortcmd = ["samtools", "sort", "-@2", "-o", "sortedbam.bam"]
         samsortcmd = ["samtools", "sort", "-@{}".format(args.threads)]
         samsortoutput = subprocess.Popen(
             samsortcmd, stdin=samoutput.stdout, stdout=subprocess.PIPE, stderr=devnull

@@ -1,11 +1,6 @@
-"""unblock_all.py
-
-ReadUntil implementation that will only unblock reads. This should result in
-a read length histogram that has very short peaks (~280-580bp) as these are the
-smallest chunks that we can acquire. If you are not seeing these peaks, the
-`split_reads_after_seconds` parameter in the configuration file may need to be
-edited to 0.2-0.4:
-(<MinKNOW_folder>/ont-python/lib/python2.7/site-packages/bream4/configuration)
+"""ru_gen.py
+Generator based main read until script. This is where readfish targets code lives. It performs the back bone of the selected
+sequencing.
 """
 # Core imports
 import functools
@@ -262,11 +257,9 @@ def simple_analysis(
             if read_number not in tracker[channel]:
                 tracker[channel].clear()
             tracker[channel][read_number] += 1
-
             mode = ""
             exceeded_threshold = False
             below_threshold = False
-
             log_decision = lambda: cl.debug(
                 l_string.format(
                     loop_counter,
