@@ -64,7 +64,9 @@ _cli = (
         "--percent",
         dict(
             metavar="PERCENT",
-            help="Default percent of target covered at given depth (default {})".format(DEFAULT_PERCENTAGE_COVERED),
+            help="Default percent of target covered at given depth (default {})".format(
+                DEFAULT_PERCENTAGE_COVERED
+            ),
             default=DEFAULT_PERCENTAGE_COVERED,
             type=float,
         ),
@@ -82,7 +84,9 @@ _cli = (
         "--threads",
         dict(
             metavar="THREADS",
-            help="Set the number of default threads to use for threaded tasks (default {})".format(DEFAULT_CORES),
+            help="Set the number of default threads to use for threaded tasks (default {})".format(
+                DEFAULT_CORES
+            ),
             default=DEFAULT_CORES,
             type=int,
         ),
@@ -123,7 +127,7 @@ _cli = (
             metavar="TOML",
             required=True,
             help="The magic TOML file that will save your life?",
-            #type=toml.load,
+            # type=toml.load,
         ),
     ),
 )
@@ -154,87 +158,106 @@ def file_dict_of_folder_simple(path, args, logging, fastqdict):
 
     logger.info("processed %s files" % (counter))
 
-
-
-    logger.info("found %d existing fastq files to process first." % (len(file_list_dict)))
+    logger.info(
+        "found %d existing fastq files to process first." % (len(file_list_dict))
+    )
 
     return file_list_dict
 
 
-def parse_fastq_file(fastqfilelist,args,logging,masterdf):
+def parse_fastq_file(fastqfilelist, args, logging, masterdf):
     logger = logging.getLogger("ParseFastq")
 
-    with open(os.devnull, 'w') as devnull:
+    with open(os.devnull, "w") as devnull:
         # Run basic mapping
-        minimapcmd = ["minimap2","-ax","map-ont","-t {}".format(args.threads),args.toml['conditions']['reference']] #" ".join(fastqfilelist)]
+        minimapcmd = [
+            "minimap2",
+            "-ax",
+            "map-ont",
+            "-t {}".format(args.threads),
+            args.toml["conditions"]["reference"],
+        ]  # " ".join(fastqfilelist)]
         minimapcmd.extend(fastqfilelist)
         logger.info(" ".join(minimapcmd))
-        minimapoutput = subprocess.Popen(minimapcmd, stdout=subprocess.PIPE,stderr=devnull)
-        samcmd = ["samtools","view", "-bS"]
-        samoutput = subprocess.Popen(samcmd, stdin=minimapoutput.stdout, stdout=subprocess.PIPE, stderr=devnull)
-        #samsortcmd = ["samtools", "sort", "-@2", "-o", "sortedbam.bam"]
+        minimapoutput = subprocess.Popen(
+            minimapcmd, stdout=subprocess.PIPE, stderr=devnull
+        )
+        samcmd = ["samtools", "view", "-bS"]
+        samoutput = subprocess.Popen(
+            samcmd, stdin=minimapoutput.stdout, stdout=subprocess.PIPE, stderr=devnull
+        )
+        # samsortcmd = ["samtools", "sort", "-@2", "-o", "sortedbam.bam"]
         samsortcmd = ["samtools", "sort", "-@{}".format(args.threads)]
-        samsortoutput = subprocess.Popen(samsortcmd, stdin=samoutput.stdout, stdout=subprocess.PIPE, stderr=devnull)
+        samsortoutput = subprocess.Popen(
+            samsortcmd, stdin=samoutput.stdout, stdout=subprocess.PIPE, stderr=devnull
+        )
         samdepthcmd = ["samtools", "depth", "-a", "/dev/stdin"]
-        samdepthoutput = subprocess.Popen(samdepthcmd, stdin=samsortoutput.stdout,stdout=subprocess.PIPE, stderr=devnull, universal_newlines=True)
+        samdepthoutput = subprocess.Popen(
+            samdepthcmd,
+            stdin=samsortoutput.stdout,
+            stdout=subprocess.PIPE,
+            stderr=devnull,
+            universal_newlines=True,
+        )
         minimapoutput.stdout.close()
         samoutput.stdout.close()
         samsortoutput.stdout.close()
-        output,err = samdepthoutput.communicate()
+        output, err = samdepthoutput.communicate()
 
-        coveragedf = pd.read_csv(StringIO(output),sep="\t",names=['seqid','position','coverage'])
+        coveragedf = pd.read_csv(
+            StringIO(output), sep="\t", names=["seqid", "position", "coverage"]
+        )
 
+        summarydf = coveragedf.groupby("seqid", as_index=False).agg(
+            {"position": "max", "coverage": "sum"}
+        )
 
-        summarydf = coveragedf.groupby('seqid', as_index=False).agg({'position':'max','coverage':'sum'})
-
-
-        tempsummarydf = pd.concat([masterdf,summarydf])
-        masterdf = tempsummarydf.groupby('seqid', as_index=False).agg({'position': 'max', 'coverage': 'sum'})
-        masterdf["tmp"] = masterdf["coverage"]/masterdf['position']
+        tempsummarydf = pd.concat([masterdf, summarydf])
+        masterdf = tempsummarydf.groupby("seqid", as_index=False).agg(
+            {"position": "max", "coverage": "sum"}
+        )
+        masterdf["tmp"] = masterdf["coverage"] / masterdf["position"]
         # Calculate depth at every position
         targets = masterdf[masterdf["tmp"].ge(args.depth)]
 
         logger.info(targets)
 
-        targets = targets['seqid'].tolist()
+        targets = targets["seqid"].tolist()
 
-        masterdf.drop(['tmp'], axis=1, inplace=True)
+        masterdf.drop(["tmp"], axis=1, inplace=True)
 
         logger.info("Finished processing {}.".format(" ".join(fastqfilelist)))
 
-    return targets,masterdf
+    return targets, masterdf
 
 
-
-def write_new_toml(args,targets):
+def write_new_toml(args, targets):
     for k in args.toml["conditions"].keys():
         curcond = args.toml["conditions"].get(k)
-        if isinstance(curcond,dict):
+        if isinstance(curcond, dict):
 
-            #newtargets = targets
-            #newtargets.extend(curcond["targets"])
+            # newtargets = targets
+            # newtargets.extend(curcond["targets"])
 
-            #newtargets = list(dict.fromkeys(newtargets))
-            #curcond["targets"]=list(set(newtargets))
-            curcond["targets"]=targets
+            # newtargets = list(dict.fromkeys(newtargets))
+            # curcond["targets"]=list(set(newtargets))
+            curcond["targets"] = targets
 
     with open("{}_live".format(args.tomlfile), "w") as f:
-        toml.dump(args.toml,f)
-
-
+        toml.dump(args.toml, f)
 
 
 class FastqHandler(FileSystemEventHandler):
-
-    def __init__(self, args,logging,messageport,rpc_connection):
+    def __init__(self, args, logging, messageport, rpc_connection):
         self.args = args
         self.messageport = messageport
         self.connection = rpc_connection
         self.logger = logging.getLogger("FastqHandler")
         self.running = True
         self.fastqdict = dict()
-        self.creates = file_dict_of_folder_simple(self.args.watch, self.args, logging,
-                                                  self.fastqdict)
+        self.creates = file_dict_of_folder_simple(
+            self.args.watch, self.args, logging, self.fastqdict
+        )
         self.t = threading.Thread(target=self.processfiles)
 
         try:
@@ -243,61 +266,69 @@ class FastqHandler(FileSystemEventHandler):
             self.t.stop()
             raise
 
-
     def processfiles(self):
         self.logger.info("Process Files Inititated")
         self.counter = 0
         self.targets = []
-        self.masterdf = pd.DataFrame(columns=['seqid','position','coverage'])
+        self.masterdf = pd.DataFrame(columns=["seqid", "position", "coverage"])
 
         while self.running:
             currenttime = time.time()
-            #for fastqfile, createtime in tqdm(sorted(self.creates.items(), key=lambda x: x[1])):
-            fastqfilelist=list()
-            for fastqfile, createtime in sorted(self.creates.items(), key=lambda x: x[1]):
+            # for fastqfile, createtime in tqdm(sorted(self.creates.items(), key=lambda x: x[1])):
+            fastqfilelist = list()
+            for fastqfile, createtime in sorted(
+                self.creates.items(), key=lambda x: x[1]
+            ):
 
                 delaytime = 0
 
                 # file created 5 sec ago, so should be complete. For simulations we make the time longer.
-                if (int(createtime) + delaytime < time.time()):
+                if int(createtime) + delaytime < time.time():
                     self.logger.info(fastqfile)
                     del self.creates[fastqfile]
-                    self.counter +=1
+                    self.counter += 1
                     fastqfilelist.append(fastqfile)
 
-                    #print (fastqfile,md5Checksum(fastqfile), "\n\n\n\n")
-            targets,self.masterdf = parse_fastq_file(fastqfilelist,self.args,logging,self.masterdf)
-            print (targets)
-            print (self.targets)
+                    # print (fastqfile,md5Checksum(fastqfile), "\n\n\n\n")
+            targets, self.masterdf = parse_fastq_file(
+                fastqfilelist, self.args, logging, self.masterdf
+            )
+            print(targets)
+            print(self.targets)
             if len(targets) > len(self.targets):
                 updated_targets = set(targets) - set(self.targets)
-                update_message = "Updating targets with {}".format(nice_join(updated_targets, conjunction="and"))
+                update_message = "Updating targets with {}".format(
+                    nice_join(updated_targets, conjunction="and")
+                )
                 self.logger.info(update_message)
                 if not self.args.simulation:
                     send_message(self.connection, update_message, Severity.WARN)
-                write_new_toml(self.args,targets)
+                write_new_toml(self.args, targets)
                 self.targets = []
                 self.targets = targets.copy()
 
-            if self.masterdf.shape[0] > 0 and self.masterdf.shape[0] == len(self.targets):
+            if self.masterdf.shape[0] > 0 and self.masterdf.shape[0] == len(
+                self.targets
+            ):
                 # Every target is covered at the desired coverage level.
-                self.logger.info("Every target is covered at at least {}x".format(self.args.depth))
+                self.logger.info(
+                    "Every target is covered at at least {}x".format(self.args.depth)
+                )
                 if not self.args.simulation:
-                   self.connection.protocol.stop_protocol()
-                   send_message(
-                       self.connection,
-                       "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
-                           self.args.depth
-                       ),
-                       Severity.WARN,
-                   )
+                    self.connection.protocol.stop_protocol()
+                    send_message(
+                        self.connection,
+                        "Iter Align has stopped the run as all targets should be covered by at least {}x".format(
+                            self.args.depth
+                        ),
+                        Severity.WARN,
+                    )
 
+            # parse_fastq_file(fastqfile, self.rundict, self.fastqdict, self.args, self.header, self.MinotourConnection)
 
-            #parse_fastq_file(fastqfile, self.rundict, self.fastqdict, self.args, self.header, self.MinotourConnection)
+            # self.args.files_processed += 1
 
-            #self.args.files_processed += 1
-
-            if currenttime+5 > time.time():
+            if currenttime + 5 > time.time():
                 time.sleep(5)
 
     def on_created(self, event):
@@ -306,57 +337,69 @@ class FastqHandler(FileSystemEventHandler):
         # if (event.src_path.endswith(".fastq") or event.src_path.endswith(".fastq.gz")):
         #     self.creates[event.src_path] = time.time()
 
-
         # time.sleep(5)
-        if (event.src_path.endswith(".fastq") or event.src_path.endswith(".fastq.gz") or event.src_path.endswith(
-                ".fq") or event.src_path.endswith(".fq.gz")):
+        if (
+            event.src_path.endswith(".fastq")
+            or event.src_path.endswith(".fastq.gz")
+            or event.src_path.endswith(".fq")
+            or event.src_path.endswith(".fq.gz")
+        ):
             self.logger.info("Processing file {}".format(event.src_path))
             self.creates[event.src_path] = time.time()
 
     def on_modified(self, event):
-        if (event.src_path.endswith(".fastq") or event.src_path.endswith(".fastq.gz") or event.src_path.endswith(
-                ".fq") or event.src_path.endswith(".fq.gz")):
+        if (
+            event.src_path.endswith(".fastq")
+            or event.src_path.endswith(".fastq.gz")
+            or event.src_path.endswith(".fq")
+            or event.src_path.endswith(".fq.gz")
+        ):
             self.logger.info("Processing file {}".format(event.src_path))
             self.logger.debug("Modified file {}".format(event.src_path))
             self.creates[event.src_path] = time.time()
 
     def on_moved(self, event):
-        if any((event.dest_path.endswith(".fastq"), event.dest_path.endswith(".fastq,gz"),
-                event.dest_path.endswith(".gq"), event.dest_path.endswith(".fq.gz"))):
+        if any(
+            (
+                event.dest_path.endswith(".fastq"),
+                event.dest_path.endswith(".fastq,gz"),
+                event.dest_path.endswith(".gq"),
+                event.dest_path.endswith(".fq.gz"),
+            )
+        ):
             self.logger.info("Processing file {}".format(event.dest_path))
             self.logger.debug("Modified file {}".format(event.dest_path))
             self.creates[event.dest_path] = time.time()
 
 
-
 def main():
-    sys.exit(
-        "This entry point is deprecated, please use 'readfish align' instead"
-    )
+    sys.exit("This entry point is deprecated, please use 'readfish align' instead")
 
 
 def run(parser, args):
     args.tomlfile = args.toml
     args.toml = toml.load(args.toml)
-    print (args)
+    print(args)
 
     # TODO: Move logging config to separate configuration file
     # set up logging to file
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(levelname)s::%(asctime)s::%(name)s::%(message)s',
-                        filename=args.log_file,
-                        filemode='w')
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(levelname)s::%(asctime)s::%(name)s::%(message)s",
+        filename=args.log_file,
+        filemode="w",
+    )
 
     # define a Handler that writes INFO messages or higher to the sys.stderr
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)
 
     # set a format which is simpler for console use
-    formatter = logging.Formatter('%(name)-15s: %(levelname)-8s %(message)s')
+    formatter = logging.Formatter("%(name)-15s: %(levelname)-8s %(message)s")
     console.setFormatter(formatter)
 
     # add the handler to the root logger
-    logging.getLogger('').addHandler(console)
+    logging.getLogger("").addHandler(console)
 
     # Start by logging sys.argv and the parameters used
     logger = logging.getLogger("Manager")
@@ -366,8 +409,6 @@ def run(parser, args):
     logger.info("Initialising iterAlign.")
 
     logger.info("Setting up FastQ monitoring.")
-
-
 
     #### Check if a run is active - if not, wait.
 
@@ -385,23 +426,23 @@ def run(parser, args):
         send_message(connection, "Iteralign Connected to MinKNOW", Severity.WARN)
 
         logger.info("Loaded RPC")
-        while connection.acquisition.current_status().status != MinknowStatus.PROCESSING:
+        while (
+            connection.acquisition.current_status().status != MinknowStatus.PROCESSING
+        ):
             time.sleep(1)
         #### Check if we know where data is being written to , if not... wait
-        args.watch = connection.acquisition.get_acquisition_info().config_summary.reads_directory
+        args.watch = (
+            connection.acquisition.get_acquisition_info().config_summary.reads_directory
+        )
 
     else:
         messageport = ""
 
-
-    event_handler = FastqHandler(args,logging,messageport,connection)
+    event_handler = FastqHandler(args, logging, messageport, connection)
     # This block handles the fastq
     observer = Observer()
     observer.schedule(event_handler, path=args.watch, recursive=True)
     observer.daemon = True
-
-
-
 
     try:
 
@@ -418,5 +459,3 @@ def run(parser, args):
         observer.join()
 
         os._exit(0)
-
-
