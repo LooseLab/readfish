@@ -19,8 +19,13 @@ logger = logging.getLogger("RU_basecaller")
 CALIBRATION = namedtuple("calibration", "scaling offset")
 
 
-class DAQValues:
-    """Dict like container providing default calibration values."""
+class DefaultDAQValues:
+    """Provides default calibration values
+
+    Mimics the read_until_api calibration dict value from
+    https://github.com/nanoporetech/read_until_api/blob/2319bbe80889a17c4b38dc9cdb45b59558232a7e/read_until/base.py#L34
+    all keys return scaling=1.0 and offset=0.0
+    """
     calibration = CALIBRATION(1.0, 0.0)
 
     def __getitem__(self, _):
@@ -61,7 +66,7 @@ class GuppyCaller(PyGuppyClient):
         read_counter = 0
 
         if daq_values is None:
-            daq_values = DAQValues()
+            daq_values = DefaultDAQValues()
 
         for channel, read in reads:
             hold[read.id] = (channel, read.number)
