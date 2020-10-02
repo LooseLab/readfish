@@ -1,3 +1,6 @@
+"""arguments.py
+The central commands used by most CLI read fish scripts.
+"""
 import argparse
 import sys
 

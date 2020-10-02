@@ -172,7 +172,6 @@ def parse_fastq_file(fastqfilelist,args,logging,masterdf):
         minimapoutput = subprocess.Popen(minimapcmd, stdout=subprocess.PIPE,stderr=devnull)
         samcmd = ["samtools","view", "-bS"]
         samoutput = subprocess.Popen(samcmd, stdin=minimapoutput.stdout, stdout=subprocess.PIPE, stderr=devnull)
-        #samsortcmd = ["samtools", "sort", "-@2", "-o", "sortedbam.bam"]
         samsortcmd = ["samtools", "sort", "-@{}".format(args.threads)]
         samsortoutput = subprocess.Popen(samsortcmd, stdin=samoutput.stdout, stdout=subprocess.PIPE, stderr=devnull)
         samdepthcmd = ["samtools", "depth", "-a", "/dev/stdin"]
@@ -366,9 +365,6 @@ def run(parser, args):
     logger.info("Initialising iterAlign.")
 
     logger.info("Setting up FastQ monitoring.")
-
-
-
     #### Check if a run is active - if not, wait.
 
     args.simulation = True
@@ -399,9 +395,6 @@ def run(parser, args):
     observer = Observer()
     observer.schedule(event_handler, path=args.watch, recursive=True)
     observer.daemon = True
-
-
-
 
     try:
 

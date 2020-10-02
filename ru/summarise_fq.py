@@ -1,3 +1,7 @@
+"""summarise_fq.py
+todo refactor
+Summarises fastq statistics about fastq files written out by a read until experiment.
+"""
 import gzip
 from pathlib import Path
 from statistics import mean, median, stdev

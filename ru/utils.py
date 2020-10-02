@@ -1,3 +1,6 @@
+"""utils.py
+functions and utilities used internally.
+"""
 import logging
 from collections import namedtuple, defaultdict
 from pathlib import Path

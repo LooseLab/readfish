@@ -1,3 +1,6 @@
+"""validate.py
+Validate experiment configuration TOML files.
+"""
 import sys
 import argparse
 import textwrap
