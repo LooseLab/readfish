@@ -18,12 +18,19 @@ from timeit import default_timer as timer
 
 # Third party imports
 from ru.read_until_client import RUClient
+from read_until.read_cache import AccumulatingCache
 import toml
 
 from ru.arguments import BASE_ARGS
 from ru.basecall import Mapper as CustomMapper
 from ru.basecall import GuppyCaller as Caller
-from ru.utils import print_args, get_run_info, between, setup_logger, describe_experiment
+from ru.utils import (
+    print_args,
+    get_run_info,
+    between,
+    setup_logger,
+    describe_experiment,
+)
 from ru.utils import send_message, Severity, get_device, DecisionTracker
 
 
@@ -37,20 +44,8 @@ _cli = BASE_ARGS + (
             help="TOML file specifying experimental parameters",
         ),
     ),
-    (
-        "--paf-log",
-        dict(
-            help="PAF log",
-            default=None,
-        )
-    ),
-    (
-        "--chunk-log",
-        dict(
-            help="Chunk log",
-            default=None,
-        )
-    ),
+    ("--paf-log", dict(help="PAF log", default=None,)),
+    ("--chunk-log", dict(help="Chunk log", default=None,)),
 )
 
 
@@ -72,20 +67,21 @@ CHUNK_LOG_FIELDS = (
     "timestamp",
 )
 
+
 def simple_analysis(
-        client,
-        batch_size=512,
-        throttle=0.1,
-        unblock_duration=0.5,
-        cl=None,
-        pf=None,
-        live_toml_path=None,
-        flowcell_size=512,
-        dry_run=False,
-        run_info=None,
-        conditions=None,
-        mapper=None,
-        caller_kwargs=None,
+    client,
+    batch_size=512,
+    throttle=0.1,
+    unblock_duration=0.5,
+    cl=None,
+    pf=None,
+    live_toml_path=None,
+    flowcell_size=512,
+    dry_run=False,
+    run_info=None,
+    conditions=None,
+    mapper=None,
+    caller_kwargs=None,
 ):
     """Analysis function
 
@@ -131,13 +127,20 @@ def simple_analysis(
 
     # TODO: test this
     # Write channels.toml
-    d = {"conditions": {str(v): {"channels": [], "name": conditions[v].name} for k, v in run_info.items()}}
+    d = {
+        "conditions": {
+            str(v): {"channels": [], "name": conditions[v].name}
+            for k, v in run_info.items()
+        }
+    }
     for k, v in run_info.items():
         d["conditions"][str(v)]["channels"].append(k)
 
     channels_out = str(Path(client.mk_run_dir) / "channels.toml")
     with open(channels_out, "w") as fh:
-        fh.write("# This file is written as a record of the condition each channel is assigned.\n")
+        fh.write(
+            "# This file is written as a record of the condition each channel is assigned.\n"
+        )
         fh.write("# It may be changed or overwritten if you restart ReadFish.\n")
         fh.write("# In the future this file may become a CSV file.\n")
         toml.dump(d, fh)
@@ -160,7 +163,6 @@ def simple_analysis(
     interval = 600  # time in seconds we are going to log a message #ToDo: set to be an interval or supressed
     interval_checker = timer()
 
-
     # decided
     decided_reads = {}
     strand_converter = {1: "+", -1: "-"}
@@ -174,14 +176,22 @@ def simple_analysis(
             "proceed": None,
             "unblock": client.stop_receiving_read,
         }
-        send_message(client.connection,"This is a test run. No unblocks will occur.",Severity.WARN)
+        send_message(
+            client.connection,
+            "This is a test run. No unblocks will occur.",
+            Severity.WARN,
+        )
     else:
         decision_dict = {
             "stop_receiving": client.stop_receiving_read,
             "proceed": None,
-            "unblock": lambda c, n: client.unblock_read(c, n, unblock_duration, read_id),
+            "unblock": lambda c, n: client.unblock_read(
+                c, n, unblock_duration, read_id
+            ),
         }
-        send_message(client.connection, "This is a live run. Unblocks will occur.", Severity.WARN)
+        send_message(
+            client.connection, "This is a live run. Unblocks will occur.", Severity.WARN
+        )
     decision_str = ""
     below_threshold = False
     exceeded_threshold = False
@@ -191,14 +201,20 @@ def simple_analysis(
     while client.is_running:
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file
-            run_info, conditions, new_reference, _ = get_run_info(live_toml_path, flowcell_size)
+            run_info, conditions, new_reference, _ = get_run_info(
+                live_toml_path, flowcell_size
+            )
 
             # Check the reference path if different from the loaded mapper
             if new_reference != mapper.index:
                 old_reference = mapper.index
                 # Log to file and MinKNOW interface
                 logger.info("Reloading mapper")
-                send_message(client.connection, "Reloading mapper. ReadFish paused.", Severity.INFO)
+                send_message(
+                    client.connection,
+                    "Reloading mapper. ReadFish paused.",
+                    Severity.INFO,
+                )
 
                 # Update mapper client.
                 mapper = CustomMapper(new_reference)
@@ -222,11 +238,11 @@ def simple_analysis(
         t0 = timer()
         r = 0
         for read_info, read_id, seq_len, results in mapper.map_reads_2(
-                caller.basecall_minknow(
-                    reads=client.get_read_chunks(batch_size=batch_size, last=True),
-                    signal_dtype=client.signal_dtype,
-                    decided_reads=decided_reads,
-                )
+            caller.basecall_minknow(
+                reads=client.get_read_chunks(batch_size=batch_size, last=True),
+                signal_dtype=client.signal_dtype,
+                decided_reads=decided_reads,
+            )
         ):
             r += 1
             read_start_time = timer()
@@ -268,11 +284,17 @@ def simple_analysis(
 
             # This is an analysis channel
             # Below minimum chunks
-            if tracker[channel][read_number] <= conditions[run_info[channel]].min_chunks:
+            if (
+                tracker[channel][read_number]
+                <= conditions[run_info[channel]].min_chunks
+            ):
                 below_threshold = True
 
             # Greater than or equal to maximum chunks
-            if tracker[channel][read_number] >= conditions[run_info[channel]].max_chunks:
+            if (
+                tracker[channel][read_number]
+                >= conditions[run_info[channel]].max_chunks
+            ):
                 exceeded_threshold = True
 
             # No mappings
@@ -290,8 +312,8 @@ def simple_analysis(
                     between(r.r_st, c)
                     for r in results
                     for c in conditions[run_info[channel]]
-                        .coords.get(strand_converter.get(r.strand), {})
-                        .get(r.ctg, [])
+                    .coords.get(strand_converter.get(r.strand), {})
+                    .get(r.ctg, [])
                 )
                 if len(hits) == 1:
                     if coord_match:
@@ -329,7 +351,6 @@ def simple_analysis(
                 decisiontracker.event_seen(mode)
                 client.unblock_read(channel, read_number, unblock_duration, read_id)
 
-
             # TODO: WHAT IS GOING ON?!
             #  I think that this needs to change between enrichment and depletion
             # If under min_chunks AND any mapping mode seen we unblock
@@ -362,7 +383,15 @@ def simple_analysis(
 
         if interval_checker + interval < t1:
             interval_checker = t1
-            send_message(client.connection, "ReadFish Stats - accepted {:.2f}% of {} total reads. Unblocked {} reads.".format(decisiontracker.fetch_proportion_accepted(),decisiontracker.fetch_total_reads(), decisiontracker.fetch_unblocks()), Severity.INFO)
+            send_message(
+                client.connection,
+                "ReadFish Stats - accepted {:.2f}% of {} total reads. Unblocked {} reads.".format(
+                    decisiontracker.fetch_proportion_accepted(),
+                    decisiontracker.fetch_total_reads(),
+                    decisiontracker.fetch_unblocks(),
+                ),
+                Severity.INFO,
+            )
 
     else:
         send_message(client.connection, "ReadFish Client Stopped.", Severity.WARN)
@@ -371,9 +400,7 @@ def simple_analysis(
 
 
 def main():
-    sys.exit(
-        "This entry point is deprecated, please use 'readfish targets' instead"
-    )
+    sys.exit("This entry point is deprecated, please use 'readfish targets' instead")
 
 
 def run(parser, args):
@@ -393,7 +420,10 @@ def run(parser, args):
         paf_logger.disabled = True
 
     logger = setup_logger(
-        __name__, log_format=args.log_format, log_file=args.log_file, level=logging.INFO,
+        __name__,
+        log_format=args.log_format,
+        log_file=args.log_file,
+        level=logging.INFO,
     )
     if args.log_file is not None:
         h = logging.StreamHandler()
@@ -404,7 +434,9 @@ def run(parser, args):
 
     # Parse configuration TOML
     # TODO: num_channels is not configurable here, should be inferred from client
-    run_info, conditions, reference, caller_kwargs = get_run_info(args.toml, num_channels=512)
+    run_info, conditions, reference, caller_kwargs = get_run_info(
+        args.toml, num_channels=512
+    )
     live_toml = Path("{}_live".format(args.toml))
 
     # Load Minimap2 index
@@ -412,13 +444,14 @@ def run(parser, args):
     mapper = CustomMapper(reference)
     logger.info("Mapper initialised")
 
-    position = get_device(args.device,host=args.host)
+    position = get_device(args.device, host=args.host)
 
     read_until_client = RUClient(
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
         cache_size=args.cache_size,
+        cache_type=AccumulatingCache,
     )
 
     send_message(
@@ -431,9 +464,7 @@ def run(parser, args):
         logger.info(message)
 
         send_message(
-            read_until_client.connection,
-            message,
-            sev,
+            read_until_client.connection, message, sev,
         )
 
     """
@@ -449,9 +480,9 @@ def run(parser, args):
     #  the read_until_client
 
     read_until_client.run(
-      first_channel=args.channels[0],
-      last_channel=args.channels[-1],
-      action_throttle=args.action_throttle,
+        first_channel=args.channels[0],
+        last_channel=args.channels[-1],
+        action_throttle=args.action_throttle,
     )
 
     try:
