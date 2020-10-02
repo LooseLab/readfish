@@ -297,7 +297,7 @@ def simple_analysis(
                         # Single match that is within coordinate range
                         mode = "single_on"
                     else:
-                        # Single match to a target outside coordinate range
+                        # Single match to a target outside coordinate range 
                         mode = "single_off"
                 elif len(hits) > 1:
                     if coord_match:
