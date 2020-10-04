@@ -18,6 +18,7 @@ from ru.arguments import BASE_ARGS
 from ru.utils import print_args, get_device
 from ru.utils import send_message, Severity
 from ru.read_until_client import RUClient
+from read_until.read_cache import AccumulatingCache
 
 
 _help = "Unblock all reads"
@@ -125,8 +126,10 @@ def run(parser, args):
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        #cache_size=args.cache_size, #ToDo: Understand why this has been removed.
+        #cache_size=args.cache_size,
+        cache_type=AccumulatingCache,
     )
+
 
     read_until_client.run(
         first_channel=args.channels[0],
