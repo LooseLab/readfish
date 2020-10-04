@@ -125,7 +125,7 @@ def run(parser, args):
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        cache_size=args.cache_size,
+        #cache_size=args.cache_size, #ToDo: Understand why this has been removed.
     )
 
     read_until_client.run(
