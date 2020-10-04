@@ -509,7 +509,7 @@ def run(parser, args):
     read_until_client.run(
         first_channel=args.channels[0],
         last_channel=args.channels[-1],
-        action_throttle=args.action_throttle,
+        #action_throttle=args.action_throttle,
     )
 
     try:
