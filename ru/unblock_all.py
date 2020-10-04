@@ -74,7 +74,7 @@ def simple_analysis(
             client.unblock_read_batch(
                 unblock_batch_action_list, duration=unblock_duration
             )
-            client.stop_receiving_batch(batch_action)
+            client.stop_receiving_batch(unblock_batch_action_list)
 
         t1 = timer()
         if r:
