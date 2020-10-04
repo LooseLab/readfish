@@ -58,7 +58,7 @@ def simple_analysis(
 
         r = 0
         t0 = timer()
-
+        batch_action=[]
         for r, (channel, read) in enumerate(
             client.get_read_chunks(
                 batch_size=batch_size,
@@ -67,10 +67,15 @@ def simple_analysis(
             start=1,
         ):
             # pass
-            client.unblock_read(
-                channel, read.number, read_id=read.id, duration=unblock_duration
-            )
-            client.stop_receiving_read(channel, read.number)
+            batch_action.append((channel,read.number))
+            #client.unblock_read(
+            #    channel, read.number, read_id=read.id, duration=unblock_duration
+            #)
+            #client.stop_receiving_read(channel, read.number)
+
+        if len(batch_action)>0:
+            client.unblock_read_batch(batch_action)
+            client.stop_receiving_batch(batch_action)
 
         t1 = timer()
         if r:
