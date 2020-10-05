@@ -58,7 +58,8 @@ def simple_analysis(
 
         r = 0
         t0 = timer()
-        unblock_batch_action_list=[]
+        unblock_batch_action_list = []
+        stop_receiving_action_list = []
         for r, (channel, read) in enumerate(
             client.get_read_chunks(
                 batch_size=batch_size,
@@ -66,15 +67,15 @@ def simple_analysis(
             ),
             start=1,
         ):
-            #Adding the channel and read.number to a list for a later batched unblock.
-            unblock_batch_action_list.append((channel,read.number))
+            # Adding the channel and read.number to a list for a later batched unblock.
+            unblock_batch_action_list.append((channel, read.number, read_id))
+            stop_receiving_action_list.append((channel, read.number))
 
-
-        if len(unblock_batch_action_list)>0:
+        if len(unblock_batch_action_list) > 0:
             client.unblock_read_batch(
                 unblock_batch_action_list, duration=unblock_duration
             )
-            client.stop_receiving_batch(unblock_batch_action_list)
+            client.stop_receiving_batch(stop_receiving_action_list)
 
         t1 = timer()
         if r:
@@ -130,15 +131,14 @@ def run(parser, args):
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        #cache_size=args.cache_size,
+        # cache_size=args.cache_size,
         cache_type=AccumulatingCache,
     )
-
 
     read_until_client.run(
         first_channel=args.channels[0],
         last_channel=args.channels[-1],
-        #action_throttle=args.action_throttle,
+        # action_throttle=args.action_throttle,
     )
 
     try:

@@ -179,13 +179,9 @@ def simple_analysis(
     # TODO: partial-ise / lambda unblock to take the unblock duration
     if dry_run:
         decision_dict = {
-            "stop_receiving": lambda c, n: stop_receiving_action_list.append((
-                c, n)
-            ),
+            "stop_receiving": lambda c, n: stop_receiving_action_list.append((c, n)),
             "proceed": None,
-            "unblock": lambda c, n: stop_receiving_action_list.append((
-                c, n)
-            ),
+            "unblock": lambda c, n: stop_receiving_action_list.append((c, n)),
         }
         send_message(
             client.connection,
@@ -194,13 +190,9 @@ def simple_analysis(
         )
     else:
         decision_dict = {
-            "stop_receiving": lambda c, n: stop_receiving_action_list.append((
-                c, n)
-            ),
+            "stop_receiving": lambda c, n: stop_receiving_action_list.append((c, n)),
             "proceed": None,
-            "unblock": lambda c, n: unblock_batch_action_list.append((
-                c, n)
-            ),
+            "unblock": lambda c, n: unblock_batch_action_list.append((c, n, read_id)),
         }
         send_message(
             client.connection, "This is a live run. Unblocks will occur.", Severity.WARN
@@ -251,7 +243,7 @@ def simple_analysis(
         t0 = timer()
         r = 0
         unblock_batch_action_list = []
-        stop_receiving_action_list  = []
+        stop_receiving_action_list = []
 
         for read_info, read_id, seq_len, results in mapper.map_reads_2(
             caller.basecall_minknow(
@@ -293,8 +285,8 @@ def simple_analysis(
             if conditions[run_info[channel]].control:
                 mode = "control"
                 log_decision()
-                #client.stop_receiving_read(channel, read_number)
-                stop_receiving_action_list.append((channel,read_number))
+                # client.stop_receiving_read(channel, read_number)
+                stop_receiving_action_list.append((channel, read_number))
                 continue
 
             # This is an analysis channel
@@ -364,8 +356,7 @@ def simple_analysis(
             if exceeded_threshold and decision_str != "stop_receiving":
                 mode = "exceeded_max_chunks_unblocked"
                 decisiontracker.event_seen(mode)
-                #client.unblock_read(channel, read_number, unblock_duration, read_id)
-                unblock_batch_action_list.append((channel,read_number))
+                unblock_batch_action_list.append((channel, read_number, read_id))
 
             # TODO: WHAT IS GOING ON?!
             #  I think that this needs to change between enrichment and depletion
@@ -378,8 +369,7 @@ def simple_analysis(
                 "multi_off",
             }:
                 mode = "below_min_chunks_unblocked"
-                #client.unblock_read(channel, read_number, unblock_duration, read_id)
-                unblock_batch_action_list.append((channel, read_number))
+                unblock_batch_action_list.append((channel, read_number, read_id))
                 decisiontracker.event_seen(decision_str)
 
             # proceed returns None, so we send no decision; otherwise unblock or stop_receiving
@@ -390,13 +380,8 @@ def simple_analysis(
 
             log_decision()
 
-
-        if len(unblock_batch_action_list)>0:
-            client.unblock_read_batch(
-                unblock_batch_action_list, duration=unblock_duration
-            )
-        if len(stop_receiving_action_list)>0:
-            client.stop_receiving_batch(stop_receiving_action_list)
+        client.unblock_read_batch(unblock_batch_action_list, duration=unblock_duration)
+        client.stop_receiving_batch(stop_receiving_action_list)
 
         t1 = timer()
         if r > 0:
@@ -475,7 +460,6 @@ def run(parser, args):
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        #cache_size=args.cache_size,
         cache_type=AccumulatingCache,
     )
 
@@ -509,7 +493,7 @@ def run(parser, args):
     read_until_client.run(
         first_channel=args.channels[0],
         last_channel=args.channels[-1],
-        #action_throttle=args.action_throttle,
+        # action_throttle=args.action_throttle,
     )
 
     try:
