@@ -285,7 +285,6 @@ def simple_analysis(
             if conditions[run_info[channel]].control:
                 mode = "control"
                 log_decision()
-                # client.stop_receiving_read(channel, read_number)
                 stop_receiving_action_list.append((channel, read_number))
                 continue
 
@@ -493,7 +492,6 @@ def run(parser, args):
     read_until_client.run(
         first_channel=args.channels[0],
         last_channel=args.channels[-1],
-        # action_throttle=args.action_throttle,
     )
 
     try:

@@ -121,7 +121,6 @@ def run(parser, args):
 
     # Start by logging sys.argv and the parameters used
     logger = logging.getLogger("Manager")
-    # logger = setup_logger(__name__, args.log_format, log_file=args.log_file, level=logging.INFO)
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
 
@@ -131,14 +130,12 @@ def run(parser, args):
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        # cache_size=args.cache_size,
         cache_type=AccumulatingCache,
     )
 
     read_until_client.run(
         first_channel=args.channels[0],
         last_channel=args.channels[-1],
-        # action_throttle=args.action_throttle,
     )
 
     try:
