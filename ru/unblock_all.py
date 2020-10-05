@@ -26,7 +26,7 @@ _cli = BASE_ARGS
 
 
 def simple_analysis(
-    client, duration, batch_size=512, throttle=0.1, unblock_duration=0.1
+    client, duration, batch_size=512, throttle=0.4, unblock_duration=0.1
 ):
     """Analysis function
 
@@ -58,7 +58,8 @@ def simple_analysis(
 
         r = 0
         t0 = timer()
-        batch_action=[]
+        unblock_batch_action_list = []
+        stop_receiving_action_list = []
         for r, (channel, read) in enumerate(
             client.get_read_chunks(
                 batch_size=batch_size,
@@ -66,16 +67,15 @@ def simple_analysis(
             ),
             start=1,
         ):
-            # pass
-            batch_action.append((channel,read.number))
-            #client.unblock_read(
-            #    channel, read.number, read_id=read.id, duration=unblock_duration
-            #)
-            #client.stop_receiving_read(channel, read.number)
+            # Adding the channel and read.number to a list for a later batched unblock.
+            unblock_batch_action_list.append((channel, read.number, read.id))
+            stop_receiving_action_list.append((channel, read.number))
 
-        if len(batch_action)>0:
-            client.unblock_read_batch(batch_action)
-            client.stop_receiving_batch(batch_action)
+        if len(unblock_batch_action_list) > 0:
+            client.unblock_read_batch(
+                unblock_batch_action_list, duration=unblock_duration
+            )
+            client.stop_receiving_batch(stop_receiving_action_list)
 
         t1 = timer()
         if r:
@@ -121,7 +121,6 @@ def run(parser, args):
 
     # Start by logging sys.argv and the parameters used
     logger = logging.getLogger("Manager")
-    # logger = setup_logger(__name__, args.log_format, log_file=args.log_file, level=logging.INFO)
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
 
@@ -131,15 +130,12 @@ def run(parser, args):
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        #cache_size=args.cache_size,
         cache_type=AccumulatingCache,
     )
-
 
     read_until_client.run(
         first_channel=args.channels[0],
         last_channel=args.channels[-1],
-        #action_throttle=args.action_throttle,
     )
 
     try:

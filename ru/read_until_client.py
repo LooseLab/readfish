@@ -52,6 +52,25 @@ class RUClient(ReadUntilClient):
         ):
             time.sleep(1)
 
+    def unblock_read_batch(self, reads, duration=0.1):
+        """Request for a bunch of reads be unblocked.
+        reads is expected to be a list of (channel, ReadData.number)
+        :param reads: List of (channel, read_number, read_id)
+        :type reads: list(tuple)
+        :param duration: time in seconds to apply unblock voltage.
+        :type duration: float
+        :returns: None
+        """
+        actions = list()
+        for channel, read_number, read_id in reads:
+            actions.append(
+                self._generate_action(
+                    channel, read_number, "unblock", duration=duration
+                )
+            )
+            self.unblock_logger.debug(read_id)
+        self.action_queue.put(actions)
+
     def unblock_read(self, read_channel, read_number, duration=0.1, read_id=None):
         super().unblock_read(
             read_channel=read_channel,
