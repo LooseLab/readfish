@@ -68,7 +68,7 @@ def simple_analysis(
             start=1,
         ):
             # Adding the channel and read.number to a list for a later batched unblock.
-            unblock_batch_action_list.append((channel, read.number, read_id))
+            unblock_batch_action_list.append((channel, read.number, read.read_id))
             stop_receiving_action_list.append((channel, read.number))
 
         if len(unblock_batch_action_list) > 0:
