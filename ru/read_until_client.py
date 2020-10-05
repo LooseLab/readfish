@@ -64,7 +64,7 @@ class RUClient(ReadUntilClient):
         actions = list()
         for channel, read_number, read_id in reads:
             actions.append(
-                self._generate_action(channel, read, "unblock", duration=duration)
+                self._generate_action(channel, read_number, "unblock", duration=duration)
             )
             self.unblock_logger.debug(read_id)
         self.action_queue.put(actions)
