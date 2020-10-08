@@ -20,7 +20,6 @@ DEFAULT_UNBLOCK = 0.1
 DEFAULT_CACHE_SIZE = 512
 DEFAULT_BATCH_SIZE = 512
 DEFAULT_THROTTLE = 0.4
-DEFAULT_ACTION_THROTTLE = 0.4
 DEFAULT_MIN_CHUNK = 2000
 DEFAULT_LOG_PREFIX = ""
 
@@ -59,16 +58,6 @@ BASE_ARGS = (
             type=str,
             help="Describe the experiment being run, enclose in quotes",
             required=True,
-        ),
-    ),
-    (
-        "--action-throttle",
-        dict(
-            metavar="ACTION_THROTTLE",
-            type=float,
-            help="Frequency that actions are sent to MinKNOW, "
-            "seconds. (default: {})".format(DEFAULT_ACTION_THROTTLE),
-            default=DEFAULT_ACTION_THROTTLE,
         ),
     ),
     # TODO: delete workers
