@@ -63,6 +63,8 @@ class GuppyCaller(PyGuppyClient):
         quality : str
         """
         hold = {}
+        # FixMe: This is resolved in later versions of guppy.
+        skipped = {}
         done = 0
         read_counter = 0
 
@@ -82,7 +84,8 @@ class GuppyCaller(PyGuppyClient):
             )
             if not success:
                 logging.warning("Skipped a read: {}".format(read.id))
-                hold.pop(read.id)
+                #FixMe: This is resolved in later versions of guppy.
+                skipped[read.id] = hold.pop(read.id)
                 continue
             else:
                 read_counter += 1
@@ -100,8 +103,14 @@ class GuppyCaller(PyGuppyClient):
 
             for r in results:
                 r_id = r["metadata"]["read_id"]
+                try:
+                    i = hold.pop(r_id)
+                except KeyError:
+                    # FixMe: This is resolved in later versions of guppy.
+                    i = skipped.pop(read.id)
+                    read_counter += 1
                 yield (
-                    hold.pop(r_id),
+                    i,
                     r_id,
                     r["datasets"]["sequence"],
                     r["metadata"]["sequence_length"],
