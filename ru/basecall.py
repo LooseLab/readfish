@@ -107,7 +107,7 @@ class GuppyCaller(PyGuppyClient):
                     i = hold.pop(r_id)
                 except KeyError:
                     # FixMe: This is resolved in later versions of guppy.
-                    i = skipped.pop(read.id)
+                    i = skipped.pop(r_id)
                     read_counter += 1
                 yield (
                     i,
