@@ -84,7 +84,7 @@ class GuppyCaller(PyGuppyClient):
             )
             if not success:
                 logging.warning("Skipped a read: {}".format(read.id))
-                #FixMe: This is resolved in later versions of guppy.
+                # FixMe: This is resolved in later versions of guppy.
                 skipped[read.id] = hold.pop(read.id)
                 continue
             else:
