@@ -27,7 +27,7 @@ DEFAULT_SERVER_HOST = "127.0.0.1"
 DEFAULT_LOG_FORMAT = "%(asctime)s - %(name)-20s - %(message)s"
 LOG_LEVELS = ("debug", "info", "warning", "error", "critical")
 DEFAULT_COVERAGE_DEPTH = 30
-#DEFAULT_PERCENTAGE_COVERED = 0.99
+# DEFAULT_PERCENTAGE_COVERED = 0.99
 DEFAULT_CORES = 2
 
 
@@ -42,8 +42,8 @@ _cli = BASE + (
             default=None,
         ),
     ),
-    #(
-        # Not used ToDo: Delete
+    # (
+    # Not used ToDo: Delete
     #    "--percent",
     #    dict(
     #        metavar="PERCENT",
@@ -53,7 +53,7 @@ _cli = BASE + (
     #        default=DEFAULT_PERCENTAGE_COVERED,
     #        type=float,
     #    ),
-    #),
+    # ),
     (
         # Used in run until utils
         "--depth",
