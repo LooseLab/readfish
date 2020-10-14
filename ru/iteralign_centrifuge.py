@@ -57,7 +57,7 @@ _cli = BASE + (
     ),
     # (
     # Not used ToDo: Delete
-    "--percent",
+    #    "--percent",
     #    dict(
     #        metavar="PERCENT",
     #        help="Default percent of target covered at given depth (default {})".format(
