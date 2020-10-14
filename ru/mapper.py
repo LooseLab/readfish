@@ -18,7 +18,6 @@ class MappingServer:
     """
 
     def __init__(self):
-        print("Configuring the mapping magic")
         self.references = set()  # An index of all references available
         self.coverage = (
             dict()

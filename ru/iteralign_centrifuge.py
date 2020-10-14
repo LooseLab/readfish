@@ -20,7 +20,7 @@ from argparse import Namespace
 import toml
 from watchdog.observers.polling import PollingObserver as Observer
 
-from ru.utils import nice_join, print_args, send_message, Severity, get_device
+from ru.utils import print_args, send_message, Severity, get_device
 from ru.run_until_utils import FastQMonitor
 from ru.ru_gen import _cli as BASE
 from ru.ru_gen import run as dnrun
@@ -47,6 +47,7 @@ DEFAULT_SEQUENCE_LENGTH = 100000
 _help = "ReadFish and Run Until, using centrifuge"
 _cli = BASE + (
     (
+        # In use by event_handler - passed as args.path
         "--watch",
         dict(
             metavar="FOLDER",

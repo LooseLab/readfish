@@ -510,6 +510,15 @@ def describe_experiment(conditions, mapper):
     if mapper.initialised:
         yield "Using reference: {}".format(mapper.index), Severity.INFO
         seq_names = set(mapper.mapper.seq_names)
+
+        # Get total seq length of the reference.
+        ref_len = 0
+        for seq_name in seq_names:
+            ref_len += len(mapper.mapper.seq(seq_name))
+
+        # Convert to double stranded
+        ref_len = 2 * ref_len
+
         for region in conditions:
             conds = {
                 "unblock": [],
@@ -527,8 +536,19 @@ def describe_experiment(conditions, mapper):
                 conds[getattr(region, m)].append(m)
             conds = {k: nice_join(v) for k, v in conds.items()}
 
+            target_total = 0
+            target_count = 0
+            for strand in ["+", "-"]:
+                for chromosome in region.coords[strand]:
+                    total = 0
+                    for s, f in region.coords[strand][chromosome]:
+                        total += abs(f - s)
+                        target_count += 1
+                    target_total += total
+
             s = (
                 "Region '{}' (control={}) has {} contig{} of which {} are in the reference. "
+                "There are {} targets (including +/- strand) representing {}% of the reference. "
                 "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
                 "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
                     region.name,
@@ -536,6 +556,8 @@ def describe_experiment(conditions, mapper):
                     len(region.targets),
                     {1: ""}.get(len(region.targets), "s"),
                     len(region.targets & seq_names),
+                    target_count,
+                    round(target_total / ref_len * 100, 2),
                     **conds,
                 )
             )
