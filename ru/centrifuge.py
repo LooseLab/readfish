@@ -160,6 +160,7 @@ class CentrifugeServer:
         out, err = proc.communicate()
         proc.stdout.close()
         # First grab and store information on the genomes seen.
+        # ToDo: Do we need to keep this? Why are we opening this file?
         with open(self.creport, newline="") as f:
             reader = csv.reader(f)
             next(reader)

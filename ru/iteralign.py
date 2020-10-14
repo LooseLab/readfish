@@ -27,13 +27,14 @@ DEFAULT_SERVER_HOST = "127.0.0.1"
 DEFAULT_LOG_FORMAT = "%(asctime)s - %(name)-20s - %(message)s"
 LOG_LEVELS = ("debug", "info", "warning", "error", "critical")
 DEFAULT_COVERAGE_DEPTH = 30
-DEFAULT_PERCENTAGE_COVERED = 0.99
+#DEFAULT_PERCENTAGE_COVERED = 0.99
 DEFAULT_CORES = 2
 
 
 _help = "ReadFish and Run Until, using minimap2"
 _cli = BASE + (
     (
+        # In use by event_handler - passed as args.path
         "--watch",
         dict(
             metavar="FOLDER",
@@ -41,18 +42,20 @@ _cli = BASE + (
             default=None,
         ),
     ),
+    #(
+        # Not used ToDo: Delete
+    #    "--percent",
+    #    dict(
+    #        metavar="PERCENT",
+    #        help="Default percent of target covered at given depth (default {})".format(
+    #            DEFAULT_PERCENTAGE_COVERED
+    #        ),
+    #        default=DEFAULT_PERCENTAGE_COVERED,
+    #        type=float,
+    #    ),
+    #),
     (
-        "--percent",
-        dict(
-            metavar="PERCENT",
-            help="Default percent of target covered at given depth (default {})".format(
-                DEFAULT_PERCENTAGE_COVERED
-            ),
-            default=DEFAULT_PERCENTAGE_COVERED,
-            type=float,
-        ),
-    ),
-    (
+        # Used in run until utils
         "--depth",
         dict(
             metavar="DEPTH",
@@ -62,6 +65,7 @@ _cli = BASE + (
         ),
     ),
     (
+        # in use by fastqhandler.
         "--threads",
         dict(
             metavar="THREADS",
