@@ -26,6 +26,7 @@ class DefaultDAQValues:
     https://github.com/nanoporetech/read_until_api/blob/2319bbe80889a17c4b38dc9cdb45b59558232a7e/read_until/base.py#L34
     all keys return scaling=1.0 and offset=0.0
     """
+
     calibration = CALIBRATION(1.0, 0.0)
 
     def __getitem__(self, _):
@@ -62,6 +63,8 @@ class GuppyCaller(PyGuppyClient):
         quality : str
         """
         hold = {}
+        # FixMe: This is resolved in later versions of guppy.
+        skipped = {}
         done = 0
         read_counter = 0
 
@@ -81,7 +84,8 @@ class GuppyCaller(PyGuppyClient):
             )
             if not success:
                 logging.warning("Skipped a read: {}".format(read.id))
-                hold.pop(read.id)
+                # FixMe: This is resolved in later versions of guppy.
+                skipped[read.id] = hold.pop(read.id)
                 continue
             else:
                 read_counter += 1
@@ -99,12 +103,18 @@ class GuppyCaller(PyGuppyClient):
 
             for r in results:
                 r_id = r["metadata"]["read_id"]
+                try:
+                    i = hold.pop(r_id)
+                except KeyError:
+                    # FixMe: This is resolved in later versions of guppy.
+                    i = skipped.pop(r_id)
+                    read_counter += 1
                 yield (
-                    hold.pop(r_id),
+                    i,
                     r_id,
                     r["datasets"]["sequence"],
                     r["metadata"]["sequence_length"],
-                    r["datasets"]["qstring"]
+                    r["datasets"]["qstring"],
                 )
                 done += 1
 

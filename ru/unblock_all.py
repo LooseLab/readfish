@@ -4,8 +4,7 @@ ReadUntil implementation that will only unblock reads. This should result in
 a read length histogram that has very short peaks (~280-580bp) as these are the
 smallest chunks that we can acquire. If you are not seeing these peaks, the
 `split_reads_after_seconds` parameter in the configuration file may need to be
-edited to 0.2-0.4:
-(<MinKNOW_folder>/ont-python/lib/python2.7/site-packages/bream4/configuration)
+edited to 0.2-0.4.
 """
 # Core imports
 import functools
@@ -19,13 +18,16 @@ from ru.arguments import BASE_ARGS
 from ru.utils import print_args, get_device
 from ru.utils import send_message, Severity
 from ru.read_until_client import RUClient
+from read_until.read_cache import AccumulatingCache
 
 
 _help = "Unblock all reads"
 _cli = BASE_ARGS
 
 
-def simple_analysis(client, duration, batch_size=512, throttle=0.1, unblock_duration=0.1):
+def simple_analysis(
+    client, duration, batch_size=512, throttle=0.4, unblock_duration=0.1
+):
     """Analysis function
 
     Parameters
@@ -47,32 +49,44 @@ def simple_analysis(client, duration, batch_size=512, throttle=0.1, unblock_dura
     """
     run_duration = time.time() + duration
     logger = logging.getLogger(__name__)
-    send_message(client.connection, "ReadFish sending Unblock All Messages. All reads will be prematurely truncated. This will affect a live sequencing run.",
-                 Severity.WARN)
+    send_message(
+        client.connection,
+        "ReadFish sending Unblock All Messages. All reads will be prematurely truncated. This will affect a live sequencing run.",
+        Severity.WARN,
+    )
     while client.is_running and time.time() < run_duration:
 
         r = 0
         t0 = timer()
-
+        unblock_batch_action_list = []
+        stop_receiving_action_list = []
         for r, (channel, read) in enumerate(
-                client.get_read_chunks(
-                    batch_size=batch_size,
-                    last=True,
-                ),
-                start=1,
+            client.get_read_chunks(
+                batch_size=batch_size,
+                last=True,
+            ),
+            start=1,
         ):
-            # pass
-            client.unblock_read(channel, read.number, read_id=read.id, duration=unblock_duration)
-            client.stop_receiving_read(channel, read.number)
+            # Adding the channel and read.number to a list for a later batched unblock.
+            unblock_batch_action_list.append((channel, read.number, read.id))
+            stop_receiving_action_list.append((channel, read.number))
+
+        if len(unblock_batch_action_list) > 0:
+            client.unblock_read_batch(
+                unblock_batch_action_list, duration=unblock_duration
+            )
+            client.stop_receiving_batch(stop_receiving_action_list)
 
         t1 = timer()
         if r:
-            logger.info("Took {:.6f} for {} reads".format(t1-t0, r))
+            logger.info("Took {:.6f} for {} reads".format(t1 - t0, r))
         # limit the rate at which we make requests
         if t0 + throttle > t1:
             time.sleep(throttle + t0 - t1)
     else:
-        send_message(client.connection, "ReadFish Unblock All Disconnected.", Severity.WARN)
+        send_message(
+            client.connection, "ReadFish Unblock All Disconnected.", Severity.WARN
+        )
         logger.info("Finished analysis of reads as client stopped.")
 
 
@@ -107,7 +121,6 @@ def run(parser, args):
 
     # Start by logging sys.argv and the parameters used
     logger = logging.getLogger("Manager")
-    # logger = setup_logger(__name__, args.log_format, log_file=args.log_file, level=logging.INFO)
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
 
@@ -117,13 +130,12 @@ def run(parser, args):
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        cache_size=args.cache_size,
+        cache_type=AccumulatingCache,
     )
 
     read_until_client.run(
         first_channel=args.channels[0],
         last_channel=args.channels[-1],
-        action_throttle=args.action_throttle,
     )
 
     try:

@@ -1,11 +1,6 @@
-"""unblock_all.py
-
-ReadUntil implementation that will only unblock reads. This should result in
-a read length histogram that has very short peaks (~280-580bp) as these are the
-smallest chunks that we can acquire. If you are not seeing these peaks, the
-`split_reads_after_seconds` parameter in the configuration file may need to be
-edited to 0.2-0.4:
-(<MinKNOW_folder>/ont-python/lib/python2.7/site-packages/bream4/configuration)
+"""ru_gen.py
+Generator based main read until script. This is where readfish targets code lives. It performs the back bone of the selected
+sequencing.
 """
 # Core imports
 import functools
@@ -44,8 +39,20 @@ _cli = BASE_ARGS + (
             help="TOML file specifying experimental parameters",
         ),
     ),
-    ("--paf-log", dict(help="PAF log", default=None,)),
-    ("--chunk-log", dict(help="Chunk log", default=None,)),
+    (
+        "--paf-log",
+        dict(
+            help="PAF log",
+            default=None,
+        ),
+    ),
+    (
+        "--chunk-log",
+        dict(
+            help="Chunk log",
+            default=None,
+        ),
+    ),
 )
 
 
@@ -172,9 +179,9 @@ def simple_analysis(
     # TODO: partial-ise / lambda unblock to take the unblock duration
     if dry_run:
         decision_dict = {
-            "stop_receiving": client.stop_receiving_read,
+            "stop_receiving": lambda c, n: stop_receiving_action_list.append((c, n)),
             "proceed": None,
-            "unblock": client.stop_receiving_read,
+            "unblock": lambda c, n: stop_receiving_action_list.append((c, n)),
         }
         send_message(
             client.connection,
@@ -183,11 +190,9 @@ def simple_analysis(
         )
     else:
         decision_dict = {
-            "stop_receiving": client.stop_receiving_read,
+            "stop_receiving": lambda c, n: stop_receiving_action_list.append((c, n)),
             "proceed": None,
-            "unblock": lambda c, n: client.unblock_read(
-                c, n, unblock_duration, read_id
-            ),
+            "unblock": lambda c, n: unblock_batch_action_list.append((c, n, read_id)),
         }
         send_message(
             client.connection, "This is a live run. Unblocks will occur.", Severity.WARN
@@ -237,6 +242,9 @@ def simple_analysis(
         loop_counter += 1
         t0 = timer()
         r = 0
+        unblock_batch_action_list = []
+        stop_receiving_action_list = []
+
         for read_info, read_id, seq_len, results in mapper.map_reads_2(
             caller.basecall_minknow(
                 reads=client.get_read_chunks(batch_size=batch_size, last=True),
@@ -250,11 +258,9 @@ def simple_analysis(
             if read_number not in tracker[channel]:
                 tracker[channel].clear()
             tracker[channel][read_number] += 1
-
             mode = ""
             exceeded_threshold = False
             below_threshold = False
-
             log_decision = lambda: cl.debug(
                 l_string.format(
                     loop_counter,
@@ -279,7 +285,7 @@ def simple_analysis(
             if conditions[run_info[channel]].control:
                 mode = "control"
                 log_decision()
-                client.stop_receiving_read(channel, read_number)
+                stop_receiving_action_list.append((channel, read_number))
                 continue
 
             # This is an analysis channel
@@ -349,7 +355,7 @@ def simple_analysis(
             if exceeded_threshold and decision_str != "stop_receiving":
                 mode = "exceeded_max_chunks_unblocked"
                 decisiontracker.event_seen(mode)
-                client.unblock_read(channel, read_number, unblock_duration, read_id)
+                unblock_batch_action_list.append((channel, read_number, read_id))
 
             # TODO: WHAT IS GOING ON?!
             #  I think that this needs to change between enrichment and depletion
@@ -362,7 +368,7 @@ def simple_analysis(
                 "multi_off",
             }:
                 mode = "below_min_chunks_unblocked"
-                client.unblock_read(channel, read_number, unblock_duration, read_id)
+                unblock_batch_action_list.append((channel, read_number, read_id))
                 decisiontracker.event_seen(decision_str)
 
             # proceed returns None, so we send no decision; otherwise unblock or stop_receiving
@@ -372,6 +378,9 @@ def simple_analysis(
                 decisiontracker.event_seen(decision_str)
 
             log_decision()
+
+        client.unblock_read_batch(unblock_batch_action_list, duration=unblock_duration)
+        client.stop_receiving_batch(stop_receiving_action_list)
 
         t1 = timer()
         if r > 0:
@@ -450,7 +459,6 @@ def run(parser, args):
         mk_host=position.host,
         mk_port=position.description.rpc_ports.insecure,
         filter_strands=True,
-        cache_size=args.cache_size,
         cache_type=AccumulatingCache,
     )
 
@@ -464,7 +472,9 @@ def run(parser, args):
         logger.info(message)
 
         send_message(
-            read_until_client.connection, message, sev,
+            read_until_client.connection,
+            message,
+            sev,
         )
 
     """
@@ -482,7 +492,6 @@ def run(parser, args):
     read_until_client.run(
         first_channel=args.channels[0],
         last_channel=args.channels[-1],
-        action_throttle=args.action_throttle,
     )
 
     try:

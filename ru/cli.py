@@ -1,3 +1,6 @@
+"""cli.py
+Main entry point for command line read until scripts.
+"""
 import argparse
 import importlib
 
@@ -5,6 +8,12 @@ from ._version import __version__
 
 
 def main():
+    """
+    Main function for entry point of the read until scripts.
+    Returns
+    -------
+
+    """
     parser = argparse.ArgumentParser(
         prog="readfish",
         epilog="See '<command> --help' to read about a specific sub-command.",
@@ -19,7 +28,7 @@ def main():
         ("centrifuge", "iteralign_centrifuge"),
         ("unblock-all", "unblock_all"),
         ("validate", "validate"),
-        ("summary", "summarise_fq")
+        ("summary", "summarise_fq"),
     ]
     for cmd, module in cmds:
         _module = importlib.import_module("ru.{}".format(module))

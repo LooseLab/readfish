@@ -36,7 +36,7 @@ If you use this software please cite: [10.1101/2020.02.03.926956](https://dx.doi
 > Alexander Payne, Nadine Holmes, Thomas Clarke, Rory Munro, Bisrat Debebe, Matthew Loose  
 > bioRxiv 2020.02.03.926956; doi: https://doi.org/10.1101/2020.02.03.926956
 
-Installation
+Installation development version
 ------------
 ```bash
 # Make a virtual environment
@@ -45,8 +45,11 @@ python3 -m venv readfish
 pip install --upgrade pip
 
 # Install our ReadFish Software
-pip install git+https://github.com/nanoporetech/read_until_api
-pip install git+https://github.com/LooseLab/readfish@master
+pip install git+https://github.com/nanoporetech/read_until_api@v3.0.0
+pip install git+https://github.com/LooseLab/readfish@dev
+
+# Install ont_pyguppy_client_lib that matches your guppy server version. E.G.
+pip install ont_pyguppy_client_lib==4.0.11
 ```
 
 Usage

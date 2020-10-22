@@ -9,3 +9,4 @@ watchdog
 pandas
 mappy
 biopython
+minknow_api
