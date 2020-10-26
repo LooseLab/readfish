@@ -8,5 +8,5 @@ jsonschema
 watchdog
 pandas
 mappy
-biopython
+biopython==1.76
 minknow_api
