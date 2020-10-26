@@ -48,6 +48,7 @@ _help = "ReadFish and Run Until, using centrifuge"
 _cli = BASE + (
     (
         # In use by event_handler - passed as args.path
+        # ToDo: Consider forcing from API.
         "--watch",
         dict(
             metavar="FOLDER",
@@ -78,6 +79,7 @@ _cli = BASE + (
         ),
     ),
     (
+        # ToDo: Rename to centrifuge workers.
         # in use by fastqhandler.
         "--threads",
         dict(
@@ -109,6 +111,7 @@ _cli = BASE + (
     # ),
     (
         # In use by centrifuge class
+        # ToDo: See https://github.com/LooseLab/Thomas_project/blob/master/ftp_df_assembler.py
         "--csummary",
         dict(
             required=True,

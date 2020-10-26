@@ -10,7 +10,7 @@ from ru.centrifuge import CentrifugeServer
 from ru.utils import nice_join, print_args, send_message, Severity, get_device
 
 
-def file_dict_of_folder_simple(path, args, fastqdict):
+def file_dict_of_folder_simple(path):
     logger = logging.getLogger("ExistingFileProc")
 
     file_list_dict = dict()
@@ -125,7 +125,7 @@ class FastqHandler(FileSystemEventHandler):
         self.running = True
         self.fastqdict = dict()
         self.creates = file_dict_of_folder_simple(
-            self.args.watch, self.args, self.fastqdict
+            self.args.watch
         )
         self.t = threading.Thread(target=self.processfiles)
 

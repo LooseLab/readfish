@@ -71,6 +71,7 @@ BASE_ARGS = (
         ),
     ),
     (
+        # ToDo: Delete and replace with api calls.
         "--channels",
         dict(
             metavar="CHANNELS",
@@ -104,6 +105,7 @@ BASE_ARGS = (
         ),
     ),
     (
+        # ToDo:Deprecate so always the same size as the flowcell
         "--cache-size",
         dict(
             metavar="CACHE-SIZE",
@@ -115,6 +117,7 @@ BASE_ARGS = (
         ),
     ),
     (
+        # ToDo: Batch size should default to flowcell size unless otherwise specified.
         "--batch-size",
         dict(
             metavar="BATCH-SIZE",
@@ -126,6 +129,7 @@ BASE_ARGS = (
         ),
     ),
     (
+        # ToDo: Determine if we need a minimum value for throttle which shouldn't be overridden.
         "--throttle",
         dict(
             metavar="THROTTLE",
