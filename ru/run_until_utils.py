@@ -125,9 +125,7 @@ class FastqHandler(FileSystemEventHandler):
         self.logger = logging.getLogger("FastqHandler")
         self.running = True
         self.fastqdict = dict()
-        self.creates = file_dict_of_folder_simple(
-            self.args.watch
-        )
+        self.creates = file_dict_of_folder_simple(self.args.watch)
         self.t = threading.Thread(target=self.processfiles)
 
         try:
