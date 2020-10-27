@@ -144,8 +144,8 @@ class CentrifugeServer:
         else:
             self.logger.info("No reference yet loaded.")
         # centrifuge command to classify reads in the fastq files found by watchdog
-        centrifuge_cmd = "centrifuge -p {} -x {} -q {}".format(
-            self.threads, self.cindex, fastq_str
+        centrifuge_cmd = "centrifuge -p {} -x {} -q {} --report-file {}".format(
+            self.threads, self.cindex, fastq_str, self.creport
         )
         # subprocess for 'centrifuge_cmd'
         proc = subprocess.Popen(
