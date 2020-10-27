@@ -1,13 +1,14 @@
 import logging
 import logging.handlers
 import os
+import gzip
 import toml
 import threading
 import time
 from watchdog.events import FileSystemEventHandler
 from ru.mapper import MappingServer as Map
 from ru.centrifuge import CentrifugeServer
-from ru.utils import nice_join, print_args, send_message, Severity, get_device
+from ru.utils import nice_join, send_message, Severity
 
 
 def file_dict_of_folder_simple(path):
