@@ -141,7 +141,7 @@ In our experience setting the throttle to be same same size as the break_reads_a
 
 To change this run:
 ```bash
-    readfish unblock-all --device <YOUR_DEVICE_ID> --experiment-name "Testing ReadFish Unblock All" --throttle <YOUR_VALUE_HERE>
+readfish unblock-all --device <YOUR_DEVICE_ID> --experiment-name "Testing ReadFish Unblock All" --throttle <YOUR_VALUE_HERE>
 ```  
 
 
@@ -218,31 +218,31 @@ Zoomed in on the unblocks:
  4. Run `readfish summary` to check if your run has performed as expected. This file requires the path to your toml file followed by the path to your fastq reads. Typical results are provided below and show longer mean read lengths for the two selected chromosomes (here chr21 and chr22). Note the mean read lengths observed will be dependent on system performance. Optimal guppy configuration for your system is left to the user.
      ```text
     contig  number      sum   min     max    std   mean  median    N50
-      chr1    2045  8031506   220  318254  15566   3927    1476  26513
-     chr10    1109  4723969   263  261207  14559   4260    1592  27313
-     chr11    1232  4754809   213  304465  16228   3859    1314  38943
-     chr12    1050  4526674   261  166256  12536   4311    1508  23582
-     chr13     684  3126069   184  299397  18358   4570    1573  35034
-     chr14     796  4263462   242  249680  18806   5356    1502  37446
-     chr15     994  5240288   245  187955  17111   5272    1489  48036
-     chr16     429  2702573   233  180260  16343   6300    1841  33347
-     chr17     574  3453521   271  388105  23709   6017    1482  69464
-     chr18     538  3873005   349  274407  24659   7199    1424  70263
-     chr19     483  2625211   248  163416  16557   5435    1564  43457
-      chr2    1402  8174215   220  303798  19553   5830    1526  42543
-     chr20     342  2214472   225  209686  20661   6475    1456  55394
-     chr21      57  1758058   347  254718  46708  30843    9409  83729
-     chr22      69   851125   447   77401  15509  12335    5952  25811
-      chr3    2119  7585521   197  325017  14512   3580    1412  25708
-      chr4    1367  8772764   211  307864  23260   6418    1605  64709
-      chr5    1527  6629025   221  223762  15298   4341    1385  40421
-      chr6    1450  6101223   236  260918  15773   4208    1514  28634
-      chr7    1291  5812463   155  350180  16907   4502    1540  34863
-      chr8    1001  4849272   214  317181  19480   4844    1420  50186
-      chr9    1113  5505104   219  485498  21692   4946    1504  40112
-      chrM      84   298104   276   16409   4132   3549    1694   9137
-      chrX     941  5713488   213  320496  22251   6072    1409  65532
-      chrY       5   138365  2043   87799  35701  27673   14315  87799
+       chr1    2045  8031506   220  318254  15566   3927    1476  26513
+      chr10    1109  4723969   263  261207  14559   4260    1592  27313
+      chr11    1232  4754809   213  304465  16228   3859    1314  38943
+      chr12    1050  4526674   261  166256  12536   4311    1508  23582
+      chr13     684  3126069   184  299397  18358   4570    1573  35034
+      chr14     796  4263462   242  249680  18806   5356    1502  37446
+      chr15     994  5240288   245  187955  17111   5272    1489  48036
+      chr16     429  2702573   233  180260  16343   6300    1841  33347
+      chr17     574  3453521   271  388105  23709   6017    1482  69464
+      chr18     538  3873005   349  274407  24659   7199    1424  70263
+      chr19     483  2625211   248  163416  16557   5435    1564  43457
+       chr2    1402  8174215   220  303798  19553   5830    1526  42543
+      chr20     342  2214472   225  209686  20661   6475    1456  55394
+      chr21      57  1758058   347  254718  46708  30843    9409  83729
+      chr22      69   851125   447   77401  15509  12335    5952  25811
+       chr3    2119  7585521   197  325017  14512   3580    1412  25708
+       chr4    1367  8772764   211  307864  23260   6418    1605  64709
+       chr5    1527  6629025   221  223762  15298   4341    1385  40421
+       chr6    1450  6101223   236  260918  15773   4208    1514  28634
+       chr7    1291  5812463   155  350180  16907   4502    1540  34863
+       chr8    1001  4849272   214  317181  19480   4844    1420  50186
+       chr9    1113  5505104   219  485498  21692   4946    1504  40112
+       chrM      84   298104   276   16409   4132   3549    1694   9137
+       chrX     941  5713488   213  320496  22251   6072    1409  65532
+       chrY       5   138365  2043   87799  35701  27673   14315  87799
     ```
  **After completing your tests you should remove the simulation line from the sequencing_MIN106_DNA.toml file. You MUST then reload the scripts. If using Guppy GPU basecalling leave the break_reads_after_seconds parameter as 0.4.**
  
