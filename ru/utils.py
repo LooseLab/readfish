@@ -542,7 +542,10 @@ def describe_experiment(conditions, mapper):
                 for chromosome in region.coords[strand]:
                     total = 0
                     for s, f in region.coords[strand][chromosome]:
-                        total += abs(f - s)
+                        region_len = abs(f - s)
+                        if np.isinf(region_len):
+                            region_len = len(mapper.mapper.seq(chromosome))
+                        total += region_len
                         target_count += 1
                     target_total += total
 
