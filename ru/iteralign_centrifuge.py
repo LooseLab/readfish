@@ -277,7 +277,7 @@ def run(parser, args):
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
 
-    logger.info("Initialising iterAlign.")
+    logger.info("Initialising readfish centrifuge.")
 
     logger.info("Setting up FastQ monitoring.")
 
@@ -301,7 +301,7 @@ def run(parser, args):
 
         # send_message_port("Iteralign Connected to MinKNOW", args.host, messageport)
         send_message(
-            connection, "ReadFish Centriuge Connected to MinKNOW.", Severity.WARN
+            connection, "ReadFish Centrifuge Connected to MinKNOW.", Severity.WARN
         )
 
         logger.info("Loaded RPC")
