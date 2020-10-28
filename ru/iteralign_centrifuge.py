@@ -277,7 +277,7 @@ def run(parser, args):
     logger.info(" ".join(sys.argv))
     print_args(args, logger=logger)
 
-    logger.info("Initialising readfish centrifuge.")
+    logger.info("Initialising ReadFish centrifuge.")
 
     logger.info("Setting up FastQ monitoring.")
 

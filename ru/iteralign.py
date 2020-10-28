@@ -129,7 +129,7 @@ def run(parser, args):
             print(e)
             sys.exit(1)
 
-        send_message(connection, "readfish align connected to MinKNOW", Severity.WARN)
+        send_message(connection, "ReadFish align connected to MinKNOW", Severity.WARN)
 
         logger.info("Loaded RPC")
         while (
@@ -141,7 +141,7 @@ def run(parser, args):
             connection.acquisition.get_acquisition_info().config_summary.reads_directory
         )
 
-    ### Here we configure the code to run either readfish align or itercent. If centrifuge is False it will run readfish align.
+    ### Here we configure the code to run either ReadFish align or itercent. If centrifuge is False it will run ReadFish align.
     event_handler = FastQMonitor(
         args, connection, centrifuge=False, mapper=True, rununtil=True
     )
