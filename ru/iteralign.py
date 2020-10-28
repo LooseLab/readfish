@@ -112,7 +112,7 @@ def run(parser, args):
     logger = logging.getLogger("Manager")
     logger.info(" ".join(sys.argv))
 
-    logger.info("Initialising iterAlign.")
+    logger.info("Initialising readfish align.")
 
     logger.info("Setting up FastQ monitoring.")
 
@@ -129,7 +129,7 @@ def run(parser, args):
             print(e)
             sys.exit(1)
 
-        send_message(connection, "Iteralign Connected to MinKNOW", Severity.WARN)
+        send_message(connection, "ReadFish align connected to MinKNOW", Severity.WARN)
 
         logger.info("Loaded RPC")
         while (
@@ -141,7 +141,7 @@ def run(parser, args):
             connection.acquisition.get_acquisition_info().config_summary.reads_directory
         )
 
-    ### Here we configure the code to run either iteralign or itercent. If centrifuge is False it will run iteralign.
+    ### Here we configure the code to run either ReadFish align or itercent. If centrifuge is False it will run ReadFish align.
     event_handler = FastQMonitor(
         args, connection, centrifuge=False, mapper=True, rununtil=True
     )
