@@ -9,6 +9,7 @@ from watchdog.events import FileSystemEventHandler
 from ru.mapper import MappingServer as Map
 from ru.centrifuge import CentrifugeServer
 from ru.utils import nice_join, send_message, Severity
+from minknow_api.acquisition_pb2 import MinknowStatus
 
 
 def file_dict_of_folder_simple(path):
@@ -259,7 +260,7 @@ class FastQMonitor(FastqHandler):
                             )
                         )
                         if not self.args.simulation:
-                            if self.rununtil:
+                            if self.rununtil and self.connection.acquisition.current_status().status==MinknowStatus.PROCESSING:
                                 self.connection.protocol.stop_protocol()
                                 send_message(
                                     self.connection,
