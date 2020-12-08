@@ -30,7 +30,10 @@ example tests).
 
 Citation
 --------
-If you use this software please cite: [10.1038/s41587-020-00746-x](https://dx.doi.org/10.1038/s41587-020-00746-x)
+The paper is available at [nature biotechnology](https://dx.doi.org/10.1038/s41587-020-00746-x) 
+and [bioRxiv](https://dx.doi.org/10.1101/2020.02.03.926956)
+
+If you use this software please cite: [10.1038/s41587-020-00746-x](https://dx.doi.org/10.1038/s41587-020-00746-x) 
 
 > Readfish enables targeted nanopore sequencing of gigabase-sized genomes  
 > Alexander Payne, Nadine Holmes, Thomas Clarke, Rory Munro, Bisrat Debebe, Matthew Loose  
