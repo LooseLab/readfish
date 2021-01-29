@@ -36,6 +36,8 @@ class DefaultDAQValues:
 class GuppyCaller(PyGuppyClient):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        # Override default priority
+        self.set_params({"priority": PyGuppyClient.high_priority})
         self.connect()
 
     def basecall_minknow(self, reads, signal_dtype, decided_reads, daq_values=None):
