@@ -1,4 +1,4 @@
 """version.py
 Version of the read until software
 """
-__version__ = "0.0.5a4"
+__version__ = "0.0.6a1"
