@@ -598,7 +598,7 @@ def describe_experiment(conditions, mapper):
             yield s, Severity.WARN
 
 
-def get_run_info(toml_filepath, num_channels=512):
+def get_run_info(toml_filepath, num_channels=512, validate=True):
     """Convert a TOML representation of a ReadFish experiment to conditions that
     can be used used by the analysis function
 
@@ -609,6 +609,8 @@ def get_run_info(toml_filepath, num_channels=512):
     num_channels : int
         Total number of channels on the sequencer, expects 512 for MinION and 3000 for
         PromethION
+    validate: bool
+        Whether to validate the experiment toml file.
 
     Returns
     -------
@@ -622,7 +624,7 @@ def get_run_info(toml_filepath, num_channels=512):
         kwargs to pass to the base caller. If not found in the TOML an empty dict
         is returned
     """
-    toml_dict = load_config_toml(toml_filepath)
+    toml_dict = load_config_toml(toml_filepath, validate)
 
     # Get condition keys, these should be ascending integers
     conditions = [
@@ -676,6 +678,26 @@ def get_run_info(toml_filepath, num_channels=512):
     caller_settings = toml_dict.get("caller_settings", {})
 
     return run_info, split_conditions, reference, caller_settings
+
+
+def query_array(start_pos, mask_path, reverse):
+    """
+    Query numpy mask array nd return decision to keep sequencing
+    Parameters
+    ----------
+    start_pos: int
+        Mapping start coordinate
+    mask_path: str
+        The path to the mask fill
+    reverse: bool
+        Whether or not the coordinate is on the forward or reverse strand
+    Returns
+    -------
+    bool
+        Decision to keep sequencing
+    """
+    arr = np.load(mask_path)["strat"]
+    return arr[:, int(reverse)][start_pos]
 
 
 def between(pos, coords):
