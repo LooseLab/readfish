@@ -696,6 +696,9 @@ def query_array(start_pos, mask_path, reverse):
     bool
         Decision to keep sequencing
     """
+    # todo maybe move to beneath while client.is_running so we don't check for each read
+    if not Path(mask_path).exists():
+        return 1
     arr = np.load(mask_path)["strat"]
     return arr[:, int(reverse)][start_pos]
 
