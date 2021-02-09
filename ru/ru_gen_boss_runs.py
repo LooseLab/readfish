@@ -218,7 +218,7 @@ def decision_boss_runs(
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file
             run_info, conditions, new_reference, _ = get_run_info(
-                live_toml_path, flowcell_size
+                live_toml_path, flowcell_size, validate=False
             )
 
             # Check the reference path if different from the loaded mapper
@@ -345,7 +345,7 @@ def decision_boss_runs(
                         # Multiple matches to targets outside the coordinate range
                         mode = "multi_off"  ##
 
-            elif hits & conditions[run_info[channel]].mask:
+            elif hits and conditions[run_info[channel]].mask:
                 coord_match = any(
                     [
                         query_array(
@@ -478,7 +478,7 @@ def run(parser, args):
     # Parse configuration TOML
     # TODO: num_channels is not configurable here, should be inferred from client
     run_info, conditions, reference, caller_kwargs = get_run_info(
-        args.toml, num_channels=512
+        args.toml, num_channels=512, validate=False
     )
     live_toml = Path("{}_live".format(args.toml))
 
