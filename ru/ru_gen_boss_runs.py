@@ -25,11 +25,12 @@ from ru.utils import (
     between,
     setup_logger,
     describe_experiment,
+    query_array,
 )
 from ru.utils import send_message, Severity, get_device, DecisionTracker
 
 
-_help = "Run targeted sequencing"
+_help = "Run boss runs driven selective sequencing."
 _cli = BASE_ARGS + (
     (
         "--toml",
@@ -39,26 +40,9 @@ _cli = BASE_ARGS + (
             help="TOML file specifying experimental parameters",
         ),
     ),
-    (
-        "--paf-log",
-        dict(
-            help="PAF log",
-            default=None,
-        ),
-    ),
-    (
-        "--chunk-log",
-        dict(
-            help="Chunk log",
-            default=None,
-        ),
-    ),
-    (
-        "--mask",
-        dict(
-            help="Path to a BOSS-RUNS produced mask",
-        ),
-    )
+    ("--paf-log", dict(help="PAF log", default=None,),),
+    ("--chunk-log", dict(help="Chunk log", default=None,),),
+    ("--mask", dict(help="Path to a BOSS-RUNS produced mask",),),
 )
 
 
@@ -80,9 +64,21 @@ CHUNK_LOG_FIELDS = (
     "timestamp",
 )
 
-def write_out_channels_toml():
+
+def write_out_channels_toml(conditions, run_info, client):
     """
     Write out the channels toml file
+
+    Parameters
+    ----------
+    conditions : list of collections.namedtuple
+        Experimental conditions as List of namedtuples.
+    run_info : dict
+        Dictionary of {channel: index} where index corresponds to an index in `conditions`
+
+    client: read_until.ReadUntilClient
+        An instance of the ReadUntilClient object
+
     Returns
     -------
 
@@ -120,7 +116,6 @@ def decision_boss_runs(
     conditions=None,
     mapper=None,
     caller_kwargs=None,
-    mask_path=None,
 ):
     """Analysis function
 
@@ -166,7 +161,7 @@ def decision_boss_runs(
         live_toml_path = Path(live_toml_path)
         if live_toml_path.is_file():
             live_toml_path.unlink()
-
+    write_out_channels_toml(conditions, run_info, client)
 
     caller = Caller(
         address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
@@ -188,6 +183,7 @@ def decision_boss_runs(
     # decided
     decided_reads = {}
     strand_converter = {1: "+", -1: "-"}
+    strand_converter_br = {1: False, -1: True}
 
     read_id = ""
 
@@ -310,14 +306,12 @@ def decision_boss_runs(
                 <= conditions[run_info[channel]].min_chunks
             ):
                 below_threshold = True
-
             # Greater than or equal to maximum chunks
             if (
                 tracker[channel][read_number]
                 >= conditions[run_info[channel]].max_chunks
             ):
                 exceeded_threshold = True
-
             # No mappings
             if not results:
                 mode = "no_map"
@@ -349,7 +343,33 @@ def decision_boss_runs(
                         mode = "multi_on"
                     else:
                         # Multiple matches to targets outside the coordinate range
-                        mode = "multi_off"
+                        mode = "multi_off"  ##
+
+            elif hits & conditions[run_info[channel]].mask:
+                coord_match = any(
+                    [
+                        query_array(
+                            start_pos=r.r_st,
+                            mask_path=conditions[run_info[channel]].mask,
+                            reverse=strand_converter_br.get(r.strand, False),
+                        )
+                        for r in results
+                    ]
+                )
+                if len(hits) == 1:
+                    if coord_match:
+                        # Single match that is within coordinate range
+                        mode = "single_on"
+                    else:
+                        # Single match to a target outside coordinate range
+                        mode = "single_off"
+                elif len(hits) > 1:
+                    if coord_match:
+                        # Multiple matches with at least one in the correct region
+                        mode = "multi_on"
+                    else:
+                        # Multiple matches to targets outside the coordinate range
+                        mode = "multi_off"  ##
 
             else:
                 # No matches in mappings
@@ -396,7 +416,6 @@ def decision_boss_runs(
 
         client.unblock_read_batch(unblock_batch_action_list, duration=unblock_duration)
         client.stop_receiving_batch(stop_receiving_action_list)
-
         t1 = timer()
         if r > 0:
             s1 = "{}R/{:.5f}s"
@@ -487,9 +506,7 @@ def run(parser, args):
         logger.info(message)
 
         send_message(
-            read_until_client.connection,
-            message,
-            sev,
+            read_until_client.connection, message, sev,
         )
 
     """
@@ -505,12 +522,11 @@ def run(parser, args):
     #  the read_until_client
 
     read_until_client.run(
-        first_channel=args.channels[0],
-        last_channel=args.channels[-1],
+        first_channel=args.channels[0], last_channel=args.channels[-1],
     )
 
     try:
-        simple_analysis(
+        decision_boss_runs(
             read_until_client,
             unblock_duration=args.unblock_duration,
             throttle=args.throttle,
