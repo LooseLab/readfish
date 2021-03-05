@@ -680,7 +680,7 @@ def get_run_info(toml_filepath, num_channels=512, validate=True):
     return run_info, split_conditions, reference, caller_settings
 
 
-def query_array(start_pos, mask_path, reverse):
+def query_array(start_pos, mask_path, reverse, contig):
     """
     Query numpy mask array nd return decision to keep sequencing
     Parameters
@@ -691,15 +691,18 @@ def query_array(start_pos, mask_path, reverse):
         The path to the mask fill
     reverse: bool
         Whether or not the coordinate is on the forward or reverse strand
+    contig: str
+        The name of the contig the mask is for, used to lookup correct mask in the directory
     Returns
     -------
     bool
         Decision to keep sequencing
     """
     # todo maybe move to beneath while client.is_running so we don't check for each read
-    if not Path(mask_path).exists():
+    mask_file = Path(mask_path) / contig
+    if not mask_file.exists():
         return 1
-    arr = np.load(mask_path)["strat"]
+    arr = np.load(str(mask_file))["strat"]
     return arr[:, int(reverse)][start_pos]
 
 

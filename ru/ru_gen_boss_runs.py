@@ -256,7 +256,7 @@ def decision_boss_runs(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
-        for read_info, read_id, seq_len, results in mapper.map_reads_2(
+        for read_info, read_id, seq_len, mappings in mapper.map_reads_2(
             caller.basecall_minknow(
                 reads=client.get_read_chunks(batch_size=batch_size, last=True),
                 signal_dtype=client.signal_dtype,
@@ -313,11 +313,11 @@ def decision_boss_runs(
             ):
                 exceeded_threshold = True
             # No mappings
-            if not results:
+            if not mappings:
                 mode = "no_map"
 
             hits = set()
-            for result in results:
+            for result in mappings:
                 pf.debug("{}\t{}\t{}".format(read_id, seq_len, result))
                 hits.add(result.ctg)
 
@@ -325,7 +325,7 @@ def decision_boss_runs(
                 # Mappings and targets overlap
                 coord_match = any(
                     between(r.r_st, c)
-                    for r in results
+                    for r in mappings
                     for c in conditions[run_info[channel]]
                     .coords.get(strand_converter.get(r.strand), {})
                     .get(r.ctg, [])
@@ -349,11 +349,12 @@ def decision_boss_runs(
                 coord_match = any(
                     [
                         query_array(
-                            start_pos=r.r_st,
+                            start_pos=mapping.r_st,
                             mask_path=conditions[run_info[channel]].mask,
-                            reverse=strand_converter_br.get(r.strand, False),
+                            reverse=strand_converter_br.get(mapping.strand, False),
+                            contig=mapping.ctg
                         )
-                        for r in results
+                        for mapping in mappings
                     ]
                 )
                 if len(hits) == 1:
