@@ -1,3 +1,6 @@
+"""utils.py
+functions and utilities used internally.
+"""
 import logging
 from collections import namedtuple, defaultdict
 from pathlib import Path
@@ -11,11 +14,132 @@ from enum import IntEnum
 
 from ru.channels import MINION_CHANNELS, FLONGLE_CHANNELS
 
+from minknow_api.manager import Manager
+
 
 class Severity(IntEnum):
     INFO = 1
     WARN = 2
     ERROR = 3
+
+
+class DecisionEvent(IntEnum):
+    stop_receiving = 1
+    proceed = 2
+    unblock = 3
+    exceed_max_chunks_unblocked = 4
+
+
+class DecisionTracker:
+    """
+    This class will store a dictionary tracking the number of unique events that have occurred in a readuntil experiment.
+    Valid events are:
+    stop_receiving : read has been deliberately kept
+    proceed : more data is requested for a read
+    unblock : read has been unblocked as it isn't wanted
+    exceeded_max_chunks_unblocked : read has been unblocked as it could not be evaluated in time.
+    """
+
+    def __init__(self):
+        """
+        event_tracker is a dict to store events
+        """
+        self.event_tracker = defaultdict(int)
+
+    def event_types(self):
+        """
+        Returns
+        -------
+        A list of valid event types.
+        """
+        return ["stop_receiving", "proceed", "unblock", "exceeded_max_chunks_unblocked"]
+
+    def event_end_types(self):
+        """
+        Returns
+        -------
+        A list of valid event end types.
+        """
+        return ["stop_receiving", "unblock", "exceeded_max_chunks_unblocked"]
+
+    def valid(self, event):
+        """
+        Check if the event seen is valid.
+        Parameters
+        ----------
+        event : A string event name #ToDo: change to an enum?
+
+        Returns
+        -------
+        True
+
+        """
+        if event in self.event_types():
+            return True
+
+    def event_seen(self, event):
+        """
+        Logs a specific unique event in the dict. Counts individual entries.
+        Parameters
+        ----------
+        event - event type -  one of stop_receiving, proceed, unblock or exceeded_max_chunks_unblocked
+
+        Returns
+        -------
+
+        """
+        if self.valid(event):
+            self.event_tracker[event] += 1
+
+    def fetch_all(self):
+        """
+        Helper method to return the entire dict.
+        Returns
+        -------
+
+        """
+        return self.event_tracker
+
+    def fetch_total_reads(self):
+        """
+        Calculates the total number of unique reads processed by readfish
+        Returns
+        -------
+        count
+
+        """
+        counter = 0
+        for event_type in self.event_end_types():
+            counter += self.event_tracker[event_type]
+        return counter
+
+    def fetch_unblocks(self):
+        """
+        Returns
+        -------
+        count of reads unblocked
+        """
+        return self.event_tracker["unblock"]
+
+    def fetch_stop_receiving(self):
+        """
+        Returns
+        -------
+        count of reads unblocked
+        """
+        return self.event_tracker["stop_receiving"]
+
+    def fetch_proportion_rejected(self):
+        """
+
+        Returns
+        -------
+        the proportion of reads unblocked.
+        """
+        return self.fetch_unblocks() / self.fetch_total_reads() * 100
+
+    def fetch_proportion_accepted(self):
+        return self.fetch_stop_receiving() / self.fetch_total_reads() * 100
 
 
 def send_message(rpc_connection, message, severity):
@@ -37,29 +161,10 @@ def send_message(rpc_connection, message, severity):
     rpc_connection.log.send_user_message(severity=severity, user_message=message)
 
 
-def dynamic_import(name):
-    """Dynamically import modules and classes, used to get the ReadCache
-
-    https://stackoverflow.com/a/547867/3279716
-    https://docs.python.org/2.4/lib/built-in-funcs.html
-
-    Parameters
-    ----------
-    name : str
-        The module/class path. E.g: "read_until.read_cache.{}".format("ReadCache")
-
-    Returns
-    -------
-    module
-    """
-    components = name.split('.')
-    mod = __import__(components[0])
-    for comp in components[1:]:
-        mod = getattr(mod, comp)
-    return mod
-
-
-def named_tuple_generator(dictionary, name='Conditions',):
+def named_tuple_generator(
+    dictionary,
+    name="Conditions",
+):
     """Generate named tuple from dictionary
 
     Parameters
@@ -103,13 +208,14 @@ def print_args(args, logger=None, exclude=None):
     if exclude is None:
         exclude = []
     dirs = dir(args)
-    m = max([len(a) for a in dirs if a[0] != '_'])
+    m = max([len(a) for a in dirs if a[0] != "_"])
     for attr in dirs:
-        if attr[0] != '_' and attr not in exclude and attr.lower() == attr:
+        if attr[0] != "_" and attr not in exclude and attr.lower() == attr:
+            record = "{a}={b}".format(a=attr, m=m, b=getattr(args, attr))
             if logger is not None:
-                logger.info("{a}={b}".format(a=attr, m=m, b=getattr(args, attr)))
+                logger.info(record)
             else:
-                print('{a:<{m}}\t{b}'.format(a=attr, m=m, b=getattr(args, attr)))
+                print(record)
 
 
 def get_coords(channel, flowcell_size):
@@ -188,11 +294,8 @@ def get_flowcell_array(flowcell_size):
 
     # Initialise a nd array using the max row and column from coords
     b = np.zeros(
-        (
-            max(coords, key=itemgetter(1))[1] + 1,
-            max(coords, key=itemgetter(0))[0] + 1
-        ),
-        dtype=int
+        (max(coords, key=itemgetter(1))[1] + 1, max(coords, key=itemgetter(0))[0] + 1),
+        dtype=int,
     )
 
     # Mimic flowcell layout in an array
@@ -343,17 +446,25 @@ def load_config_toml(filepath, validate=True):
     reference_text = toml_dict.get("conditions", {}).get("reference", "")
     reference_path = Path(reference_text)
     if not reference_path.is_file() and reference_text:
-        raise FileNotFoundError("Reference file not found at '{}'".format(reference_path))
+        raise FileNotFoundError(
+            "Reference file not found at '{}'".format(reference_path)
+        )
 
     # Get keys for all condition tables, allows safe updates
-    conditions = [k for k, cond in toml_dict.get("conditions", {}).items() if isinstance(cond, dict)]
+    conditions = [
+        k
+        for k, cond in toml_dict.get("conditions", {}).items()
+        if isinstance(cond, dict)
+    ]
 
     # Load targets from a file
     for k in conditions:
         targets = toml_dict["conditions"][k].get("targets", [])
         if isinstance(targets, str):
             if not Path(targets).is_file():
-                raise FileNotFoundError("Targets file not found at '{}'".format(targets))
+                raise FileNotFoundError(
+                    "Targets file not found at '{}'".format(targets)
+                )
 
             toml_dict["conditions"][k]["targets"] = read_lines_to_list(targets)
 
@@ -400,17 +511,47 @@ def describe_experiment(conditions, mapper):
         yield "Using reference: {}".format(mapper.index), Severity.INFO
         seq_names = set(mapper.mapper.seq_names)
 
+        # Get total seq length of the reference.
+        ref_len = 0
+        for seq_name in seq_names:
+            ref_len += len(mapper.mapper.seq(seq_name))
+
+        # Convert to double stranded
+        ref_len = 2 * ref_len
+
         for region in conditions:
             conds = {
                 "unblock": [],
                 "stop_receiving": [],
                 "proceed": [],
             }
-            for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+            for m in (
+                "single_on",
+                "single_off",
+                "multi_on",
+                "multi_off",
+                "no_map",
+                "no_seq",
+            ):
                 conds[getattr(region, m)].append(m)
             conds = {k: nice_join(v) for k, v in conds.items()}
+
+            target_total = 0
+            target_count = 0
+            for strand in ["+", "-"]:
+                for chromosome in region.coords[strand]:
+                    total = 0
+                    for s, f in region.coords[strand][chromosome]:
+                        region_len = abs(f - s)
+                        if np.isinf(region_len):
+                            region_len = len(mapper.mapper.seq(chromosome))
+                        total += region_len
+                        target_count += 1
+                    target_total += total
+
             s = (
-                "Region '{}' (control={}) has {} target{} of which {} are in the reference. "
+                "Region '{}' (control={}) has {} contig{} of which {} are in the reference. "
+                "There are {} targets (including +/- strand) representing {}% of the reference. "
                 "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
                 "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
                     region.name,
@@ -418,6 +559,8 @@ def describe_experiment(conditions, mapper):
                     len(region.targets),
                     {1: ""}.get(len(region.targets), "s"),
                     len(region.targets & seq_names),
+                    target_count,
+                    round(target_total / ref_len * 100, 2),
                     **conds,
                 )
             )
@@ -430,11 +573,18 @@ def describe_experiment(conditions, mapper):
                 "stop_receiving": [],
                 "proceed": [],
             }
-            for m in ("single_on", "single_off", "multi_on", "multi_off", "no_map", "no_seq"):
+            for m in (
+                "single_on",
+                "single_off",
+                "multi_on",
+                "multi_off",
+                "no_map",
+                "no_seq",
+            ):
                 conds[getattr(region, m)].append(m)
             conds = {k: nice_join(v) for k, v in conds.items()}
             s = (
-                "Region '{}' (control={}) has {} target{}. "
+                "Region '{}' (control={}) has {} contig{}. "
                 "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
                 "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
                     region.name,
@@ -444,6 +594,7 @@ def describe_experiment(conditions, mapper):
                     **conds,
                 )
             )
+
             yield s, Severity.WARN
 
 
@@ -475,7 +626,8 @@ def get_run_info(toml_filepath, num_channels=512):
 
     # Get condition keys, these should be ascending integers
     conditions = [
-        k for k in toml_dict["conditions"].keys()
+        k
+        for k in toml_dict["conditions"].keys()
         if isinstance(toml_dict["conditions"].get(k), dict)
     ]
 
@@ -558,7 +710,14 @@ def between(pos, coords):
     return min(coords) <= pos <= max(coords)
 
 
-def setup_logger(name, log_format="%(message)s", log_file=None, level=logging.DEBUG):
+def setup_logger(
+    name,
+    log_format="%(message)s",
+    log_file=None,
+    mode="a",
+    level=logging.DEBUG,
+    propagate=False,
+):
     """Setup loggers
 
     Parameters
@@ -569,17 +728,20 @@ def setup_logger(name, log_format="%(message)s", log_file=None, level=logging.DE
         logging format string using % formatting
     log_file : str
         File to record logs to, sys.stderr if not set
+    mode : str
+        Mode to use for FileHandler, default is 'a'
     level : logging.LEVEL
         Where logging.LEVEL is one of (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    propagate : bool
+        Pass through for logger.propagate, default is False
 
     Returns
     -------
     logger
     """
-    """Function setup as many loggers as you want"""
     formatter = logging.Formatter(log_format)
     if log_file is not None:
-        handler = logging.FileHandler(log_file, mode="w")
+        handler = logging.FileHandler(log_file, mode=mode)
     else:
         handler = logging.StreamHandler()
     handler.setFormatter(formatter)
@@ -587,10 +749,20 @@ def setup_logger(name, log_format="%(message)s", log_file=None, level=logging.DE
     logger = logging.getLogger(name)
     logger.setLevel(level)
     logger.addHandler(handler)
-
+    logger.propagate = propagate
     return logger
+
+
+def get_device(device, host="127.0.0.1", port=None, use_tls=False):
+    """Get an RPC connection from a device"""
+    manager = Manager(host=host, port=port, use_tls=use_tls)
+    for position in manager.flow_cell_positions():
+        if position.name == device:
+            return position
+    raise ValueError("Could not find device {!r}".format(device))
 
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

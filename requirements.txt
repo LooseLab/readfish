@@ -8,5 +8,5 @@ jsonschema
 watchdog
 pandas
 mappy
-biopython
-pyguppyclient>=0.0.6
+biopython==1.76
+minknow_api

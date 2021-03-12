@@ -1,3 +1,6 @@
+"""channels.py
+Dictionary of lookups for ONT listed channel number against cartesian coordinates of the channel on the flow cell device.
+"""
 MINION_CHANNELS = {
     1: (31, 0),
     2: (31, 1),

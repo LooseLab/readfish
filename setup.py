@@ -9,14 +9,15 @@ DESCRIPTION = """# <img src="https://raw.githubusercontent.com/LooseLab/ru/renam
 Installation
 ---
 
-This toolkit currently requires MinKNOW (minknow-core v3.6) to be installed and `read_until_api_v2` to be installed
+This toolkit currently requires MinKNOW (minknow-core v4.0.4) to be installed and 
+[`read_until_api`](https://github.com/nanoporetech/read_until_api) to be installed
 separately. We recommend installing in a virtual environment as so:
 
 ```bash
 # Make a virtual env
 python3 -m venv readfish
 source ./readfish/bin/activate
-pip install git+https://github.com/LooseLab/read_until_api_v2@master
+pip install git+https://github.com/nanoporetech/read_until_api
 pip install readfish
 ```
 
@@ -51,7 +52,9 @@ $ readfish targets --experiment-name "Test run" --device MN17073 --toml example.
 
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, "README.md")) as fh, open(path.join(here, "requirements.txt")) as req:
+with open(path.join(here, "README.md")) as fh, open(
+    path.join(here, "requirements.txt")
+) as req:
     install_requires = [pkg.strip() for pkg in req]
 
 __version__ = ""

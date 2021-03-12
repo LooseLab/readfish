@@ -1,5 +1,5 @@
 [caller_settings]
-config_name = "dna_r9.4.1_450bps_hac"
+config_name = "dna_r9.4.1_450bps_fast"
 host = "127.0.0.1"
 port = 5555
 
@@ -10,7 +10,7 @@ reference = "/path/to/reference.mmi"
 name = "select_chr_21_22"
 control = false
 min_chunks = 0
-max_chunks = inf
+max_chunks = 12
 targets = ["chr21", "chr22"]
 single_on = "stop_receiving"
 multi_on = "stop_receiving"

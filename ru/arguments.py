@@ -1,7 +1,9 @@
+"""arguments.py
+The central commands used by most CLI read fish scripts.
+"""
 import argparse
 import sys
 
-import read_until_api_v2.read_cache as RC
 from ru.utils import nice_join
 
 # TODO: Add prefix parameter that is applied to all log files
@@ -17,20 +19,11 @@ DEFAULT_RUN_TIME = 172800
 DEFAULT_UNBLOCK = 0.1
 DEFAULT_CACHE_SIZE = 512
 DEFAULT_BATCH_SIZE = 512
-DEFAULT_THROTTLE = 0.1
+DEFAULT_THROTTLE = 0.4
 DEFAULT_MIN_CHUNK = 2000
 DEFAULT_LOG_PREFIX = ""
 
 LOG_LEVELS = ("debug", "info", "warning", "error", "critical")
-READ_CACHE = RC.__all__
-
-if "ONTReadCache" in READ_CACHE:
-    DEFAULT_READ_CACHE = "ONTReadCache"
-else:
-    try:
-        DEFAULT_READ_CACHE = READ_CACHE[0]
-    except IndexError:
-        raise IndexError("No ReadCache classes found")
 
 BASE_ARGS = (
     (
@@ -67,18 +60,7 @@ BASE_ARGS = (
             required=True,
         ),
     ),
-    (
-        "--read-cache",
-        dict(
-            metavar="READ_CACHE",
-            action="store",
-            default=DEFAULT_READ_CACHE,
-            choices=READ_CACHE,
-            help="One of: {} (default: {})".format(
-                nice_join(READ_CACHE), DEFAULT_READ_CACHE
-            ),
-        ),
-    ),
+    # TODO: delete workers
     (
         "--workers",
         dict(
@@ -89,15 +71,14 @@ BASE_ARGS = (
         ),
     ),
     (
+        # ToDo: Delete and replace with api calls.
         "--channels",
         dict(
             metavar="CHANNELS",
             type=int,
             nargs=2,
             help="Channel range to use as a sequence, expects two integers "
-                 "separated by a space (default: {})".format(
-                    DEFAULT_CHANNELS
-            ),
+            "separated by a space (default: {})".format(DEFAULT_CHANNELS),
             default=DEFAULT_CHANNELS,
         ),
     ),
@@ -124,6 +105,7 @@ BASE_ARGS = (
         ),
     ),
     (
+        # ToDo:Deprecate so always the same size as the flowcell
         "--cache-size",
         dict(
             metavar="CACHE-SIZE",
@@ -135,6 +117,7 @@ BASE_ARGS = (
         ),
     ),
     (
+        # ToDo: Batch size should default to flowcell size unless otherwise specified.
         "--batch-size",
         dict(
             metavar="BATCH-SIZE",
@@ -146,6 +129,7 @@ BASE_ARGS = (
         ),
     ),
     (
+        # ToDo: Determine if we need a minimum value for throttle which shouldn't be overridden.
         "--throttle",
         dict(
             metavar="THROTTLE",
