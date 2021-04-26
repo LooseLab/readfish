@@ -30,6 +30,7 @@ def main():
         ("validate", "validate"),
         ("summary", "summarise_fq"),
         ("boss-runs", "ru_gen_boss_runs")
+        ("barcode", "ru_barcode"),
     ]
     for cmd, module in cmds:
         _module = importlib.import_module("ru.{}".format(module))

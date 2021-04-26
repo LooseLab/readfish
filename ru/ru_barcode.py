@@ -38,7 +38,7 @@ from ru.utils import (
 from ru.utils import send_message, Severity, get_device, DecisionTracker
 
 
-_help = "Run targeted sequencing"
+_help = "Run targeted sequencing, and look at barcodes"
 _cli = BASE_ARGS + (
     (
         "--toml",
