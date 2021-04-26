@@ -238,7 +238,7 @@ def simple_analysis(
         ):
             #  Get alignment results
             metadata = data["metadata"]
-            read_id = metavar["read_id"]
+            read_id = metadata["read_id"]
             seq = data["datasets"]["sequence"]
             seq_len = metadata["sequence_length"]
             results = list(mapper.map_read(seq))
