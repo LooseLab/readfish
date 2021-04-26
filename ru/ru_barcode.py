@@ -65,7 +65,6 @@ _cli = BASE_ARGS + (
     (
         "--develop",
         dict(
-            metavar="DEV",
             action="store_false",
             help="Use developer mode, turns of TOML validation",
         ),
