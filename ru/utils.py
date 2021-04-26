@@ -609,8 +609,8 @@ def get_run_info(toml_filepath, num_channels=512, validate=True):
     num_channels : int
         Total number of channels on the sequencer, expects 512 for MinION and 3000 for
         PromethION
-    validate: bool
-        Whether to validate the experiment toml file.
+    validate : bool
+        Validate TOML file
 
     Returns
     -------
@@ -624,7 +624,7 @@ def get_run_info(toml_filepath, num_channels=512, validate=True):
         kwargs to pass to the base caller. If not found in the TOML an empty dict
         is returned
     """
-    toml_dict = load_config_toml(toml_filepath, validate)
+    toml_dict = load_config_toml(toml_filepath, validate=validate)
 
     # Get condition keys, these should be ascending integers
     conditions = [
