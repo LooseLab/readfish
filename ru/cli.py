@@ -29,6 +29,7 @@ def main():
         ("unblock-all", "unblock_all"),
         ("validate", "validate"),
         ("summary", "summarise_fq"),
+        ("barcode", "ru_barcode"),
     ]
     for cmd, module in cmds:
         _module = importlib.import_module("ru.{}".format(module))
