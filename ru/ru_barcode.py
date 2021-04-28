@@ -342,7 +342,8 @@ def simple_analysis(
                 elif len(hits) == 1:
                     # Single off-target mapping
                     mode = "single_off"
-
+            ### Mode is now specified.
+            ### Barcode
             # This is where we make our decision:
             # Get the associated action for this condition
             decision_str = getattr(conditions[run_info[channel]], mode)
@@ -368,7 +369,10 @@ def simple_analysis(
                 mode = "below_min_chunks_unblocked"
                 unblock_batch_action_list.append((channel, read_number, read_id))
                 decisiontracker.event_seen(decision_str)
-
+            elif barcode is not None and barcode not in getattr(conditions[run_info[channel]], "barcode_targets", []):
+                mode = "unwanted_barcode"
+                unblock_batch_action_list.append((channel, read_number, read_id))
+                decisiontracker.event_seen(decision_str)
             # proceed returns None, so we send no decision; otherwise unblock or stop_receiving
             elif decision is not None:
                 decided_reads[channel] = read_id
