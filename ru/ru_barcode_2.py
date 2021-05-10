@@ -246,7 +246,9 @@ def simple_analysis(
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file
             conditions, new_reference, _ = get_barcoded_run_info(
-                live_toml_path, flowcell_size
+                live_toml_path,
+                flowcell_size,
+                validate=False,
             )
 
             # Check the reference path if different from the loaded mapper
