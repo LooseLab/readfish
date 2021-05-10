@@ -182,14 +182,14 @@ def simple_analysis(
     # for k, v in run_info.items():
     #     d["conditions"][str(v)]["channels"].append(k)
 
-    channels_out = str(Path(client.mk_run_dir) / "channels.toml")
-    with open(channels_out, "w") as fh:
-        fh.write(
-            "# This file is written as a record of the condition each channel is assigned.\n"
-        )
-        fh.write("# It may be changed or overwritten if you restart ReadFish.\n")
-        fh.write("# In the future this file may become a CSV file.\n")
-        toml.dump(d, fh)
+    # channels_out = str(Path(client.mk_run_dir) / "channels.toml")
+    # with open(channels_out, "w") as fh:
+    #     fh.write(
+    #         "# This file is written as a record of the condition each channel is assigned.\n"
+    #     )
+    #     fh.write("# It may be changed or overwritten if you restart ReadFish.\n")
+    #     fh.write("# In the future this file may become a CSV file.\n")
+    #     toml.dump(d, fh)
 
     caller = Caller(
         address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
@@ -307,7 +307,7 @@ def simple_analysis(
 
             # Get barcode condition here, this shouldn't fail as we only check
             #    that there is at least an unclassified table in the conf TOML
-            condtion = conditions.get(barcode, conditions["unclassified"])
+            condition = conditions.get(barcode, conditions["unclassified"])
 
             r += 1
             read_start_time = timer()
