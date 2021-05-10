@@ -11,6 +11,7 @@ from operator import itemgetter
 import json
 import jsonschema
 from enum import IntEnum
+import re
 
 from ru.channels import MINION_CHANNELS, FLONGLE_CHANNELS
 
@@ -678,6 +679,110 @@ def get_run_info(toml_filepath, num_channels=512, validate=True):
     caller_settings = toml_dict.get("caller_settings", {})
 
     return run_info, split_conditions, reference, caller_settings
+
+
+def get_barcode_kits(address, timeout=10000):
+    # Lazy load GuppyClient for now, we don't want to break this whole module if
+    # it's unavailable
+    from pyguppy_client_lib.client_lib import GuppyClient
+
+    res, status = GuppyClient.get_barcode_kits(address, timeout)
+    if status != GuppyClient.success:
+        raise RuntimeError("barcode kit went wrong?")
+    return res
+
+
+def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
+    """Convert a TOML representation of a ReadFish experiment to conditions that
+    can be used used by the analysis function
+
+    This function is for use with experiments that are expecting to be handling
+    barcoded data, where the barcode returned for a read informs the selective
+    critera. Therefore, we expect the following conditions to be met:
+     - There must be an `unclassified` block, this is used for unclassifiable
+         data and for barcodes that are detected but have no specified action
+     - Each `conditions` subtable must be in the form `barcodeXX` or
+         `unclassified`
+
+    Parameters
+    ----------
+    toml_filepath : str
+        Filepath to a configuration TOML file
+    num_channels : int
+        Total number of channels on the sequencer, expects 512 for MinION and 3000 for
+        PromethION
+    validate : bool
+        Validate TOML file
+
+    Returns
+    -------
+    split_conditions : dict
+        Dict of namedtuples keyed by barcode, with conditions as values
+    reference : str
+        The path to the reference MMI file
+    caller_settings : dict
+        kwargs to pass to the base caller. If not found in the TOML an empty dict
+        is returned
+    """
+    pattern = re.compile(r"^(barcode\d{2,}|unclassified)$")
+    toml_dict = load_config_toml(toml_filepath, validate=validate)
+    caller_settings = toml_dict.get("caller_settings", {})
+    guppy_address = "{}:{}".format(caller_settings["host"], caller_settings["port"])
+
+    # Get barcodes, going to do some checks here
+    barcode_kits = get_barcode_kits(guppy_address)
+
+    #  Check kits are unique
+    bc_names = set(d["kit_name"] for d in barcode_kits)
+    if len(bc_names) != len(barcode_kits):
+        raise Exception("Something is __wrong__, kits have duplicate names?")
+
+    # Check that our kits exist, could also do subset here?
+    if not all(kit in bc_names for kit in caller_settings.get("barcode_kits", [])):
+        raise RuntimeError("Maybe a problem with your barcode kits")
+
+    # Get condition keys, these should be `barcodeXX` or `unclassified` only
+    conditions = [
+        k
+        for k in toml_dict["conditions"].keys()
+        if isinstance(toml_dict["conditions"].get(k), dict)
+    ]
+
+    # We could generate the barcodes from the `first_index` and `last_index`
+    #   and use these to check that the condition names are valid, but that
+    #    could lead to weird issues?
+    # For now we'll pattern match
+    check_names = [c for c in conditions if pattern.match(c)]
+    if set(check_names) != set(conditions):
+        outs = nice_join(set(conditions) - set(check_names), conjunction="and")
+        raise ValueError("fields not barcodes or unclassified ({})".format(outs))
+
+    sort_func = lambda L: sorted(L)
+
+    # convert targets to sets
+    for k in conditions:
+        cond = toml_dict["conditions"].get(k)
+        if not isinstance(cond, dict):
+            continue
+        cond["coords"] = get_targets(cond["targets"])
+
+        _t = []
+        for _k in cond["coords"].keys():
+            _t.extend(cond["coords"].get(_k).keys())
+
+        cond["targets"] = set(_t)
+
+    # Create a dict of named tuples, keyed by barcode
+    split_conditions = {
+        k: named_tuple_generator(toml_dict["conditions"].get(k)) for k in conditions
+    }
+
+    reference = toml_dict["conditions"].get("reference")
+
+    if not "unclassified" in split_conditions:
+        raise RuntimeError("Expected unclassified field in conditions")
+
+    return split_conditions, reference, caller_settings
 
 
 def between(pos, coords):

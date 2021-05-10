@@ -1,6 +1,45 @@
-"""ru_gen.py
-Generator based main read until script. This is where readfish targets code lives. It performs the back bone of the selected
-sequencing.
+"""ru_barcode_2.py
+
+This is the second barcode script for read until. It is a direct clone of 
+ru_gen that instead expects a different format of TOML file.
+
+
+```TOML
+[caller_settings]
+config_name = "dna_r9.4.1_450bps_fast"
+host = "localhost"
+port = 5555
+barcode_kits = ["EXP-NBD196"]
+
+[conditions]
+reference = "/path/to/reference.mmi"
+
+[conditions.unclassified]
+name = "unclassified_reads"
+control = false
+min_chunks = 0
+max_chunks = 12
+targets = []
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+
+[conditions.barcode01]
+name = "bc01_name"
+control = false
+min_chunks = 0
+max_chunks = 12
+targets = ["contigA", "contigB"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+```
 """
 # Core imports
 import functools
@@ -21,7 +60,7 @@ from ru.basecall import Mapper as CustomMapper
 from ru.basecall import GuppyCaller as Caller
 from ru.utils import (
     print_args,
-    get_run_info,
+    get_barcoded_run_info,
     between,
     setup_logger,
     describe_experiment,
@@ -113,10 +152,10 @@ def simple_analysis(
         The number of channels on the flowcell, 512 for MinION and 3000 for PromethION
     dry_run : bool
         If True unblocks are replaced with `stop_receiving` commands
-    run_info : dict
-        Dictionary of {channel: index} where index corresponds to an index in `conditions`
-    conditions : list
-        Experimental conditions as List of namedtuples.
+    run_info : None
+        Unused in this script
+    conditions : dict
+        Experimental conditions of {barcode: namedtuple}
     mapper : mappy.Aligner
     caller_kwargs : dict
 
@@ -132,16 +171,16 @@ def simple_analysis(
     if live_toml_path.is_file():
         live_toml_path.unlink()
 
-    # TODO: test this
-    # Write channels.toml
-    d = {
-        "conditions": {
-            str(v): {"channels": [], "name": conditions[v].name}
-            for k, v in run_info.items()
-        }
-    }
-    for k, v in run_info.items():
-        d["conditions"][str(v)]["channels"].append(k)
+    # # TODO: test this
+    # # Write channels.toml
+    # d = {
+    #     "conditions": {
+    #         str(v): {"channels": [], "name": conditions[v].name}
+    #         for k, v in run_info.items()
+    #     }
+    # }
+    # for k, v in run_info.items():
+    #     d["conditions"][str(v)]["channels"].append(k)
 
     channels_out = str(Path(client.mk_run_dir) / "channels.toml")
     with open(channels_out, "w") as fh:
@@ -206,7 +245,7 @@ def simple_analysis(
     while client.is_running:
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file
-            run_info, conditions, new_reference, _ = get_run_info(
+            conditions, new_reference, _ = get_barcoded_run_info(
                 live_toml_path, flowcell_size
             )
 
@@ -245,13 +284,29 @@ def simple_analysis(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
-        for read_info, read_id, seq_len, results in mapper.map_reads_2(
-            caller.basecall_minknow(
-                reads=client.get_read_chunks(batch_size=batch_size, last=True),
-                signal_dtype=client.signal_dtype,
-                decided_reads=decided_reads,
-            )
+        for read_info, data in caller.get_all_data(
+            reads=client.get_read_chunks(batch_size=batch_size, last=True),
+            signal_dtype=client.signal_dtype,
+            decided_reads=decided_reads,
         ):
+            #  Get alignment results
+            metadata = data["metadata"]
+            read_id = metadata["read_id"]
+            seq = data["datasets"]["sequence"]
+            seq_len = metadata["sequence_length"]
+            results = list(mapper.map_read(seq))
+
+            # Get barcode results
+            barcode = metadata.get("barcode_arrangement", None)
+
+            if barcode is not None:
+                # use barcode result here
+                barcode_counter[barcode] += 1
+
+            # Get barcode condition here, this shouldn't fail as we only check
+            #    that there is at least an unclassified table in the conf TOML
+            condtion = conditions.get(barcode, conditions["unclassified"])
+
             r += 1
             read_start_time = timer()
             channel, read_number = read_info
@@ -271,8 +326,8 @@ def simple_analysis(
                     seq_len,
                     tracker[channel][read_number],
                     mode,
-                    getattr(conditions[run_info[channel]], mode, mode),
-                    conditions[run_info[channel]].name,
+                    getattr(condition, mode, mode),
+                    condition.name,
                     below_threshold,
                     exceeded_threshold,
                     read_start_time,
@@ -282,7 +337,7 @@ def simple_analysis(
             )
 
             # Control channels
-            if conditions[run_info[channel]].control:
+            if condition.control:
                 mode = "control"
                 log_decision()
                 stop_receiving_action_list.append((channel, read_number))
@@ -290,17 +345,11 @@ def simple_analysis(
 
             # This is an analysis channel
             # Below minimum chunks
-            if (
-                tracker[channel][read_number]
-                <= conditions[run_info[channel]].min_chunks
-            ):
+            if tracker[channel][read_number] <= condition.min_chunks:
                 below_threshold = True
 
             # Greater than or equal to maximum chunks
-            if (
-                tracker[channel][read_number]
-                >= conditions[run_info[channel]].max_chunks
-            ):
+            if tracker[channel][read_number] >= condition.max_chunks:
                 exceeded_threshold = True
 
             # No mappings
@@ -312,14 +361,14 @@ def simple_analysis(
                 pf.debug("{}\t{}\t{}".format(read_id, seq_len, result))
                 hits.add(result.ctg)
 
-            if hits & conditions[run_info[channel]].targets:
+            if hits & condition.targets:
                 # Mappings and targets overlap
                 coord_match = any(
                     between(r.r_st, c)
                     for r in results
-                    for c in conditions[run_info[channel]]
-                    .coords.get(strand_converter.get(r.strand), {})
-                    .get(r.ctg, [])
+                    for c in condition.coords.get(
+                        strand_converter.get(r.strand), {}
+                    ).get(r.ctg, [])
                 )
                 if len(hits) == 1:
                     if coord_match:
@@ -347,7 +396,7 @@ def simple_analysis(
 
             # This is where we make our decision:
             # Get the associated action for this condition
-            decision_str = getattr(conditions[run_info[channel]], mode)
+            decision_str = getattr(condition, mode)
             # decision is an alias for the functions "unblock" or "stop_receiving"
             decision = decision_dict[decision_str]
 
@@ -443,8 +492,8 @@ def run(parser, args):
 
     # Parse configuration TOML
     # TODO: num_channels is not configurable here, should be inferred from client
-    run_info, conditions, reference, caller_kwargs = get_run_info(
-        args.toml, num_channels=512
+    conditions, reference, caller_kwargs = get_barcoded_run_info(
+        args.toml, validate=False
     )
     live_toml = Path("{}_live".format(args.toml))
 
@@ -468,14 +517,14 @@ def run(parser, args):
         Severity.WARN,
     )
 
-    for message, sev in describe_experiment(conditions, mapper):
-        logger.info(message)
+    # for message, sev in describe_experiment(conditions, mapper):
+    #     logger.info(message)
 
-        send_message(
-            read_until_client.connection,
-            message,
-            sev,
-        )
+    #     send_message(
+    #         read_until_client.connection,
+    #         message,
+    #         sev,
+    #     )
 
     """
     This experiment has N regions on the flowcell.
@@ -504,7 +553,6 @@ def run(parser, args):
             pf=paf_logger,
             live_toml_path=live_toml,
             dry_run=args.dry_run,
-            run_info=run_info,
             conditions=conditions,
             mapper=mapper,
             caller_kwargs=caller_kwargs,
