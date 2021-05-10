@@ -1,0 +1,34 @@
+[caller_settings]
+config_name = "dna_r9.4.1_450bps_fast"
+host = "localhost"
+port = 5555
+barcode_kits = ["EXP-NBD196"]
+
+[conditions]
+reference = "/path/to/reference.mmi"
+
+[conditions.unclassified]
+name = "unclassified_reads"
+control = false
+min_chunks = 0
+max_chunks = 4
+targets = []
+single_on = "unblock"
+multi_on = "unblock"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+
+[conditions.barcode01]
+name = "bc01"
+control = false
+min_chunks = 0
+max_chunks = 4
+targets = ["Staphylococcus_aureus_chromosome"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
