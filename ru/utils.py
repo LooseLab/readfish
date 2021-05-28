@@ -702,10 +702,10 @@ def query_array(start_pos, mask_path, reverse, contig, logger):
     """
     # todo maybe move to beneath while client.is_running so we don't check for each read
     mask_file = (Path(mask_path) / contig) / "_mask.npz"
-    logger.info(mask_file, contig)
+    logger.info(str(mask_file), str(contig))
     if not mask_file.exists():
         if logger is not None:
-            logger.warning(f"Mask file does not exist at {mask_file}")
+            logger.warning(f"Mask file does not exist at {str(mask_file)}")
         return 1
     arr = np.load(str(mask_file))["strat"]
     return arr[:, int(reverse)][start_pos]
