@@ -701,7 +701,7 @@ def query_array(start_pos, mask_path, reverse, contig, logger):
         Decision to keep sequencing
     """
     # todo maybe move to beneath while client.is_running so we don't check for each read
-    mask_file = Path(mask_path) / contig
+    mask_file = (Path(mask_path) / contig) / "_mask.npz"
     logger.info(mask_file, contig)
     if not mask_file.exists():
         if logger is not None:
