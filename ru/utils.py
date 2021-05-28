@@ -680,9 +680,9 @@ def get_run_info(toml_filepath, num_channels=512, validate=True):
     return run_info, split_conditions, reference, caller_settings
 
 
-def query_array(start_pos, mask_path, reverse, contig):
+def query_array(start_pos, mask_path, reverse, contig, logger):
     """
-    Query numpy mask array nd return decision to keep sequencing
+    Query numpy mask array and return decision to keep sequencing
     Parameters
     ----------
     start_pos: int
@@ -693,6 +693,8 @@ def query_array(start_pos, mask_path, reverse, contig):
         Whether or not the coordinate is on the forward or reverse strand
     contig: str
         The name of the contig the mask is for, used to lookup correct mask in the directory
+    logger: logging.Logger
+        The logger to write out to
     Returns
     -------
     bool
@@ -701,6 +703,8 @@ def query_array(start_pos, mask_path, reverse, contig):
     # todo maybe move to beneath while client.is_running so we don't check for each read
     mask_file = Path(mask_path) / contig
     if not mask_file.exists():
+        if logger is not None:
+            logger.warning(f"Mask file does not exist at {mask_file}")
         return 1
     arr = np.load(str(mask_file))["strat"]
     return arr[:, int(reverse)][start_pos]

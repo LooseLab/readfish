@@ -352,7 +352,8 @@ def decision_boss_runs(
                             start_pos=mapping.r_st,
                             mask_path=conditions[run_info[channel]].mask,
                             reverse=strand_converter_br.get(mapping.strand, False),
-                            contig=mapping.ctg
+                            contig=mapping.ctg,
+                            logger=logger
                         )
                         for mapping in mappings
                     ]
