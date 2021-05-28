@@ -706,7 +706,10 @@ def query_array(start_pos, mask_path, reverse, contig, logger):
         if logger is not None:
             logger.warning(f"Mask file does not exist at {str(mask_file)}")
         return 1
-    arr = np.load(str(mask_file))["strat"]
+    try:
+        arr = np.load(str(mask_file))["strat"]
+    except ValueError as e:
+        logger.error(f"Error reading mask array ->>> {repr(e)}")
     return arr[:, int(reverse)][start_pos]
 
 
