@@ -710,6 +710,7 @@ def query_array(start_pos, mask_path, reverse, contig, logger):
         arr = np.load(str(mask_file))["strat"]
     except ValueError as e:
         logger.error(f"Error reading mask array ->>> {repr(e)}")
+        return 0
     return arr[:, int(reverse)][start_pos]
 
 
