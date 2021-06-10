@@ -680,15 +680,15 @@ def get_run_info(toml_filepath, num_channels=512, validate=True):
     return run_info, split_conditions, reference, caller_settings
 
 
-def query_array(start_pos, mask_path, reverse, contig, logger):
+def query_array(start_pos, mask_dict, reverse, contig, logger):
     """
     Query numpy mask array and return decision to keep sequencing
     Parameters
     ----------
     start_pos: int
         Mapping start coordinate
-    mask_path: str
-        The path to the mask fill
+    mask_dict: dict
+        Dict of contig name -> mask array, empty if errored or masks not present yet
     reverse: bool
         Whether or not the coordinate is on the forward or reverse strand
     contig: str
@@ -701,16 +701,13 @@ def query_array(start_pos, mask_path, reverse, contig, logger):
         Decision to keep sequencing
     """
     # todo maybe move to beneath while client.is_running so we don't check for each read
-    mask_file = Path(mask_path) / f"{contig}_mask.npz"
-    if not mask_file.exists():
-        if logger is not None:
-            logger.warning(f"Mask file does not exist at {str(mask_file)}")
-        return 1
-    try:
-        arr = np.load(str(mask_file))["strat"]
-    except Exception as e:
-        logger.error(f"Error reading mask array ->>> {repr(e)}")
+    if mask_dict.get("exception", False):
         return 0
+    # if logger is not None:
+    #     logger.warning(f"Mask file does not exist at {str(mask_file)}")
+    if not mask_dict.get(contig):
+        return 1
+    arr = mask_dict.get(contig)
     return arr[:, int(reverse)][start_pos]
 
 

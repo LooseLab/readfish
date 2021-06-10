@@ -12,6 +12,8 @@ from pathlib import Path
 from timeit import default_timer as timer
 
 # Third party imports
+import numpy as np
+
 from ru.read_until_client import RUClient
 from read_until.read_cache import AccumulatingCache
 import toml
@@ -214,7 +216,10 @@ def decision_boss_runs(
 
     l_string = "\t".join(("{}" for _ in CHUNK_LOG_FIELDS))
     loop_counter = 0
+    # TODO this only works for 1 boss runs condition, and if there is one Boss runs conditions
+    mask_path = Path([getattr(cond, "mask", False)for cond in conditions if getattr(cond, "mask", False)][0])
     while client.is_running:
+        # todo reverse engineer from channels.toml
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file
             run_info, conditions, new_reference, _ = get_run_info(
@@ -255,6 +260,13 @@ def decision_boss_runs(
         r = 0
         unblock_batch_action_list = []
         stop_receiving_action_list = []
+
+        try:
+            # TODO this only works for 1 boss runs condition
+            masks = {path.stem.partition("_"): np.load(path)["strat"] for path in mask_path.glob("*_mask.npz")}
+        except Exception as e:
+            logger.error(f"Error reading mask array ->>> {repr(e)}")
+            masks = {"exception": True}
 
         for read_info, read_id, seq_len, mappings in mapper.map_reads_2(
             caller.basecall_minknow(
@@ -350,7 +362,7 @@ def decision_boss_runs(
                     [
                         query_array(
                             start_pos=mapping.r_st,
-                            mask_path=conditions[run_info[channel]].mask,
+                            mask_dict=masks,
                             reverse=strand_converter_br.get(mapping.strand, False),
                             contig=mapping.ctg,
                             logger=logger
@@ -497,6 +509,7 @@ def run(parser, args):
         filter_strands=True,
         cache_type=AccumulatingCache,
     )
+    # todo reverse engineer from channels.toml
 
     send_message(
         read_until_client.connection,
