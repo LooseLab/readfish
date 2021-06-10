@@ -706,6 +706,7 @@ def query_array(start_pos, mask_dict, reverse, contig, logger):
     # if logger is not None:
     #     logger.warning(f"Mask file does not exist at {str(mask_file)}")
     if contig not in mask_dict:
+        logger.warning(f"{contig} is not in mask dict")
         return 1
     arr = mask_dict.get(contig)
     return arr[:, int(reverse)][start_pos]
