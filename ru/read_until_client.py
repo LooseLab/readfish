@@ -30,7 +30,11 @@ class RUClient(ReadUntilClient):
             # running remotely, output in cwd
             self.mk_run_dir = "."
 
+        # Creates the output directory with 777 permissions
         Path(self.mk_run_dir).mkdir(parents=True, exist_ok=True)
+        # Create `unblocked_read_ids.txt` with mode 666
+        ids_log = Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt")
+        ids_log.touch(mode=0o666, exist_ok=True)
 
         self.log_queue = queue.Queue(-1)
         self.queue_handler = QueueHandler(self.log_queue)
@@ -39,9 +43,7 @@ class RUClient(ReadUntilClient):
         self.unblock_logger.propagate = False
         self.unblock_logger.addHandler(self.queue_handler)
         fmt = logging.Formatter("%(message)s")
-        self.file_handler = logging.FileHandler(
-            str(Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt"))
-        )
+        self.file_handler = logging.FileHandler(str(ids_log), mode="a")
         self.file_handler.setFormatter(fmt)
         self.listener = QueueListener(self.log_queue, self.file_handler)
         self.listener.start()
