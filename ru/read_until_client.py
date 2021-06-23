@@ -32,9 +32,18 @@ class RUClient(ReadUntilClient):
 
         # Creates the output directory with 777 permissions
         Path(self.mk_run_dir).mkdir(parents=True, exist_ok=True)
-        # Create `unblocked_read_ids.txt` with mode 666
-        ids_log = Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt")
-        ids_log.touch(mode=0o666, exist_ok=True)
+
+        # Attempt to create `unblocked_read_ids.txt` if this fails set the run
+        # directory as the PWD this will also affect where the channels.toml
+        # file is written to
+        try:
+            ids_log = Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt")
+            ids_log.touch(exist_ok=True)
+        except PermissionError:
+            # TODO: log message here that fallback output is in use
+            self.mk_run_dir = "."
+            ids_log = Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt")
+            ids_log.touch(exist_ok=True)
 
         self.log_queue = queue.Queue(-1)
         self.queue_handler = QueueHandler(self.log_queue)
