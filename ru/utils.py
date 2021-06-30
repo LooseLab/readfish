@@ -109,6 +109,7 @@ class DecisionTracker:
         count
 
         """
+
         counter = 0
         for event_type in self.event_end_types():
             counter += self.event_tracker[event_type]
@@ -143,6 +144,37 @@ class DecisionTracker:
         return self.fetch_stop_receiving() / self.fetch_total_reads() * 100
 
 
+def escape_message_to_minknow(message, chars):
+    """Escape characters in the chars list if they are in message
+
+    Parameters
+    ----------
+    message : str
+        The message that is being sent
+    chars : list[str], str
+        The characters to escape
+
+    Returns
+    -------
+    message : str
+
+    Examples
+    --------
+    >>> escape_message_to_minknow("20%", ["%"]) == r'20\%'
+    True
+    >>> escape_message_to_minknow("20\%", ["%"]) == r'20\%'
+    True
+    >>> escape_message_to_minknow("20\\%", ["%"]) == r'20\%'
+    True
+    >>> escape_message_to_minknow("20", ["%"]) == r'20'
+    True
+
+    """
+    for char in chars:
+        message = re.sub(rf"(?<!\\){char}", rf"\\{char}", message)
+    return message
+
+
 def send_message(rpc_connection, message, severity):
     """Send a message to MinKNOW
 
@@ -159,6 +191,7 @@ def send_message(rpc_connection, message, severity):
     -------
     None
     """
+    message = escape_message_to_minknow(message, "%")
     rpc_connection.log.send_user_message(severity=severity, user_message=message)
 
 
