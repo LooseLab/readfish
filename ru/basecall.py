@@ -101,6 +101,10 @@ class GuppyCaller(PyGuppyClient):
             results = self.get_completed_reads()
 
             if not results:
+                t1 = time.time()
+                if t1-t0 > 15: #This code should dump us out of the loop if we hit a barcoding issue.
+                    logging.warning("Unexpected item in the bagging area - Guppy probably returned a read we weren't expecting.")
+                    break
                 time.sleep(self.throttle)
                 continue
 
