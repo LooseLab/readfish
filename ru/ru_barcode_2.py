@@ -194,6 +194,7 @@ def simple_analysis(
     caller = Caller(
         address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
         config=caller_kwargs["config_name"],
+        barcode_kits=caller_kwargs["barcode_kits"],
     )
     # What if there is no reference or an empty MMI
 
@@ -243,6 +244,7 @@ def simple_analysis(
     l_string = "\t".join(("{}" for _ in CHUNK_LOG_FIELDS))
     loop_counter = 0
     while client.is_running:
+        barcode_counter = Counter()
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file
             conditions, new_reference, _ = get_barcoded_run_info(
