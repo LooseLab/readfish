@@ -74,7 +74,7 @@ class GuppyCaller(PyGuppyClient):
         if daq_values is None:
             daq_values = DefaultDAQValues()
             
-        #missed_results = self.get_completed_reads()
+        missed_results = self.get_completed_reads()
 
         for channel, read in reads:
             fixer_id = f"RU-{read.id}"
