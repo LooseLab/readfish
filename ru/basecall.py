@@ -73,6 +73,8 @@ class GuppyCaller(PyGuppyClient):
 
         if daq_values is None:
             daq_values = DefaultDAQValues()
+            
+        missed_results = self.get_completed_reads()
 
         for channel, read in reads:
             hold[read.id] = (channel, read.number)
@@ -102,7 +104,7 @@ class GuppyCaller(PyGuppyClient):
 
             if not results:
                 t1 = time.time()
-                if t1-t0 > 15: #This code should dump us out of the loop if we hit a barcoding issue.
+                if t1-t0 > 5: #This code should dump us out of the loop if we hit a barcoding issue.
                     logging.warning("Unexpected item in the bagging area - Guppy probably returned a read we weren't expecting.")
                     break
                 time.sleep(self.throttle)
@@ -118,6 +120,18 @@ class GuppyCaller(PyGuppyClient):
                     read_counter += 1
                 yield i, r
                 done += 1
+                
+            while missed_results:
+                r = missed_results.pop()
+                r_id = r["metadata"]["read_id"]
+                try:
+                    i = hold.pop(r_id)
+                except KeyError:
+                    # FixMe: This is resolved in later versions of guppy.
+                    i = skipped.pop(r_id)
+                    read_counter += 1
+                yield i, r
+                    
 
     def get_all_data(self, *args, **kwargs):
         """basecall data from minknow
