@@ -75,6 +75,7 @@ class GuppyCaller(PyGuppyClient):
             daq_values = DefaultDAQValues()
 
         for channel, read in reads:
+            read.id = f"RU-{read.id}"
             hold[read.id] = (channel, read.number)
             t0 = time.time()
             success = self.pass_read(
@@ -112,6 +113,7 @@ class GuppyCaller(PyGuppyClient):
                     # FixMe: This is resolved in later versions of guppy.
                     i = skipped.pop(r_id)
                     read_counter += 1
+                r["metadata"]["read_id"] = r_id[3:]
                 yield i, r
                 done += 1
 
