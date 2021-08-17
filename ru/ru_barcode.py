@@ -178,7 +178,7 @@ def simple_analysis(
     )
     # What if there is no reference or an empty MMI
 
-    decisiontracker = DeciscionTracker()
+    decisiontracker = DecisionTracker()
 
     # DefaultDict[int: collections.deque[Tuple[str, ndarray]]]
     #  tuple is (read_id, previous_signal)
