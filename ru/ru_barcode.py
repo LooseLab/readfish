@@ -178,7 +178,7 @@ def simple_analysis(
     )
     # What if there is no reference or an empty MMI
 
-    decisiontracker = DecisionTracker()
+    decisiontracker = DeciscionTracker()
 
     # DefaultDict[int: collections.deque[Tuple[str, ndarray]]]
     #  tuple is (read_id, previous_signal)
@@ -269,7 +269,7 @@ def simple_analysis(
                     seq_len,
                     tracker[channel][read_number],
                     mode,
-                    getattr(conditions[run_info[channel]], mode, mode),
+                    getattr(conditions[run_info[channel]], mode, decision_str),
                     conditions[run_info[channel]].name,
                     below_threshold,
                     exceeded_threshold,
@@ -371,6 +371,7 @@ def simple_analysis(
                 decisiontracker.event_seen(decision_str)
             elif barcode is not None and barcode not in getattr(conditions[run_info[channel]], "barcode_targets", []):
                 mode = "unwanted_barcode"
+                decision_str = "unblock"
                 unblock_batch_action_list.append((channel, read_number, read_id))
                 decisiontracker.event_seen(decision_str)
             # proceed returns None, so we send no decision; otherwise unblock or stop_receiving
