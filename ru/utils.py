@@ -3,6 +3,7 @@ functions and utilities used internally.
 """
 import logging
 from collections import namedtuple, defaultdict
+from functools import lru_cache
 from pathlib import Path
 from random import random
 import numpy as np
@@ -747,6 +748,8 @@ def query_array(start_pos, mask_dict, reverse, contig, logger):
         return arr[:, int(reverse)][start_pos // 100]
     except Exception as e:
         return 1
+        
+@lru_cache
 def get_barcode_kits(address, timeout=10000):
     # Lazy load GuppyClient for now, we don't want to break this whole module if
     # it's unavailable
@@ -790,7 +793,7 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
         kwargs to pass to the base caller. If not found in the TOML an empty dict
         is returned
     """
-    pattern = re.compile(r"^(barcode\d{2,}|unclassified)$")
+    pattern = re.compile(r"^(barcode\d{2,}|unclassified|classified)$")
     toml_dict = load_config_toml(toml_filepath, validate=validate)
     caller_settings = toml_dict.get("caller_settings", {})
     guppy_address = "{}:{}".format(caller_settings["host"], caller_settings["port"])
@@ -807,7 +810,7 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
     if not all(kit in bc_names for kit in caller_settings.get("barcode_kits", [])):
         raise RuntimeError("Maybe a problem with your barcode kits")
 
-    # Get condition keys, these should be `barcodeXX` or `unclassified` only
+    # Get condition keys, these should be `barcodeXX` or `unclassified/classified` only
     conditions = [
         k
         for k in toml_dict["conditions"].keys()
@@ -821,7 +824,7 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
     check_names = [c for c in conditions if pattern.match(c)]
     if set(check_names) != set(conditions):
         outs = nice_join(set(conditions) - set(check_names), conjunction="and")
-        raise ValueError("fields not barcodes or unclassified ({})".format(outs))
+        raise ValueError("fields not barcodes or unclassified/classified ({})".format(outs))
 
     sort_func = lambda L: sorted(L)
 
@@ -845,7 +848,7 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
 
     reference = toml_dict["conditions"].get("reference")
 
-    if not "unclassified" in split_conditions:
+    if not "unclassified" in split_conditions or not "classified" in split_conditions:
         raise RuntimeError("Expected unclassified field in conditions")
 
     return split_conditions, reference, caller_settings
