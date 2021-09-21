@@ -27,6 +27,19 @@ multi_off = "unblock"
 no_seq = "proceed"
 no_map = "proceed"
 
+[conditions.classified]
+name = "classified_reads"
+control = false
+min_chunks = 0
+max_chunks = 4
+targets = []
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "stop_receiving"
+multi_off = "stop_receiving"
+no_seq = "proceed"
+no_map = "proceed"
+
 [conditions.barcode01]
 name = "bc01_name"
 control = false
@@ -309,7 +322,7 @@ def simple_analysis(
 
             # Get barcode condition here, this shouldn't fail as we only check
             #    that there is at least an unclassified table in the conf TOML
-            condition = conditions.get(barcode, conditions["unclassified"])
+            condition = conditions.get(barcode, conditions["classified"])
 
             r += 1
             read_start_time = timer()
