@@ -446,7 +446,9 @@ def get_targets(targets):
         ctg, *coords = item.split(",")
         if coords:
             strand = coords.pop()
-            t[strand][ctg].append(tuple(int(x) for x in coords))
+            # FIXME: This handles a case when minoTour sends back coords as floats
+            #        once that is fixed the call to float should be removed
+            t[strand][ctg].append(tuple(int(float(x)) for x in coords))
         else:
             for strand in ["+", "-"]:
                 t[strand][ctg].append((0, float("inf")))
