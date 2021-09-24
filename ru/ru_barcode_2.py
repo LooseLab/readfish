@@ -380,8 +380,12 @@ def simple_analysis(
 
             if hits & condition.targets:
                 # Mappings and targets overlap
+                coord_interest = "r_en"
+                if r.strand < 0:
+                    #negative strand
+                    coord_interest = "r_st"
                 coord_match = any(
-                    between(r.r_st, c)
+                    between(getattr(r,coord_interest), c)
                     for r in results
                     for c in condition.coords.get(
                         strand_converter.get(r.strand), {}
