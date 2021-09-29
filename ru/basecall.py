@@ -75,21 +75,21 @@ class GuppyCaller(PyGuppyClient):
             daq_values = DefaultDAQValues()
 
         for channel, read in reads:
-            read.id = f"RU-{read.id}"
-            hold[read.id] = (channel, read.number)
+            read_id = f"RU-{read.id}" #we do not modify read.id itself as this can result in persistence after this function finishes
+            hold[read_id] = (channel, read.number)
             t0 = time.time()
             success = self.pass_read(
                 package_read(
-                    read_id=read.id,
+                    read_id=read_id,
                     raw_data=np.frombuffer(read.raw_data, signal_dtype),
                     daq_offset=daq_values[channel].offset,
                     daq_scaling=daq_values[channel].scaling,
                 )
             )
             if not success:
-                logging.warning("Skipped a read: {}".format(read.id))
+                logging.warning("Skipped a read: {}".format(read_id))
                 # FixMe: This is resolved in later versions of guppy.
-                skipped[read.id] = hold.pop(read.id)
+                skipped[read_id] = hold.pop(read_id)
                 continue
             else:
                 read_counter += 1
