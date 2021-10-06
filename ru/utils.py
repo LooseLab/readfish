@@ -447,7 +447,7 @@ def get_targets(targets):
         if coords:
             strand = coords.pop()
             # FIXME: This handles a case when minoTour sends back coords as floats
-            #        once that is fixed the call to float should be removed
+            #         once that is fixed the call to float should be removed
             t[strand][ctg].append(tuple(int(float(x)) for x in coords))
         else:
             for strand in ["+", "-"]:
@@ -473,16 +473,21 @@ def load_config_toml(filepath, validate=True):
     """
     # Check that TOML config file exists
     p = Path(filepath)
-    if not p.is_file():
+    is_live = p.suffix.endswith("_live")
+    if not p.is_file() and not is_live:
+        # Specifically don't check for live file existence
         raise FileNotFoundError("TOML config file not found at '{}'".format(filepath))
 
-    # ToDo Re-evaluate the existence... of tomls
+    # TODO: Re-evaluate the existence... of tomls
 
-    toml_dict={}
+    toml_dict = {}
 
     while not toml_dict:
         # Load TOML to dict
-        toml_dict = toml.load(p)
+        try:
+            toml_dict = toml.load(p)
+        except toml.TomlDecodeError:
+            toml_dict = {}
 
     # Check reference path
     reference_text = toml_dict.get("conditions", {}).get("reference", "")
@@ -764,7 +769,7 @@ def get_barcode_kits(address, timeout=10000):
 
     res, status = GuppyClient.get_barcode_kits(address, timeout)
     if status != GuppyClient.success:
-        raise RuntimeError("barcode kit went wrong?")
+        raise RuntimeError("Could not retrieve barcode kits")
     return res
 
 
@@ -831,7 +836,9 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
     check_names = [c for c in conditions if pattern.match(c)]
     if set(check_names) != set(conditions):
         outs = nice_join(set(conditions) - set(check_names), conjunction="and")
-        raise ValueError("fields not barcodes or unclassified/classified ({})".format(outs))
+        raise ValueError(
+            "fields not barcodes or unclassified/classified ({})".format(outs)
+        )
 
     sort_func = lambda L: sorted(L)
 
