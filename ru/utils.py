@@ -504,6 +504,9 @@ def load_config_toml(filepath, validate=True):
         if isinstance(cond, dict)
     ]
 
+    # Set a barcoded flag using either of the required tables in barcoded TOMLs
+    barcoded = any(k for k in conditions if k in ("unclassified", "classified"))
+
     # Load targets from a file
     for k in conditions:
         targets = toml_dict["conditions"][k].get("targets", [])
@@ -517,8 +520,9 @@ def load_config_toml(filepath, validate=True):
 
     # Validate our TOML file
     if validate:
-        # Load json schema
-        _f = Path(__file__).parent / "static/readfish_toml.schema.json"
+        fn = "barcode" if barcoded else "targets"
+        # Load correct json schema
+        _f = Path(__file__).parent / "static/{}.schema.json".format(fn)
         with _f.resolve().open() as fh:
             schema = json.load(fh)
         try:
