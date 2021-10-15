@@ -39,9 +39,21 @@ class RUClient(ReadUntilClient):
         self.unblock_logger.propagate = False
         self.unblock_logger.addHandler(self.queue_handler)
         fmt = logging.Formatter("%(message)s")
+        # Attempt to create `unblocked_read_ids.txt` if this fails set the run
+        # directory as the PWD this will also affect where the channels.toml
+        # file is written to
+        try:
+            ids_log = Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt")
+            ids_log.touch(exist_ok=True)
+        except PermissionError:
+            # TODO: log message here that fallback output is in use
+            self.mk_run_dir = "."
+            ids_log = Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt")
+            ids_log.touch(exist_ok=True)
         self.file_handler = logging.FileHandler(
             str(Path(self.mk_run_dir).joinpath("unblocked_read_ids.txt"))
         )
+        
         self.file_handler.setFormatter(fmt)
         self.listener = QueueListener(self.log_queue, self.file_handler)
         self.listener.start()
