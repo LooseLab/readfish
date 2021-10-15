@@ -30,7 +30,6 @@ def main():
         ("validate", "validate"),
         ("summary", "summarise_fq"),
         ("boss-runs", "ru_gen_boss_runs")
-        ("barcode", "ru_barcode"),
         ("barcode-targets", "ru_barcode_targets"),
     ]
     for cmd, module in cmds:
