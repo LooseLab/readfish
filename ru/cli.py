@@ -29,7 +29,6 @@ def main():
         ("unblock-all", "unblock_all"),
         ("validate", "validate"),
         ("summary", "summarise_fq"),
-        ("barcode", "ru_barcode"),
         ("barcode-targets", "ru_barcode_targets"),
     ]
     for cmd, module in cmds:
