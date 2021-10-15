@@ -1,8 +1,9 @@
-"""ru_barcode_2.py
+"""ru_barcode_targets.py
 
 This is the second barcode script for read until. It is a direct clone of 
 ru_gen that instead expects a different format of TOML file.
 
+ - This requires both a 'classified' and 'unclassified' conditions table.
 
 ```TOML
 [caller_settings]
