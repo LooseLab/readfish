@@ -218,6 +218,7 @@ def decision_boss_runs(
     loop_counter = 0
     # TODO this only works for 1 boss runs condition, and if there is one Boss runs conditions
     mask_path = Path([getattr(cond, "mask", False)for cond in conditions if getattr(cond, "mask", False)][0])
+
     while client.is_running:
         # todo reverse engineer from channels.toml
         if live_toml_path.is_file():
@@ -261,13 +262,16 @@ def decision_boss_runs(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
-        try:
-            # TODO this only works for 1 boss runs condition
-            masks = {path.stem.partition("_mask")[0]: np.load(path)["strat"] for path in mask_path.glob("*_mask.npz")}
-            logger.info(f"Reloaded mask dict for {masks.keys()}")
-        except Exception as e:
-            logger.error(f"Error reading mask array ->>> {repr(e)}")
-            masks = {"exception": True}
+        if (mask_path / "masks.updated").exists():
+            try:
+                # TODO this only works for 1 boss runs condition
+                masks = {path.stem.partition("_mask")[0]: np.load(path)["strat"] for path in
+                         mask_path.glob("*_mask.npz")}
+                logger.info(f"Reloaded mask dict for {masks.keys()}")
+            except Exception as e:
+                logger.error(f"Error reading mask array ->>> {repr(e)}")
+                masks = {"exception": True}
+            (mask_path / "masks.updated").unlink()
 
         for read_info, read_id, seq_len, mappings in mapper.map_reads_2(
             caller.basecall_minknow(
