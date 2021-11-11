@@ -265,8 +265,8 @@ def decision_boss_runs(
         if (mask_path / "masks.updated").exists():
             try:
                 # TODO this only works for 1 boss runs condition
-                masks = {path.stem.partition("_mask")[0]: np.load(path)["strat"] for path in
-                         mask_path.glob("*_mask.npz")}
+                masks = {path.stem: np.load(path) for path in
+                         mask_path.glob("*.npy")}
                 logger.info(f"Reloaded mask dict for {masks.keys()}")
             except Exception as e:
                 logger.error(f"Error reading mask array ->>> {repr(e)}")
