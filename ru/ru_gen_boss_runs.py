@@ -272,6 +272,8 @@ def decision_boss_runs(
                 logger.error(f"Error reading mask array ->>> {repr(e)}")
                 masks = {"exception": True}
             (mask_path / "masks.updated").unlink()
+        else:
+            masks = {}
 
         for read_info, read_id, seq_len, mappings in mapper.map_reads_2(
             caller.basecall_minknow(
