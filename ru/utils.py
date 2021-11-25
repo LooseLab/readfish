@@ -709,7 +709,10 @@ def query_array(start_pos, mask_dict, reverse, contig, logger):
         logger.warning(f"{contig} is not in mask dict")
         return 1
     arr = mask_dict.get(contig)
-    return arr[:, int(reverse)][start_pos // 100]
+    try:
+        return arr[:, int(reverse)][start_pos // 100]
+    except Exception as e:
+        return 1
 
 
 def between(pos, coords):
