@@ -731,7 +731,7 @@ def get_run_info(toml_filepath, num_channels=512, validate=True):
     return run_info, split_conditions, reference, caller_settings
 
 
-@lru_cache
+@lru_cache()
 def get_barcode_kits(address, timeout=10000):
     # Lazy load GuppyClient for now, we don't want to break this whole module if
     # it's unavailable
