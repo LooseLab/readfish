@@ -765,7 +765,7 @@ def query_array(start_pos, mask_dict, reverse, contig, logger):
     except Exception as e:
         return 1
         
-@lru_cache
+@lru_cache()
 def get_barcode_kits(address, timeout=10000):
     # Lazy load GuppyClient for now, we don't want to break this whole module if
     # it's unavailable
