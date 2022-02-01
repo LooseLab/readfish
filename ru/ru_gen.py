@@ -153,7 +153,7 @@ def simple_analysis(
         toml.dump(d, fh)
 
     caller = Caller(
-        address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
+        address="{}/{}".format(caller_kwargs["host"], caller_kwargs["port"]),
         config=caller_kwargs["config_name"],
     )
     # What if there is no reference or an empty MMI
@@ -453,7 +453,7 @@ def run(parser, args):
     mapper = CustomMapper(reference)
     logger.info("Mapper initialised")
 
-    position = get_device(args.device, host=args.host)
+    position = get_device(args.device, host=args.host, port=args.port)
 
     read_until_client = RUClient(
         mk_host=position.host,

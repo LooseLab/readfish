@@ -105,17 +105,18 @@ class GuppyCaller(PyGuppyClient):
                 time.sleep(self.throttle)
                 continue
 
-            for r in results:
-                r_id = r["metadata"]["read_id"]
-                try:
-                    i = hold.pop(r_id)
-                except KeyError:
-                    # FixMe: This is resolved in later versions of guppy.
-                    i = skipped.pop(r_id)
-                    read_counter += 1
-                r["metadata"]["read_id"] = r_id[3:]
-                yield i, r
-                done += 1
+            for r_ in results:
+                for r in r_:
+                    r_id = r["metadata"]["read_id"]
+                    try:
+                        i = hold.pop(r_id)
+                    except KeyError:
+                        # FixMe: This is resolved in later versions of guppy.
+                        i = skipped.pop(r_id)
+                        read_counter += 1
+                    r["metadata"]["read_id"] = r_id[3:]
+                    yield i, r
+                    done += 1
 
     def get_all_data(self, *args, **kwargs):
         """basecall data from minknow
