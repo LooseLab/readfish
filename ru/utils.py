@@ -778,7 +778,7 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
     pattern = re.compile(r"^(barcode\d{2,}|unclassified|classified)$")
     toml_dict = load_config_toml(toml_filepath, validate=validate)
     caller_settings = toml_dict.get("caller_settings", {})
-    guppy_address = "{}:{}".format(caller_settings["host"], caller_settings["port"])
+    guppy_address = "{}/{}".format(caller_settings["host"], caller_settings["port"])
 
     # Get barcodes, going to do some checks here
     barcode_kits = get_barcode_kits(guppy_address)

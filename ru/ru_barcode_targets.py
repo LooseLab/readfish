@@ -206,7 +206,7 @@ def simple_analysis(
     #     toml.dump(d, fh)
 
     caller = Caller(
-        address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
+        address="{}/{}".format(caller_kwargs["host"], caller_kwargs["port"]),
         config=caller_kwargs["config_name"],
         barcode_kits=caller_kwargs["barcode_kits"],
     )
