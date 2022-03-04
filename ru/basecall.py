@@ -40,7 +40,7 @@ class GuppyCaller(PyGuppyClient):
         self.set_params({"priority": PyGuppyClient.high_priority})
         self.connect()
 
-    def basecall_minknow(self, reads, signal_dtype, decided_reads, daq_values=None):
+    def _basecall(self, reads, signal_dtype, decided_reads, daq_values=None):
         """Guppy basecaller wrapper for MinKNOW RPC reads
 
         Parameters
@@ -59,7 +59,8 @@ class GuppyCaller(PyGuppyClient):
         ------
         read_info : tuple
             Tuple of read info (channel, read_number)
-        read_id : str
+        data : dict
+            Dict of data returned from guppy server
         sequence : str
         sequence_length : int
         quality : str
@@ -74,20 +75,21 @@ class GuppyCaller(PyGuppyClient):
             daq_values = DefaultDAQValues()
 
         for channel, read in reads:
-            hold[read.id] = (channel, read.number)
+            read_id = f"RU-{read.id}" #we do not modify read.id itself as this can result in persistence after this function finishes
+            hold[read_id] = (channel, read.number)
             t0 = time.time()
             success = self.pass_read(
                 package_read(
-                    read_id=read.id,
+                    read_id=read_id,
                     raw_data=np.frombuffer(read.raw_data, signal_dtype),
                     daq_offset=daq_values[channel].offset,
                     daq_scaling=daq_values[channel].scaling,
                 )
             )
             if not success:
-                logging.warning("Skipped a read: {}".format(read.id))
+                logging.warning("Skipped a read: {}".format(read_id))
                 # FixMe: This is resolved in later versions of guppy.
-                skipped[read.id] = hold.pop(read.id)
+                skipped[read_id] = hold.pop(read_id)
                 continue
             else:
                 read_counter += 1
@@ -111,14 +113,47 @@ class GuppyCaller(PyGuppyClient):
                     # FixMe: This is resolved in later versions of guppy.
                     i = skipped.pop(r_id)
                     read_counter += 1
-                yield (
-                    i,
-                    r_id,
-                    r["datasets"]["sequence"],
-                    r["metadata"]["sequence_length"],
-                    r["datasets"]["qstring"],
-                )
+                r["metadata"]["read_id"] = r_id[3:]
+                yield i, r
                 done += 1
+
+    def get_all_data(self, *args, **kwargs):
+        """basecall data from minknow
+
+        Parameters are identical to GuppyCaller._basecall.
+
+                Yields
+        ------
+        read_info : tuple
+            (channel, read_number)
+        data : dict
+                        All data returned from guppy server, this will contain different
+                        attributes depending on the client connection parameters
+        """
+        yield from self._basecall(*args, **kwargs)
+
+    def basecall_minknow(self, *args, **kwargs):
+        """basecall data from minknow
+
+        Parameters are identical to GuppyCaller._basecall.
+
+                Yields
+        ------
+        read_info : tuple
+            (channel, read_number)
+        read_id : str
+        sequence : str
+        sequence_length : int
+        quality : str
+        """
+        for read_info, data in self._basecall(*args, **kwargs):
+            yield (
+                read_info,
+                data["metadata"]["read_id"],
+                data["datasets"]["sequence"],
+                data["metadata"]["sequence_length"],
+                data["datasets"]["qstring"],
+            )
 
 
 class Mapper:

@@ -21,6 +21,9 @@
                 },
                 "port": {
                     "type": "number"
+                },
+                "barcode_kits": {
+                    "type": "array"
                 }
             },
             "required": [
@@ -48,7 +51,7 @@
             },
             "additionalProperties": false,
             "patternProperties": {
-                "^[0-9]+$": {
+                "^[0-9]+|barcode[0-9]{2,}|classified|unclassified$": {
                     "type": "object",
                     "additionalProperties": false,
                     "properties": {

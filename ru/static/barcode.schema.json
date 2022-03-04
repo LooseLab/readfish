@@ -1,0 +1,132 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "modes": {
+            "type": "string",
+            "enum": [
+                "unblock",
+                "stop_receiving",
+                "proceed"
+            ]
+        },
+        "caller_settings": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "config_name": {
+                    "type": "string"
+                },
+                "host": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "number"
+                },
+                "barcode_kits": {
+                    "type": "array"
+                }
+            },
+            "required": [
+                "config_name",
+                "host",
+                "port",
+                "barcode_kits"
+            ]
+        },
+        "conditions": {
+            "type": "object",
+            "properties": {
+                "reference": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+                "^barcode[0-9]{2,}|classified|unclassified$": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "max_chunks": {
+                            "type": "number",
+                            "minimum": 1
+                        },
+                        "min_chunks": {
+                            "type": "number",
+                            "minimum": 0
+                        },
+                        "targets": {
+                            "type": [
+                                "array",
+                                "string"
+                            ],
+                            "items": {
+                                "type": "string",
+                                "oneOf": [
+                                    {
+                                        "pattern": "^[^,]+$"
+                                    },
+                                    {
+                                        "pattern": "^.+,[0-9]+,[0-9]+,[+-]$"
+                                    }
+                                ]
+                            }
+                        },
+                        "single_on": {
+                            "type": "string",
+                            "$ref": "#/definitions/modes"
+                        },
+                        "single_off": {
+                            "type": "string",
+                            "$ref": "#/definitions/modes"
+                        },
+                        "multi_on": {
+                            "type": "string",
+                            "$ref": "#/definitions/modes"
+                        },
+                        "multi_off": {
+                            "type": "string",
+                            "$ref": "#/definitions/modes"
+                        },
+                        "no_seq": {
+                            "type": "string",
+                            "$ref": "#/definitions/modes"
+                        },
+                        "no_map": {
+                            "type": "string",
+                            "$ref": "#/definitions/modes"
+                        },
+                        "control": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "max_chunks",
+                        "min_chunks",
+                        "targets",
+                        "single_on",
+                        "single_off",
+                        "multi_on",
+                        "multi_off",
+                        "no_seq",
+                        "no_map",
+                        "control"
+                    ]
+                }
+            }
+        }
+    },
+    "properties": {
+        "caller_settings": {
+            "$ref": "#/definitions/caller_settings"
+        },
+        "conditions": {
+            "$ref": "#/definitions/conditions"
+        }
+    },
+    "additionalProperties": false
+}

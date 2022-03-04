@@ -3,6 +3,7 @@ functions and utilities used internally.
 """
 import logging
 from collections import namedtuple, defaultdict
+from functools import lru_cache
 from pathlib import Path
 from random import random
 import numpy as np
@@ -11,6 +12,7 @@ from operator import itemgetter
 import json
 import jsonschema
 from enum import IntEnum
+import re
 
 from ru.channels import MINION_CHANNELS, FLONGLE_CHANNELS
 
@@ -108,6 +110,7 @@ class DecisionTracker:
         count
 
         """
+
         counter = 0
         for event_type in self.event_end_types():
             counter += self.event_tracker[event_type]
@@ -142,6 +145,37 @@ class DecisionTracker:
         return self.fetch_stop_receiving() / self.fetch_total_reads() * 100
 
 
+def escape_message_to_minknow(message, chars):
+    """Escape characters in the chars list if they are in message
+
+    Parameters
+    ----------
+    message : str
+        The message that is being sent
+    chars : list[str], str
+        The characters to escape
+
+    Returns
+    -------
+    message : str
+
+    Examples
+    --------
+    >>> escape_message_to_minknow("20%", ["%"]) == r'20\%'
+    True
+    >>> escape_message_to_minknow("20\%", ["%"]) == r'20\%'
+    True
+    >>> escape_message_to_minknow("20\\%", ["%"]) == r'20\%'
+    True
+    >>> escape_message_to_minknow("20", ["%"]) == r'20'
+    True
+
+    """
+    for char in chars:
+        message = re.sub(rf"(?<!\\){char}", rf"\\{char}", message)
+    return message
+
+
 def send_message(rpc_connection, message, severity):
     """Send a message to MinKNOW
 
@@ -158,6 +192,7 @@ def send_message(rpc_connection, message, severity):
     -------
     None
     """
+    message = escape_message_to_minknow(message, "%")
     rpc_connection.log.send_user_message(severity=severity, user_message=message)
 
 
@@ -411,7 +446,9 @@ def get_targets(targets):
         ctg, *coords = item.split(",")
         if coords:
             strand = coords.pop()
-            t[strand][ctg].append(tuple(int(x) for x in coords))
+            # FIXME: This handles a case when minoTour sends back coords as floats
+            #         once that is fixed the call to float should be removed
+            t[strand][ctg].append(tuple(int(float(x)) for x in coords))
         else:
             for strand in ["+", "-"]:
                 t[strand][ctg].append((0, float("inf")))
@@ -436,11 +473,21 @@ def load_config_toml(filepath, validate=True):
     """
     # Check that TOML config file exists
     p = Path(filepath)
-    if not p.is_file():
+    is_live = p.suffix.endswith("_live")
+    if not p.is_file() and not is_live:
+        # Specifically don't check for live file existence
         raise FileNotFoundError("TOML config file not found at '{}'".format(filepath))
 
-    # Load TOML to dict
-    toml_dict = toml.load(p)
+    # TODO: Re-evaluate the existence... of tomls
+
+    toml_dict = {}
+
+    while not toml_dict:
+        # Load TOML to dict
+        try:
+            toml_dict = toml.load(p)
+        except toml.TomlDecodeError:
+            toml_dict = {}
 
     # Check reference path
     reference_text = toml_dict.get("conditions", {}).get("reference", "")
@@ -457,6 +504,9 @@ def load_config_toml(filepath, validate=True):
         if isinstance(cond, dict)
     ]
 
+    # Set a barcoded flag using either of the required tables in barcoded TOMLs
+    barcoded = any(k for k in conditions if k in ("unclassified", "classified"))
+
     # Load targets from a file
     for k in conditions:
         targets = toml_dict["conditions"][k].get("targets", [])
@@ -470,8 +520,9 @@ def load_config_toml(filepath, validate=True):
 
     # Validate our TOML file
     if validate:
-        # Load json schema
-        _f = Path(__file__).parent / "static/readfish_toml.schema.json"
+        fn = "barcode" if barcoded else "targets"
+        # Load correct json schema
+        _f = Path(__file__).parent / "static/{}.schema.json".format(fn)
         with _f.resolve().open() as fh:
             schema = json.load(fh)
         try:
@@ -598,7 +649,7 @@ def describe_experiment(conditions, mapper):
             yield s, Severity.WARN
 
 
-def get_run_info(toml_filepath, num_channels=512):
+def get_run_info(toml_filepath, num_channels=512, validate=True):
     """Convert a TOML representation of a ReadFish experiment to conditions that
     can be used used by the analysis function
 
@@ -609,6 +660,8 @@ def get_run_info(toml_filepath, num_channels=512):
     num_channels : int
         Total number of channels on the sequencer, expects 512 for MinION and 3000 for
         PromethION
+    validate : bool
+        Validate TOML file
 
     Returns
     -------
@@ -622,7 +675,7 @@ def get_run_info(toml_filepath, num_channels=512):
         kwargs to pass to the base caller. If not found in the TOML an empty dict
         is returned
     """
-    toml_dict = load_config_toml(toml_filepath)
+    toml_dict = load_config_toml(toml_filepath, validate=validate)
 
     # Get condition keys, these should be ascending integers
     conditions = [
@@ -676,6 +729,113 @@ def get_run_info(toml_filepath, num_channels=512):
     caller_settings = toml_dict.get("caller_settings", {})
 
     return run_info, split_conditions, reference, caller_settings
+
+
+@lru_cache
+def get_barcode_kits(address, timeout=10000):
+    # Lazy load GuppyClient for now, we don't want to break this whole module if
+    # it's unavailable
+    from pyguppy_client_lib.client_lib import GuppyClient
+
+    res, status = GuppyClient.get_barcode_kits(address, timeout)
+    if status != GuppyClient.success:
+        raise RuntimeError("Could not retrieve barcode kits")
+    return res
+
+
+def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
+    """Convert a TOML representation of a ReadFish experiment to conditions that
+    can be used used by the analysis function
+
+    This function is for use with experiments that are expecting to be handling
+    barcoded data, where the barcode returned for a read informs the selective
+    critera. Therefore, we expect the following conditions to be met:
+     - There must be an `unclassified` block, this is used for unclassifiable
+         data and for barcodes that are detected but have no specified action
+     - Each `conditions` subtable must be in the form `barcodeXX` or
+         `unclassified`
+
+    Parameters
+    ----------
+    toml_filepath : str
+        Filepath to a configuration TOML file
+    num_channels : int
+        Total number of channels on the sequencer, expects 512 for MinION and 3000 for
+        PromethION
+    validate : bool
+        Validate TOML file
+
+    Returns
+    -------
+    split_conditions : dict
+        Dict of namedtuples keyed by barcode, with conditions as values
+    reference : str
+        The path to the reference MMI file
+    caller_settings : dict
+        kwargs to pass to the base caller. If not found in the TOML an empty dict
+        is returned
+    """
+    pattern = re.compile(r"^(barcode\d{2,}|unclassified|classified)$")
+    toml_dict = load_config_toml(toml_filepath, validate=validate)
+    caller_settings = toml_dict.get("caller_settings", {})
+    guppy_address = "{}:{}".format(caller_settings["host"], caller_settings["port"])
+
+    # Get barcodes, going to do some checks here
+    barcode_kits = get_barcode_kits(guppy_address)
+
+    #  Check kits are unique
+    bc_names = set(d["kit_name"] for d in barcode_kits)
+    if len(bc_names) != len(barcode_kits):
+        raise Exception("Something is __wrong__, kits have duplicate names?")
+
+    # Check that our kits exist, could also do subset here?
+    if not all(kit in bc_names for kit in caller_settings.get("barcode_kits", [])):
+        raise RuntimeError("Maybe a problem with your barcode kits")
+
+    # Get condition keys, these should be `barcodeXX` or `unclassified/classified` only
+    conditions = [
+        k
+        for k in toml_dict["conditions"].keys()
+        if isinstance(toml_dict["conditions"].get(k), dict)
+    ]
+
+    # We could generate the barcodes from the `first_index` and `last_index`
+    #   and use these to check that the condition names are valid, but that
+    #    could lead to weird issues?
+    # For now we'll pattern match
+    check_names = [c for c in conditions if pattern.match(c)]
+    if set(check_names) != set(conditions):
+        outs = nice_join(set(conditions) - set(check_names), conjunction="and")
+        raise ValueError(
+            "fields not barcodes or unclassified/classified ({})".format(outs)
+        )
+
+    sort_func = lambda L: sorted(L)
+
+    # convert targets to sets
+    for k in conditions:
+        cond = toml_dict["conditions"].get(k)
+        if not isinstance(cond, dict):
+            continue
+        cond["coords"] = get_targets(cond["targets"])
+
+        _t = []
+        for _k in cond["coords"].keys():
+            _t.extend(cond["coords"].get(_k).keys())
+
+        cond["targets"] = set(_t)
+
+    # Create a dict of named tuples, keyed by barcode
+    split_conditions = {
+        k: named_tuple_generator(toml_dict["conditions"].get(k)) for k in conditions
+    }
+
+    reference = toml_dict["conditions"].get("reference")
+
+    if not "unclassified" in split_conditions or not "classified" in split_conditions:
+        raise RuntimeError("Expected unclassified field in conditions")
+
+    return split_conditions, reference, caller_settings
 
 
 def between(pos, coords):

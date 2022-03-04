@@ -52,6 +52,18 @@ host = "127.0.0.1"
 port = 5555
 ```
 
+### Barcoding
+
+When barcoding the additional `barcode_kits` parameter is required:
+
+```toml
+[caller_settings]
+config_name = "dna_r9.4.1_450bps_fast"
+host = "127.0.0.1"
+port = 5555
+barcode_kits = ["EXP-NBD196"]
+```
+
 Conditions
 ---
 The `conditions` table holds the location of your minimap2 reference file and 
@@ -69,8 +81,10 @@ sets out the experimental conditions across the flowcell. The allowed keys are:
 reference = "/absolute/path/to/reference.mmi"
 ```
 
-Further, the table has sub-tables that determine the experimental conditions 
-to apply to the flowcell, these should be sequentially numbered like so:
+### Non-barcoded TOMLs
+For non-barcoded experiments, the table can have sub-tables that determine the experimental conditions 
+to apply to the flowcell, these should be sequentially numbered like so and will partition the flow 
+cell into experimental regions:
 
 ```toml
 [conditions.0]
@@ -80,7 +94,55 @@ to apply to the flowcell, these should be sequentially numbered like so:
 # ...
 ```
 
-Each conditions sub-table must contain all of the following keys:
+### Barcoded TOMLs
+There are two required tables `conditions.classified` and `conditions.unclassified`.
+These are the default actions to take for reads that do not have more specific configuration.
+For specific barcodes more nuanced configuration can be specified using the barcode name, e.g. `conditions.barcode01` for "barcode01".
+
+```toml
+[conditions.unclassified]
+name = "unclassified_reads"
+control = false
+min_chunks = 0
+max_chunks = 2
+targets = []
+single_on = "unblock"
+multi_on = "unblock"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+
+[conditions.classified]
+name = "classified_reads"
+control = false
+min_chunks = 0
+max_chunks = 2
+targets = []
+single_on = "unblock"
+multi_on = "unblock"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+
+[conditions.barcode01]
+name = "barcode01_targets"
+control = false
+min_chunks = 0
+max_chunks = 2
+targets = ["chr1", "chr2"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+```
+
+### Conditions sub-tables
+
+Each conditions sub-table must contain all of the following keys, these are the same between barcoded and non-barcoded toml files.
 
 |          Key |       Type      | Values | Description |
 |-------------:|:---------------:|:------:|:------------|
@@ -153,7 +215,7 @@ alignment start position is within the region on the given strand.
 Validating a TOML
 ===
 
-We provide a [JSON schema](ru/static/readfish_toml.schema.json) for validating 
+We provide a [JSON schema](ru/static/targets.schema.json) for validating 
 configuration files:
 
 ```bash
