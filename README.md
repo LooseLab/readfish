@@ -49,7 +49,7 @@ pip install --upgrade pip
 
 # Install our ReadFish Software
 pip install git+https://github.com/nanoporetech/read_until_api@v3.0.0
-pip install git+https://github.com/LooseLab/readfish@dev
+pip install git+https://github.com/LooseLab/readfish@guppy_6
 
 # Install ont_pyguppy_client_lib that matches your guppy server version. E.G.
 pip install ont_pyguppy_client_lib==4.0.11
