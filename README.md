@@ -134,7 +134,7 @@ To test selective sequencing you must have access to a
 and configure a [TOML](TOML.md) file. Here we provide an [example TOML file](examples/human_chr_selection.toml).
 1. First make a local copy of the example TOML file:
     ```bash
-    curl -O https://github.com/LooseLab/readfish/blob/master/examples/human_chr_selection.toml
+    curl -O https://raw.githubusercontent.com/LooseLab/readfish/master/examples/human_chr_selection.toml
     ```
 1. Modify the `reference` field in the file to be the full path to a [minimap2](https://github.com/lh3/minimap2) index of the human genome.
 1. Modify the `targets` fields for each condition to reflect the naming convention used in your index. This is the sequence name only, up to but not including any whitespace.
