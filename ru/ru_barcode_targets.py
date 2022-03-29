@@ -526,7 +526,7 @@ def run(parser, args):
 
     read_until_client = RUClient(
         mk_host=position.host,
-        mk_port=position.description.rpc_ports.insecure,
+        mk_port=position.description.rpc_ports.secure,
         filter_strands=True,
         cache_type=AccumulatingCache,
     )
