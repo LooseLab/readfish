@@ -9,7 +9,7 @@ from ru.utils import nice_join
 # TODO: Add prefix parameter that is applied to all log files
 
 DEFAULT_SERVER_HOST = "127.0.0.1"
-DEFAULT_SERVER_PORT = 9501
+DEFAULT_SERVER_PORT = None
 DEFAULT_WORKERS = 1
 DEFAULT_LOG_FORMAT = "%(asctime)s %(name)s %(message)s"
 DEFAULT_LOG_LEVEL = "info"
@@ -38,15 +38,8 @@ BASE_ARGS = (
         "--port",
         dict(
             metavar="PORT",
-            help="MinKNOW server port (default: {})".format(DEFAULT_SERVER_PORT),
+            help="MinKNOW server port, if not specified automatically chosen by the MinKNOW API",
             default=DEFAULT_SERVER_PORT,
-        ),
-    ),
-    (
-        "--use-tls",
-        dict(
-            action="store_true",
-            help="Use TLS (secure connection) when connecting to MinKNOW.",
         ),
     ),
     (
