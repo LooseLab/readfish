@@ -453,11 +453,19 @@ def run(parser, args):
     mapper = CustomMapper(reference)
     logger.info("Mapper initialised")
 
-    position = get_device(args.device, host=args.host, port=args.port)
+    position = get_device(
+        args.device, host=args.host, port=args.port, use_tls=args.use_tls
+    )
+
+    device_port = (
+        position.description.rpc_ports.secure
+        if args.use_tls
+        else position.description.rpc_ports.insecure
+    )
 
     read_until_client = RUClient(
         mk_host=position.host,
-        mk_port=position.description.rpc_ports.insecure,
+        mk_port=device_port,
         filter_strands=True,
         cache_type=AccumulatingCache,
     )

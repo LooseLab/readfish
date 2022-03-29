@@ -43,6 +43,13 @@ BASE_ARGS = (
         ),
     ),
     (
+        "--use-tls",
+        dict(
+            action="store_true",
+            help="Use TLS (secure connection) when connecting to MinKNOW.",
+        ),
+    ),
+    (
         "--device",
         dict(
             metavar="DEVICE",
