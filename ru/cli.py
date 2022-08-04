@@ -29,7 +29,7 @@ def main():
         ("unblock-all", "unblock_all"),
         ("validate", "validate"),
         ("summary", "summarise_fq"),
-        ("boss-runs", "ru_gen_boss_runs")
+        ("boss-runs", "ru_gen_boss_runs"),
         ("barcode-targets", "ru_barcode_targets"),
     ]
     for cmd, module in cmds:

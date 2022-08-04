@@ -3,7 +3,7 @@ requests
 numpy
 google
 protobuf
-toml
+rtoml
 jsonschema
 watchdog
 pandas
