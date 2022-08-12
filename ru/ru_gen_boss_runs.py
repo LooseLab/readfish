@@ -166,7 +166,7 @@ def decision_boss_runs(
     write_out_channels_toml(conditions, run_info, client)
 
     caller = Caller(
-        address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
+        address="{}/{}".format(caller_kwargs["host"], caller_kwargs["port"]),
         config=caller_kwargs["config_name"],
     )
     # What if there is no reference or an empty MMI
@@ -510,7 +510,7 @@ def run(parser, args):
 
     read_until_client = RUClient(
         mk_host=position.host,
-        mk_port=position.description.rpc_ports.insecure,
+        mk_port=position.description.rpc_ports.secure,
         filter_strands=True,
         cache_type=AccumulatingCache,
     )
