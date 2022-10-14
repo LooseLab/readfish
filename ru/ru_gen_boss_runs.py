@@ -67,6 +67,35 @@ CHUNK_LOG_FIELDS = (
 )
 
 
+def init_BR_bits(conditions):
+    """
+    initialise the bits of code needed for BR
+
+    Parameters
+    ----------
+    conditions : list
+        Experimental conditions as List of namedtuples.
+
+    Returns
+    -------
+    bool
+
+
+    """
+    # Overwrite the default strand_converter
+    # used to index into the strategies,
+    # which are shaped 2xN for forward & reverse in 1st dim
+    strand_converter_br = {1: False, -1: True}
+
+    # grab path to masks and contigs, requires presence of 1 BR cond in toml
+    mask_path = Path([getattr(cond, "mask", False) for cond in conditions if getattr(cond, "mask", False)][0])
+    contigs_path = Path([getattr(cond, "contigs", False) for cond in conditions if getattr(cond, "contigs", False)][0])
+    masks = {}
+    return strand_converter_br, mask_path, contigs_path, masks
+
+
+
+
 def write_out_channels_toml(conditions, run_info, client):
     """
     Write out the channels toml file
@@ -183,9 +212,6 @@ def decision_boss_runs(
     # decided
     decided_reads = {}
     strand_converter = {1: "+", -1: "-"}
-    # BR: this is to index into the strategies,
-    # which are shaped 2xN for forward & reverse in 1st dim
-    strand_converter_br = {1: False, -1: True}
 
     read_id = ""
 
@@ -216,9 +242,9 @@ def decision_boss_runs(
 
     l_string = "\t".join(("{}" for _ in CHUNK_LOG_FIELDS))
     loop_counter = 0
-    # BR: get path to masks, requires presence of 1 BR cond in toml
-    mask_path = Path([getattr(cond, "mask", False)for cond in conditions if getattr(cond, "mask", False)][0])
-    masks = {}
+
+    # BR: initialise parts needed for dynamic decisions
+    strand_converter_br, mask_path, contigs_path, masks = init_BR_bits(conditions)
 
     while client.is_running:
         # todo reverse engineer from channels.toml
