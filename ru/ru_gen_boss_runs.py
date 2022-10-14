@@ -127,6 +127,44 @@ def reload_masks(mask_path, masks, logger):
 
 
 
+def reload_mapper(contigs_path, mapper, logger):
+    """
+    Reload mapping index for decision making. Only load if marker file exists.
+
+    Parameters
+    ----------
+    contigs_path: pathlib.Path
+        path to directory where the index file sits
+    mapper: CustomMapper
+        mapper object that gets replaced with new index
+
+    Returns
+    -------
+    mapper: mappy.Aligner
+        mapper object that gets replaced with new index
+    """
+    # if dynamic contigs are not used
+    if not contigs_path:
+        return mapper
+    # if contigs were not updated since last time
+    if not (contigs_path / "contigs.updated").exists():
+        return mapper
+
+    try:
+        contigs_mmi = [path for path in contigs_path.glob("*.mmi")][0]
+        logger.info(f"Reloading mapping index")
+        mapper = CustomMapper(contigs_mmi)
+        # wait until init is complete
+        while not mapper.initialised:
+            time.sleep(1)
+
+    except Exception as e:
+        logger.error(f"Error loading mapping index ->>> {repr(e)}")
+    (contigs_path / "contigs.updated").unlink()
+    return mapper
+
+
+
 def write_out_channels_toml(conditions, run_info, client):
     """
     Write out the channels toml file
@@ -322,7 +360,7 @@ def decision_boss_runs(
 
         # BR: load updated decision masks and contigs
         masks = reload_masks(mask_path=mask_path, masks=masks, logger=logger)
-
+        mapper = reload_mapper(contigs_path=contigs_path, mapper=mapper, logger=logger)
 
 
         for read_info, read_id, seq_len, mappings in mapper.map_reads_2(
