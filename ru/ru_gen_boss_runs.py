@@ -165,6 +165,30 @@ def reload_mapper(contigs_path, mapper, logger):
 
 
 
+def check_names(masks, mapper, logger):
+    """
+    Check that the names of masks and sequences in the mapper are the same.
+
+    Parameters
+    ----------
+    mapper: mappy.Aligner
+        mapper object that gets replaced with new index
+    masks: dict
+        dict of {contig name: mask array}
+
+    Returns
+    -------
+
+    """
+    mask_names = sorted(list(masks.keys()))
+    contig_names = sorted(list(mapper.seq_names))
+    same_names = mask_names == contig_names
+    if not same_names:
+        logger.error(f"Error loading masks and contigs: discrepancy in names \n {mask_names} \n {contig_names}")
+
+
+
+
 def write_out_channels_toml(conditions, run_info, client):
     """
     Write out the channels toml file
@@ -361,6 +385,7 @@ def decision_boss_runs(
         # BR: load updated decision masks and contigs
         masks = reload_masks(mask_path=mask_path, masks=masks, logger=logger)
         mapper = reload_mapper(contigs_path=contigs_path, mapper=mapper, logger=logger)
+        check_names(masks=masks, mapper=mapper, logger=logger)
 
 
         for read_info, read_id, seq_len, mappings in mapper.map_reads_2(
