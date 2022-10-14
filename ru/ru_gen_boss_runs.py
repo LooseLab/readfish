@@ -95,6 +95,37 @@ def init_BR_bits(conditions):
 
 
 
+def reload_masks(mask_path, masks, logger):
+    """
+    Reload updated decision masks. Only load if the marker file exists
+    Loads all present .npy files and deletes the marker file
+
+    Parameters
+    ----------
+    mask_path: pathlib.Path
+        path to the directory where new masks are placed
+    masks: dict
+        dict of {contig name: mask array}
+
+    Returns
+    -------
+    masks: dict
+        dict of {contig name: mask array}
+    """
+    if not (mask_path / "masks.updated").exists():
+        return masks
+
+    try:
+        new_masks = mask_path.glob("*.npy")
+        masks = {path.stem: np.load(path) for path in new_masks}
+        logger.info(f"Reloaded mask dict for {masks.keys()}")
+    except Exception as e:
+        logger.error(f"Error reading mask array ->>> {repr(e)}")
+        masks = {"exception": True}
+    (mask_path / "masks.updated").unlink()
+    return masks
+
+
 
 def write_out_channels_toml(conditions, run_info, client):
     """
@@ -289,18 +320,10 @@ def decision_boss_runs(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
-        # BR: load updated decision masks here
-        # only loaded if the marker file called "masks.updated" exists
-        # loads all present .npy files and deletes the marker file
-        if (mask_path / "masks.updated").exists():
-            try:
-                masks = {path.stem: np.load(path) for path in
-                         mask_path.glob("*.npy")}
-                logger.info(f"Reloaded mask dict for {masks.keys()}")
-            except Exception as e:
-                logger.error(f"Error reading mask array ->>> {repr(e)}")
-                masks = {"exception": True}
-            (mask_path / "masks.updated").unlink()
+        # BR: load updated decision masks and contigs
+        masks = reload_masks(mask_path=mask_path, masks=masks, logger=logger)
+
+
 
         for read_info, read_id, seq_len, mappings in mapper.map_reads_2(
             caller.basecall_minknow(
