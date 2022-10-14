@@ -32,7 +32,7 @@ from ru.utils import (
 from ru.utils import send_message, Severity, get_device, DecisionTracker
 
 
-_help = "Run boss runs driven selective sequencing."
+_help = "Run dynamic selective sequencing."
 _cli = BASE_ARGS + (
     (
         "--toml",
@@ -44,7 +44,7 @@ _cli = BASE_ARGS + (
     ),
     ("--paf-log", dict(help="PAF log", default=None,),),
     ("--chunk-log", dict(help="Chunk log", default=None,),),
-    ("--mask", dict(help="Path to a BOSS-RUNS produced mask",),),
+    ("--mask", dict(help="Path to BOSS-RUNS produced masks",),),
 )
 
 
@@ -148,8 +148,6 @@ def decision_boss_runs(
         Experimental conditions as List of namedtuples.
     mapper : mappy.Aligner
     caller_kwargs : dict
-    mask_path : str
-        Path to boss runs mask file
 
     Returns
     -------
@@ -185,6 +183,8 @@ def decision_boss_runs(
     # decided
     decided_reads = {}
     strand_converter = {1: "+", -1: "-"}
+    # BR: this is to index into the strategies,
+    # which are shaped 2xN for forward & reverse in 1st dim
     strand_converter_br = {1: False, -1: True}
 
     read_id = ""
@@ -216,15 +216,16 @@ def decision_boss_runs(
 
     l_string = "\t".join(("{}" for _ in CHUNK_LOG_FIELDS))
     loop_counter = 0
-    # TODO this only works for 1 boss runs condition, and if there is one Boss runs conditions
+    # BR: get path to masks, requires presence of 1 BR cond in toml
     mask_path = Path([getattr(cond, "mask", False)for cond in conditions if getattr(cond, "mask", False)][0])
     masks = {}
+
     while client.is_running:
         # todo reverse engineer from channels.toml
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file
             run_info, conditions, new_reference, _ = get_run_info(
-                live_toml_path, flowcell_size, validate=False
+                live_toml_path, flowcell_size, validate=False  # BR: don't validate toml (due to mask param)
             )
 
             # Check the reference path if different from the loaded mapper
@@ -262,9 +263,11 @@ def decision_boss_runs(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
+        # BR: load updated decision masks here
+        # only loaded if the marker file called "masks.updated" exists
+        # loads all present .npy files and deletes the marker file
         if (mask_path / "masks.updated").exists():
             try:
-                # TODO this only works for 1 boss runs condition
                 masks = {path.stem: np.load(path) for path in
                          mask_path.glob("*.npy")}
                 logger.info(f"Reloaded mask dict for {masks.keys()}")
@@ -360,8 +363,11 @@ def decision_boss_runs(
                         mode = "multi_on"
                     else:
                         # Multiple matches to targets outside the coordinate range
-                        mode = "multi_off"  ##
+                        mode = "multi_off"
 
+
+            # BR: this is where the decisions are getting checked in the masks
+            # the function to query the masks query_array() lives in utils.py
             elif hits and conditions[run_info[channel]].mask:
                 coord_match = any(
                     [
@@ -497,7 +503,7 @@ def run(parser, args):
     # Parse configuration TOML
     # TODO: num_channels is not configurable here, should be inferred from client
     run_info, conditions, reference, caller_kwargs = get_run_info(
-        args.toml, num_channels=512, validate=False
+        args.toml, num_channels=512, validate=False  # BR: no toml validation
     )
     live_toml = Path("{}_live".format(args.toml))
 
