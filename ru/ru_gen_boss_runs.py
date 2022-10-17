@@ -115,9 +115,29 @@ def reload_masks(mask_path, masks, logger):
     if not (mask_path / "masks.updated").exists():
         return masks
 
+    def reload_npy(mask_files):
+        masks = {path.stem: np.load(path) for path in mask_files}
+        return masks
+
+    def reload_npz(mask_files):
+        mask_container = np.load(mask_files[0])
+        masks = {name: mask_container[name] for name in mask_container}
+        return masks
+
+    # can use multiple .npy or a single .npz file
+    # BR uses .npy for the moment
+    new_masks = mask_path.glob("*.npy")
+    if new_masks:
+        reload_func = reload_npy
+    elif not new_masks:
+        new_masks = mask_path.glob("*.npz")
+        reload_func = reload_npz
+    else:
+        reload_func = False
+        logger.info("Expected either .npy or .npz file but found neither")
+
     try:
-        new_masks = mask_path.glob("*.npy")
-        masks = {path.stem: np.load(path) for path in new_masks}
+        reload_func(mask_files=new_masks)
         logger.info(f"Reloaded mask dict for {masks.keys()}")
     except Exception as e:
         logger.error(f"Error reading mask array ->>> {repr(e)}")
