@@ -31,6 +31,7 @@ from ru.utils import (
 )
 from ru.utils import send_message, Severity, get_device, DecisionTracker
 
+print("v0.0.3_BR")
 
 _help = "Run dynamic selective sequencing."
 _cli = BASE_ARGS + (
