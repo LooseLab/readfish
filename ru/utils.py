@@ -778,7 +778,7 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
     pattern = re.compile(r"^(barcode\d{2,}|unclassified|classified)$")
     toml_dict = load_config_toml(toml_filepath, validate=validate)
     caller_settings = toml_dict.get("caller_settings", {})
-    guppy_address = "{}:{}".format(caller_settings["host"], caller_settings["port"])
+    guppy_address = "{}/{}".format(caller_settings["host"], caller_settings["port"])
 
     # Get barcodes, going to do some checks here
     barcode_kits = get_barcode_kits(guppy_address)
@@ -913,9 +913,9 @@ def setup_logger(
     return logger
 
 
-def get_device(device, host="127.0.0.1", port=None, use_tls=False):
+def get_device(device, host="127.0.0.1", port=None):
     """Get an RPC connection from a device"""
-    manager = Manager(host=host, port=port, use_tls=use_tls)
+    manager = Manager(host=host, port=port)
     for position in manager.flow_cell_positions():
         if position.name == device:
             return position

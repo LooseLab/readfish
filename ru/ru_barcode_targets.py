@@ -206,7 +206,7 @@ def simple_analysis(
     #     toml.dump(d, fh)
 
     caller = Caller(
-        address="{}:{}".format(caller_kwargs["host"], caller_kwargs["port"]),
+        address="{}/{}".format(caller_kwargs["host"], caller_kwargs["port"]),
         config=caller_kwargs["config_name"],
         barcode_kits=caller_kwargs["barcode_kits"],
     )
@@ -526,7 +526,7 @@ def run(parser, args):
 
     read_until_client = RUClient(
         mk_host=position.host,
-        mk_port=position.description.rpc_ports.insecure,
+        mk_port=position.description.rpc_ports.secure,
         filter_strands=True,
         cache_type=AccumulatingCache,
     )
