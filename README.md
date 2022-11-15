@@ -15,7 +15,7 @@ way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress and so direct sequencing capacity towards reads of interest.
 
 
-**This implementation of ReadFish requires Guppy version >= 4.0.11 and MinKNOW version core >= 4.0.4 . It will not work on earlier versions.** 
+**This implementation of ReadFish requires Guppy version >= 6.0.0 and MinKNOW version core >= 5.0.0 . It will not work on earlier versions.** 
 
 
 **Currently we only recommend LINUX for running ReadFish. We have not had 
@@ -49,10 +49,10 @@ pip install --upgrade pip
 
 # Install our ReadFish Software
 pip install git+https://github.com/nanoporetech/read_until_api@v3.0.0
-pip install git+https://github.com/LooseLab/readfish@guppy_6
+pip install git+https://github.com/LooseLab/readfish@dev_staging
 
 # Install ont_pyguppy_client_lib that matches your guppy server version. E.G.
-pip install ont_pyguppy_client_lib==4.0.11
+pip install ont_pyguppy_client_lib==6.3.8
 ```
 
 Usage

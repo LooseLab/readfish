@@ -205,10 +205,15 @@ def simple_analysis(
     #     fh.write("# In the future this file may become a CSV file.\n")
     #     toml.dump(d, fh)
 
+    if caller_kwargs["host"].startswith("ipc"):
+        guppy_address = "{}/{}".format(caller_kwargs["host"], caller_kwargs["port"])
+    else:
+        guppy_address = "{}:{}".format(caller_kwargs["host"], caller_kwargs["port"])
+
     caller = Caller(
-        address="{}/{}".format(caller_kwargs["host"], caller_kwargs["port"]),
+        address=guppy_address,
         config=caller_kwargs["config_name"],
-        barcode_kits=caller_kwargs["barcode_kits"],
+        barcode_kits=" ".join(caller_kwargs["barcode_kits"]),
     )
     # What if there is no reference or an empty MMI
 
@@ -258,6 +263,10 @@ def simple_analysis(
     l_string = "\t".join(("{}" for _ in CHUNK_LOG_FIELDS))
     loop_counter = 0
     while client.is_running:
+        if not client.is_phase_sequencing:
+            time.sleep(5)
+            continue
+
         barcode_counter = Counter()
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file

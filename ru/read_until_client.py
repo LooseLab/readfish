@@ -11,7 +11,16 @@ from pathlib import Path
 from threading import RLock
 
 from minknow_api.acquisition_pb2 import MinknowStatus
+from minknow_api import protocol_service
 from read_until import ReadUntilClient
+from ru.utils import setup_logger
+from grpc import RpcError
+
+log = setup_logger(
+    __name__,
+    level=logging.INFO,
+    log_format="%(asctime)s %(name)s %(message)s",
+)
 
 
 class RUClient(ReadUntilClient):
@@ -19,6 +28,9 @@ class RUClient(ReadUntilClient):
         super().__init__(*args, **kwargs)
 
         self.logger.disabled = True
+        self.current_phase = self.connection.protocol.get_current_protocol_run().phase
+        self.phase_errors = 0
+        self.max_phase_errors = 1
 
         # We always want one_chunk to be False
         self.one_chunk = False
@@ -90,3 +102,26 @@ class RUClient(ReadUntilClient):
         )
         if read_id is not None:
             self.unblock_logger.debug(read_id)
+
+    @property
+    def is_phase_sequencing(self):
+        """
+        Check the current protocol phase to determine if the run is not paused/muxing/unknown
+
+        :returns: Bool
+        """
+        try:
+            current_phase = self.connection.protocol.get_current_protocol_run().phase
+        except RpcError as e:
+            if self.phase_errors < self.max_phase_errors:
+                log.info(f"Got RPC exception {e}")
+                log.info("Run may have ended")
+                self.max_phase_errors += 1
+            return False
+
+        if current_phase != self.current_phase:
+            self.current_phase = current_phase
+            log.info(
+                f"Protocol phase changed to {protocol_service.ProtocolPhase.Name(self.current_phase)}"
+            )
+        return current_phase == protocol_service.PHASE_SEQUENCING
