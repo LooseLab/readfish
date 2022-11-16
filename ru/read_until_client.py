@@ -114,9 +114,9 @@ class RUClient(ReadUntilClient):
             current_phase = self.connection.protocol.get_current_protocol_run().phase
         except RpcError as e:
             if self.phase_errors < self.max_phase_errors:
-                log.info(f"Got RPC exception {e}")
+                log.info(f"Got RPC exception\n{e}")
                 log.info("Run may have ended")
-                self.max_phase_errors += 1
+                self.phase_errors += 1
             return False
 
         if current_phase != self.current_phase:
