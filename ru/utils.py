@@ -481,7 +481,8 @@ def load_config_toml(filepath, validate=True):
     # TODO: Re-evaluate the existence... of tomls
 
     toml_dict = {}
-
+    # Loop - if we try to load the toml whilst it is being written to it my be corrupted
+    # try again until a successful read
     while not toml_dict:
         # Load TOML to dict
         try:
@@ -782,7 +783,7 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
     if caller_settings["host"].startswith("ipc"):
         guppy_address = "{}/{}".format(caller_settings["host"], caller_settings["port"])
     else:
-        guppy_address="{}:{}".format(caller_settings["host"], caller_settings["port"])
+        guppy_address = "{}:{}".format(caller_settings["host"], caller_settings["port"])
 
     # Get barcodes, going to do some checks here
     barcode_kits = get_barcode_kits(guppy_address)

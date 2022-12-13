@@ -106,6 +106,13 @@ _cli = BASE_ARGS + (
             default=None,
         ),
     ),
+    (
+        "--odd-even",
+        dict(
+            help="Experimental - applies control to all ODD numbered channels, with readfish operating on EVEN numbered channels.",
+            action="store_true",
+        ),
+    ),
 )
 
 
@@ -142,6 +149,7 @@ def simple_analysis(
     conditions=None,
     mapper=None,
     caller_kwargs=None,
+    odd_even: bool = False,
 ):
     """Analysis function
 
@@ -172,6 +180,8 @@ def simple_analysis(
         Experimental conditions of {barcode: namedtuple}
     mapper : mappy.Aligner
     caller_kwargs : dict
+    odd_even: bool
+        Whether to treat odd channels as control in an experiment
 
     Returns
     -------
@@ -269,11 +279,8 @@ def simple_analysis(
 
         barcode_counter = Counter()
         if live_toml_path.is_file():
-            # Reload the TOML config from the *_live file
             conditions, new_reference, _ = get_barcoded_run_info(
-                live_toml_path,
-                flowcell_size,
-                validate=False,
+                live_toml_path, flowcell_size, validate=False
             )
 
             # Check the reference path if different from the loaded mapper
@@ -364,7 +371,8 @@ def simple_analysis(
             )
 
             # Control channels
-            if condition.control:
+            # If the condtion is control or odd_even is true and it's an odd channel
+            if condition.control or (odd_even and channel % 2):
                 mode = "control"
                 log_decision()
                 stop_receiving_action_list.append((channel, read_number))
@@ -531,7 +539,7 @@ def run(parser, args):
     mapper = CustomMapper(reference)
     logger.info("Mapper initialised")
 
-    position = get_device(args.device, host=args.host)
+    position = get_device(args.device, host=args.host, port=args.port)
 
     read_until_client = RUClient(
         mk_host=position.host,
@@ -585,6 +593,7 @@ def run(parser, args):
             conditions=conditions,
             mapper=mapper,
             caller_kwargs=caller_kwargs,
+            odd_even=args.odd_even,
         )
     except KeyboardInterrupt:
         pass
