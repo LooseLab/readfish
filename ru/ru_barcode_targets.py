@@ -109,7 +109,6 @@ _cli = BASE_ARGS + (
     (
         "--odd-even",
         dict(
-            default=False,
             help="Experimental - applies control to all ODD numbered channels, with readfish operating on EVEN numbered channels.",
             action="store_true",
         ),
@@ -372,7 +371,7 @@ def simple_analysis(
             )
 
             # Control channels
-            # If the condtion is control or odd_even is true and it's an even channel
+            # If the condtion is control or odd_even is true and it's an odd channel
             if condition.control or (odd_even and channel % 2):
                 mode = "control"
                 log_decision()
