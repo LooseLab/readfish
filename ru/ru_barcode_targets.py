@@ -111,9 +111,9 @@ _cli = BASE_ARGS + (
         dict(
             default=False,
             help="Experimental - applies control to all ODD numbered channels, with readfish operating on EVEN numbered channels.",
-            action="store_true"
-        )
-    )
+            action="store_true",
+        ),
+    ),
 )
 
 
@@ -281,10 +281,7 @@ def simple_analysis(
             odd_even = getattr(conditions["unclassified"], "odd_even", False)
             # Reload the TOML config from the *_live file
             conditions, new_reference, _ = get_barcoded_run_info(
-                live_toml_path,
-                flowcell_size,
-                validate=False,
-                odd_even=odd_even
+                live_toml_path, flowcell_size, validate=False, odd_even=odd_even
             )
 
             # Check the reference path if different from the loaded mapper

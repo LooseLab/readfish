@@ -744,7 +744,9 @@ def get_barcode_kits(address, timeout=10000):
     return res
 
 
-def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True, odd_even: bool = False):
+def get_barcoded_run_info(
+    toml_filepath, num_channels=512, validate=True, odd_even: bool = False
+):
     """Convert a TOML representation of a ReadFish experiment to conditions that
     can be used used by the analysis function
 
