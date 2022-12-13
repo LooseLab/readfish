@@ -109,9 +109,9 @@ _cli = BASE_ARGS + (
     (
         "--odd-even",
         dict(
-            metavar="ODD_EVEN",
-            default=None,
+            default=False,
             help="Experimental - applies control to all ODD numbered channels, with readfish operating on EVEN numbered channels.",
+            action="store_true"
         )
     )
 )
