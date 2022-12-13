@@ -75,7 +75,7 @@ class GuppyCaller(PyGuppyClient):
             daq_values = DefaultDAQValues()
 
         for channel, read in reads:
-            read_id = f"RU-{read.id}" #we do not modify read.id itself as this can result in persistence after this function finishes
+            read_id = f"RU-{read.id}"  # we do not modify read.id itself as this can result in persistence after this function finishes
             hold[read_id] = (channel, read.number)
             t0 = time.time()
             success = self.pass_read(
