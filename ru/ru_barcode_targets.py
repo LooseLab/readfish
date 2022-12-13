@@ -539,7 +539,7 @@ def run(parser, args):
     mapper = CustomMapper(reference)
     logger.info("Mapper initialised")
 
-    position = get_device(args.device, host=args.host)
+    position = get_device(args.device, host=args.host, port=args.port)
 
     read_until_client = RUClient(
         mk_host=position.host,
