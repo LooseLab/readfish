@@ -744,9 +744,7 @@ def get_barcode_kits(address, timeout=10000):
     return res
 
 
-def get_barcoded_run_info(
-    toml_filepath, num_channels=512, validate=True, odd_even: bool = False
-):
+def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
     """Convert a TOML representation of a ReadFish experiment to conditions that
     can be used used by the analysis function
 
@@ -767,8 +765,6 @@ def get_barcoded_run_info(
         PromethION
     validate : bool
         Validate TOML file
-    odd_even: bool
-        Whether to treat odd channels as control in an experiment
 
     Returns
     -------
@@ -783,12 +779,6 @@ def get_barcoded_run_info(
     pattern = re.compile(r"^(barcode\d{2,}|unclassified|classified)$")
     toml_dict = load_config_toml(toml_filepath, validate=validate)
     caller_settings = toml_dict.get("caller_settings", {})
-
-    # Add this field to each condition, if it's True
-    if odd_even:
-        for k, v in toml_dict["conditions"].items():
-            if isinstance(v, dict):
-                v["odd_even"] = odd_even
 
     if caller_settings["host"].startswith("ipc"):
         guppy_address = "{}/{}".format(caller_settings["host"], caller_settings["port"])
