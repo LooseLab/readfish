@@ -38,6 +38,9 @@
             "properties": {
                 "reference": {
                     "type": "string"
+                },
+                "odd_even": {
+                    "type": "boolean"
                 }
             },
             "additionalProperties": false,

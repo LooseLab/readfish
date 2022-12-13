@@ -481,7 +481,8 @@ def load_config_toml(filepath, validate=True):
     # TODO: Re-evaluate the existence... of tomls
 
     toml_dict = {}
-
+    # Loop - if we try to load the toml whilst it is being written to it my be corrupted 
+    # try again until a successful read
     while not toml_dict:
         # Load TOML to dict
         try:
@@ -779,6 +780,14 @@ def get_barcoded_run_info(toml_filepath, num_channels=512, validate=True):
     toml_dict = load_config_toml(toml_filepath, validate=validate)
     caller_settings = toml_dict.get("caller_settings", {})
 
+    # Check if odd/even field is present in toml conditions
+    odd_even = toml_dict["conditions"].get("odd_even", False)
+    # Add this field to each condition, if it's True
+    if odd_even:
+        for k, v in toml_dict["conditions"].items():
+            if isinstance(v, dict):
+               v["odd_even"] = odd_even
+               
     if caller_settings["host"].startswith("ipc"):
         guppy_address = "{}/{}".format(caller_settings["host"], caller_settings["port"])
     else:

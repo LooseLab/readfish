@@ -370,6 +370,14 @@ def simple_analysis(
                 stop_receiving_action_list.append((channel, read_number))
                 continue
 
+            # check if odd even is set on the condition
+            if condition.odd_even:
+                # 'tis an odd channel, so let's NOT yeet that read
+                if channel % 2:
+                    mode = "control"
+                    log_decision()
+                    stop_receiving_action_list.append((channel, read_number))
+                    continue
             # This is an analysis channel
             # Below minimum chunks
             if tracker[channel][read_number] <= condition.min_chunks:
