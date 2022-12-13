@@ -106,6 +106,14 @@ _cli = BASE_ARGS + (
             default=None,
         ),
     ),
+    (
+        "--odd-even",
+        dict(
+            metavar="ODD_EVEN",
+            default=None,
+            help="Experimental - applies control to all ODD numbered channels, with readfish operating on EVEN numbered channels.",
+        )
+    )
 )
 
 
@@ -269,11 +277,14 @@ def simple_analysis(
 
         barcode_counter = Counter()
         if live_toml_path.is_file():
+            # Check if we have odd_even set so we keep it if we reload the toml file
+            odd_even = getattr(conditions["unclassified"], "odd_even", False)
             # Reload the TOML config from the *_live file
             conditions, new_reference, _ = get_barcoded_run_info(
                 live_toml_path,
                 flowcell_size,
                 validate=False,
+                odd_even=odd_even
             )
 
             # Check the reference path if different from the loaded mapper
@@ -530,7 +541,7 @@ def run(parser, args):
     # Parse configuration TOML
     # TODO: num_channels is not configurable here, should be inferred from client
     conditions, reference, caller_kwargs = get_barcoded_run_info(
-        args.toml, validate=False
+        args.toml, validate=False, odd_even=args.odd_even
     )
     live_toml = Path("{}_live".format(args.toml))
 
