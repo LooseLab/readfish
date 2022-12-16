@@ -41,19 +41,54 @@ If you use this software please cite: [10.1038/s41587-020-00746-x](https://dx.do
 
 Installation development version
 ------------
-```bash
-# Make a virtual environment
-python3 -m venv readfish
-. ./readfish/bin/activate
-pip install --upgrade pip
 
-# Install our ReadFish Software
-pip install git+https://github.com/nanoporetech/read_until_api@v3.0.0
-pip install git+https://github.com/LooseLab/readfish@dev_staging
+Our preffered installation method is via [conda](https://conda.io).
 
-# Install ont_pyguppy_client_lib that matches your guppy server version. E.G.
-pip install ont_pyguppy_client_lib==6.3.8
+The environment is specified as:
+```yaml
+name: readfish
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+    - read-until==3.0.0
+    - ont-pyguppy-client-lib==6.4.2
+    - git+https://github.com/LooseLab/readfish@dev_staging
 ```
+
+Saving the snippet above as `readfish_env.yml` and running the following commands will create the environment.
+
+```bash
+conda env create -f readfish_env.yml
+conda activate readfish
+```
+
+[ONT's Guppy GPU](https://community.nanoporetech.com/downloads) should be installed and running as a server.
+
+<details>
+  <summary>
+  Alternatively, readfish can be installed into a python virtual-environment:
+  </summary>
+
+  ```bash
+  # Make a virtual environment
+  python3 -m venv readfish
+  . ./readfish/bin/activate
+  pip install --upgrade pip
+
+  # Install our ReadFish Software
+  pip install git+https://github.com/nanoporetech/read_until_api@v3.0.0
+  pip install git+https://github.com/LooseLab/readfish@dev_staging
+
+  # Install ont_pyguppy_client_lib that matches your guppy server version. E.G.
+  pip install ont_pyguppy_client_lib==6.3.8
+  ```
+    
+</details>
 
 Usage
 -----
