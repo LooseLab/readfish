@@ -318,17 +318,25 @@ def simple_analysis(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
-        for read_info, data in caller.get_all_data(
-            reads=client.get_read_chunks(batch_size=batch_size, last=True),
-            signal_dtype=client.signal_dtype,
-            decided_reads=decided_reads,
+        # for read_info, data in caller.get_all_data(
+        #     reads=client.get_read_chunks(batch_size=batch_size, last=True),
+        #     signal_dtype=client.signal_dtype,
+        #     decided_reads=decided_reads,
+        # ):
+
+        for read_info, read_id, seq_len, results in mapper.map_reads_2(
+            caller.basecall_minknow(
+                reads=client.get_read_chunks(batch_size=batch_size, last=True),
+                signal_dtype=client.signal_dtype,
+                decided_reads=decided_reads,
+            )
         ):
             #  Get alignment results
             metadata = data["metadata"]
             read_id = metadata["read_id"]
             seq = data["datasets"]["sequence"]
             seq_len = metadata["sequence_length"]
-            results = list(mapper.map_read(seq))
+            # results = list(mapper.map_read(seq))
 
             # Get barcode results
             barcode = metadata.get("barcode_arrangement", None)

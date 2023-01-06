@@ -4,10 +4,12 @@ Extension of pyguppy Caller that maintains a connection to the basecaller
 
 """
 import logging
+from pathlib import Path
 import time
+from typing import Any, Union
 from collections import namedtuple
 
-import mappy as mp
+import mappy_rs as mp
 import numpy as np
 
 from pyguppy_client_lib.pyclient import PyGuppyClient
@@ -161,7 +163,7 @@ class Mapper:
     def __init__(self, index):
         self.index = index
         if self.index:
-            self.mapper = mp.Aligner(self.index, preset="map-ont")
+            self.mapper = mp.Aligner(6, self.index)
             self.initialised = True
         else:
             self.mapper = None
@@ -170,9 +172,6 @@ class Mapper:
     def map_read(self, seq):
         return self.mapper.map(seq)
 
-    def map_reads(self, calls):
-        for read_id, seq in calls:
-            yield read_id, list(self.mapper.map(seq))
 
     def map_reads_2(self, calls):
         """Align reads against a reference
@@ -193,3 +192,30 @@ class Mapper:
         """
         for read_info, read_id, seq, seq_len, quality in calls:
             yield read_info, read_id, seq_len, list(self.mapper.map(seq))
+
+
+class MappyRSMapper:
+    def __init__(self, index: Union[Path, str]) -> None:
+        self.index = index
+        if self.index:
+            self.mapper = mp.Aligner(6, self.index)
+            self.initialised = True
+        else:
+            self.mapper = None
+            self.initialised = False
+    
+    def map_batch(self, iterable: tuple[tuple[int, str], dict[Any]]):
+        """
+        Consume an iterable sending it to the mapper and pulling back results
+        """
+        cache = {}
+        count, got = 0, 0 
+        for id, metadata in iterable:
+            cache[id] = metadata
+            res = self.mapper.send_one((id, metadata["seq"]))
+            if res == mp.Status.Good:
+                count += 1
+        while got < count:
+            print("aahhh")
+            for res in self.mapper.get_all_alignments():
+                yield res.metadata, list(res)
