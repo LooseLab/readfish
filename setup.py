@@ -4,7 +4,7 @@ from os import path
 PKG_NAME = "readfish"
 MOD_NAME = "ru"
 
-DESCRIPTION = """# <img src="https://raw.githubusercontent.com/LooseLab/ru/master/examples/images/readfish_logo.jpg">
+DESCRIPTION = """# <img src="https://raw.githubusercontent.com/LooseLab/readfish/master/examples/images/readfish_logo.jpg">
 
 Installation
 ---
@@ -17,7 +17,11 @@ separately. We recommend installing in a virtual environment as so:
 # Make a virtual env
 python3 -m venv readfish
 source ./readfish/bin/activate
-pip install git+https://github.com/nanoporetech/read_until_api
+pip install read-until
+# Match your install version with your closest Guppy Version (Identical or closest previous version) 
+# To get version
+guppy_basecall_server --version
+pip install pyguppy-client-lib==<guppy version>
 pip install readfish
 ```
 
@@ -27,14 +31,13 @@ Usage
 # check install
 $ readfish
 usage: readfish [-h] [--version]
-                {targets,align,centrifuge,unblock-all,validate,summary} ...
+                {targets,align, barcode-targets,unblock-all,validate,summary} ...
 
 positional arguments:
   {targets,align,centrifuge,unblock-all,validate,summary}
                         Sub-commands
     targets             Run targeted sequencing
     align               ReadFish and Run Until, using minimap2
-    centrifuge          ReadFish and Run Until, using centrifuge
     unblock-all         Unblock all reads
     validate            ReadFish TOML Validator
     summary             Summary stats from FASTQ files
