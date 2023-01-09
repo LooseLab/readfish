@@ -4,7 +4,7 @@ from os import path
 PKG_NAME = "readfish"
 MOD_NAME = "ru"
 
-DESCRIPTION = """# <img src="https://raw.githubusercontent.com/LooseLab/ru/rename_cli/examples/images/readfish_logo.jpg">
+DESCRIPTION = """# <img src="https://raw.githubusercontent.com/LooseLab/ru/master/examples/images/readfish_logo.jpg">
 
 Installation
 ---
@@ -83,5 +83,5 @@ setup(
     },
     install_requires=install_requires,
     include_package_data=True,
-    python_requires=">=3.5",
+    python_requires=">=3.8",
 )
