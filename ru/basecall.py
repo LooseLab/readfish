@@ -172,7 +172,6 @@ class Mapper:
     def map_read(self, seq):
         return self.mapper.map(seq)
 
-
     def map_reads_2(self, calls):
         """Align reads against a reference
 
@@ -203,13 +202,13 @@ class MappyRSMapper:
         else:
             self.mapper = None
             self.initialised = False
-    
+
     def map_batch(self, iterable: tuple[tuple[int, str], dict[Any]]):
         """
         Consume an iterable sending it to the mapper and pulling back results
         """
         cache = {}
-        count, got = 0, 0 
+        count, got = 0, 0
         for id, metadata in iterable:
             cache[id] = metadata
             res = self.mapper.send_one((id, metadata["seq"]))
