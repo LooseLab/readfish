@@ -55,7 +55,7 @@ $ readfish targets --experiment-name "Test run" --device MN17073 --toml example.
 
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, "README.md")) as fh, open(
+with open(
     path.join(here, "requirements.txt")
 ) as req:
     install_requires = [pkg.strip() for pkg in req]
