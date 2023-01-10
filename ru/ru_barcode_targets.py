@@ -69,7 +69,7 @@ from ru.read_until_client import RUClient
 from read_until.read_cache import AccumulatingCache
 
 from ru.arguments import BASE_ARGS
-from ru.basecall import MapperRSMapper
+from ru.basecall import MappyRSMapper
 from ru.basecall import GuppyCaller as Caller
 from ru.utils import (
     print_args,
@@ -293,7 +293,7 @@ def simple_analysis(
                 )
 
                 # Update mapper client.
-                mapper = MapperRSMapper(new_reference)
+                mapper = MappyRSMapper(new_reference)
                 # Log on success
                 logger.info("Reloaded mapper")
 
@@ -540,7 +540,7 @@ def run(parser, args):
 
     # Load Minimap2 index
     logger.info("Initialising minimap2 mapper")
-    mapper = MapperRSMapper(reference)
+    mapper = MappyRSMapper(reference)
     logger.info("Mapper initialised")
 
     position = get_device(args.device, host=args.host, port=args.port)
