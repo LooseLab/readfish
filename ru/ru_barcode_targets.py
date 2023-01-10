@@ -68,9 +68,10 @@ from timeit import default_timer as timer
 from ru.read_until_client import RUClient
 from read_until.read_cache import AccumulatingCache
 import toml
+from mappy_rs import Strand
 
 from ru.arguments import BASE_ARGS
-from ru.basecall import Mapper as CustomMapper
+from ru.basecall import MapperRSMapper
 from ru.basecall import GuppyCaller as Caller
 from ru.utils import (
     print_args,
@@ -295,7 +296,7 @@ def simple_analysis(
                 )
 
                 # Update mapper client.
-                mapper = CustomMapper(new_reference)
+                mapper = MapperRSMapper(new_reference)
                 # Log on success
                 logger.info("Reloaded mapper")
 
@@ -318,19 +319,14 @@ def simple_analysis(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
-        # for read_info, data in caller.get_all_data(
-        #     reads=client.get_read_chunks(batch_size=batch_size, last=True),
-        #     signal_dtype=client.signal_dtype,
-        #     decided_reads=decided_reads,
-        # ):
-
-        for read_info, read_id, seq_len, results in mapper.map_reads_2(
-            caller.basecall_minknow(
+        for read_info, data, results in mapper.map_batch(
+            caller.get_all_data(
                 reads=client.get_read_chunks(batch_size=batch_size, last=True),
                 signal_dtype=client.signal_dtype,
                 decided_reads=decided_reads,
             )
         ):
+
             #  Get alignment results
             metadata = data["metadata"]
             read_id = metadata["read_id"]
@@ -402,18 +398,18 @@ def simple_analysis(
             hits = set()
             for result in results:
                 pf.debug("{}\t{}\t{}".format(read_id, seq_len, result))
-                hits.add(result.ctg)
+                hits.add(result.target_name)
 
             if hits & condition.targets:
                 # Mappings and targets overlap
                 coord_match = any(
                     # Use reference start coordinate on -ve strand, otherwise
                     #   use reference end coordinate
-                    between(getattr(r, "r_st" if r.strand == -1 else "r_en"), c)
+                    between(getattr(r, "target_start" if str(r.strand) == "-" else "target_end"), c)
                     for r in results
                     for c in condition.coords.get(
-                        strand_converter.get(r.strand), {}
-                    ).get(r.ctg, [])
+                        str(r.strand), {}
+                    ).get(r.target_name, [])
                 )
                 if len(hits) == 1:
                     if coord_match:
@@ -544,7 +540,7 @@ def run(parser, args):
 
     # Load Minimap2 index
     logger.info("Initialising minimap2 mapper")
-    mapper = CustomMapper(reference)
+    mapper = MapperRSMapper(reference)
     logger.info("Mapper initialised")
 
     position = get_device(args.device, host=args.host, port=args.port)
