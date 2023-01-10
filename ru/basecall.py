@@ -6,7 +6,7 @@ Extension of pyguppy Caller that maintains a connection to the basecaller
 import logging
 from pathlib import Path
 import time
-from typing import Any, Union
+from typing import Any, Union, Iterable
 from collections import namedtuple
 
 import mappy_rs as mp
@@ -203,18 +203,18 @@ class MappyRSMapper:
             self.mapper = None
             self.initialised = False
 
-    def map_batch(self, iterable: tuple[tuple[int, str], dict[Any]]):
+    def map_batch(self, iterable: Iterable[tuple[tuple[int, str], dict[Any]]]):
         """
         Consume an iterable sending it to the mapper and pulling back results
         """
         cache = {}
-        count, got = 0, 0
+        # count, got = 0, 0
         for id, metadata in iterable:
             cache[id] = metadata
-            res = self.mapper.send_one((id, metadata["seq"]))
+            res = self.mapper.send_one((id, metadata["datasets"]["sequence"]))
             if res == mp.Status.Good:
                 count += 1
-        while got < count:
-            print("aahhh")
-            for res in self.mapper.get_all_alignments():
-                yield res.metadata, list(res)
+
+        for res in self.mapper.get_all_alignments():
+            metadata = cache.pop(res.metadata.to_tuple())
+            yield res.metadata.to_tuple(), metadata, list(res)
