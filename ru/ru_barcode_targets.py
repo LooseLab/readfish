@@ -67,8 +67,6 @@ from timeit import default_timer as timer
 # Third party imports
 from ru.read_until_client import RUClient
 from read_until.read_cache import AccumulatingCache
-import toml
-from mappy_rs import Strand
 
 from ru.arguments import BASE_ARGS
 from ru.basecall import MapperRSMapper
@@ -78,7 +76,6 @@ from ru.utils import (
     get_barcoded_run_info,
     between,
     setup_logger,
-    describe_experiment,
 )
 from ru.utils import send_message, Severity, get_device, DecisionTracker
 
