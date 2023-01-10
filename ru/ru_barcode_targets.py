@@ -405,11 +405,16 @@ def simple_analysis(
                 coord_match = any(
                     # Use reference start coordinate on -ve strand, otherwise
                     #   use reference end coordinate
-                    between(getattr(r, "target_start" if str(r.strand) == "-" else "target_end"), c)
+                    between(
+                        getattr(
+                            r, "target_start" if str(r.strand) == "-" else "target_end"
+                        ),
+                        c,
+                    )
                     for r in results
-                    for c in condition.coords.get(
-                        str(r.strand), {}
-                    ).get(r.target_name, [])
+                    for c in condition.coords.get(str(r.strand), {}).get(
+                        r.target_name, []
+                    )
                 )
                 if len(hits) == 1:
                     if coord_match:
