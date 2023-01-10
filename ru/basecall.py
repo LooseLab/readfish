@@ -210,7 +210,9 @@ class MappyRSMapper:
         cache = {}
         for cache_id, data in iterable:
             cache[cache_id] = data
-            res = self.mapper.send_one((cache_id, data.get("datasets", {}).get("sequence", "A")))
+            res = self.mapper.send_one(
+                (cache_id, data.get("datasets", {}).get("sequence", "A"))
+            )
             if res == mp.Status.Bad:
                 logger.warning("Bad mapping status encountered...")
 
