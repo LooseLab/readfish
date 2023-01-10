@@ -330,9 +330,7 @@ def simple_analysis(
             #  Get alignment results
             metadata = data["metadata"]
             read_id = metadata["read_id"]
-            seq = data["datasets"]["sequence"]
             seq_len = metadata["sequence_length"]
-            # results = list(mapper.map_read(seq))
 
             # Get barcode results
             barcode = metadata.get("barcode_arrangement", None)

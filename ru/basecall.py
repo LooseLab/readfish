@@ -194,27 +194,27 @@ class Mapper:
 
 
 class MappyRSMapper:
-    def __init__(self, index: Union[Path, str]) -> None:
+    def __init__(self, index: Union[Path, str], n_threads: int = 6) -> None:
         self.index = index
         if self.index:
-            self.mapper = mp.Aligner(6, self.index)
+            self.mapper = mp.Aligner(n_threads, self.index)
             self.initialised = True
         else:
             self.mapper = None
             self.initialised = False
 
-    def map_batch(self, iterable: Iterable[tuple[tuple[int, str], dict[Any]]]):
+    def map_batch(self, iterable: Iterable[tuple[tuple[int, int], dict[Any]]]):
         """
         Consume an iterable sending it to the mapper and pulling back results
         """
         cache = {}
-        # count, got = 0, 0
-        for id, metadata in iterable:
-            cache[id] = metadata
-            res = self.mapper.send_one((id, metadata["datasets"]["sequence"]))
-            if res == mp.Status.Good:
-                count += 1
+        for cache_id, data in iterable:
+            cache[cache_id] = data
+            res = self.mapper.send_one((cache_id, data.get("datasets", {}).get("sequence", "A")))
+            if res == mp.Status.Bad:
+                logger.warning("Bad mapping status encountered...")
 
         for res in self.mapper.get_all_alignments():
-            metadata = cache.pop(res.metadata.to_tuple())
-            yield res.metadata.to_tuple(), metadata, list(res)
+            metadata = res.metadata.to_tuple()
+            data = cache.pop(metadata)
+            yield metadata, data, list(res)
