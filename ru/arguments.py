@@ -10,7 +10,7 @@ from ru.utils import nice_join
 
 DEFAULT_SERVER_HOST = "127.0.0.1"
 DEFAULT_SERVER_PORT = None
-DEFAULT_WORKERS = 4
+DEFAULT_ALIGN_THREADS = 4
 DEFAULT_LOG_FORMAT = "%(asctime)s %(name)s %(message)s"
 DEFAULT_LOG_LEVEL = "info"
 DEFAULT_CHANNELS = [1, 512]
@@ -65,8 +65,8 @@ BASE_ARGS = (
         dict(
             metavar="n_threads",
             type=int,
-            help="Number of alignments threads (default: {})".format(DEFAULT_WORKERS),
-            default=DEFAULT_WORKERS,
+            help="Number of alignment threads (default: {})".format(DEFAULT_ALIGN_THREADS),
+            default=DEFAULT_ALIGN_THREADS,
         ),
     ),
     (
