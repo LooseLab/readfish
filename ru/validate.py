@@ -2,7 +2,6 @@
 Validate experiment configuration TOML files.
 """
 import sys
-import argparse
 import textwrap
 
 from ru.utils import get_run_info, describe_experiment, Severity
@@ -46,6 +45,3 @@ def run(parser, args):
     for message, sev in describe_experiment(conditions, mapper):
         printer(textwrap.fill(message), sev, file=sys.stdout, end="\n\n")
 
-
-if __name__ == "__main__":
-    main()
