@@ -17,7 +17,7 @@ from read_until.read_cache import AccumulatingCache
 import toml
 
 from ru.arguments import BASE_ARGS
-from ru.basecall import Mapper as CustomMapper
+from ru.basecall import MappyRSMapper
 from ru.basecall import GuppyCaller as Caller
 from ru.utils import (
     print_args,
@@ -217,7 +217,6 @@ def simple_analysis(
             run_info, conditions, new_reference, _ = get_run_info(
                 live_toml_path, flowcell_size
             )
-
             # Check the reference path if different from the loaded mapper
             if new_reference != mapper.index:
                 old_reference = mapper.index
@@ -228,12 +227,10 @@ def simple_analysis(
                     "Reloading mapper. ReadFish paused.",
                     Severity.INFO,
                 )
-
                 # Update mapper client.
-                mapper = CustomMapper(new_reference)
+                mapper = MappyRSMapper(new_reference)
                 # Log on success
                 logger.info("Reloaded mapper")
-
                 # If we've reloaded a reference, delete the previous one
                 if old_reference:
                     logger.info("Deleting old mmi {}".format(old_reference))
@@ -253,13 +250,16 @@ def simple_analysis(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
-        for read_info, read_id, seq_len, results in mapper.map_reads_2(
-            caller.basecall_minknow(
+        for read_info, data, results in mapper.map_batch(
+            caller.get_all_data(
                 reads=client.get_read_chunks(batch_size=batch_size, last=True),
                 signal_dtype=client.signal_dtype,
                 decided_reads=decided_reads,
             )
         ):
+            metadata = data["metadata"]
+            read_id = metadata["read_id"]
+            seq_len = metadata["sequence_length"]
             r += 1
             read_start_time = timer()
             channel, read_number = read_info
@@ -318,16 +318,16 @@ def simple_analysis(
             hits = set()
             for result in results:
                 pf.debug("{}\t{}\t{}".format(read_id, seq_len, result))
-                hits.add(result.ctg)
+                hits.add(result.target_name)
 
             if hits & conditions[run_info[channel]].targets:
                 # Mappings and targets overlap
                 coord_match = any(
-                    between(r.r_st, c)
+                    between(r.target_start, c)
                     for r in results
                     for c in conditions[run_info[channel]]
-                    .coords.get(strand_converter.get(r.strand), {})
-                    .get(r.ctg, [])
+                    .coords.get(str(r.target_name), {})
+                    .get(r.target_name, [])
                 )
                 if len(hits) == 1:
                     if coord_match:
@@ -458,7 +458,7 @@ def run(parser, args):
 
     # Load Minimap2 index
     logger.info("Initialising minimap2 mapper")
-    mapper = CustomMapper(reference)
+    mapper = MappyRSMapper(reference, n_threads=args.n_threads)
     logger.info("Mapper initialised")
 
     position = get_device(args.device, host=args.host, port=args.port)
