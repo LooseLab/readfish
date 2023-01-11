@@ -458,7 +458,7 @@ def run(parser, args):
 
     # Load Minimap2 index
     logger.info("Initialising minimap2 mapper")
-    mapper = MappyRSMapper(reference, n_threads=args.n_threads)
+    mapper = MappyRSMapper(reference, n_threads=args.align_threads)
     logger.info("Mapper initialised")
 
     position = get_device(args.device, host=args.host, port=args.port)
