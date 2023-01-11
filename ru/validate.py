@@ -44,4 +44,3 @@ def run(parser, args):
     mapper = MappyRSMapper(reference)
     for message, sev in describe_experiment(conditions, mapper):
         printer(textwrap.fill(message), sev, file=sys.stdout, end="\n\n")
-

@@ -136,8 +136,8 @@ class GuppyCaller(PyGuppyClient):
 
 class MappyRSMapper:
     """
-    Thin wrapper around mappy_rs aligner. 
-    
+    Thin wrapper around mappy_rs aligner.
+
     Parameters
     ----------
     index: str or Path
@@ -145,7 +145,8 @@ class MappyRSMapper:
     n_threads: int
         The number of alignment threads to be given to the mapper. Default 6, cannot be 0.
     """
-    def __init__(self, index, n_threads = 6) -> None:
+
+    def __init__(self, index, n_threads=6) -> None:
         self.index = index
         self.n_threads = n_threads
         if self.index:
@@ -157,7 +158,7 @@ class MappyRSMapper:
 
     def map_batch(self, iterable):
         """
-        Consume an iterable sending it to mappy_rs aligner queue. 
+        Consume an iterable sending it to mappy_rs aligner queue.
         Then calls a mapping function, yielding all mappings from the queue
 
         Parameters
@@ -168,7 +169,7 @@ class MappyRSMapper:
         Yields
         ------
         tuple[metdata: (channel_num, read_num), data: dict[Any], list[AlignmentResults]]
-            Yields a tuple of a tuple of (channel_num, read_num), a dict of the data returned from guppy, and a list of mapping results from mappy rs 
+            Yields a tuple of a tuple of (channel_num, read_num), a dict of the data returned from guppy, and a list of mapping results from mappy rs
 
 
         """

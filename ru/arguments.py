@@ -65,7 +65,9 @@ BASE_ARGS = (
         dict(
             metavar="n_threads",
             type=int,
-            help="Number of alignment threads (default: {})".format(DEFAULT_ALIGN_THREADS),
+            help="Number of alignment threads (default: {})".format(
+                DEFAULT_ALIGN_THREADS
+            ),
             default=DEFAULT_ALIGN_THREADS,
         ),
     ),
