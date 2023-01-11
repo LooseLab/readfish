@@ -4,9 +4,7 @@ Extension of pyguppy Caller that maintains a connection to the basecaller
 
 """
 import logging
-from pathlib import Path
 import time
-from typing import Any, Union, Iterable
 from collections import namedtuple
 
 import mappy_rs as mp
