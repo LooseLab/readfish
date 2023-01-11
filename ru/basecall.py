@@ -135,67 +135,11 @@ class GuppyCaller(PyGuppyClient):
         """
         yield from self._basecall(*args, **kwargs)
 
-    def basecall_minknow(self, *args, **kwargs):
-        """basecall data from minknow
-
-        Parameters are identical to GuppyCaller._basecall.
-
-                Yields
-        ------
-        read_info : tuple
-            (channel, read_number)
-        read_id : str
-        sequence : str
-        sequence_length : int
-        quality : str
-        """
-        for read_info, data in self._basecall(*args, **kwargs):
-            yield (
-                read_info,
-                data["metadata"]["read_id"],
-                data["datasets"]["sequence"],
-                data["metadata"]["sequence_length"],
-                data["datasets"]["qstring"],
-            )
-
-
-class Mapper:
-    def __init__(self, index):
-        self.index = index
-        if self.index:
-            self.mapper = mp.Aligner(6, self.index)
-            self.initialised = True
-        else:
-            self.mapper = None
-            self.initialised = False
-
-    def map_read(self, seq):
-        return self.mapper.map(seq)
-
-    def map_reads_2(self, calls):
-        """Align reads against a reference
-
-        Parameters
-        ----------
-        calls : iterable [tuple,  str, str, int, str]
-            An iterable of called reads from PerpetualCaller.basecall_minknow
-
-        Yields
-        ------
-        read_info : tuple
-            Tuple of read info (channel, read_number)
-        read_id : str
-        sequence : str
-        sequence_length : int
-        mapping_results : list
-        """
-        for read_info, read_id, seq, seq_len, quality in calls:
-            yield read_info, read_id, seq_len, list(self.mapper.map(seq))
-
 
 class MappyRSMapper:
     def __init__(self, index: Union[Path, str], n_threads: int = 6) -> None:
         self.index = index
+        self.n_threads = n_threads
         if self.index:
             self.mapper = mp.Aligner(n_threads, self.index)
             self.initialised = True
