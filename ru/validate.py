@@ -5,7 +5,7 @@ import sys
 import textwrap
 
 from ru.utils import get_run_info, describe_experiment, Severity
-from ru.basecall import Mapper
+from ru.basecall import MappyRSMapper
 
 
 _help = "ReadFish TOML Validator"
@@ -41,7 +41,7 @@ def run(parser, args):
     run_info, conditions, reference, caller_settings = get_run_info(args.toml)
     print("😻 Looking good!", file=sys.stdout)
     print("Generating experiment description - please be patient!", file=sys.stdout)
-    mapper = Mapper(reference)
+    mapper = MappyRSMapper(reference)
     for message, sev in describe_experiment(conditions, mapper):
         printer(textwrap.fill(message), sev, file=sys.stdout, end="\n\n")
 
