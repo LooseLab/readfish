@@ -284,6 +284,7 @@ def simple_analysis(
             # Check the reference path if different from the loaded mapper
             if new_reference != mapper.index:
                 old_reference = mapper.index
+                n_threads = mapper.n_threads
                 # Log to file and MinKNOW interface
                 logger.info("Reloading mapper")
                 send_message(
@@ -293,7 +294,7 @@ def simple_analysis(
                 )
 
                 # Update mapper client.
-                mapper = MappyRSMapper(new_reference)
+                mapper = MappyRSMapper(new_reference, n_threads=n_threads)
                 # Log on success
                 logger.info("Reloaded mapper")
 
@@ -540,7 +541,7 @@ def run(parser, args):
 
     # Load Minimap2 index
     logger.info("Initialising minimap2 mapper")
-    mapper = MappyRSMapper(reference)
+    mapper = MappyRSMapper(reference, args.n_threads)
     logger.info("Mapper initialised")
 
     position = get_device(args.device, host=args.host, port=args.port)
