@@ -1,11 +1,5 @@
-grpcio
-requests
-numpy
-protobuf
 toml
 jsonschema
-watchdog
-pandas
-biopython==1.76
 minknow_api
+numpy
 mappy_rs
