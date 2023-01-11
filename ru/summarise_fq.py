@@ -115,7 +115,7 @@ def run(parser, args):
                 # TODO FIx this later
                 mapper.send_one(((0, 0), seq))
                 for res in mapper.get_all_alignments():
-                    pre_res[res.target_nae].append(len(seq))
+                    pre_res[res.target_name].append(len(seq))
                     break
 
     header = [
