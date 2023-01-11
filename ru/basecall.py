@@ -137,19 +137,42 @@ class GuppyCaller(PyGuppyClient):
 
 
 class MappyRSMapper:
-    def __init__(self, index: Union[Path, str], n_threads: int = 6) -> None:
+    """
+    Thin wrapper around mappy_rs aligner. 
+    
+    Parameters
+    ----------
+    index: str or Path
+        Path to the index file to be loaded into the mapper. Can be either FASTA or minimap2 index type files.
+    n_threads: int
+        The number of alignment threads to be given to the mapper. Default 6, cannot be 0.
+    """
+    def __init__(self, index, n_threads = 6) -> None:
         self.index = index
         self.n_threads = n_threads
         if self.index:
-            self.mapper = mp.Aligner(n_threads, self.index)
+            self.mapper = mp.Aligner(self.n_threads, self.index)
             self.initialised = True
         else:
             self.mapper = None
             self.initialised = False
 
-    def map_batch(self, iterable: Iterable[tuple[tuple[int, int], dict[Any]]]):
+    def map_batch(self, iterable):
         """
-        Consume an iterable sending it to the mapper and pulling back results
+        Consume an iterable sending it to mappy_rs aligner queue. 
+        Then calls a mapping function, yielding all mappings from the queue
+
+        Parameters
+        ----------
+        iterable: Iterable[tuple[tuple[int, int], dict[Any]]]
+            An iterable of tuples. The first element is a tuple of (channel_number, read_number), second is a data dictionary returned from Guppy.
+
+        Yields
+        ------
+        tuple[metdata: (channel_num, read_num), data: dict[Any], list[AlignmentResults]]
+            Yields a tuple of a tuple of (channel_num, read_num), a dict of the data returned from guppy, and a list of mapping results from mappy rs 
+
+
         """
         cache = {}
         for cache_id, data in iterable:
