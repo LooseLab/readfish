@@ -24,8 +24,6 @@ def main():
 
     cmds = [
         ("targets", "ru_gen"),
-        ("align", "iteralign"),
-        ("centrifuge", "iteralign_centrifuge"),
         ("unblock-all", "unblock_all"),
         ("validate", "validate"),
         ("summary", "summarise_fq"),
