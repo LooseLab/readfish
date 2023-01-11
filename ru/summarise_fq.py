@@ -9,7 +9,7 @@ from collections import defaultdict
 import sys
 
 import toml
-import mappy as mp
+import mappy_rs as mp
 
 
 _help = "Summary stats from FASTQ files"
@@ -97,7 +97,7 @@ def run(parser, args):
     if not Path(reference).is_file():
         raise FileNotFoundError("reference file not found at: {}".format(reference))
 
-    mapper = mp.Aligner(reference, preset="map-ont")
+    mapper = mp.Aligner(4, reference)
 
     print("Using reference: {}".format(reference), file=sys.stderr)
 
@@ -112,8 +112,10 @@ def run(parser, args):
         with fopen(f, "rt") as fh:
             for name, seq, _ in readfq(fh):
                 # Map seq, only use first mapping (a bit janky)
-                for r in mapper.map(seq):
-                    pre_res[r.ctg].append(len(seq))
+                # TODO FIx this later
+                mapper.send_one(((0, 0), seq))
+                for res in mapper.get_all_alignments():
+                    pre_res[res.target_nae].append(len(seq))
                     break
 
     header = [
