@@ -361,6 +361,9 @@ def decision_boss_runs(
     strand_converter_br, mask_path, contigs_path, masks = init_BR_bits(conditions)
 
     while client.is_running:
+        if not client.is_phase_sequencing:
+            time.sleep(5)
+            continue
         # todo reverse engineer from channels.toml
         if live_toml_path.is_file():
             # Reload the TOML config from the *_live file

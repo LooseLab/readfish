@@ -91,3 +91,25 @@ class RUClient(ReadUntilClient):
         )
         if read_id is not None:
             self.unblock_logger.debug(read_id)
+
+    @property
+    def is_phase_sequencing(self):
+        """
+        Check the current protocol phase to determine if the run is not paused/muxing/unknown
+        :returns: Bool
+        """
+        try:
+            current_phase = self.connection.protocol.get_current_protocol_run().phase
+        except RpcError as e:
+            if self.phase_errors < self.max_phase_errors:
+                log.info(f"Got RPC exception\n{e}")
+                log.info("Run may have ended")
+                self.phase_errors += 1
+            return False
+
+        if current_phase != self.current_phase:
+            self.current_phase = current_phase
+            log.info(
+                f"Protocol phase changed to {protocol_service.ProtocolPhase.Name(self.current_phase)}"
+            )
+        return current_phase == protocol_service.PHASE_SEQUENCING
