@@ -127,18 +127,18 @@ def reload_masks(mask_path, masks, logger):
 
     # can use multiple .npy or a single .npz file
     # BR uses .npy for the moment
-    new_masks = mask_path.glob("*.npy")
+    new_masks = list(mask_path.glob("*.npy"))
     if new_masks:
         reload_func = reload_npy
     elif not new_masks:
-        new_masks = mask_path.glob("*.npz")
+        new_masks = list(mask_path.glob("*.npz"))
         reload_func = reload_npz
     else:
         reload_func = False
         logger.info("Expected either .npy or .npz file but found neither")
 
     try:
-        reload_func(mask_files=new_masks)
+        masks = reload_func(mask_files=new_masks)
         logger.info(f"Reloaded mask dict for {masks.keys()}")
     except Exception as e:
         logger.error(f"Error reading mask array ->>> {repr(e)}")
@@ -174,7 +174,7 @@ def reload_mapper(contigs_path, mapper, logger):
     try:
         contigs_mmi = [path for path in contigs_path.glob("*.mmi")][0]
         logger.info(f"Reloading mapping index")
-        mapper = CustomMapper(contigs_mmi)
+        mapper = CustomMapper(str(contigs_mmi))
         # wait until init is complete
         while not mapper.initialised:
             time.sleep(1)
@@ -201,8 +201,10 @@ def check_names(masks, mapper, logger):
     -------
 
     """
+    if not mapper.initialised:
+        return
     mask_names = sorted(list(masks.keys()))
-    contig_names = sorted(list(mapper.seq_names))
+    contig_names = sorted(list(mapper.mapper.seq_names))
     same_names = mask_names == contig_names
     if not same_names:
         logger.error(f"Error loading masks and contigs: discrepancy in names \n {mask_names} \n {contig_names}")
