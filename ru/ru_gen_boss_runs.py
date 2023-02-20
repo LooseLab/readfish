@@ -370,36 +370,42 @@ def decision_boss_runs(
             time.sleep(5)
             continue
         # todo reverse engineer from channels.toml
-        if live_toml_path.is_file():
-            # Reload the TOML config from the *_live file
-            run_info, conditions, new_reference, _ = get_run_info(
-                live_toml_path, flowcell_size, validate=False  # BR: don't validate toml (due to mask param)
-            )
-
-            # Check the reference path if different from the loaded mapper
-            if new_reference != mapper.index:
-                old_reference = mapper.index
-                # Log to file and MinKNOW interface
-                logger.info("Reloading mapper")
-                send_message(
-                    client.connection,
-                    "Reloading mapper. ReadFish paused.",
-                    Severity.INFO,
-                )
-
-                # Update mapper client.
-                mapper = CustomMapper(new_reference)
-                # Log on success
-                logger.info("Reloaded mapper")
-
-                # If we've reloaded a reference, delete the previous one
-                if old_reference:
-                    logger.info("Deleting old mmi {}".format(old_reference))
-                    # We now delete the old mmi file.
-                    Path(old_reference).unlink()
-                    logger.info("Old mmi deleted.")
+        # if live_toml_path.is_file():
+        #     # Reload the TOML config from the *_live file
+        #     run_info, conditions, new_reference, _ = get_run_info(
+        #         live_toml_path, flowcell_size, validate=False  # BR: don't validate toml (due to mask param)
+        #     )
+        #
+        #     # Check the reference path if different from the loaded mapper
+        #     if new_reference != mapper.index:
+        #         old_reference = mapper.index
+        #         # Log to file and MinKNOW interface
+        #         logger.info("Reloading mapper")
+        #         send_message(
+        #             client.connection,
+        #             "Reloading mapper. ReadFish paused.",
+        #             Severity.INFO,
+        #         )
+        #
+        #         # Update mapper client.
+        #         mapper = CustomMapper(new_reference)
+        #         # Log on success
+        #         logger.info("Reloaded mapper")
+        #
+        #         # If we've reloaded a reference, delete the previous one
+        #         if old_reference:
+        #             logger.info("Deleting old mmi {}".format(old_reference))
+        #             # We now delete the old mmi file.
+        #             Path(old_reference).unlink()
+        #             logger.info("Old mmi deleted.")
 
         # TODO: Fix the logging to just one of the two in use
+
+        # BR: load updated decision masks and contigs
+        masks = reload_masks(mask_path=mask_path, masks=masks, logger=logger)
+        mapper = reload_mapper(contigs_path=contigs_path, mapper=mapper, logger=logger)
+        check_names(masks=masks, mapper=mapper, logger=logger)
+
 
         if not mapper.initialised:
             time.sleep(throttle)
@@ -411,10 +417,7 @@ def decision_boss_runs(
         unblock_batch_action_list = []
         stop_receiving_action_list = []
 
-        # BR: load updated decision masks and contigs
-        masks = reload_masks(mask_path=mask_path, masks=masks, logger=logger)
-        mapper = reload_mapper(contigs_path=contigs_path, mapper=mapper, logger=logger)
-        check_names(masks=masks, mapper=mapper, logger=logger)
+
 
 
         for read_info, read_id, seq_len, mappings in mapper.map_reads_2(
