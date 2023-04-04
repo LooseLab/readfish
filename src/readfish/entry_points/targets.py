@@ -135,7 +135,7 @@ class Analysis:
                 # TODO: Log when in this trap
                 time.sleep(self.throttle)
                 continue
-
+            # TODO: Determine how to reload a reference and only do so if changed from previous config.
             if self.toml.is_file() and self.toml.stat().st_mtime > last_live_mtime:
                 try:
                     self.conf = Conf.from_file(
