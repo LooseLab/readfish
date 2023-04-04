@@ -13,9 +13,10 @@ import time
 from timeit import default_timer as timer
 
 # Read Until imports
-from readfish._args import BASE_ARGS
+from readfish._cli_args import BASE_ARGS
 from readfish._utils import get_device, send_message, Severity
 from readfish._client import RUClient
+from readfish._loggers import print_args
 from read_until.read_cache import AccumulatingCache
 
 
@@ -53,7 +54,6 @@ def simple_analysis(
         Severity.WARN,
     )
     while client.is_running and time.time() < run_duration:
-
         r = 0
         t0 = timer()
         unblock_batch_action_list = []
@@ -120,7 +120,7 @@ def run(parser, args):
     # Start by logging sys.argv and the parameters used
     logger = logging.getLogger("Manager")
     logger.info(" ".join(sys.argv))
-    print_args(args, logger=logger)
+    print_args(args, printer=logger.info)
 
     position = get_device(args.device, host=args.host, port=args.port)
 
