@@ -1,13 +1,15 @@
-# ![alt text](examples/images/readfish_logo.jpg "ReadFish Logo")
+<p align="center">
+  <img src="https://github.com/LooseLab/readfish/raw/dev_staging/examples/images/readfish_logo.jpg">
+</p>
 
-If you are anything like us, reading a README is the last thing you do when running code. 
-PLEASE DON'T DO THAT FOR READFISH. This will effect changes to your sequencing and - 
-if you use it incorrectly - cost you money. We have added a [list of GOTCHAs](#common-gotchas) 
-at the end of this README. We have almost certainly missed some... so - if something goes 
+If you are anything like us, reading a README is the last thing you do when running code.
+PLEASE DON'T DO THAT FOR READFISH. This will effect changes to your sequencing and -
+if you use it incorrectly - cost you money. We have added a [list of GOTCHAs](#common-gotchas)
+at the end of this README. We have almost certainly missed some... so - if something goes
 wrong, let us know so we can add you to the GOTCHA hall of fame!
 
-This is a Python3 package that integrates with the 
-[Read Until API](https://github.com/nanoporetech/read_until_api). 
+This is a Python3 package that integrates with the
+[Read Until API](https://github.com/nanoporetech/read_until_api).
 
 The Read Until API provides a mechanism for an application to connect to a
 MinKNOW server to obtain read data in real-time. The data can be analysed in the
@@ -15,28 +17,30 @@ way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress and so direct sequencing capacity towards reads of interest.
 
 
-**This implementation of ReadFish requires Guppy version >= 6.0.0 and MinKNOW version core >= 5.0.0 . It will not work on earlier versions.** 
+**This implementation of ReadFish requires Guppy version >= 6.0.0 and MinKNOW version core >= 5.0.0 . It will not work on earlier versions.**
 
 
-**Currently we only recommend LINUX for running ReadFish. We have not had 
+**Currently we only recommend LINUX for running ReadFish. We have not had
 effective performance on other platforms to date.**
 
-The code here has been tested with Guppy in GPU mode using GridION Mk1 and 
-NVIDIA RTX2080 on live sequencing runs and an NIVIDA GTX1080 using playback 
-on a simulated run (see below for how to test this).  
-This code is run at your own risk as it DOES affect sequencing output. You 
-are **strongly** advised to test your setup prior to running (see below for 
+The code here has been tested with Guppy in GPU mode using GridION Mk1 and
+NVIDIA RTX2080 on live sequencing runs and an NIVIDA GTX1080 using playback
+on a simulated run (see below for how to test this).
+This code is run at your own risk as it DOES affect sequencing output. You
+are **strongly** advised to test your setup prior to running (see below for
 example tests).
+
+<!-- begin-short -->
 
 Citation
 --------
-The paper is available at [nature biotechnology](https://dx.doi.org/10.1038/s41587-020-00746-x) 
+The paper is available at [nature biotechnology](https://dx.doi.org/10.1038/s41587-020-00746-x)
 and [bioRxiv](https://dx.doi.org/10.1101/2020.02.03.926956)
 
-If you use this software please cite: [10.1038/s41587-020-00746-x](https://dx.doi.org/10.1038/s41587-020-00746-x) 
+If you use this software please cite: [10.1038/s41587-020-00746-x](https://dx.doi.org/10.1038/s41587-020-00746-x)
 
-> Readfish enables targeted nanopore sequencing of gigabase-sized genomes  
-> Alexander Payne, Nadine Holmes, Thomas Clarke, Rory Munro, Bisrat Debebe, Matthew Loose  
+> Readfish enables targeted nanopore sequencing of gigabase-sized genomes
+> Alexander Payne, Nadine Holmes, Thomas Clarke, Rory Munro, Bisrat Debebe, Matthew Loose
 > Nat Biotechnol (2020); doi: https://doi.org/10.1038/s41587-020-00746-x
 
 Installation development version
@@ -87,7 +91,7 @@ conda activate readfish
   # Install ont_pyguppy_client_lib that matches your guppy server version. E.G.
   pip install ont_pyguppy_client_lib==6.3.8
   ```
-    
+
 </details>
 
 Usage
@@ -122,51 +126,53 @@ TOML File
 ---------
 For information on the TOML files see [TOML.md](TOML.md).
 
+<!-- end-short -->
+
 Testing
 -------
-To test readfish on your configuration we recommend first running a playback 
+To test readfish on your configuration we recommend first running a playback
 experiment to test unblock speed and then selection.
 
 #### Configuring bulk FAST5 file Playback
-1. Download an open access bulk FAST5 file from 
-[here](http://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5). 
+1. Download an open access bulk FAST5 file from
+[here](http://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5).
 This file is 21Gb so make sure you have plenty of space.
-1. To configure a run for playback, you need to find and edit a sequencing TOML 
-file. These are typically located in `/opt/ont/minknow/conf/package/sequencing`. 
-Edit a file such as sequencing_MIN106_DNA.toml and under the entry `[custom_settings]` 
-add a field: 
+1. To configure a run for playback, you need to find and edit a sequencing TOML
+file. These are typically located in `/opt/ont/minknow/conf/package/sequencing`.
+Edit a file such as sequencing_MIN106_DNA.toml and under the entry `[custom_settings]`
+add a field:
     ```text
     simulation = "/full/path/to/your_bulk.FAST5"
     ```
-3. If running GUPPY in GPU mode, set the parameter `break_reads_after_seconds = 1.0` 
+3. If running GUPPY in GPU mode, set the parameter `break_reads_after_seconds = 1.0`
 to `break_reads_after_seconds = 0.4`.
-4. In the MinKNOW GUI, right click on a sequencing position and select `Reload Scripts`. 
+4. In the MinKNOW GUI, right click on a sequencing position and select `Reload Scripts`.
 Your version of MinKNOW will now playback the bulkfile rather than live sequencing.
 5. Insert a configuration test flowcell into the sequencing device.
-6. Start a sequencing run as you would normally, selecting the corresponding flow 
+6. Start a sequencing run as you would normally, selecting the corresponding flow
 cell type to the edited script (here FLO-MIN106) as the flowcell type.
-7. The run should start and immediately begin a mux scan. Let it run for around 
+7. The run should start and immediately begin a mux scan. Let it run for around
 five minutes after which your read length histogram should look as below:
-    ![alt text](examples/images/control.png "Control Image")
+    ![alt text](docs/_static/images/control.png "Control Image")
 
 #### Testing unblock response
-Now we shall test unblocking by running `readfish unblock-all` which will simply eject 
-every single read on the flow cell. 
+Now we shall test unblocking by running `readfish unblock-all` which will simply eject
+every single read on the flow cell.
 1. To do this run:
     ```bash
     readfish unblock-all --device <YOUR_DEVICE_ID> --experiment-name "Testing ReadFish Unblock All"
-    ```   
-1. Leave the run for a further 5 minutes and observe the read length histogram. 
+    ```
+1. Leave the run for a further 5 minutes and observe the read length histogram.
 If unblocks are happening correctly you will see something like the below:
-    ![alt text](examples/images/Unblock.png "Unblock Image")
+    ![alt text](docs/_static/images/Unblock.png "Unblock Image")
 A closeup of the unblock peak shows reads being unblocked quickly:
-    ![alt text](examples/images/Unblock_closeup.png "Closeup Unblock Image")    
+    ![alt text](docs/_static/images/Unblock_closeup.png "Closeup Unblock Image")
 
 If you are happy with the unblock response, move onto testing basecalling.
 
 #### Testing basecalling and mapping.
-To test selective sequencing you must have access to a 
-[guppy basecall server](https://community.nanoporetech.com/downloads/guppy/release_notes) (>=3.4.0) 
+To test selective sequencing you must have access to a
+[guppy basecall server](https://community.nanoporetech.com/downloads/guppy/release_notes) (>=3.4.0)
 and configure a [TOML](TOML.md) file. Here we provide an [example TOML file](examples/human_chr_selection.toml).
 1. First make a local copy of the example TOML file:
     ```bash
@@ -175,15 +181,15 @@ and configure a [TOML](TOML.md) file. Here we provide an [example TOML file](exa
 1. Modify the `reference` field in the file to be the full path to a [minimap2](https://github.com/lh3/minimap2) index of the human genome.
 1. Modify the `targets` fields for each condition to reflect the naming convention used in your index. This is the sequence name only, up to but not including any whitespace.
 e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match, then target matching will fail.
-1. We provide a [JSON schema](readfish/static/readfish_toml.schema.json) and a script for validating 
+1. We provide a [JSON schema](readfish/static/readfish_toml.schema.json) and a script for validating
 configuration files which will let you check if the toml will drive an experiment as you expect:
-    
+
     ```bash
     readfish validate human_chr_selection.toml
     ```
 
     Errors with the configuration will be written to the terminal along with a text description of the conditions for the experiment as below.
-    
+
     ```text
     readfish validate examples/human_chr_selection.toml
     😻 Looking good!
@@ -196,7 +202,7 @@ configuration files which will let you check if the toml will drive an experimen
     in the reference. Reads will be unblocked when classed as single_off
     or multi_off; sequenced when classed as single_on or multi_on; and
     polled for more data when classed as no_map or no_seq.
-    ```         
+    ```
 1. If your toml file validates then run the following command:
     ```bash
     readfish targets --device <YOUR_DEVICE_ID> \
@@ -212,13 +218,13 @@ configuration files which will let you check if the toml will drive an experimen
     ```
    **Note: if these times are longer than 0.4 seconds you will have performance issues. Contact us via github issues for support.**
 
-1. In the MinKNOW messages interface you should see the experiment description as generated by the readfish validate command above.   
-        ![alt text](examples/images/minknow_messages.png "MinKNOW Messages") 
+1. In the MinKNOW messages interface you should see the experiment description as generated by the readfish validate command above.
+        ![alt text](docs/_static/images/minknow_messages.png "MinKNOW Messages")
 
  #### Testing expected results from a selection experiment.
- 
+
  The only way to test readfish on a playback run is to look at changes in read length for rejected vs accepted reads. To do this:
- 
+
  1. Start a fresh simulation run using the bulkfile provided above.
  2. Restart the readfish command (as above):
     ```bash
@@ -229,9 +235,9 @@ configuration files which will let you check if the toml will drive an experimen
     ```
  3. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
  4. After 15 minutes it should look something like this:
-        ![alt text](examples/images/PlaybackRunUnblock.png "Playback Unblock Image")
-Zoomed in on the unblocks: 
-        ![alt text](examples/images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")
+        ![alt text](docs/_static/images/PlaybackRunUnblock.png "Playback Unblock Image")
+Zoomed in on the unblocks:
+        ![alt text](docs/_static/images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")
  4. Run `readfish summary` to check if your run has performed as expected. This file requires the path to your toml file followed by the path to your fastq reads. Typical results are provided below and show longer mean read lengths for the two selected chromosomes (here chr21 and chr22). Note the mean read lengths observed will be dependent on system performance. Optimal guppy configuration for your system is left to the user.
      ```text
      contig  number      sum   min     max    std   mean  median     N50
@@ -259,10 +265,10 @@ Zoomed in on the unblocks:
        chr9     893  3028224   259  247975  16011   3391     802   54953
        chrM     144   216047   215   20731   2562   1500     864    1391
        chrX     868  3124552   238  192451  15594   3600     832   49047
-       chrY       8    47071   510   31654  10743   5884    1382   31654    
+       chrY       8    47071   510   31654  10743   5884    1382   31654
     ```
- **After completing your tests you should remove the simulation line from the sequencing_MIN106_DNA.toml file. You MUST then reload the scripts. If using Guppy GPU basecalling leave the break_reads_after_seconds parameter as 0.4.** 
- 
+ **After completing your tests you should remove the simulation line from the sequencing_MIN106_DNA.toml file. You MUST then reload the scripts. If using Guppy GPU basecalling leave the break_reads_after_seconds parameter as 0.4.**
+
  Common Gotcha's
  ----
  These may or may not (!) be mistakes we have made already...
@@ -273,12 +279,12 @@ Zoomed in on the unblocks:
     - Check the ip of your server is correct.
     - Check the port of your server is correct.
  4. If you are expecting reads to unblock but they do not - check that you have set `control=false` in your readfish toml file.  `control=true` will prevent any unblocks but does otherwise run the full analysis pipeline.
- 5. Oh no - every single read is being unblocked - I have nothing on target! 
+ 5. Oh no - every single read is being unblocked - I have nothing on target!
     - Double check your reference file is in the correct location.
     - Double check your targets exist in that reference file.
-    - Double check your targets are correctly formatted with contig name matching the record names in your reference (Exclude description - i.e the contig name up to the first whitespace). 
+    - Double check your targets are correctly formatted with contig name matching the record names in your reference (Exclude description - i.e the contig name up to the first whitespace).
  6. **Where has my reference gone?** If you are using a _live TOML file - e.g running iter_align or iter_cent, the previous reference MMI file is deleted when a new one is added. This obviosuly saves on disk space use(!) but can lead to unfortunate side effects - i.e you delete yoru MMI file. These can of course be recreated but user **beware**.
- 
+
  Happy ReadFishing!
 
   Acknowledgements
@@ -296,4 +302,3 @@ From the Nanopore World:
 Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, Nick Goldman, Miten Jain
 
 And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com/tim_bassford) from [@TurbineCreative](https://twitter.com/TurbineCreative)!
-  

@@ -1,0 +1,33 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Readfish enables targeted nanopore sequencing of
+  gigabase-sized genomes
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Alexander
+    family-names: Payne
+    orcid: 'https://orcid.org/0000-0002-1962-3019'
+    affiliation: University of Nottingham
+  - given-names: Nadine
+    family-names: Holmes
+    affiliation: University of Nottingham
+  - given-names: Thomas
+    family-names: Clarke
+    affiliation: University of Nottingham
+  - given-names: Rory
+    family-names: Munro
+    affiliation: University of Nottingham
+  - given-names: Bisrat
+    family-names: Debebe
+    name-particle: J.
+    affiliation: University of Nottingham
+  - given-names: Matthew
+    family-names: Loose
+    affiliation: University of Nottingham
+    orcid: 'https://orcid.org/0000-0002-5264-0929'
