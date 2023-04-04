@@ -36,7 +36,7 @@ class _Condition:
     :param min_chunks: The minimum number of chunks required for sequence processing. Defaults to 1.
     :param max_chunks: The maximum number of chunks allowed for sequence processing. Defaults to 2.
     :param below_min_chunks: The :class:`Action` to take when we haven't evaluated at least this many chunks. Defaults to ``Action.proceed``
-    :param above_max_chunks: The :class:`Action` to take when we haven't evaluated at least this many chunks. Defaults to ``Action.proceed``
+    :param above_max_chunks: The :class:`Action` to take when we haven't evaluated at least this many chunks. Defaults to ``Action.unblock``
     """
 
     name: str
