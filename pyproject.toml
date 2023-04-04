@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "readfish"
+authors = [
+    { name = "Alexander Payne", email = "" },
+    { name = "Rory Munro", email = "" },
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.8"
+description = "ONT adaptive sampling"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+keywords = []
+dependencies = [
+    "minknow_api",
+    "numpy",
+    "cattrs",
+    "toml",    # Maybe removed in favour of rtoml
+    "tomlkit", # Maybe removed in favour of rtoml
+    "rtoml",
+    "more_itertools",
+]
+dynamic = ["version"]
+
+[project.scripts]
+readfish = "readfish._cli_base:main"
+
+[project.optional-dependencies]
+docs = ["sphinx-copybutton", "furo", "myst-parser" ]
+dev = ["readfish[all]"]
+mappy = ["mappy"]
+mappy-rs = ["mappy-rs"]
+guppy = ["ont_pyguppy_client_lib"]
+all = ["readfish[mappy-rs,guppy]"]
+# TODO: Add dev and docs dependencies
+
+[project.urls]
+# Documentation = "https://looselab.github.io/readfish"
+"Bug Tracker" = "https://github.com/LooseLab/readfish/issues"
+"Source Code" = "https://github.com/LooseLab/readfish"
+
+[tool.hatch.version]
+path = "src/readfish/__about__.py"
+
+[tool.black]
+line-length = 88
