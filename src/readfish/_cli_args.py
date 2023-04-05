@@ -11,6 +11,7 @@ DEFAULT_UNBLOCK = 0.1
 DEFAULT_THROTTLE = 0.4
 DEFAULT_MIN_CHUNK = 2000
 LOG_LEVELS = ("debug", "info", "warning", "error", "critical")
+DEFAULT_MAX_UNBLOCK_READ_LENGTH_SECONDS = 5
 
 BASE_ARGS = (
     (
@@ -68,6 +69,15 @@ BASE_ARGS = (
                 DEFAULT_THROTTLE
             ),
             default=DEFAULT_THROTTLE,
+        ),
+    ),
+    (
+        "--max-unblock-read-length-seconds",
+        dict(
+            metavar="SECONDS",
+            type=float,
+            help=f"Maximum read length, in seconds, that MinKNOW will attempt to unblock (default: {DEFAULT_MAX_UNBLOCK_READ_LENGTH_SECONDS}).",
+            default=DEFAULT_MAX_UNBLOCK_READ_LENGTH_SECONDS,
         ),
     ),
     (

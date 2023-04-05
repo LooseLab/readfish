@@ -299,6 +299,7 @@ def run(parser, args, extras):
         # last_channel=187,
         first_channel=1,
         last_channel=read_until_client.channel_count,
+        max_unblock_read_length_seconds=args.max_unblock_read_length_seconds,
     )
 
     worker = Analysis(
