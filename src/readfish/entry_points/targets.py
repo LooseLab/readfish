@@ -227,7 +227,7 @@ class Analysis:
                         pass
                     else:
                         unblock_batch_action_list.append(
-                            (result.channel, result.read_number)
+                            (result.channel, result.read_number, result.read_id)
                         )
 
                 self.chunk_log.debug(
