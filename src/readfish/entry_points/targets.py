@@ -8,6 +8,7 @@ from timeit import default_timer as timer
 from pathlib import Path
 
 # Third party imports
+import rtoml
 from read_until.read_cache import AccumulatingCache
 
 # Library
@@ -117,6 +118,20 @@ class Analysis:
         -------
         None
         """
+        # TODO: Swap this for a CSV record later
+        d = {"conditions": dict()}
+        for idx, r in enumerate(self.conf.regions):
+            g = d["conditions"].setdefault(str(idx), {})
+            g["channels"] = [c for c, i in self.conf._channel_map.items() if i == idx]
+            g["name"] = r.name
+        channels_out = str(Path(self.client.mk_run_dir) / "channels.toml")
+        with open(channels_out, "w") as fh:
+            fh.write(
+                "# This file is written as a record of the condition each channel is assigned.\n"
+                "# It may be changed or overwritten if you restart ReadFish.\n"
+                "# In the future this file may become a CSV file.\n"
+            )
+            rtoml.dump(d, fh)
 
         # TODO: This could still be passed through to the basecaller to prevent
         #       rebasecalling data that is already being unblocked or sequenced

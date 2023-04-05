@@ -69,16 +69,22 @@ class Targets:
 
     def __attrs_post_init__(self):
         self._targets = defaultdict(lambda: defaultdict(list))
+        bed_file = False
         if isinstance(self.value, Path):
             suffixes = [s.lower() for s in self.value.suffixes]
-            delim = "\t" if ".bed" in suffixes else ","
+            if ".bed" in suffixes:
+                delim = "\t"
+                bed_file = True
+            else:
+                delim = ","
             with self.value.open() as fh:
                 values = StringIO(fh.read(), newline="")
         else:
             delim = ","
             values = StringIO("\n".join(self.value), newline="")
-        values.seek(0)
-        for row in csv.reader(values, delimiter=delim):
+        for line, row in enumerate(csv.reader(values, delimiter=delim), start=1):
+            if bed_file and len(row) != 6:
+                raise ValueError(f"Invalid bed record in {self.value!s} at line {line}")
             ctg, *coords = row
             if coords:
                 st, en, *_, strand = coords

@@ -10,7 +10,6 @@ import logging
 
 import attrs
 import cattrs
-from rich.pretty import pprint
 import rtoml
 
 from readfish._utils import generate_flowcell, compress_and_encode_string
@@ -304,8 +303,8 @@ class Conf:
 if __name__ == "__main__":
     try:
         obj = Conf.from_file(sys.argv[1], 512)
-        pprint(obj)
+        print(obj)
     except Exception as e:
         if hasattr(e, "exceptions"):
-            pprint(getattr(e, "exceptions"))
+            print(getattr(e, "exceptions"))
         sys.exit(traceback.format_exc())

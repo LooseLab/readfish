@@ -4,8 +4,6 @@ Mapping interface for readfish.
 """
 from typing import Optional, Generator, Iterable
 
-from rich.pretty import pprint
-
 from readfish._config import Conf
 from readfish._loggers import setup_debug_logger
 from readfish.plugins.abc import AlignerABC
@@ -78,7 +76,6 @@ class Aligner(AlignerABC):
         if result.alignment_data is None:
             result.alignment_data = []
         paf_info = f"{result.read_id}\t{len(result.seq)}"
-        pprint(result)
         targets = self.config.get_targets(result.channel, result.barcode)
         results = result.alignment_data
         matches = []
