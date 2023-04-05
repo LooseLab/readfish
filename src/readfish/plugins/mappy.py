@@ -2,7 +2,7 @@
 
 Mapping interface for readfish.  
 """
-from typing import Optional, Generator, Iterable
+from typing import Optional, Iterable
 
 from readfish._config import Conf
 from readfish._loggers import setup_debug_logger
@@ -44,7 +44,8 @@ class Aligner(AlignerABC):
         self.aligner_params = kwargs
         self.aligner = mappy.Aligner(**self.aligner_params)  # type: ignore
         if _mappy_rs:
-            self.enable_threading(1)
+            threads = self.aligner_params.get("n_threads", 1)
+            self.enable_threading(threads)
 
     def disconnect(self) -> None:
         return
