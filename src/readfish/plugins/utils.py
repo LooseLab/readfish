@@ -17,6 +17,8 @@ class Decision(Enum):
     multi_off = "multi_off"
     no_map = "no_map"
     no_seq = "no_seq"
+    above_max_chunks = "above_max_chunks"
+    below_min_chunks = "below_min_chunks"
 
 
 @unique

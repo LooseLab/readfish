@@ -18,6 +18,7 @@ from readfish._config import Action, Conf
 from readfish._loggers import setup_debug_logger
 from readfish._utils import get_device, send_message, ChunkTracker, Severity
 from readfish.plugins.abc import AlignerABC, CallerABC
+from readfish.plugins.utils import Decision
 
 
 _help = "Run targeted sequencing"
@@ -208,12 +209,14 @@ class Analysis:
                     #   action using the above_max_chunks_action, unblock by default
                     if above_max_chunks and action is Action.proceed:
                         action = condition.above_max_chunks
+                        result.decision = Decision.above_max_chunks
 
                     # If we are below min chunks and we get an action that is not PROCEED
                     #   then we will overrule that action using the below_min_chunks_action
                     #   which by default is proceed.
                     if below_min_chunks and action is not Action.proceed:
                         action = condition.below_min_chunks
+                        result.decision = Decision.below_min_chunks
 
                     # TODO: Check previous read decision here
 
@@ -222,13 +225,9 @@ class Analysis:
                         (result.channel, result.read_number)
                     )
                 elif action is Action.unblock:
-                    # TODO: Dry-run logic needs to be implemented here
-                    if self.dry_run:
-                        pass
-                    else:
-                        unblock_batch_action_list.append(
-                            (result.channel, result.read_number, result.read_id)
-                        )
+                    unblock_batch_action_list.append(
+                        (result.channel, result.read_number, result.read_id)
+                    )
 
                 self.chunk_log.debug(
                     (
@@ -239,8 +238,8 @@ class Analysis:
                         f"{result.read_number}\t"
                         f"{len(result.seq)}\t"
                         f"{seen_count}\t"
-                        f"{result.decision}\t"
-                        f"{action}\t"
+                        f"{result.decision.name}\t"
+                        f"{action.name}\t"
                         f"{condition.name}\t"
                         f"{result.barcode}\t"
                         f"{previous_action}\t"
