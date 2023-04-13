@@ -4,6 +4,7 @@
 # Core imports
 import logging
 import time
+import sys
 from timeit import default_timer as timer
 from pathlib import Path
 
@@ -275,12 +276,17 @@ def run(parser, args, extras):
     position = get_device(args.device, host=args.host, port=args.port)
 
     # Create a read until client
-    read_until_client = RUClient(
-        mk_host=position.host,
-        mk_port=position.description.rpc_ports.secure,
-        filter_strands=True,
-        cache_type=AccumulatingCache,
-    )
+    try:
+        read_until_client = RUClient(
+            mk_host=position.host,
+            mk_port=position.description.rpc_ports.secure,
+            filter_strands=True,
+            cache_type=AccumulatingCache,
+        )
+    except Exception as e:
+        logger.error("Could not connect to a live run in MinKNOW. See the log below and check if the protocol is running.")
+        logger.error(e)
+        sys.exit(1)
 
     # Load TOML configuration
     conf = Conf.from_file(args.toml, read_until_client.channel_count, logger=logger)
