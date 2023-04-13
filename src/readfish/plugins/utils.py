@@ -12,7 +12,7 @@ import attrs
 
 def could_be_a_path(string):
     # check if the string could be a valid path
-    return os.path.isabs(string) or string.startswith('.') or string.startswith('~')    
+    return os.path.isabs(string) or string.startswith(".") or string.startswith("~")    
 
 
 @unique
