@@ -284,7 +284,9 @@ def run(parser, args, extras):
             cache_type=AccumulatingCache,
         )
     except Exception as e:
-        logger.error("Could not connect to a live run in MinKNOW. See the log below and check if the protocol is running.")
+        logger.error(
+            "Could not connect to a live run in MinKNOW. See the log below and check if the protocol is running."
+        )
         logger.error(e)
         sys.exit(1)
 
