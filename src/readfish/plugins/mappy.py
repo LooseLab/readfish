@@ -48,6 +48,7 @@ class Aligner(AlignerABC):
             if "fn_idx_in" in self.aligner_params:
                 """We will test to see if the reference file exists"""
                 import os
+                
                 isExisting = os.path.exists(self.aligner_params["fn_idx_in"])
                 if not isExisting:
                     raise FileNotFoundError(
@@ -55,6 +56,7 @@ class Aligner(AlignerABC):
                     )
             else:
                 raise RuntimeError("Aligner not initialised.")
+        
         if _mappy_rs:
             threads = self.aligner_params.get("n_threads", 1)
             self.enable_threading(threads)
