@@ -5,8 +5,13 @@ from collections import defaultdict
 from pathlib import Path
 from io import StringIO
 import csv
+import os
 
 import attrs
+
+def could_be_a_path(string):
+    # check if the string could be a valid path
+    return os.path.isabs(string) or string.startswith('.') or string.startswith('~')    
 
 
 @unique
@@ -66,6 +71,9 @@ class Targets:
         elif Path(str_).is_file():
             return cls(Path(str_))
         else:
+            """It is possible that the user has supplied a path that does not exist, in this case we need to raise an exception."""
+            if could_be_a_path(str_):
+                raise RuntimeError(f"Could not find file {str_}")
             return cls([])
         raise RuntimeError()
 
