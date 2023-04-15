@@ -71,10 +71,17 @@ class Targets:
             return cls(str_)
         elif Path(str_).is_file():
             return cls(Path(str_))
+        elif could_be_a_path(str_):
+            """
+            It is possible that the user has supplied a path that does not exist, 
+            in this case we need to raise an exception.
+            """
+            raise RuntimeError(f"Could not find file {str_}")
         else:
-            """It is possible that the user has supplied a path that does not exist, in this case we need to raise an exception."""
-            if could_be_a_path(str_):
-                raise RuntimeError(f"Could not find file {str_}")
+            """
+            If the string is not a path and is not a list, then it could be blank so we return an empty list.
+            """
+            # ToDo: This is a bit of a hack, what if we have sent a malformed string?"
             return cls([])
         raise RuntimeError()
 
