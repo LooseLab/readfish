@@ -81,7 +81,11 @@ class Targets:
             """
             If the string is not a path and is not a list, then it could be blank so we return an empty list.
             """
-            # ToDo: This is a bit of a hack, what if we have sent a malformed string?"
+            if len(str_) > 0:
+                """
+                If the string is not blank, then we raise an exception as this should be an empty list.
+                """
+                raise RuntimeError(f"Could not parse {str_}")
             return cls([])
         raise RuntimeError()
 
