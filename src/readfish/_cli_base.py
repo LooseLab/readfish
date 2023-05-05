@@ -26,7 +26,7 @@ def main() -> None:
     cmds = [
         ("targets", "targets"),
         ("barcode-targets", "targets"),
-        # ("unblock-all", "unblock_all"),
+        ("unblock-all", "unblock_all"),
         # ("validate", "validate"),
     ]
     for cmd, module in cmds:

@@ -112,6 +112,7 @@ class _PluginModule:
             "guppy": "guppy",
             "mappy": "mappy",
             "mappy_rs": "mappy",
+            "no_op": "_no_op",
         }
         if self.name in builtins and not override:
             return importlib.import_module(f"readfish.plugins.{builtins[self.name]}")
