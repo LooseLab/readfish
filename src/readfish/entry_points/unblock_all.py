@@ -1,7 +1,7 @@
-"""An unblock all script. This will attempt to unblock all reads on all 
-channels. This should result in a read length histogram that has very 
+"""An unblock all script. This will attempt to unblock all reads on all
+channels. This should result in a read length histogram that has very
 short peaks (<1kb) as these are the smallest chunks that we can acquire.
-If you are not seeing these peaks, the  ``split_reads_after_seconds`` 
+If you are not seeing these peaks, the  ``split_reads_after_seconds``
 parameter in the MinKNOW configuration file may need to be set to 0.2-0.4.
 
 This script is primarily for testing a computers response to processing data
@@ -9,7 +9,7 @@ from the Read Until API without any other overheads (basecalling or mapping).
 It is only recommended to use this script when running a simulated (playback)
 sequencing experiment.
 
-The unblock all command only requires the target device and a small description 
+The unblock all command only requires the target device and a small description
 of the experiment, for example:
 
 .. code-block:: bash

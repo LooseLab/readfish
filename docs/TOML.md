@@ -14,12 +14,12 @@ Table of Contents
    - [Guppy connection](#guppy-connection)
    - [Conditions](#conditions)
  - [Validating a TOML](#validating-a-toml)
- 
- 
+
+
 TOML files
 ===
-ReadFish experiments are configured using TOML files, which are minimal and 
-easy-to-read markup files. Each line is either a key-value pair or a 'table' 
+ReadFish experiments are configured using TOML files, which are minimal and
+easy-to-read markup files. Each line is either a key-value pair or a 'table'
 heading. See more in the [TOML specification](https://github.com/toml-lang/toml).
 
 
@@ -28,11 +28,11 @@ Config sections
 
 Guppy connection
 ---
-The `caller_settings` table specifies the basecalling parameters used by guppy.  
+The `caller_settings` table specifies the basecalling parameters used by guppy.
 
-The `config_name` parameter must a valid guppy configuration excluding the file 
-extension; these can be found in the `data` folder of the your guppy installation 
-directory (`/opt/ont/guppy/data/*.cfg`).  
+The `config_name` parameter must a valid guppy configuration excluding the file
+extension; these can be found in the `data` folder of the your guppy installation
+directory (`/opt/ont/guppy/data/*.cfg`).
 
 ### Remote basecalling
 
@@ -41,7 +41,7 @@ directory (`/opt/ont/guppy/data/*.cfg`).
 config_name = "dna_r9.4.1_450bps_fast"
 host = "REMOTE_SERVER_IP_ADDRESS"
 port = "REMOTE_GUPPY_SERVER_PORT"
-``` 
+```
 
 ### Local basecalling
 
@@ -66,7 +66,7 @@ barcode_kits = ["EXP-NBD196"]
 
 Conditions
 ---
-The `conditions` table holds the location of your minimap2 reference file and 
+The `conditions` table holds the location of your minimap2 reference file and
 sets out the experimental conditions across the flowcell. The allowed keys are:
 
 |          Key |       Type      | Values | Description |
@@ -82,8 +82,8 @@ reference = "/absolute/path/to/reference.mmi"
 ```
 
 ### Non-barcoded TOMLs
-For non-barcoded experiments, the table can have sub-tables that determine the experimental conditions 
-to apply to the flowcell, these should be sequentially numbered like so and will partition the flow 
+For non-barcoded experiments, the table can have sub-tables that determine the experimental conditions
+to apply to the flowcell, these should be sequentially numbered like so and will partition the flow
 cell into experimental regions:
 
 ```toml
@@ -158,11 +158,11 @@ Each conditions sub-table must contain all of the following keys, these are the 
 |no_seq|string|[unblock, stop_receiving, proceed]|The action to take when a read does not basecall|
 |no_map|string|[unblock, stop_receiving, proceed]|The action to take when a read does not map to your reference|
 
-The physical layout of each flowcell constrains how many experimental conditions 
-can be used; the number of sub-tables in the `conditions` section determines how 
-the flowcell is divided. 
+The physical layout of each flowcell constrains how many experimental conditions
+can be used; the number of sub-tables in the `conditions` section determines how
+the flowcell is divided.
 
-The maximum number of conditions for MinION and PromethION flowcells is given in 
+The maximum number of conditions for MinION and PromethION flowcells is given in
 the table below. The number of conditions must be a factor of the number for the
 selected combination.
 
@@ -190,39 +190,39 @@ selected combination.
 ### Target Types
 
 The targets parameter can accept either a string or an array of strings. If a
-string is provided this should be a fully qualified path to a text file which 
-consists of genomic targets in the [formats outlined below](#target-formats). 
-When an array is given all the elements in the array must conform with the 
+string is provided this should be a fully qualified path to a text file which
+consists of genomic targets in the [formats outlined below](#target-formats).
+When an array is given all the elements in the array must conform with the
 [formats below](#target-formats).
 
 ### Target Formats
 
-When specifying the genomic targets to consider in a ReadFish experiment we 
-currently accept two formats `chromosome` or `coordinates`. 
+When specifying the genomic targets to consider in a ReadFish experiment we
+currently accept two formats `chromosome` or `coordinates`.
 
-EG `chromosome`: 
+EG `chromosome`:
  - `>chr1 Human chromosome 1` becomes `chr1`
- 
-Targets given in this format specify the entire contig as a target to select for 
+
+Targets given in this format specify the entire contig as a target to select for
 or against.
- 
+
 Alternatively, for `coordinates` the format `contig,start,stop,strand` is used:
  - `chr1,10,20,+`
- 
-Targets given in this format will only select (for or against) reads where the 
-alignment start position is within the region on the given strand. 
+
+Targets given in this format will only select (for or against) reads where the
+alignment start position is within the region on the given strand.
 
 Validating a TOML
 ===
 
-We provide a [JSON schema](ru/static/targets.schema.json) for validating 
+We provide a [JSON schema](ru/static/targets.schema.json) for validating
 configuration files:
 
 ```bash
 ru_validate experiment_conf.toml
 ```
 
-Any errors with the configuration will be written to the terminal. 
+Any errors with the configuration will be written to the terminal.
 
 As an example - if the reference is missing you will see:
 
@@ -256,7 +256,7 @@ polled for more data when classed as no_map or no_seq.
 
 ```
 
-If the toml fails validation (i.e fields are missing or have non permitted values) you will see the following - note the problem field is reported on the second line. 
+If the toml fails validation (i.e fields are missing or have non permitted values) you will see the following - note the problem field is reported on the second line.
 
 ```text
 ru_validate examples/human_chr_selection.toml
