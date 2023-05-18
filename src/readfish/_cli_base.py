@@ -38,15 +38,14 @@ def main() -> None:
 
     args, extras = parser.parse_known_args()
 
-    logger = setup_logger(
-        "readfish",
-        level=getattr(logging, args.log_level.upper()),
-        log_format=args.log_format,
-        log_console=True,
-        log_file=args.log_file,
-    )
-
     if args.command is not None:
+        logger = setup_logger(
+            "readfish",
+            level=getattr(logging, args.log_level.upper()),
+            log_format=args.log_format,
+            log_console=True,
+            log_file=args.log_file,
+        )
         logger.info(" ".join(sys.argv))
         print_args(args, printer=logger.info, exclude=["func"])
         args.func(parser, args, extras)
