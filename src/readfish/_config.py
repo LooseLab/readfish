@@ -151,7 +151,7 @@ class _PluginModule:
 
 # fmt: off
 # Aliases to defined classes, make for nicer printing
-class CallerSettings(_PluginModule): 
+class CallerSettings(_PluginModule):
     """See :class:`_PluginModule` for details"""
 class MapperSettings(_PluginModule):
     """See :class:`_PluginModule` for details"""

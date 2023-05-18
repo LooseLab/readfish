@@ -1,13 +1,13 @@
 """A no operation plugin module, used for pass through behaviour.
 
-This module implements a basic Aligner and Caller that do nothing and the 
+This module implements a basic Aligner and Caller that do nothing and the
 minimum required behaviours respectively. They are here for when readfish
 expects an action that may not be required; for example if using a signal
 based alignment approach that module can replace the ``Caller`` and completely
 remove the extra alignment step.
 
-To achieve this the ``_no_op.Caller`` will only iterate the raw data from the 
-Read Until API and ``yield`` the minimal ``Result`` structs for the ``targets`` 
+To achieve this the ``_no_op.Caller`` will only iterate the raw data from the
+Read Until API and ``yield`` the minimal ``Result`` structs for the ``targets``
 script to use:
 
 .. code-block:: python
@@ -19,11 +19,11 @@ script to use:
         seq="",
     )
 
-the ``seq`` field will always be empty. This is of little (essentially no) 
-use outside of an unblock all or something completely random where you 
+the ``seq`` field will always be empty. This is of little (essentially no)
+use outside of an unblock all or something completely random where you
 don't want or need any sequence.
 
-In addition the ``_no_op.Aligner`` will pass through the iterable from the 
+In addition the ``_no_op.Aligner`` will pass through the iterable from the
 caller module without modifying/adding anything which is useful if a plugin
 can complete it's entire decision in a single step.
 """

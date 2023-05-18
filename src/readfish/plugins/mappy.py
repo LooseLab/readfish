@@ -1,6 +1,6 @@
 """_alignment.py
 
-Mapping interface for readfish.  
+Mapping interface for readfish.
 """
 from typing import Optional, Iterable
 

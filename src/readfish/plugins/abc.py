@@ -1,7 +1,7 @@
 """
 Abstract Base Classes for readfish plugins
 
-These classes define the expected structures and type information for readfish plugins. 
+These classes define the expected structures and type information for readfish plugins.
 These are expanded on in the :doc:`developers-guide`.
 """
 from __future__ import annotations

@@ -1,4 +1,4 @@
-"""The main targeted sequencing script. This is accessed by calling 
+"""The main targeted sequencing script. This is accessed by calling
 ``readfish targets`` or ``readfish barcode-targets``.
 """
 # Core imports
