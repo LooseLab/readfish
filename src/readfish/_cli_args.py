@@ -15,6 +15,39 @@ DEFAULT_MAX_UNBLOCK_READ_LENGTH_SECONDS = 5
 
 BASE_ARGS = (
     (
+        "--log-level",
+        dict(
+            metavar="LOG-LEVEL",
+            action="store",
+            default=DEFAULT_LOG_LEVEL,
+            choices=LOG_LEVELS,
+            help=f"One of: {nice_join(LOG_LEVELS)}",
+        ),
+    ),
+    (
+        "--log-format",
+        dict(
+            metavar="LOG-FORMAT",
+            action="store",
+            default=DEFAULT_LOG_FORMAT,
+            help="A standard Python logging format string (default: {!r})".format(
+                DEFAULT_LOG_FORMAT.replace("%", "%%")
+            ),
+        ),
+    ),
+    (
+        "--log-file",
+        dict(
+            metavar="LOG-FILE",
+            action="store",
+            default=None,
+            help="A filename to write logs to, or None to write to the standard stream (default: None)",
+        ),
+    ),
+)
+
+DEVICE_BASE_ARGS = (
+    (
         "--host",
         dict(
             metavar="HOST",
@@ -87,34 +120,4 @@ BASE_ARGS = (
             help="Run the ReadFish Until experiment without sending unblock commands",
         ),
     ),
-    (
-        "--log-level",
-        dict(
-            metavar="LOG-LEVEL",
-            action="store",
-            default=DEFAULT_LOG_LEVEL,
-            choices=LOG_LEVELS,
-            help=f"One of: {nice_join(LOG_LEVELS)}",
-        ),
-    ),
-    (
-        "--log-format",
-        dict(
-            metavar="LOG-FORMAT",
-            action="store",
-            default=DEFAULT_LOG_FORMAT,
-            help="A standard Python logging format string (default: {!r})".format(
-                DEFAULT_LOG_FORMAT.replace("%", "%%")
-            ),
-        ),
-    ),
-    (
-        "--log-file",
-        dict(
-            metavar="LOG-FILE",
-            action="store",
-            default=None,
-            help="A filename to write logs to, or None to write to the standard stream (default: None)",
-        ),
-    ),
-)
+) + BASE_ARGS

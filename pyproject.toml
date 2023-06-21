@@ -37,6 +37,8 @@ dependencies = [
     "tomlkit", # Maybe removed in favour of rtoml
     "rtoml",
     "more_itertools",
+    'exceptiongroup ; python_version<"3.11"',
+    "read_until @ git+https://github.com/nanoporetech/read_until_api@v3.4.1",
 ]
 dynamic = ["version"]
 
@@ -45,7 +47,8 @@ readfish = "readfish._cli_base:main"
 
 [project.optional-dependencies]
 docs = ["sphinx-copybutton", "furo", "myst-parser" ]
-dev = ["readfish[all]"]
+tests = ["pytest"]
+dev = ["readfish[all,tests,docs]"]
 mappy = ["mappy"]
 mappy-rs = ["mappy-rs"]
 guppy = ["ont_pyguppy_client_lib"]
@@ -59,6 +62,8 @@ all = ["readfish[mappy-rs,guppy]"]
 
 [tool.hatch.version]
 path = "src/readfish/__about__.py"
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.black]
 line-length = 88

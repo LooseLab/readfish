@@ -1,0 +1,12 @@
+[caller_settings.no_op]
+
+[mapper_settings.no_op]
+
+[[regions]]
+name = "abc"
+no_seq = "proceed"
+no_map = "proceed"
+single_on = "proceed"
+single_off = "proceed"
+multi_on = "proceed"
+multi_off = "proceed"

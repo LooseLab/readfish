@@ -1,0 +1,11 @@
+While structuring Conf (1 sub-exception):
+ While structuring typing.List[readfish._config.Region] (2 sub-exceptions):
+  While structuring Region (6 sub-exceptions):
+   - KeyError('single_on')
+   - KeyError('single_off')
+   - KeyError('multi_on')
+   - KeyError('multi_off')
+   - KeyError('no_map')
+   - KeyError('no_seq')
+  While structuring Region (1 sub-exception):
+   - KeyError('name')

@@ -1,0 +1,12 @@
+[caller_settings.caller_that_does_not_exist]
+
+[mapper_settings.mapper_that_does_not_exist]
+
+[[regions]]
+name = "abc"
+no_seq = "proceed"
+no_map = "proceed"
+single_on = "proceed"
+single_off = "proceed"
+multi_on = "proceed"
+multi_off = "proceed"

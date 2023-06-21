@@ -12,7 +12,7 @@ import rtoml
 from read_until.read_cache import AccumulatingCache
 
 # Library
-from readfish._cli_args import BASE_ARGS
+from readfish._cli_args import DEVICE_BASE_ARGS
 from readfish._client import RUClient
 from readfish._config import Action, Conf
 from readfish._loggers import setup_debug_logger
@@ -22,7 +22,7 @@ from readfish.plugins.utils import Decision
 
 
 _help = "Run targeted sequencing"
-_cli = BASE_ARGS + (
+_cli = DEVICE_BASE_ARGS + (
     (
         "--toml",
         dict(
@@ -80,7 +80,9 @@ class Analysis:
         self.toml = Path(f"{toml}_live").resolve()
 
         self.chunk_log = setup_debug_logger(
-            "chunk_log", log_file=debug_logger, header="\t".join(CHUNK_LOG_FIELDS)
+            "chunk_log",
+            log_file=debug_logger,
+            header="\t".join(CHUNK_LOG_FIELDS),
         )
         logger.info("Initialising Caller")
         self.caller: CallerABC = conf.caller_settings.load_object("Caller")
@@ -260,7 +262,9 @@ class Analysis:
                 time.sleep(self.throttle + t0 - t1)
         else:
             send_message(
-                self.client.connection, "ReadFish Client Stopped.", Severity.WARN
+                self.client.connection,
+                "ReadFish Client Stopped.",
+                Severity.WARN,
             )
             self.caller.disconnect()
             self.mapper.disconnect()
@@ -325,6 +329,7 @@ def run(parser, args, extras):
         "readfish disconnected from this device. Sequencing will proceed normally.",
         Severity.WARN,
     )
+    return 0
 
 
 if __name__ == "__main__":

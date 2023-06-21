@@ -18,11 +18,11 @@ of the experiment, for example:
 """
 from tempfile import NamedTemporaryFile
 
-from readfish._cli_args import BASE_ARGS
+from readfish._cli_args import DEVICE_BASE_ARGS
 from readfish.entry_points import targets
 
 _help = "Unblock all reads"
-_cli = BASE_ARGS + (
+_cli = DEVICE_BASE_ARGS + (
     (
         "--debug-log",
         dict(
@@ -66,4 +66,5 @@ def run(parser, args, extras):
         args.toml = fh.name
         fh.write(TOML)
         fh.flush()
-        targets.run(parser, args, extras)
+        ret = targets.run(parser, args, extras)
+    return ret

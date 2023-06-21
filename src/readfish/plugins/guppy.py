@@ -42,7 +42,7 @@ _DefaultDAQValues = DefaultDAQValues()
 
 # TODO: Simplify base call functions
 class Caller(CallerABC):
-    def __init__(self, debug_log, **kwargs):
+    def __init__(self, debug_log=None, **kwargs):
         self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
         # Set our own priority
         self.guppy_params = kwargs
