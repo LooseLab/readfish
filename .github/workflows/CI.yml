@@ -1,0 +1,23 @@
+name: tests
+
+on: [push, pull_request]
+
+env:
+  PYTHON_LATEST: "3.10"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{env.PYTHON_LATEST}}
+      - name: "Run tests"
+        run: |
+          set -xe
+          python -VV
+          python -m site
+          python -m pip install -U pip setuptools wheel
+          python -m pip install -e ".[dev]"
+          python -m pytest -sv --doctest-modules

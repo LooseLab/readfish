@@ -196,7 +196,10 @@ class Conf:
             if not all(k in self.barcodes for k in required_barcodes):
                 # There are also no `unclassified` or `classified` tables
 
-                raise Exception()
+                raise RuntimeError(
+                    "This TOML configuration does not contain any `regions`"
+                    "or `barcodes` and cannot be used by readfish"
+                )
 
         split_channels = generate_flowcell(self.channels, len(self.regions) or 1)
         self._channel_map = {
@@ -275,7 +278,7 @@ class Conf:
             raise ValueError("Key 'channels' cannot be present in TOML file")
         dict_["channels"] = channels
         conv = cattrs.GenConverter()
-        conv.register_structure_hook(Targets, lambda d, t: t.from_str(d))
+        conv.register_structure_hook(Targets, lambda d, t: t.from_parsed_toml(d))
         conv.register_structure_hook(_PluginModule, lambda d, t: t.from_dict(d))
         return conv.structure(dict_, cls)
 
@@ -306,4 +309,4 @@ if __name__ == "__main__":
     except Exception as e:
         if hasattr(e, "exceptions"):
             print(getattr(e, "exceptions"))
-        sys.exit(traceback.format_exc())
+        print(traceback.format_exc())

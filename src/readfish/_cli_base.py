@@ -1,6 +1,7 @@
 """
 Main entry point for command line read until scripts.
 """
+from __future__ import annotations
 import sys
 import argparse
 import importlib
@@ -10,7 +11,7 @@ from readfish.__about__ import __version__
 from readfish._loggers import setup_logger, print_args
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     """
     Main function for entry point of the read until scripts.
     """
@@ -27,7 +28,7 @@ def main() -> None:
         ("targets", "targets"),
         ("barcode-targets", "targets"),
         ("unblock-all", "unblock_all"),
-        # ("validate", "validate"),
+        ("validate", "validate"),
     ]
     for cmd, module in cmds:
         _module = importlib.import_module(f"readfish.entry_points.{module}")
@@ -36,7 +37,7 @@ def main() -> None:
             _parser.add_argument(*flags, **opts)
         _parser.set_defaults(func=_module.run)
 
-    args, extras = parser.parse_known_args()
+    args, extras = parser.parse_known_args(argv)
 
     if args.command is not None:
         logger = setup_logger(
@@ -45,10 +46,14 @@ def main() -> None:
             log_format=args.log_format,
             log_console=True,
             log_file=args.log_file,
+            # FIXME: Need to evaluate whether we should be propagating this or not?
+            #        pytest caplog doesn't work without it..., but will a chunk/other
+            #        debug log create issues?
+            # propagate=True,
         )
-        logger.info(" ".join(sys.argv))
+        logger.info(" ".join(sys.argv) if argv is None else argv)
         print_args(args, printer=logger.info, exclude=["func"])
-        args.func(parser, args, extras)
+        raise SystemExit(args.func(parser, args, extras))
     else:
         parser.print_help()
 

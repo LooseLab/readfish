@@ -1,0 +1,4 @@
+While structuring Conf (1 sub-exception):
+ While structuring typing.List[readfish._config.Region] (1 sub-exception):
+  While structuring Region (1 sub-exception):
+   - ValueError('1 is not a valid Action')

@@ -1,0 +1,14 @@
+[caller_settings.guppy]
+host = "127.0.0.1"
+
+[mapper_settings.mappy]
+fn_idx_in = "not a file"
+
+[[regions]]
+name = "abc"
+no_seq = 1
+no_map = "proceed"
+single_on = "proceed"
+single_off = "proceed"
+multi_on = "proceed"
+multi_off = "proceed"

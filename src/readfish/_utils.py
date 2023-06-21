@@ -1,6 +1,7 @@
 """utils.py
 functions and utilities used internally.
 """
+import sys
 import logging
 from collections import Counter
 from functools import reduce
@@ -13,7 +14,11 @@ import zlib
 import numpy as np
 from minknow_api.manager import Manager
 
+if sys.version_info < (3, 11):
+    from exceptiongroup import BaseExceptionGroup
+
 from readfish._channels import FLONGLE_CHANNELS, MINION_CHANNELS
+
 
 MODULE_LOGGER = logging.getLogger(__name__)
 
@@ -123,7 +128,7 @@ def decode_and_decompress_string(encoded_str):
 
 
 def escape_message_to_minknow(message, chars):
-    """Escape characters in the chars list if they are in message
+    r"""Escape characters in the chars list if they are in message
 
     Parameters
     ----------
@@ -138,15 +143,12 @@ def escape_message_to_minknow(message, chars):
 
     Examples
     --------
-    >>> escape_message_to_minknow("20%", ["%"]) == r'20\\%'
-    True
-    >>> escape_message_to_minknow("20\\%", ["%"]) == r'20\\%'
-    True
-    >>> escape_message_to_minknow("20\\%", ["%"]) == r'20\\%'
-    True
-    >>> escape_message_to_minknow("20", ["%"]) == r'20'
-    True
-
+    >>> escape_message_to_minknow("20%", ["%"])
+    '20\\%'
+    >>> escape_message_to_minknow("20\\%", ["%"])
+    '20\\%'
+    >>> escape_message_to_minknow("20", ["%"])
+    '20'
     """
     for char in chars:
         message = re.sub(rf"(?<!\\){char}", rf"\\{char}", message)
@@ -349,6 +351,62 @@ def generate_flowcell(flowcell_size, split=1, axis=1, odd_even=False):
 
     arr.shape = (arr.shape[0], arr.shape[1] * arr.shape[2])
     return [x for x in arr.tolist()]
+
+
+def iter_exception_group(exc, level=0):
+    r"""Traverses an exception tree, yielding formatted strings for each exception encountered
+
+    Parameters
+    ----------
+    exc : BaseExceptionGroup
+        The exception group to traverse
+    level : int
+        The current indentation level, defaults to 0
+
+    Yields
+    ------
+    str
+        Formatted (and indented) string representation of each exception encountered in the tree.
+
+    Examples
+    --------
+    >>> exc = BaseExceptionGroup(
+    ...     "level 1.0",
+    ...     [
+    ...         BaseExceptionGroup(
+    ...             "level 2.0",
+    ...             [
+    ...                 BaseExceptionGroup(
+    ...                     "level 3.0",
+    ...                     [
+    ...                         ValueError("abc"),
+    ...                         KeyError("99"),
+    ...                         BaseExceptionGroup("level 4.0", [TabError("nu uh")]),
+    ...                     ],
+    ...                 )
+    ...             ],
+    ...         ),
+    ...         BaseExceptionGroup("level 2.1", [ValueError("345")]),
+    ...     ],
+    ... )
+    >>> print("\n".join(iter_exception_group(exc)))
+    level 1.0 (2 sub-exceptions):
+     level 2.0 (1 sub-exception):
+      level 3.0 (3 sub-exceptions):
+       - ValueError('abc')
+       - KeyError('99')
+       level 4.0 (1 sub-exception):
+        - TabError('nu uh')
+     level 2.1 (1 sub-exception):
+      - ValueError('345')
+    """
+    indent = " " * level
+    if isinstance(exc, BaseExceptionGroup):
+        yield f"{indent}{exc!s}:"
+        for e in exc.exceptions:
+            yield from iter_exception_group(e, level + 1)
+    else:
+        yield f"{indent}- {exc!r}"
 
 
 # TODO: Rewrite to use the new Conf class, maybe make a method on the Conf?
