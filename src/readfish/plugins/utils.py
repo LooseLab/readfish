@@ -61,19 +61,19 @@ class Targets:
 
     @classmethod
     def from_parsed_toml(cls, targets: List[str] | str) -> Targets:
-        if isinstance(str_, list):
+        if isinstance(targets, list):
             # Assumes all elements are also `str`
-            return cls(str_)
-        elif isinstance(str_, str):
+            return cls(targets)
+        elif isinstance(targets, str):
             # Assumes that a `str` on it's own is a Path
-            if Path(str_).is_file():
-                return cls(Path(str_))
+            if Path(targets).is_file():
+                return cls(Path(targets))
             else:
                 raise ValueError(
-                    f"Supplied value {str_!r} is not a readable file. "
+                    f"Supplied value {targets!r} is not a readable file. "
                     "Ensure that an absolute path is supplied."
                 )
-        raise ValueError(f"Could not use value {str_!r} for targets.")
+        raise ValueError(f"Could not use value {targets!r} for targets.")
 
     def __attrs_post_init__(self):
         self._targets = defaultdict(lambda: defaultdict(list))
