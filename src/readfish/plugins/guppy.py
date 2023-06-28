@@ -6,6 +6,8 @@ Extension of pyguppy Caller that maintains a connection to the basecaller
 import logging
 import time
 from collections import namedtuple
+import pathlib
+import os
 
 import numpy as np
 from pyguppy_client_lib.helper_functions import package_read
@@ -44,9 +46,32 @@ class Caller(CallerABC):
         self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
         # Set our own priority
         self.guppy_params = kwargs
+        self.validate_caller()
         self.guppy_params["priority"] = PyGuppyClient.high_priority
         self.caller = PyGuppyClient(**self.guppy_params)
         self.caller.connect()
+
+    def validate_caller(self):
+        """Validate the caller is available to connect to."""
+        # We will check the existence of the "address" key.
+        # We will also check the permissions of the "address" key.
+        # ToDo: Work out how to log this in the tui.
+        # ToDo: hack to remove ipc:// from the address
+        caller_path = pathlib.Path(self.guppy_params["address"][6:])
+
+        if not caller_path.exists():
+            raise RuntimeError(
+                f"The guppy basecaller path doesn't appear to exist. Please check your Guppy Settings. {self.guppy_params['address']}"
+            )
+        # check user permissions:
+        if not os.access(caller_path, os.R_OK):
+            raise RuntimeError(
+                f"The user account running ReadFish doesn't appear to have permissions to read the guppy basecaller. Please check permissions on {self.guppy_params['address']}"
+            )
+        if not os.access(caller_path, os.W_OK):
+            raise RuntimeError(
+                f"The user account running ReadFish doesn't appear to have permissions to write to the guppy basecaller. Please check permissions on {self.guppy_params['address']}"
+            )
 
     def disconnect(self) -> None:
         return self.caller.disconnect()
