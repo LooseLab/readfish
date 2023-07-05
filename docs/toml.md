@@ -396,3 +396,4 @@ Without `--check-plugins` this test will pass.
 [`mappy` documentation]: https://github.com/lh3/minimap2/tree/master/python#class-mappyaligner
 [six-column-BED formatted file]: https://en.wikipedia.org/wiki/BED_(file_format)
 [TOML array]: https://toml.io/en/v1.0.0#array
+[TOML table]: https://toml.io/en/v1.0.0#table
