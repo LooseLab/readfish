@@ -1,6 +1,7 @@
 """read_until_client.py
 Subclasses ONTs read_until_api ReadUntilClient added extra function that logs unblocks read_ids.
 """
+from __future__ import annotations
 import logging
 import queue
 import time
@@ -21,9 +22,11 @@ log = setup_logger(
 
 
 class RUClient(ReadUntilClient):
+    """Subclasses ONTs read_until_api ReadUntilClient adding extra function that logs unblocks read_ids."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
+        # disable the read until client logger
         self.logger.disabled = True
         self.current_phase = self.connection.protocol.get_current_protocol_run().phase  # type: ignore
         self.phase_errors = 0
@@ -72,14 +75,15 @@ class RUClient(ReadUntilClient):
         ):
             time.sleep(1)
 
-    def unblock_read_batch(self, reads, duration=0.1):
+    def unblock_read_batch(
+        self, reads: list[tuple[int, int, str]], duration: float = 0.1
+    ) -> None:
         """Request for a bunch of reads be unblocked.
-        reads is expected to be a list of (channel, ReadData.number)
+
+        ``reads`` is expected to be a list of (channel, ReadData.number)
+
         :param reads: List of (channel, read_number, read_id)
-        :type reads: list(tuple)
         :param duration: time in seconds to apply unblock voltage.
-        :type duration: float
-        :returns: None
         """
         actions = list()
         for channel, read_number, *read_id in reads:
@@ -92,7 +96,20 @@ class RUClient(ReadUntilClient):
                 self.unblock_logger.debug(read_id[0])
         self.action_queue.put(actions)
 
-    def unblock_read(self, read_channel, read_number, duration=0.1, read_id=None):
+    def unblock_read(
+        self,
+        read_channel: int,
+        read_number: int,
+        duration: float = 0.1,
+        read_id: str | None = None,
+    ):
+        """Send an unblock for a read via the read until client and log the read_id to the unblocked_read_ids.txt
+
+        :param read_channel: The channel number
+        :param read_number: The read number
+        :param duration: The duration to apply the unblock voltage, defaults to 0.1
+        :param read_id: The string uuid of the read, defaults to None
+        """
         super().unblock_read(
             read_channel=read_channel,
             read_number=read_number,
@@ -102,12 +119,8 @@ class RUClient(ReadUntilClient):
             self.unblock_logger.debug(read_id)
 
     @property
-    def is_phase_sequencing(self):
-        """
-        Check the current protocol phase to determine if the run is not paused/muxing/unknown
-
-        :returns: Bool
-        """
+    def is_phase_sequencing(self) -> bool:
+        """Check the current protocol phase to determine if the run is not paused/muxing/unknown"""
         try:
             current_phase = self.connection.protocol.get_current_protocol_run().phase  # type: ignore
         except RpcError as e:

@@ -39,3 +39,11 @@ readfish plugins API
    :members:
    :undoc-members:
    :show-inheritance:
+
+``readfish.plugins._no_op`` module
+----------------------------------
+
+.. automodule:: readfish.plugins._no_op
+   :members:
+   :undoc-members:
+   :show-inheritance:

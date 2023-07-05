@@ -1,6 +1,20 @@
-"""validate.py
-Validate experiment configuration TOML files.
+"""Validate experiment configuration :doc:`TOML <toml>` files.
+
+This script is used to check that an experiment configuration file can be loaded.
+In addition, using the ``--check-plugins`` flag will also attempt to load the listed ``Aligner`` and ``Caller`` plugins.
+
+These basic checks are for compatibility and do not indicate that a configuration/plugins will work efficiently with readfish.
+
+Any errors are passed back through and printed to terminal.
+If you require help understanding or resolving an error you can check the :doc:`TOML <toml>` documentation pages or `open an issue`_.
+
+Example run command::
+
+   readfish validate my_exp.toml --check-plugins
+
+.. _`open an issue`: https://github.com/LooseLab/readfish/issues/new
 """
+
 import sys
 import logging
 
@@ -12,7 +26,7 @@ from readfish._cli_args import BASE_ARGS
 from readfish._utils import iter_exception_group
 
 
-_help = "ReadFish TOML Validator"
+_help = "Readfish TOML Validator"
 _cli = BASE_ARGS + (
     ("toml", dict(help="TOML file to validate")),
     (
@@ -33,6 +47,12 @@ _cli = BASE_ARGS + (
 
 
 def run(parser, args, extras) -> int:
+    """
+    Runs the validate entry point
+
+    :parser: The parser. Unused, but must be included as targets.py requires it
+    :type:
+    """
     logger = logging.getLogger(f"readfish.{args.command}")
     channels = 3000 if args.prom else 512
     try:

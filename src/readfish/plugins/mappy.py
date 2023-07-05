@@ -1,6 +1,4 @@
-"""_alignment.py
-
-Mapping interface for readfish.
+"""Mapping interface for readfish.
 """
 from typing import Optional, Iterable
 
@@ -31,9 +29,8 @@ UNMAPPED_PAF = "0\t0\t*\t*\t0\t0\t0\t0\t0\t0"
 class Aligner(AlignerABC):
     """Wrapper for the mappy.Aligner class
 
-    This class wraps a minimap2 python Aligner, which can be one of either the
-    `mappy` or `mappy-rs` aligner. It will decide which to use by availability
-    starting with `mappy-rs` then `mappy`.
+    This class wraps a minimap2 python Aligner, which can be one of either the `mappy` or `mappy-rs` aligner.
+    It will decide which to use by availability starting with `mappy-rs` then `mappy`.
     """
 
     def __init__(
@@ -105,9 +102,8 @@ class Aligner(AlignerABC):
 
         All arguments are passed through to C/rust wrapper functions
         Current expected arguments:
-         - C/rust:
-           - basecalls: list[tuple[tuple, dict]]
-           - key: function that gets FASTA sequence from the dict (keyword only)
+        - basecalls: list[tuple[tuple, dict]]
+        - key: function that gets FASTA sequence from the dict (keyword only)
         """
         if _mappy_rs:
             iter_ = self._rust_mappy_wrapper(basecall_results)

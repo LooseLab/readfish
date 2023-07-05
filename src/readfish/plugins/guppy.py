@@ -1,19 +1,25 @@
-"""basecall.py
+"""Guppy plugin module
 
 Extension of pyguppy Caller that maintains a connection to the basecaller
-
 """
+from __future__ import annotations
 import logging
 import time
 from collections import namedtuple
+from typing import Iterable, TYPE_CHECKING
 
 import numpy as np
+import numpy.typing as npt
 from pyguppy_client_lib.helper_functions import package_read
 from pyguppy_client_lib.pyclient import PyGuppyClient
 
 from readfish._loggers import setup_debug_logger
 from readfish.plugins.abc import CallerABC
 from readfish.plugins.utils import Result
+
+
+if TYPE_CHECKING:
+    import minknow_api
 
 __all__ = ["Caller"]
 
@@ -25,7 +31,7 @@ class DefaultDAQValues:
     """Provides default calibration values
 
     Mimics the read_until_api calibration dict value from
-    https://github.com/nanoporetech/read_until_api/blob/2319bbe80889a17c4b38dc9cdb45b59558232a7e/read_until/base.py#L34
+    https://github.com/nanoporetech/read_until_api/blob/2319bbe/read_until/base.py#L34
     all keys return scaling=1.0 and offset=0.0
     """
 
@@ -38,7 +44,6 @@ class DefaultDAQValues:
 _DefaultDAQValues = DefaultDAQValues()
 
 
-# TODO: Simplify base call functions
 class Caller(CallerABC):
     def __init__(self, debug_log=None, **kwargs):
         self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
@@ -49,29 +54,23 @@ class Caller(CallerABC):
         self.caller.connect()
 
     def disconnect(self) -> None:
+        """Call the disconnect method on the PyGuppyClient"""
         return self.caller.disconnect()
 
-    def basecall(self, reads, signal_dtype, daq_values=None):
+    def basecall(
+        self,
+        reads: Iterable[tuple[int, minknow_api.data_pb2.GetLiveReadsResponse.ReadData]],
+        signal_dtype: npt.DTypeLike,
+        daq_values: dict[int, namedtuple] = None,
+    ):
         """Basecall live data from minknow RPC
 
-        Parameters
-        ----------
-        reads : iterable[Tuple[int, rpc.Read]]
-            List or generator of tuples containing (channel, MinKNOW.rpc.Read)
-        signal_dtype
-            Numpy dtype of the raw data
-        daq_values : Dict[int: namedtuple]
-            Dictionary of channels with namedtuples containing offset and scaling.
-            If not provided default values of 1.0 and 0.0 are used
-
-        Yields
-        ------
-        result : readfish.plugings.utils.Result
-        # read_info : tuple
-        #     (channel, read_number)
-        # data : dict
-        #     All data returned from guppy server, this will contain different
-        #     attributes depending on the client connection parameters
+        :param reads: List or generator of tuples containing (channel, MinKNOW.rpc.Read)
+        :param signal_dtype: Numpy dtype of the raw data
+        :param daq_values: Dictionary mapping channel to offset and scaling values.
+                           If not provided default values of 1.0 and 0.0 are used.
+        :yield:
+        :rtype: readfish.plugins.utils.Result
         """
         # FIXME: Occasionally guppy can report a read as not sent when it is
         #        successfully sent. Therefore we capture not sent reads
@@ -106,7 +105,8 @@ class Caller(CallerABC):
 
         while reads_received < reads_sent:
             results = self.caller.get_completed_reads()
-            time_received = time.time()
+            # TODO: incorporate time_received into logging?
+            # time_received = time.time()
 
             if not results:
                 time.sleep(self.caller.throttle)

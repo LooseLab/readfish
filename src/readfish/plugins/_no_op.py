@@ -1,14 +1,10 @@
 """A no operation plugin module, used for pass through behaviour.
 
-This module implements a basic Aligner and Caller that do nothing and the
-minimum required behaviours respectively. They are here for when readfish
-expects an action that may not be required; for example if using a signal
-based alignment approach that module can replace the ``Caller`` and completely
-remove the extra alignment step.
+This module implements a basic Aligner and Caller that do nothing and the minimum required behaviours respectively.
+They are here for when readfish expects an action that may not be required.
+For example if using a signal based alignment approach that module can replace the ``Caller`` and completely remove the extra alignment step.
 
-To achieve this the ``_no_op.Caller`` will only iterate the raw data from the
-Read Until API and ``yield`` the minimal ``Result`` structs for the ``targets``
-script to use:
+To achieve this the ``_no_op.Caller`` will only iterate the raw data from the Read Until API and ``yield`` the minimal ``Result`` structs for the ``targets`` script to use:
 
 .. code-block:: python
 
@@ -19,19 +15,20 @@ script to use:
         seq="",
     )
 
-the ``seq`` field will always be empty. This is of little (essentially no)
-use outside of an unblock all or something completely random where you
-don't want or need any sequence.
+The ``seq`` field will always be empty.
+This is of little (essentially no) use outside of an unblock all or something completely random where you don't want or need any sequence.
 
-In addition the ``_no_op.Aligner`` will pass through the iterable from the
-caller module without modifying/adding anything which is useful if a plugin
-can complete it's entire decision in a single step.
+In addition the ``_no_op.Aligner`` will pass through the iterable from the caller module without modifying/adding anything.
+This behaviour can be useful if a plugin can complete it's entire decision in a single step.
 """
 from __future__ import annotations
-from typing import Iterable
+from typing import Iterable, TYPE_CHECKING
 
 from readfish.plugins.abc import AlignerABC, CallerABC
 from readfish.plugins.utils import Result
+
+if TYPE_CHECKING:
+    import minknow_api
 
 
 class Aligner(AlignerABC):
@@ -61,15 +58,14 @@ class Caller(CallerABC):
 
     def basecall(
         self,
-        chunks: list[tuple[int, "data_pb2.GetLiveReadsResponse.ReadData"]],  # type: ignore
+        chunks: list[tuple[int, minknow_api.data_pb2.GetLiveReadsResponse.ReadData]],
         *args,
         **kwargs,
     ) -> Iterable[Result]:
         """
         Create a minimal ``Result`` instance from live data from the Read Until API.
 
-        This will use the actual channel, read number, and read ID but will set an empty
-        string for the ``seq`` field.
+        This will use the actual channel, read number, and read ID but will set an empty string for the ``seq`` field.
 
         :param chunks: Raw data wrapper from the MinKNOW RPC
 

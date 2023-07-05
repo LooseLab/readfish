@@ -3,7 +3,7 @@ import sys
 import traceback
 import importlib
 from pathlib import Path
-from typing import Optional, Union, List, Tuple, Dict
+from typing import Any, Dict, Tuple, List, Optional
 import logging
 
 import attrs
@@ -17,23 +17,22 @@ from readfish.plugins.utils import Targets, Action, Decision
 
 @attrs.define
 class _Condition:
-    """
-    Representation of an experimental condition. This can either be a :class:`Barcode`
-    or an experimental :class:`Region` of the flow cell.
+    """Representation of an experimental condition.
+    This can either be a :class:`Barcode` or an experimental :class:`Region` of the flow cell.
 
     :param name: The name of the condition.
-    :param single_on: The :class:`Action` to perform when a single sequence is to be processed.
-    :param single_off: The :class:`Action` to perform when single sequences are not to be processed.
-    :param multi_on: The :class:`Action` to perform when multiple sequences are to be processed.
-    :param multi_off: The :class:`Action` to perform when multiple sequences are not to be processed.
-    :param no_map: The :class:`Action` to perform when sequence mapping is not required.
-    :param no_seq: The :class:`Action` to perform when no input sequences are provided.
-    :param control: Whether the input data should be treated as a control. Defaults to False.
-    :param targets: The target sequences for the condition. Defaults to empty :class:`Targets` object.
-    :param min_chunks: The minimum number of chunks required for sequence processing. Defaults to 1.
-    :param max_chunks: The maximum number of chunks allowed for sequence processing. Defaults to 2.
-    :param below_min_chunks: The :class:`Action` to take when we haven't evaluated at least this many chunks. Defaults to ``Action.proceed``
-    :param above_max_chunks: The :class:`Action` to take when we haven't evaluated at least this many chunks. Defaults to ``Action.unblock``
+    :param single_on: The :class:`Action` to perform when a read has a single, on-target, alignment
+    :param single_off: The :class:`Action` to perform when a read has a single, off-target, alignment
+    :param multi_on: The :class:`Action` to perform when a read has multiple alignments, with at least one on-target
+    :param multi_off: The :class:`Action` to perform when a read has multiple aligments, with all off-target
+    :param no_map: The :class:`Action` to perform when a read has no aligments
+    :param no_seq: The :class:`Action` to perform when a read did not basecall
+    :param control: Whether the region should be treated as a control. Defaults to False
+    :param targets: The target sequences for the condition. See :class:`Targets` for details
+    :param min_chunks: The minimum number of chunks required before a decision will be made. Defaults to 1
+    :param max_chunks: The maximum number of chunks that readfish will assess for any single read. Defaults to 2
+    :param below_min_chunks: The :class:`Action` to take when we haven't evaluated at least ``min_chunks``. Defaults to ``Action.proceed``
+    :param above_max_chunks: The :class:`Action` to take when we have exceeded ``max_chunks``. Defaults to ``Action.unblock``
     """
 
     name: str
@@ -51,10 +50,9 @@ class _Condition:
     above_max_chunks: Action = attrs.field(default=Action.unblock)
 
     def get_action(self, decision: Decision) -> Action:
-        """
-        Get the :class:`Action` that corresponds to ``decision``.
+        """Get the :class:`Action` that corresponds to ``decision``.
 
-        :param decision: :class:`Decision` for a molecule
+        :param decision: :class:`Decision` for a read
         """
         return getattr(self, decision.name)
 
@@ -71,42 +69,38 @@ class _PluginModule:
     parameters: dict
 
     @classmethod
-    def from_dict(cls, dict_: Dict[str, Dict]) -> "_PluginModule":
+    def from_dict(cls, params: Dict[str, Dict]) -> _PluginModule:
         """Creates an instance of the _PluginModule class from a dictionary.
 
-        :param dict_: A dictionary containing a single key-value pair, where the key is
-                      the name of the plugin module and the value is a dictionary of
-                      parameters to be passed to the plugin module.
-
-        :returns: An instance of the ``_PluginModule`` class with the specified name and parameters.
+        :param params: A dictionary containing a single key-value pair, where the key is
+                       the name of the plugin module and the value is a dictionary of
+                       parameters to be passed to the plugin module.
+        :raises ValueError: If more than one key value pair is provided in the ``params``
+        :return: An instance of the ``_PluginModule`` class with the specified name and parameters.
         """
-        if len(dict_) != 1:
+
+        if len(params) != 1:
             raise ValueError("A single key-value pair should be provided")
-        k = next(iter(dict_.keys()))
-        return cls(k, dict_[k])
+        k = next(iter(params.keys()))
+        return cls(k, params[k])
 
     def load_module(self, override=False):
-        """
-        This method loads a plugin module with the given name. If the module is a
-        built-in plugin (as specified in the builtins dictionary), it is loaded from the
-        readfish.plugins package. Otherwise, it is loaded using the importlib library.
+        """Load a plugin module with the given name.
 
-        Parameters:
-        override (bool, optional): If True, the module is reloaded even if it has already been loaded. Default is False.
+        If the module is a built-in plugin (as specified in the builtins dictionary), it is loaded from the readfish.plugins package.
+        Otherwise, it is loaded using the importlib library.
 
-        Returns:
-        The loaded module.
+        :param override: If True, the built-in module names are ignored. Default is False.
 
-        Raises:
-        ModuleNotFoundError: If the plugin module cannot be found or loaded.
+        :return: The loaded module.
+
+        :raises ModuleNotFoundError: If the plugin module cannot be found or loaded.
 
         Note that this method is intended to be used as part of a plugin system, where
         plugin modules are loaded dynamically at runtime. The builtins dictionary maps
         the names of built-in plugins to the actual module names, and is used to avoid
         having to specify the full module name when loading a built-in plugin. If
-        override=True, the module is reloaded even if it has already been loaded. This
-        can be useful during development, but should generally be avoided in production
-        code for performance reasons.
+        override=True, the builtin module names are ignored.
         """
         builtins = {
             "guppy": "guppy",
@@ -164,8 +158,19 @@ class Barcode(_Condition):
 
 @attrs.define
 class Conf:
-    """
-    TODO: Add ``class`` level documentation for ``Conf``. This should link extensively to the TOML documentation.
+    """Overall configuration for readfish experiments
+
+
+    The Conf class is the mother if the adaptive sampling experiment.
+    It is constructed from the provided ``TOML`` file, via a call to `from_file`.
+
+
+    :param channels: The number of channels on the flow cell
+    :param caller_settings: The caller settings as listed in the TOML
+    :param mapper_settings: The mapper settings as listed in the TOML
+    :param regions: The regions as listed in the Toml file.
+    :param barcodes: A Dictionary of barcode names to Barcode Classes
+    :param _channel_map:
     """
 
     channels: int
@@ -245,35 +250,66 @@ class Conf:
         return control, condition
 
     def get_region(self, channel: int) -> Optional[Region]:
+        """Get the region for a given channel
+
+        :param channel: The channel number
+        :return: Returns a region, if there is one, otherwise None
+        """
         if self.regions and self._channel_map:
             return self.regions[self._channel_map[channel]]
 
     def get_barcode(self, barcode: Optional[str]) -> Optional[Barcode]:
+        """Get a barcode for a given barcode name
+
+        :param barcode: The name of the barcode, example "barcode01"
+        :return: The barcode class instance for the given barcode name, if there is one
+        """
         if barcode is not None and self.barcodes is not None:
             return self.barcodes.get(barcode, self.barcodes["classified"])
 
     def get_targets(self, channel: int, barcode: Optional[str]) -> Targets:
+        """Get the targets for a given channel or barcode, via its condition
+
+        :param channel: The channel number
+        :param barcode: The barcode name, optional
+        :return: The targets list for a given channel
+        """
         _, condition = self.get_conditions(channel, barcode)
         return condition.targets
 
     @classmethod
     def from_file(
         cls,
-        path: Union[str, Path],
+        path: str | Path,
         channels: int,
         logger: Optional[logging.Logger] = None,
     ) -> Conf:
-        with open(path, "rt") as fh:
+        """Create a Conf from a TOML file.
+
+        Loads the toml using rtoml then calls `from_dict` to create the class.
+
+        :param path: Path to the toml file
+        :param channels: Number of channels on the flow cell
+        :param logger: Logger to write out a base64 encoded compressed toml, defaults to None
+        :return: The Conf as constructed from this toml
+        """
+        with open(path) as fh:
             text = fh.read()
         if logger is not None:
             logger.info(compress_and_encode_string(text))
         dict_ = rtoml.loads(text)
-        return cls.from_dict(dict_, channels, logger)
+        return cls.from_dict(dict_, channels)
 
     @classmethod
-    def from_dict(
-        cls, dict_: dict, channels: int, logger: Optional[logging.Logger] = None
-    ) -> Conf:
+    def from_dict(cls, dict_: Dict[str, Any], channels: int) -> Conf:
+        """
+        Create the Conf class from a Dictionary
+
+        :param dict_: The dictionary that contains the parsed TOML file
+        :param channels: The number of channels on the flow cell
+        :raises ValueError: If channel is present in the TOML file raise ValueError as it will overwrite something
+        :return: The constructed Conf class
+        """
         if "channels" in dict_:
             raise ValueError("Key 'channels' cannot be present in TOML file")
         dict_["channels"] = channels
@@ -282,7 +318,11 @@ class Conf:
         conv.register_structure_hook(_PluginModule, lambda d, t: t.from_dict(d))
         return conv.structure(dict_, cls)
 
-    def to_file(self, path: Union[str, Path]) -> None:
+    def to_file(self, path: str | Path) -> None:
+        """Write a conf to a TOML file
+
+        :param path: File path to create the TOML file for
+        """
         cattrs.register_unstructure_hook(
             Targets,
             lambda cls: cls.value if isinstance(cls.value, list) else str(cls.value),
@@ -294,7 +334,7 @@ class Conf:
         # Pop dynamically added attributes
         d.pop("channels")
         d.pop("_channel_map")
-        with open(path, "wt") as fh:
+        with open(path, "w") as fh:
             rtoml.dump(d, fh, pretty=True)
 
 

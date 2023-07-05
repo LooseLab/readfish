@@ -6,9 +6,14 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+
+from readfish.__about__ import __version__
+
 project = "readfish"
 copyright = "Loose Lab"
 author = "Loose Lab"
+version = __version__
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -22,6 +27,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.autodoc",
     "sphinx.ext.autodoc.typehints",
+    "sphinx.ext.autosectionlabel",
     "myst_parser",
     "sphinx_copybutton",
 ]
@@ -31,9 +37,9 @@ myst_enable_extensions = [
     "smartquotes",
     "deflist",
 ]
-
+autosectionlabel_prefix_document = True
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "questions/*.md", "Thumbs.db", ".DS_Store"]
 
 pygments_dark_style = "monokai"
 
@@ -50,9 +56,13 @@ add_function_parentheses = False
 
 html_theme = "furo"
 html_static_path = ["_static"]
+html_css_files = [
+    "css/custom.css",
+]
 html_theme_options = {
     "sidebar_hide_name": True,
 }
+html_title = f"{project} {version}"
 html_theme_options = {
     "light_logo": "readfish_light.png",
     "dark_logo": "readfish_dark.png",

@@ -1,5 +1,6 @@
-"""
-Main entry point for command line read until scripts.
+"""Main entry point for command line read until scripts.
+
+Set as entrypoint in ``pyproject.toml``
 """
 from __future__ import annotations
 import sys
@@ -12,8 +13,10 @@ from readfish._loggers import setup_logger, print_args
 
 
 def main(argv: list[str] | None = None) -> None:
-    """
-    Main function for entry point of the read until scripts.
+    """Main function for entry point of the read until scripts.
+
+    :param argv: used in tests default None
+    :raises SystemExit: Raises a system exit when the command function exits.
     """
     parser = argparse.ArgumentParser(
         prog="readfish",

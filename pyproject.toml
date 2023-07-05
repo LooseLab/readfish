@@ -44,24 +44,29 @@ dynamic = ["version"]
 readfish = "readfish._cli_base:main"
 
 [project.optional-dependencies]
-docs = ["sphinx-copybutton", "furo", "myst-parser" ]
+# Development dependencies
+docs = ["sphinx-copybutton", "furo", "myst-parser", "faqtory"]
 tests = ["pytest"]
-dev = ["readfish[all,tests,docs]"]
+dev = ["readfish[all,docs,tests]"]
+# Running dependencies, this is a little bit clunky but works for now
 mappy = ["mappy"]
 mappy-rs = ["mappy-rs"]
 guppy = ["ont_pyguppy_client_lib"]
-all = ["readfish[mappy-rs,guppy]"]
-# TODO: Add dev and docs dependencies
+all = ["readfish[mappy,mappy-rs,guppy]"]
 
 [project.urls]
 # Documentation = "https://looselab.github.io/readfish"
 "Bug Tracker" = "https://github.com/LooseLab/readfish/issues"
 "Source Code" = "https://github.com/LooseLab/readfish"
 
-[tool.hatch.version]
-path = "src/readfish/__about__.py"
 [tool.hatch.metadata]
 allow-direct-references = true
 
+[tool.hatch.version]
+path = "src/readfish/__about__.py"
+
 [tool.black]
 line-length = 88
+
+[tool.ruff]
+ignore = ["E501"]

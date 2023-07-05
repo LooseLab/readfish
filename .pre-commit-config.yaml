@@ -1,18 +1,35 @@
 repos:
 
   - repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 23.3.0
     hooks:
       - id: black
         name: black (python)
-        args:
-          - '--target-version=py38'
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
     hooks:
       - id: end-of-file-fixer
-        exclude: '(\.patch|\.diff|\.fasta$|\.fastq$|\.sam$|\.rbt$|\.bit$|target/)'
+        exclude: '^.+\.(patch|diff|fasta|fastq|sam|rbt|bit|target|svg)$'
       - id: trailing-whitespace
-        exclude: '(target/|\.patch|\.diff|\.fasta$|\.fastq$|\.sam$|\.rbt$|\.bit$)'
+        exclude: '^.+\.(patch|diff|fasta|fastq|sam|rbt|bit|target|svg)$'
       - id: check-ast
       - id: check-toml
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.276
+    hooks:
+      - id: ruff
+  - repo: local
+    hooks:
+      - id: ReadFish-checker
+        name: disallow "ReadFish"
+        types: [text]
+        exclude: '^.pre-commit-config.yaml$'
+        entry: 'Read[ _-]*Fish'
+        language: pygrep
+      - id: read-fish-checker
+        name: disallow "read fish"
+        types: [text]
+        exclude: '^.pre-commit-config.yaml$'
+        entry: '(?i)read fish'
+        language: pygrep
+        files: .+\.(yml|yaml|py|md|rst)
