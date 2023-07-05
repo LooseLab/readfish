@@ -4,20 +4,27 @@ maxdepth: 2
 hidden: true
 ---
 getting-started
+toml
 readfish.console
 guppy-params
-test
+FAQ
 post-analysis
 developers-guide
 readfish
 ```
+
+# Welcome to the readfish documentation!
 
 ```{include} ../README.md
 :start-after: <!-- begin-short -->
 :end-before: <!-- end-short -->
 ```
 
-# Indices and tables
+TOML File
+---------
+For information on the readfish TOML files see {doc}`toml`
 
-- {ref}`genindex`
-- {ref}`modindex`
+```{include} ../README.md
+:start-after: <!-- begin-epilog -->
+:end-before: <!-- end-epilog -->
+```

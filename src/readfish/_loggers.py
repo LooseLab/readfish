@@ -2,13 +2,13 @@ from __future__ import annotations
 import logging
 import argparse
 from pathlib import Path
-from typing import Optional, Callable, List
+from typing import Callable
 
 
 def setup_logger(
     name: str,
     log_format: str = "%(message)s",
-    log_file: Optional[str] = None,
+    log_file: str | None = None,
     log_console: bool = False,
     mode: str = "a",
     level: int = logging.DEBUG,
@@ -46,8 +46,8 @@ def setup_logger(
 
 def setup_debug_logger(
     name: str,
-    log_file: Optional[str] = None,
-    header: Optional[str] = None,
+    log_file: str | None = None,
+    header: str | None = None,
     **kwargs,
 ) -> logging.Logger:
     """This function sets up a logger for debugging purposes.
@@ -79,7 +79,7 @@ def setup_debug_logger(
 def print_args(
     args: argparse.Namespace,
     printer: Callable,
-    exclude: Optional[List] = None,
+    exclude: list | None = None,
 ) -> None:
     """
     Prints and formats all arguments from the command line. Takes all entirely lowercase

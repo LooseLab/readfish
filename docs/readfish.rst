@@ -29,6 +29,7 @@ API Reference
 
 ----
 
+
 ``readfish._loggers`` module
 ----------------------------
 
@@ -40,10 +41,33 @@ API Reference
 
 ----
 
+
 ``readfish._utils`` module
 --------------------------
 
 .. automodule:: readfish._utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+----
+
+
+``readfish._cli_args`` module
+-----------------------------
+
+.. automodule:: readfish._cli_args
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+----
+
+
+``readfish._cli_base`` module
+-----------------------------
+
+.. automodule:: readfish._cli_base
    :members:
    :undoc-members:
    :show-inheritance:

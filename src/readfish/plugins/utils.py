@@ -1,6 +1,6 @@
 from __future__ import annotations
 from enum import Enum, unique
-from typing import Any, Dict, List, Union, Optional, Tuple
+from typing import Any, List, Dict, Tuple, Optional, Union
 from collections import defaultdict
 from pathlib import Path
 from io import StringIO
@@ -11,20 +11,35 @@ import attrs
 
 @unique
 class Decision(Enum):
-    single_on = "single_on"
+    """Decision readfish has made about a read after Alignment"""
+
+    #: The read aligned to a single location that is within a target region
+    single_on: str = "single_on"
+    #: The read aligned to a single location that is not in a target region
     single_off = "single_off"
+    #: The read aligned to multiple locations, where at least one alignment is within a target region
     multi_on = "multi_on"
+    #: The read aligned to multiple locations, none of which were in a target region
     multi_off = "multi_off"
+    #: The read was basecalled but did not align
     no_map = "no_map"
+    #: The read did not basecall
     no_seq = "no_seq"
+    #: Too many signal chunks have been collected for this read
     above_max_chunks = "above_max_chunks"
+    #: Fewer signal chunks for this read collected than required
     below_min_chunks = "below_min_chunks"
 
 
 @unique
 class Action(Enum):
+    """Action to take for a read"""
+
+    #: Send an unblock command to the sequencer
     unblock = "unblock"
+    #: Allow the read to finish sequencing
     stop_receiving = "stop_receiving"
+    #: Sample another chunk of data
     proceed = "proceed"
 
 
@@ -34,6 +49,15 @@ class Result:
 
     This should be progressively filled with data from the basecaller,
     barcoder, and then the aligner.
+
+    :param channel: The channel that this read is being sequenced on
+    :param read_number: The read number value from the Read Until API
+    :param read_id: The read ID assigned to this read by MinKNOW
+    :param seq: The basecalled sequence for this read
+    :param decision: The ``Decision`` that has been made, this will by used to determine the ``Action``
+    :param barcode: The barcode that has been assigned to this read
+    :param basecall_data: Any extra data that the basecaller may want to send to the aligner
+    :param alignment_data: Any extra alignment data
     """
 
     channel: int
@@ -48,12 +72,22 @@ class Result:
 
 @unique
 class Strand(Enum):
+    """Enum representing the forward and reverse strand of DNA for alignments"""
+
+    #: Forward strand
     forward = "+"
+    #: Reverse strand
     reverse = "-"
 
 
 @attrs.define
 class Targets:
+    """The targets for a given region
+
+    :param value: The raw value from the TOML file
+    :param _targets: The parsed targets.
+    """
+
     value: Union[List[str], Path] = attrs.field(default=attrs.Factory(list))
     _targets: Dict[Strand, Dict[str, List[Tuple[float, float]]]] = attrs.field(
         repr=False, alias="_targets", init=False
@@ -61,6 +95,13 @@ class Targets:
 
     @classmethod
     def from_parsed_toml(cls, targets: List[str] | str) -> Targets:
+        """Create the target array from the targets that have been read from the provided TOML file
+
+        :param targets: The targets array or a target file, containing a file per line
+        :raises ValueError: Raised if the supplied target is a file that cannot be parsed
+        :raises ValueError: If we fail to initialise class
+        :return: Initialised targets class
+        """
         if isinstance(targets, list):
             # Assumes all elements are also `str`
             return cls(targets)
@@ -76,6 +117,12 @@ class Targets:
         raise ValueError(f"Could not use value {targets!r} for targets.")
 
     def __attrs_post_init__(self):
+        """Post initialisation
+
+        Used to fully parse the targets as this requires reading the values from a file/array
+
+        :raises ValueError: Too many columns in a bed file record
+        """
         self._targets = defaultdict(lambda: defaultdict(list))
         bed_file = False
         if isinstance(self.value, Path):
@@ -107,8 +154,17 @@ class Targets:
 
     @staticmethod
     def _merge_intervals(
-        intervals: list[Tuple[float, float]]
-    ) -> list[Tuple[float, float]]:
+        intervals: List[Tuple[float, float]]
+    ) -> List[Tuple[float, float]]:
+        """If target coordinates overlap, we merge them into a single target
+
+        >>> targets = Targets(["chr1,10,20,+", "chr1,15,30,+"])
+        >>> targets._targets[Strand("+")]["chr1"]
+        [(10.0, 30.0)]
+
+        :param intervals: The target start and stop coordinates
+        :return: The target stop and start coordinates, with any overlapping coordinates merged into one encompassing coordinate
+        """
         if len(intervals) < 2:
             return intervals
         intervals.sort()
@@ -130,7 +186,14 @@ class Targets:
         return res
 
     def check_coord(self, contig: str, strand: Strand | int | str, coord: int) -> bool:
-        """"""
+        """Check to see if a coordinate is within any of the target regions
+
+        :param contig: The target contig name
+        :param strand: The strand that the alignment is to
+        :param coord: The coordinate to be checked
+        :raises ValueError: If the strand passed is not recognised
+        :return: Boolean representing whether the coordinate is within a target region or not
+        """
         strand_ = {
             1: Strand.forward,
             "+": Strand.forward,

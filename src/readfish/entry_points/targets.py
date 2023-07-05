@@ -1,15 +1,41 @@
-"""The main targeted sequencing script. This is accessed by calling
-``readfish targets`` or ``readfish barcode-targets``.
+"""Run a targeted sequencing experiment on a device.
+
+When given a :doc:`TOML <toml>` experiment configuration ``readfish targets`` will:
+    #. Initialise a connection to the sequencing device
+    #. Load the experiment configuration
+    #. Initialise a connection to the Read Until API
+    #. Initialise a connection to your chosen basecaller
+    #. Initialise the read aligner
+
+Then, during sequencing the start of each read is sampled.
+These chunks of raw data are processed by the basecaller to produce FASTA, which is then aligned against the chosen reference genome.
+The result of the alignment is used, along with the targets provided in the :doc:`TOML <toml>` file, to make a decision on each read.
+
+
+Running this should result in a very short (<1kb, ideally 400-600 bases) unblock peak at the start of a read length histogram and longer sequenced reads.
+
+Example run command::
+
+   readfish targets --device X3 \\
+           --experiment-name "test" \\
+           --toml my_exp.toml \\
+           --log-file rf.log \\
+           --debug-log chunks.tsv
+
 """
 # Core imports
+from __future__ import annotations
+import argparse
 import logging
 import time
 from timeit import default_timer as timer
 from pathlib import Path
+from typing import Any
 
 # Third party imports
 import rtoml
 from read_until.read_cache import AccumulatingCache
+from read_until import ReadUntilClient
 
 # Library
 from readfish._cli_args import DEVICE_BASE_ARGS
@@ -59,16 +85,31 @@ CHUNK_LOG_FIELDS = (
 
 
 class Analysis:
+    """
+    Analysis class where the read until magic happens. Comprises of one run
+    function that is run threaded in the run function at the base of this file.
+    Arguments listed in the __init__ docs.
+
+    :param client: An instance of the ReadUntilClient object
+    :param conf: readfish._config.Conf
+    :param logger: The command level logger for this module
+    :param debug_logger: The debug logger that writes the chunks. If None no chunks are logged.
+    :param throttle: The number of seconds interval between requests to the ReadUntilClient, defaults to 0.1
+    :param unblock_duration: Time, in seconds, to apply unblock voltage, defaults to 0.5
+    :param dry_run: If True unblocks are replaced with `stop_receiving` commands, defaults to False
+    :param toml: The path to the toml file containing experiment conf. Used for reloading, defaults to "a.toml"
+    """
+
     def __init__(
         self,
-        client,
-        conf,
-        logger,
-        debug_logger,
-        throttle=0.1,
-        unblock_duration=0.5,
-        dry_run=False,
-        toml="a.toml",
+        client: ReadUntilClient,
+        conf: Conf,
+        logger: logging.Logger,
+        debug_logger: logging.Logger | None,
+        throttle: float = 0.1,
+        unblock_duration: float = 0.5,
+        dry_run: bool = False,
+        toml: str = "a.toml",
     ):
         self.client = client
         self.conf = conf
@@ -97,30 +138,8 @@ class Analysis:
         self.chunk_tracker = ChunkTracker(self.client.channel_count)
 
     def run(self):
-        """Analysis function
+        """Run the read until loop, in one continuous while loop."""
 
-        Parameters
-        ----------
-        client : read_until.ReadUntilClient
-            An instance of the ReadUntilClient object
-        batch_size : int
-            The number of reads to be retrieved from the ReadUntilClient at a time
-        throttle : int or float
-            The number of seconds interval between requests to the ReadUntilClient
-        unblock_duration : int or float
-            Time, in seconds, to apply unblock voltage
-        logger : logging.Logger
-            The command level logger for this module
-        live_toml_path : str
-            Path to a `live` TOML configuration file for ReadFish. If this exists when
-            the run starts it will be deleted
-        dry_run : bool
-            If True unblocks are replaced with `stop_receiving` commands
-
-        Returns
-        -------
-        None
-        """
         # TODO: Swap this for a CSV record later
         d = {"conditions": dict()}
         for idx, r in enumerate(self.conf.regions):
@@ -131,14 +150,13 @@ class Analysis:
         with open(channels_out, "w") as fh:
             fh.write(
                 "# This file is written as a record of the condition each channel is assigned.\n"
-                "# It may be changed or overwritten if you restart ReadFish.\n"
+                "# It may be changed or overwritten if you restart readfish.\n"
                 "# In the future this file may become a CSV file.\n"
             )
             rtoml.dump(d, fh)
 
         # TODO: This could still be passed through to the basecaller to prevent
         #       rebasecalling data that is already being unblocked or sequenced
-        decided_reads = {}
         loop_counter = 0
         last_live_mtime = 0
 
@@ -232,21 +250,19 @@ class Analysis:
                     )
 
                 self.chunk_log.debug(
-                    (
-                        f"{loop_counter}\t"
-                        f"{number_reads}\t"
-                        f"{result.read_id}\t"
-                        f"{result.channel}\t"
-                        f"{result.read_number}\t"
-                        f"{len(result.seq)}\t"
-                        f"{seen_count}\t"
-                        f"{result.decision.name}\t"
-                        f"{action.name}\t"
-                        f"{condition.name}\t"
-                        f"{result.barcode}\t"
-                        f"{previous_action}\t"
-                        f"{time.time()}"
-                    )
+                    f"{loop_counter}\t"
+                    f"{number_reads}\t"
+                    f"{result.read_id}\t"
+                    f"{result.channel}\t"
+                    f"{result.read_number}\t"
+                    f"{len(result.seq)}\t"
+                    f"{seen_count}\t"
+                    f"{result.decision.name}\t"
+                    f"{action.name}\t"
+                    f"{condition.name}\t"
+                    f"{result.barcode}\t"
+                    f"{previous_action}\t"
+                    f"{time.time()}"
                 )
             #######################################################################
             self.client.unblock_read_batch(
@@ -263,7 +279,7 @@ class Analysis:
         else:
             send_message(
                 self.client.connection,
-                "ReadFish Client Stopped.",
+                "Readfish client stopped.",
                 Severity.WARN,
             )
             self.caller.disconnect()
@@ -271,7 +287,20 @@ class Analysis:
             self.logger.info("Finished analysis of reads as client stopped.")
 
 
-def run(parser, args, extras):
+def run(
+    parser: argparse.ArgumentParser, args: argparse.ArgumentParser, extras: list[Any]
+) -> int:
+    """Run function for targets.py
+
+    Imported in `_cli_base.py`.
+    Sets up the read until client and starts the analysis thread above.
+
+    :param parser: Argparse onject - unused but must be taken due as may be needed
+    :param args: The arguments passed to ArgParse
+    :param extras: Extra stuff, I guess
+
+    :returns: An exit code integer, 0 for success
+    """
     # Setup logger used in this entry point, this one should be passed through
     logger = logging.getLogger(f"readfish.{args.command}")
 
@@ -326,11 +355,7 @@ def run(parser, args, extras):
 
     send_message(
         read_until_client.connection,
-        "readfish disconnected from this device. Sequencing will proceed normally.",
+        "Readfish disconnected from this device. Sequencing will proceed normally.",
         Severity.WARN,
     )
     return 0
-
-
-if __name__ == "__main__":
-    pass

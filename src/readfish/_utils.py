@@ -1,6 +1,7 @@
 """utils.py
 functions and utilities used internally.
 """
+from __future__ import annotations
 import sys
 import logging
 from collections import Counter
@@ -9,10 +10,13 @@ from operator import itemgetter
 from enum import IntEnum
 import re
 import base64
+from typing import Any, Mapping, Sequence
 import zlib
 
 import numpy as np
-from minknow_api.manager import Manager
+import numpy.typing as npt
+from minknow_api.manager import Manager, FlowCellPosition
+from minknow_api import Connection
 
 if sys.version_info < (3, 11):
     from exceptiongroup import BaseExceptionGroup
@@ -37,16 +41,21 @@ class ChunkTracker:
 
 
 class Severity(IntEnum):
+    """Severity states for messaging to MinKNOW
+
+    :param INFO: Info level
+    :param WARN: Warn level
+    :param ERROR: Error level
+    """
+
     INFO = 1
     WARN = 2
     ERROR = 3
 
 
-def nested_get(obj, key, default=None, *, delim="."):
+def nested_get(obj: Mapping, key: Any, default: Any = None, *, delim: str = ".") -> Any:
     """Get a value from a nested structure
 
-    Examples
-    --------
     >>> class C:
     ...     def __init__(self, x=None):
     ...         self.x = x
@@ -65,6 +74,11 @@ def nested_get(obj, key, default=None, *, delim="."):
     999
     >>> nested_get(cls, "missing", "MISSING")
     'MISSING'
+
+    :param obj: Any with a __get_item__ method
+    :param key: The key to get from the Mapping
+    :param default: The default value to return if the key is not present, defaults to None
+    :param delim: Split a string by given the delimiter, to access the Mapping using each key in turn, defaults to "."
     """
 
     def _get(o, k):
@@ -76,19 +90,11 @@ def nested_get(obj, key, default=None, *, delim="."):
     return reduce(_get, key.split(delim), obj)
 
 
-def compress_and_encode_string(original_str):
+def compress_and_encode_string(original_str: str) -> str:
     """Compresses a string, encodes it in base-64, and returns an ASCII string representation of the compressed blob.
 
-    Parameters
-    ----------
-    original_str : str
-        The string to be compressed and encoded.
-
-    Returns
-    -------
-    str
-        An ASCII string representation of the compressed and base-64 encoded blob.
-
+    :param original_str: The string to be compressed and encoded.
+    :return: An ASCII string representation of the compressed and base-64 encoded blob.
     """
     # Convert the string to bytes
     bytes_str = original_str.encode()
@@ -101,20 +107,12 @@ def compress_and_encode_string(original_str):
     return ascii_str
 
 
-def decode_and_decompress_string(encoded_str):
+def decode_and_decompress_string(encoded_str: str) -> str:
     """Decodes an ASCII string representation of a compressed blob, decompresses it, and returns the original string.
     This is the reverse of `compress_and_encode_string`.
 
-    Parameters
-    ----------
-    encoded_str : str
-        An ASCII string representation of the compressed and base-64 encoded blob.
-
-    Returns
-    -------
-    str
-        The original string that was compressed and encoded.
-
+    :param encoded_str: An ASCII string representation of the compressed and base-64 encoded blob.
+    :return: The original string that was compressed and encoded.
     """
     # Convert the ASCII string to base-64 encoded bytes
     b64_encoded = encoded_str.encode("ascii")
@@ -127,56 +125,44 @@ def decode_and_decompress_string(encoded_str):
     return original_str
 
 
-def escape_message_to_minknow(message, chars):
+def escape_message_to_minknow(message: str, chars: list[str] | str) -> str:
     r"""Escape characters in the chars list if they are in message
 
-    Parameters
-    ----------
-    message : str
-        The message that is being sent
-    chars : list[str], str
-        The characters to escape
-
-    Returns
-    -------
-    message : str
-
-    Examples
-    --------
     >>> escape_message_to_minknow("20%", ["%"])
     '20\\%'
     >>> escape_message_to_minknow("20\\%", ["%"])
     '20\\%'
     >>> escape_message_to_minknow("20", ["%"])
     '20'
+
+    :param message: The message that is being sent
+    :param chars:  The characters to escape
+    :return: message that has been escaped
     """
     for char in chars:
         message = re.sub(rf"(?<!\\){char}", rf"\\{char}", message)
     return message
 
 
-def send_message(rpc_connection, message, severity):
+def send_message(rpc_connection: Connection, message: str, severity: int) -> None:
     """Send a message to MinKNOW
 
-    Parameters
-    ----------
-    rpc_connection
-        An instance of the rpc.Connection
-    message : str
-        The message to send
-    severity : int
-        The severity to use for the message: 1=info, 2=warning, 3=error
-
-    Returns
-    -------
-    None
+    :param rpc_connection: An instance of the rpc.Connection
+    :param message: The message to send
+    :param severity: The severity to use for the message: 1=info, 2=warning, 3=error
     """
     message = escape_message_to_minknow(message, "%")
     rpc_connection.log.send_user_message(severity=severity, user_message=message)
 
 
-def nice_join(seq, sep=", ", conjunction="or"):
-    """Join lists nicely"""
+def nice_join(seq: Sequence[Any], sep: str = ", ", conjunction: str = "or") -> str:
+    """Join lists nicely
+
+    :param seq: A sequence of objects that have a __str__ method.
+    :param sep: The separator for the join, defaults to ", "
+    :param conjunction: A conjunction between the joined list and the last element, defaults to "or"
+    :return: The nicely joined string
+    """
     seq = [str(x) for x in seq]
 
     if len(seq) <= 1 or conjunction is None:
@@ -185,26 +171,14 @@ def nice_join(seq, sep=", ", conjunction="or"):
         return f"{sep.join(seq[:-1])} {conjunction} {seq[-1]}"
 
 
-def get_coords(channel, flowcell_size):
+def get_coords(channel: int, flowcell_size: int):
     """Return a channel's coordinates given a flowcell size
 
-    Parameters
-    ----------
-    channel : int
-        The channel to retrieve the coordinates for
-    flowcell_size : int
-        The flowcell size, this is used to determine the flowcell layout
-
-    Returns
-    -------
-    tuple
-        Tuple of int: (column, row)
-
-    Raises
-    ------
-    ValueError
-        Raised if channel outside of bounds (0, flowcell_size)
-        Raised if flowcell_size not one of [128, 512, 3000]
+    :param channel: The channel to retrieve the coordinates for
+    :param flowcell_size: The flowcell size, this is used to determine the flowcell layout
+    :return: The column and row of a channel number in the flowcell
+    :raises ValueError: channel cannot be below 0 or above flowcell_size
+    :raises ValueError: Raised if flowcell_size not one of [128, 512, 3000]
     """
     if channel <= 0 or channel > flowcell_size:
         raise ValueError("channel cannot be below 0 or above flowcell_size")
@@ -224,22 +198,12 @@ def get_coords(channel, flowcell_size):
         raise ValueError("flowcell_size is not recognised")
 
 
-def get_flowcell_array(flowcell_size):
+def get_flowcell_array(flowcell_size: int) -> npt.ArrayLike:
     """Return a numpy.ndarray in the shape of a flowcell
 
-    Parameters
-    ----------
-    flowcell_size : int
-        The total number of channels on the flowcell; 126 for Flongle, 512
-        for MinION, and 3000 for PromethION
+    :param flowcell_size: The total number of channels on the flowcell; 126 for Flongle, 512 for MinION, and 3000 for PromethION
+    :return: An N-dimensional array representation of the flowcell
 
-    Returns
-    -------
-    np.ndarray
-        An N-dimensional array representation of the flowcell
-
-    Examples
-    --------
     >>> get_flowcell_array(126).shape
     (10, 13)
     >>> get_flowcell_array(512).shape
@@ -276,42 +240,24 @@ def get_flowcell_array(flowcell_size):
     return b[::-1]
 
 
-def generate_flowcell(flowcell_size, split=1, axis=1, odd_even=False):
+def generate_flowcell(
+    flowcell_size: int, split: int = 1, axis: int = 1, odd_even: bool = False
+) -> list[list[int]]:
     """Return an list of lists with channels to use in conditions
 
-    Representations generated by this method are evenly split based on the physical
-    layout of the flowcell. Each sub-list is the same size. Axis determines whether
-    the flowcell divisions will go left-right (0) or top-bottom (1); as flongle has
-    a shape of (10, 13) the top-bottom axis cannot be split evenly.
+    Representations generated by this method are evenly split based on the physical layout of the flowcell.
+    Each sub-list is the same size. Axis determines whether the flowcell divisions will go left-right (0) or top-bottom (1).
+    As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.
 
-    Parameters
-    ----------
-    flowcell_size : int
-        The total number of channels on the flowcell; 126 for Flongle, 512 for MinION,
-        and 3000 for PromethION
-    split : int
-        The number of sections to split the flowcell into, must be a positive factor
-        of the flowcell dimension
-    axis : int, optional
-        The axis along which to split,
-        see: https://docs.scipy.org/doc/numpy/glossary.html?highlight=axis
-    odd_even : bool
-        Return a list of two lists split into odd-even channels,
-        ignores `split` and `axis`
 
-    Returns
-    -------
-    list
-        A list of lists with channels divided equally
+    :param flowcell_size: The total number of channels on the flowcell; 126 for Flongle, 512 for MinION, and 3000 for PromethION
+    :param split: The number of sections to split the flowcell into, must be a positive factor of the flowcell dimension, defaults to 1
+    :param axis: The axis along which to split, see: https://docs.scipy.org/doc/numpy/glossary.html?highlight=axis, defaults to 1
+    :param odd_even: Return a list of two lists split into odd-even channels, ignores `split` and `axis`, defaults to False
+    :raises ValueError: Raised when split is not a positive integer
+    :raises ValueError: Raised when the value for split is not a factor on the axis provided
+    :return: A list of lists with channels divided equally
 
-    Raises
-    ------
-    ValueError
-        Raised when split is not a positive integer
-        Raised when the value for split is not a factor on the axis provided
-
-    Examples
-    --------
     >>> len(generate_flowcell(512))
     1
     >>> len(generate_flowcell(512)[0])
@@ -353,23 +299,13 @@ def generate_flowcell(flowcell_size, split=1, axis=1, odd_even=False):
     return [x for x in arr.tolist()]
 
 
-def iter_exception_group(exc, level=0):
+def iter_exception_group(exc: BaseExceptionGroup, level: int = 0) -> str:
     r"""Traverses an exception tree, yielding formatted strings for each exception encountered
 
-    Parameters
-    ----------
-    exc : BaseExceptionGroup
-        The exception group to traverse
-    level : int
-        The current indentation level, defaults to 0
+    :param exc: The exception group to traverse
+    :param level: The current indentation level, defaults to 0, defaults to 0
+    :yield: Formatted (and indented) string representation of each exception encountered in the tree.
 
-    Yields
-    ------
-    str
-        Formatted (and indented) string representation of each exception encountered in the tree.
-
-    Examples
-    --------
     >>> exc = BaseExceptionGroup(
     ...     "level 1.0",
     ...     [
@@ -525,8 +461,17 @@ def describe_experiment(conditions, mapper):
             yield s, Severity.WARN
 
 
-def get_device(device, host="127.0.0.1", port=None):
-    """Get an RPC connection from a device"""
+def get_device(
+    device: str, host: str = "127.0.0.1", port: int = None
+) -> FlowCellPosition:
+    """Get a position for a specific device over the minknow API
+
+    :param device: The device name - example X1 or MS00000
+    :param host: The host the RPC is listening on, defaults to "127.0.0.1"
+    :param port: The port the RPC is listening on, defaults to None
+    :raises ValueError: If their is no match on any of the positions for the given device name
+    :return: The position representation from the MinkKNOW API
+    """
     manager = Manager(host=host, port=port)
     for position in manager.flow_cell_positions():
         if position.name == device:
