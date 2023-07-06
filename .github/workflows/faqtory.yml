@@ -9,8 +9,6 @@ jobs:
       issues: write
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: refactor
       - name: Install FAQtory
         run: pip install FAQtory
       - name: Run Suggest
