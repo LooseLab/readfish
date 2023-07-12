@@ -1,5 +1,6 @@
 """Mapping interface for readfish.
 """
+from pathlib import Path
 from typing import Optional, Iterable
 
 from readfish._config import Conf
@@ -39,10 +40,34 @@ class Aligner(AlignerABC):
         self.config = readfish_config
         self.logger = setup_debug_logger(__name__, log_file=debug_log)
         self.aligner_params = kwargs
+        self.validate()
         self.aligner = mappy.Aligner(**self.aligner_params)  # type: ignore
         if _mappy_rs:
             threads = self.aligner_params.get("n_threads", 1)
             self.enable_threading(threads)
+
+    def validate(self) -> None:
+        """
+        Check that this aligner can be initialised without any issues. Catches any problems and raises helpful errors.
+        Currently checks:
+         1. that the Reference (fn_idx_in) exists, IF one is provided
+         2. That the reference is an .mmi file, or a FASTA or FASTQ, either uncompressed or Gzipped, IF a fn_idx_in is provided.
+
+        :return: None, if the Aligner is setup with valid paths and permissions
+        """
+        index: str = self.aligner_params["fn_idx_in"]
+        file_extensions = [".fasta", ".fna", ".fsa", ".fa", ".fastq", ".fq"]
+        file_extensions.extend([f"{f}.gz" for f in file_extensions])
+        file_extensions.append(".mmi")
+        if all((not Path(index).is_file(), index)):
+            raise FileNotFoundError(f"{index} does not exist")
+        if (
+            "".join(map(str.lower, Path(index).suffixes)) not in set(file_extensions)
+            and index
+        ):
+            raise RuntimeError(
+                f"Provided index file appears to be of an incorrect type - should be one of {file_extensions}"
+            )
 
     def disconnect(self) -> None:
         return

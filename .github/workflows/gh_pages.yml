@@ -22,11 +22,6 @@ jobs:
           # install pip=>20.1 to use "pip cache dir"
           python3 -m pip install --upgrade pip
 
-      - name: Install git
-        run: |
-          # install pip=>20.1 to use "pip cache dir"
-          sudo apt-get update -y && sudo apt-get install -y git
-
       - name: Get pip cache dir
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT

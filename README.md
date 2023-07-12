@@ -26,7 +26,7 @@ the read in progress and so direct sequencing capacity towards reads of interest
 effective performance on other platforms to date.**
 
 The code here has been tested with Guppy in GPU mode using GridION Mk1 and
-NVIDIA RTX2080 on live sequencing runs and an NIVIDA GTX1080 using playback
+NVIDIA RTX2080 on live sequencing runs and an NVIDIA GTX1080 using playback
 on a simulated run (see below for how to test this).
 This code is run at your own risk as it DOES affect sequencing output. You
 are **strongly** advised to test your setup prior to running (see below for

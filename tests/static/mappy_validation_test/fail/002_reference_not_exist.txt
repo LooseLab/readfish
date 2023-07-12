@@ -1,0 +1,1 @@
+tests/static/mappy_validation_test/fail/i_dont_exist.mmi does not exist

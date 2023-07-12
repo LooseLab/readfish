@@ -339,8 +339,6 @@ class Conf:
 
 
 # TODO: Docs! (barcodes have higher precedence for targets than regions)
-# TODO: Validation is baked in, need a pretty-printer for it though (https://github.com/python-attrs/cattrs/issues/258)
-
 
 if __name__ == "__main__":
     try:

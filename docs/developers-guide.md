@@ -190,9 +190,42 @@ We do not need to call `super().init()` as we aren't actually using the initiali
         self.logger = setup_debug_logger(__name__, log_file=debug_log)
         # Additional kwargs are assumed to be for the mappy.Aligner, such as fn_idx_in, etc...
         self.aligner_params = kwargs
+        # Validate the provided arguments will create a valid Aligner.
+        self.validate()
         # create the mappy aligner
         self.aligner = mappy.Aligner(**self.aligner_params)  # type: ignore
 ```
+
+This next method is important. `validate`
+
+```python
+def validate(self) -> None:
+    """
+    Check that this aligner can be initialised without any issues. Catches any problems and raises helpful errors.
+    Currently checks:
+        1. that the Reference (fn_idx_in) exists, IF one is provided
+        2. That the reference is an .mmi file, or a FASTA or FASTQ, either uncompressed or Gzipped, IF a fn_idx_in is provided.
+
+    :return: None, if the Aligner is setup with valid paths and permissions
+    """
+    index: str = self.aligner_params.get("fn_idx_in")
+    file_extensions = [".fasta", ".fna", ".fsa", ".fa", ".fastq", ".fq"]
+    file_extensions.extend([f"{f}.gz" for f in file_extensions])
+    file_extensions.append(".mmi")
+    if all((not Path(index).is_file(), index)):
+        raise FileNotFoundError(f"{index} does not exist")
+    if (
+        "".join(map(str.lower, Path(index).suffixes)) not in set(file_extensions)
+        and index
+    ):
+        raise RuntimeError(
+            f"Provided index file appears to be of an incorrect type - should be one of {file_extensions}"
+        )
+```
+
+The validate function is intended to be called in the __init__ method, before the actual `Aligner` or `Caller` is initialised. The contents of this method are left up to the author, however we suggest that people check for the things listed above.
+
+The purpose of `validate` is to check that the given parameters will create a valid `Aligner` or `Caller`. For example, in the `guppy.py` `Caller` plugin, we check the permissions of the provided `Guppy` socket. If these are insufficient, Guppy only errors out after a 10 minute timeout. However of this is caught in `validate`, everyone ends up being left a lot happier.
 
 Required disconnect method - we don't have any clean up to do so we just return.
 
