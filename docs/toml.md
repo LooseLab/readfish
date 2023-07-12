@@ -139,7 +139,7 @@ debug_log = "mapped_chunks.paf"
 
 |         Key |  Type  |                           Description                           | Required |
 | ----------: | :----: | :-------------------------------------------------------------: | :------- |
-| `fn_idx_in` | string |            Absolute path to the reference FASTA/mmi             | False    |
+| `fn_idx_in` | string |            Absolute path to the reference FASTA/mmi             | True     |
 | `debug_log` | string |       File to write PAF records to from alignments seen         | False    |
 | `n_threads` |   int  | Optional - if using `mappy_rs`, number of threads for alignment | False    |
 

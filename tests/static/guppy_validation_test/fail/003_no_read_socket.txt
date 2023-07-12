@@ -1,0 +1,1 @@
+The user account running readfish doesn't appear to have permissions to read the guppy base-caller socket. Please check permissions on ipc://tests/static/guppy_validation_test/fail/5555_fail_nr. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information.

@@ -37,6 +37,14 @@ class Aligner(AlignerABC):
         it will all be ignored."""
         return
 
+    def validate(self) -> None:
+        """
+        Validate the "Aligner" - will always return None, as there is no Aligner
+
+        :return: None, always
+        """
+        return None
+
     def initialised(self) -> bool:
         """Will always return ``True``"""
         return True
@@ -55,6 +63,14 @@ class Caller(CallerABC):
         """No state is created, anything can be passed at initialisation
         it will all be ignored."""
         pass
+
+    def validate(self) -> None:
+        """
+        Validate the "Caller" - will always return None, as there is no Caller
+
+        :return: None, always
+        """
+        return None
 
     def basecall(
         self,

@@ -4,8 +4,10 @@ Extension of pyguppy Caller that maintains a connection to the basecaller
 """
 from __future__ import annotations
 import logging
+import os
 import time
 from collections import namedtuple
+from pathlib import Path
 from typing import Iterable, TYPE_CHECKING
 
 import numpy as np
@@ -50,8 +52,42 @@ class Caller(CallerABC):
         # Set our own priority
         self.guppy_params = kwargs
         self.guppy_params["priority"] = PyGuppyClient.high_priority
+        self.validate()
         self.caller = PyGuppyClient(**self.guppy_params)
         self.caller.connect()
+
+    def validate(self) -> None:
+        """Validate the parameters passed to Guppy to ensure they will initialise PyGuppy Client correctly
+
+        Currently checks:
+            1. That the socket file exists
+            2. That the Socket file has the correct permissions
+            3. That the version of py guppy client lib installed matches the system version
+        :return: None, if the parameters pass all the checks
+        """
+        for key in ("address", "config"):
+            if key not in self.guppy_params:
+                raise KeyError(
+                    f"Required `caller_settings.guppy` {key} was not found in provided TOML. Please add."
+                )
+        if self.guppy_params["address"].startswith("ipc://"):
+            # User is attempting to connect to an IPC socket
+            socket_path = Path(self.guppy_params["address"][6:])
+            if not socket_path.exists():
+                raise FileNotFoundError(
+                    f"The provided guppy base-caller socket address doesn't appear to exist. Please check your Guppy Settings. {self.guppy_params['address']}"
+                )
+
+            # check user permissions:
+            if not os.access(socket_path, os.R_OK):
+                raise RuntimeError(
+                    f"The user account running readfish doesn't appear to have permissions to read the guppy base-caller socket. Please check permissions on {self.guppy_params['address']}. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."
+                )
+            if not os.access(socket_path, os.W_OK):
+                raise RuntimeError(
+                    f"The user account running readfish doesn't appear to have permissions to write to the guppy base-caller socket. Please check permissions on {self.guppy_params['address']}. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."
+                )
+        return None
 
     def disconnect(self) -> None:
         """Call the disconnect method on the PyGuppyClient"""

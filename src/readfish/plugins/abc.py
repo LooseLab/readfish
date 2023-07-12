@@ -37,6 +37,13 @@ class AlignerABC(abc.ABC):
         :param kwargs: Keyword arguments that are passed through to the Aligner
         """
 
+    @abc.abstractmethod
+    def validate(self) -> None:
+        """
+        Check for valid inputs to Aligner ABC, return none if no issue
+        :return: None if setup is valid
+        """
+
     @property
     @abc.abstractmethod
     def initialised(self) -> bool:
@@ -68,6 +75,13 @@ class CallerABC(abc.ABC):
         """
         :param debug_log: Filename for the caller debug log
         :param kwargs: Keyword arguments that are passed through to the Caller
+        """
+
+    @abc.abstractmethod
+    def validate(self) -> None:
+        """
+        Check for valid inputs to Caller ABC, return none if no issue
+        :return: None if setup is valid
         """
 
     @abc.abstractmethod

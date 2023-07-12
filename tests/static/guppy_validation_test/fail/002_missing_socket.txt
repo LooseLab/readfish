@@ -1,0 +1,1 @@
+The provided guppy base-caller socket address doesn't appear to exist. Please check your Guppy Settings. ipc://tests/static/guppy_validation_test/fail/5555_not_there

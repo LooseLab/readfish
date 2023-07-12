@@ -1,0 +1,13 @@
+[caller_settings.no_op]
+
+[mapper_settings.mappy]
+fn_idx_in = "tests/static/mappy_validation_test/fail/i_am_a_fail_reference.txt"
+
+[[regions]]
+name = "abc"
+no_seq = "proceed"
+no_map = "proceed"
+single_on = "proceed"
+single_off = "proceed"
+multi_on = "proceed"
+multi_off = "proceed"
