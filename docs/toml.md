@@ -356,14 +356,11 @@ no_map = "proceed"
 We provide an entry point to validate TOML files - `readfish validate`
 
 ```console
-readfish validate experiment_conf.toml --check-plugins
+readfish validate experiment_conf.toml
 ```
-
-This command has a flag, `--check-plugins`, which will attempt to initialise the basecaller and aligner as part of the validation.
-It is recommended to run using this flag.
 Any errors that occur while loading the configuration will be written to the terminal.
 
-As an example - if the reference is missing AND `--check-plugins` was passed you will see:
+As an example - if the reference is missing.
 
 ```text
 2023-06-27 16:07:03,041 readfish /home/adoni5/mambaforge/envs/readfish_dev/bin/readfish validate docs/_static/human_chr_selection.toml --check-plugins
@@ -383,7 +380,7 @@ As an example - if the reference is missing AND `--check-plugins` was passed you
 2023-06-27 16:07:03,071 readfish.validate Did not create or open an index
 ```
 
-Without `--check-plugins` this test will pass.
+This command has a flag `--no-check-plugins` which will disable the loading and validation of plugins. However this is only recommended if you absolutely must not validate the plugins. For example the above TOML, missing the reference, would pass validation if using the `--no-check-plugins` flag.
 
 
 [TOML]: https://toml.io

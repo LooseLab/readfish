@@ -1,7 +1,8 @@
 """Validate experiment configuration :doc:`TOML <toml>` files.
 
 This script is used to check that an experiment configuration file can be loaded.
-In addition, using the ``--check-plugins`` flag will also attempt to load the listed ``Aligner`` and ``Caller`` plugins.
+By default, this will attempt to load the ``Caller`` and ``Aligner`` plugins as specified in the
+:doc:`TOML <toml>` file. The ``--no-check-plugins`` flag can be used to skip this step.
 
 These basic checks are for compatibility and do not indicate that a configuration/plugins will work efficiently with readfish.
 
@@ -37,10 +38,10 @@ _cli = BASE_ARGS + (
         ),
     ),
     (
-        "--check-plugins",
+        "--no-check-plugins",
         dict(
-            help="If the config can be loaded attempt loading the plugins too",
-            action="store_true",
+            help="Do not attempt to load the plugins with the supplied toml file configuration.",
+            action="store_false",
         ),
     ),
 )
@@ -65,7 +66,7 @@ def run(parser, args, extras) -> int:
     logger.info("Loaded TOML config without error")
 
     errors = 0
-    if args.check_plugins:
+    if args.no_check_plugins:
         logger.info("Initialising Caller")
         try:
             _ = conf.caller_settings.load_object("Caller")
@@ -85,4 +86,6 @@ def run(parser, args, extras) -> int:
             errors += 1
         else:
             logger.info("Aligner initialised")
+    else:
+        logger.info("Plugin initialisation and testing was skipped.")
     return errors
