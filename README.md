@@ -246,6 +246,8 @@ and configure a TOML file.
 1. Modify the `targets` fields for each condition to reflect the naming convention used in your index. This is the sequence name only, up to but not including any whitespace. Provided is chromosome 20 and 21 as named in the hg38 reference assembly.
 e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match, then target matching will fail.
 
+We can now validate this TOML file to see if it will be loaded correctly.
+
 
     ```console
     readfish validate human_chr_selection.toml
@@ -254,22 +256,26 @@ e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match
     Errors with the configuration will be written to the terminal along with a text description of the conditions for the experiment as below.
 
     ```text
-     2023-06-27 13:58:51,695 readfish /home/adoni5/mambaforge/envs/readfish_dev/bin/readfish validate docs/_static/human_chr_selection.toml
-     2023-06-27 13:58:51,695 readfish check_plugins=False
-     2023-06-27 13:58:51,695 readfish command='validate'
-     2023-06-27 13:58:51,695 readfish log_file=None
-     2023-06-27 13:58:51,695 readfish log_format='%(asctime)s %(name)s %(message)s'
-     2023-06-27 13:58:51,695 readfish log_level='info'
-     2023-06-27 13:58:51,695 readfish prom=False
-     2023-06-27 13:58:51,695 readfish toml='docs/_static/human_chr_selection.toml'
-     2023-06-27 13:58:51,695 readfish.validate eJxtUMtuwyAQvPMVEecKjJtKaaWeeu8PWBZa47WNwiuAo+TvC46aPvfEzM7O7kA6BcZglAlz1m5ObF5DuPZEeTfpefe6o6MDGUXD9kxIPLBW7ptmCEkuoCiBcYyYUtXpoF4459kGfjPhT6UoGXFYZ2n8ZqYVxDVlGQxcB1BHCSOErM/IphMlpLMQwvdrKi7XTE7q8SK1qx48QF549nxZLTgeccKITiFf5scDs1b/2pmxLNy0Ui3V26DK2jsWYKo7u4hzganviQOLdeSm2eStkG1LidV1enXHmlUQC5cvuCcZ4oy5vjv6/iabUm3DhKAPuzsW7Jn2JJVYBqWfprpndYPx6ljsV5P1H/ZTvMVO2QcZUaE+F/o+8m/P+RLzVDsheoU4blT5zB8UIR/8D6nI
-     2023-06-27 13:58:51,700 readfish.validate Loaded TOML config without error
+     2023-07-19 11:14:31,091 readfish /path/to/readfish validate human_chr_selection.toml
+     2023-07-19 11:14:31,091 readfish command='validate'
+     2023-07-19 11:14:31,091 readfish log_file=None
+     2023-07-19 11:14:31,091 readfish log_format='%(asctime)s %(name)s %(message)s'
+     2023-07-19 11:14:31,091 readfish log_level='info'
+     2023-07-19 11:14:31,091 readfish no_check_plugins=True
+     2023-07-19 11:14:31,091 readfish prom=False
+     2023-07-19 11:14:31,091 readfish toml='human_chr_selection.toml'
+     2023-07-19 11:14:31,092 readfish.validate eJydVl1r5TYQffevEM7rre+mzUJbyMNSWBpou6FN6UMIRrbHtogsOZKc5P77zowsX3vjsLQhJNbXnDMzZ0a6EHe98gJ/pbj78vtvoramVZ1olQbRWie0egZRSQ+11FqZTkjTCA8a6oCj7EKEFyvq3tnBejuAFy1+itCD6KdBGtGBwWmhDAJ4PIFmHXTKmgLP3hjcidg12uczmx3iRWmNhJ7B8SKYoByy0valBq3JAJOHVzmMeIoMMfvJQcPk3WQMcX5RoUfi4s+fiqviUlSTfmQP0QJtC+DJmSLLsntyE1zpIdCUL7ppHE8PCQp/iUmCkYFoVtrWj9EQrbEBIvcP+jNCrdqTmMgxwbYiGdr5Dla0F707hx5jsEVFKtG6QmeVWfFC10A3yYBsGgfex8nlSPQjrdmWhze3vwiP2BBS5Ci/GxLFJg4NtHLS4YyBMWAnEngD1dSV2na78EaiMmZsFlywopU+PAk7hXEKZA8Ngax79LBRz6qZpEZ1yObMY/LQTpqhGa3jTM6RuBZ5Y2TpOO/l1ccP1ehLgsizxBm3qLH++Xg8hmE8xhwcP+JPnp3Z4yYqhJKgfdE+5aiUQY7jOns0/k9KiQZ2lcK2VkrZx9oqxUELDkzNYcQN8fieTFpTqua1xNGilM/MaVVMYWPR93bC9FVY1d0PP3IPUA2gIk541thAfgZJRW5OmIbannxBXknvJ8zxuj9IFxPf4CItXB7o7/cHAaH+/7KZBcOi1qozAzYLX6ySsSeT6IdPYfEBx9I14vbTZ9o4yJAImTL0nPt9QtNQYX0ypbgLGSEgo6Fw4ZXBYjwlxhOtItRhKVtqf3ias/qd8wc+SCPW8oW4lY6qTy87iLU1+oQmnyaV2t2IUYbQ33z5Q3gsV4i9ekmdDEKDRPFTzhaHrsVVkZ0VgUo//u3B+SO6H7S1Ho6LDvyR0l96RRIphkHt1cgq/qNs82wDRS32PrZ3/7AuFvluqcjVhXG3ifZsR5zshDE0HHI0hfrztVPVWfB0sxVDw2pZzJCKviWvGVncBAaoeEG6SgUn3QnDabrQpwpGUeFFMlcwC6q3ju4WZESExkA5st6r6kxjUKas+8k8es7WIF/TkLn5pTGEuFkN05B28vcSDjTYyIBxjMdRgkgXJYFpA+6XS7+ORbhCvhaXX6OzLC7EXwBvIhjVaR3d6rFMVtkJ0nUQ9utk3QYivfiQIPmmV8OiNTL4K36KF8TRevIY8gDnp8ebhwc5sEXhVHox4Fl0LdT9fJ3F6VkbG8C75Q1SWnPAkzoo/kqTbbvM0qex2JOf+D913G3KZjRZs6DR4SAf0Z0eDGtacu9xUANWDVGXM8sULacCOCUTLzsGVjvlLvfBjmU8i8zyg8gnwyWDnxSInBMPTV7spnB++LyXRFnho6tcqYFMVoAPr3Klmh2B7viaYr5U7Xx6cZyKn/AEEmIM2s/vQbyfe4sQhfjU0eXioydE8ttyzLiOsSnhO7SkKsyzreKzrdqzpNxrcZ/TjfQhP/D/y/whWzRBBr+KfZZUsrd21g2tphxli4Q2s1FNNJWyl83CWk+9Sc7axJskrU9m/wKwWCn4
+     2023-07-19 11:14:31,096 readfish.validate Loaded TOML config without error
+     2023-07-19 11:14:31,096 readfish.validate Initialising Caller
+     2023-07-19 11:14:31,484 readfish.validate Caller initialised
+     2023-07-19 11:14:31,484 readfish.validate Initialising Aligner
+     2023-07-19 11:14:38,422 readfish.validate Aligner initialised
     ```
-3. If your toml file validates then run the following command:
+1. If your toml file validates then run the following command:
     ```console
     readfish targets --toml <PATH_TO_TOML> --device <YOUR_DEVICE_ID> --log-file test.log --experiment-name human_select_test
     ```
-4. In the terminal window you should see messages reporting the speed of mapping of the form:
+1. In the terminal window you should see messages reporting the speed of mapping of the form:
     ```text
     2023-06-27 14:10:09,405 readfish.targets 341R/0.31656s
     2023-06-27 14:10:09,838 readfish.targets 283R/0.34924s
