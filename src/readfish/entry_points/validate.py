@@ -41,7 +41,7 @@ _cli = BASE_ARGS + (
         "--no-check-plugins",
         dict(
             help="Do not attempt to load the plugins with the supplied toml file configuration.",
-            action="store_false",
+            action="store_true",
         ),
     ),
 )
@@ -67,6 +67,8 @@ def run(parser, args, extras) -> int:
 
     errors = 0
     if args.no_check_plugins:
+        logger.info("Plugin initialisation and testing was skipped.")
+    else:
         logger.info("Initialising Caller")
         try:
             _ = conf.caller_settings.load_object("Caller")
@@ -86,6 +88,5 @@ def run(parser, args, extras) -> int:
             errors += 1
         else:
             logger.info("Aligner initialised")
-    else:
-        logger.info("Plugin initialisation and testing was skipped.")
+
     return errors
