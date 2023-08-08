@@ -52,6 +52,8 @@ class Caller(CallerABC):
         # Set our own priority
         self.guppy_params = kwargs
         self.guppy_params["priority"] = PyGuppyClient.high_priority
+        # Set our own client name to appear in the guppy server logs
+        self.guppy_params["client_name"] = "Readfish_connection"
         self.validate()
         self.caller = PyGuppyClient(**self.guppy_params)
         self.caller.connect()
