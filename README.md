@@ -2,13 +2,17 @@
   <img src="https://github.com/LooseLab/readfish/raw/dev_staging/examples/images/readfish_logo.jpg">
 </p>
 
-If you are anything like us, reading a README is the last thing you do when running code.
+If you are anything like us (Matt), reading a README is the last thing you do when running code.
 PLEASE DON'T DO THAT FOR READFISH. This will effect changes to your sequencing and -
 if you use it incorrectly - cost you money. We have added a [list of GOTCHAs](#common-gotchas)
 at the end of this README. We have almost certainly missed some... so - if something goes
 wrong, let us know so we can add you to the GOTCHA hall of fame!
 
-Now also see our cool [FAQ](docs/FAQ.md).
+> [!NOTE]  
+> We also have more detailed documentation for your perusal at https://looselab.github.io/readfish
+
+> [!NOTE]  
+> Now also see our cool [FAQ](docs/FAQ.md).
 
 readfish is a Python package that integrates with the
 [Read Until API](https://github.com/nanoporetech/read_until_api).
