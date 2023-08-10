@@ -161,7 +161,9 @@ class Analysis:
             header="\t".join(CHUNK_LOG_FIELDS),
         )
         logger.info("Initialising Caller")
-        self.caller: CallerABC = conf.caller_settings.load_object("Caller")
+        self.caller: CallerABC = conf.caller_settings.load_object(
+            "Caller", readfish_config=self.conf, readuntil_connection=self.client
+        )
         logger.info("Caller initialised")
         caller_description = self.caller.describe()
         self.logger.info(caller_description)
