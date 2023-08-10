@@ -18,6 +18,7 @@ from pyguppy_client_lib.pyclient import PyGuppyClient
 from readfish._loggers import setup_debug_logger
 from readfish.plugins.abc import CallerABC
 from readfish.plugins.utils import Result
+from readfish._config import Conf
 
 
 if TYPE_CHECKING:
@@ -47,8 +48,13 @@ _DefaultDAQValues = DefaultDAQValues()
 
 
 class Caller(CallerABC):
-    def __init__(self, debug_log=None, **kwargs):
+    def __init__(
+        self, readfish_config: Conf, readuntil_connection=None, debug_log=None, **kwargs
+    ):
         self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
+        self.config = readfish_config
+        self.readuntil_connection = readuntil_connection
+
         # Set our own priority
         self.guppy_params = kwargs
         self.guppy_params["priority"] = PyGuppyClient.high_priority
@@ -88,6 +94,17 @@ class Caller(CallerABC):
             if not os.access(socket_path, os.W_OK):
                 raise RuntimeError(
                     f"The user account running readfish doesn't appear to have permissions to write to the guppy base-caller socket. Please check permissions on {self.guppy_params['address']}. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."
+                )
+        ### If we are connected to a live run, test if the basecaller model is acceptable.
+        if self.readuntil_connection:
+            if (
+                self.guppy_params["config"]
+                not in self.readuntil_connection.connection.protocol.get_run_info()
+                .meta_info.tags["available basecall models"]
+                .array_value
+            ):
+                raise RuntimeError(
+                    f"The basecalling model you have selected is not suitable for this flowcell and kit. Please check your settings.\n You selected {self.guppy_params['config']}.\n It should be one of {self.readuntil_connection.connection.protocol.get_run_info().meta_info.tags['available basecall models'].array_value}"
                 )
         return None
 

@@ -79,7 +79,7 @@ def run(parser, args, extras) -> int:
     else:
         logger.info("Initialising Caller")
         try:
-            _ = conf.caller_settings.load_object("Caller")
+            _ = conf.caller_settings.load_object("Caller", readfish_config=conf)
         except Exception as exc:
             logger.error("Caller could not be initialised, see below for details")
             logger.error(str(exc))
