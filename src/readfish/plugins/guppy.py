@@ -18,7 +18,6 @@ from pyguppy_client_lib.pyclient import PyGuppyClient
 from readfish._loggers import setup_debug_logger
 from readfish.plugins.abc import CallerABC
 from readfish.plugins.utils import Result
-from readfish._config import Conf
 
 
 if TYPE_CHECKING:
@@ -48,11 +47,8 @@ _DefaultDAQValues = DefaultDAQValues()
 
 
 class Caller(CallerABC):
-    def __init__(
-        self, readfish_config: Conf, readuntil_connection=None, debug_log=None, **kwargs
-    ):
+    def __init__(self, readuntil_connection=None, debug_log=None, **kwargs):
         self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
-        self.config = readfish_config
         self.readuntil_connection = readuntil_connection
 
         # Set our own priority
@@ -99,7 +95,7 @@ class Caller(CallerABC):
         if self.readuntil_connection:
             if (
                 self.guppy_params["config"]
-                not in self.readuntil_connection.connection.protocol.get_run_info()
+                not in self.readuntil_connection.protocol.get_run_info()
                 .meta_info.tags["available basecall models"]
                 .array_value
             ):
