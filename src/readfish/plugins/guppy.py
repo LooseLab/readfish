@@ -49,6 +49,10 @@ _DefaultDAQValues = DefaultDAQValues()
 class Caller(CallerABC):
     def __init__(self, minknow_connection=None, debug_log=None, **kwargs):
         self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
+        # ToDo: In a future version of readfish, we should have a central minknow object
+        # that is passed to all plugins for sharing of specific data.
+        # This will allow us to remove the minknow_connection from plugins and
+        # instead interrogate the minknow object for the data we need.
         self.minknow_connection = minknow_connection
 
         # Set our own priority
