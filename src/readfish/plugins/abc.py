@@ -80,11 +80,7 @@ class CallerABC(abc.ABC):
     """Caller base class."""
 
     @abc.abstractmethod
-    def __init__(
-        self,
-        debug_log: str | None,
-        **kwargs,
-    ) -> None:
+    def __init__(self, debug_log: str | None, **kwargs) -> None:
         """
         :param debug_log: Filename for the caller debug log
         :param kwargs: Keyword arguments that are passed through to the Caller
