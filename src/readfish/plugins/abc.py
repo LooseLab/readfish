@@ -21,7 +21,6 @@ from read_until.base import CALIBRATION
 
 from readfish._config import Conf
 from readfish.plugins.utils import Result
-from readfish._client import RUClient
 
 if TYPE_CHECKING:
     import minknow_api
@@ -83,14 +82,10 @@ class CallerABC(abc.ABC):
     @abc.abstractmethod
     def __init__(
         self,
-        readfish_config: Conf,
-        readuntil_connection: RUClient | None,
         debug_log: str | None,
         **kwargs,
     ) -> None:
         """
-        :param readfish_config: Cannot be passed in using the TOML. This is for retrieving target regions.
-        :param readuntil_connection: This is for validation of data from the readuntil client to enable validation.
         :param debug_log: Filename for the caller debug log
         :param kwargs: Keyword arguments that are passed through to the Caller
         """

@@ -162,7 +162,7 @@ class Analysis:
         )
         logger.info("Initialising Caller")
         self.caller: CallerABC = conf.caller_settings.load_object(
-            "Caller", readfish_config=self.conf, readuntil_connection=self.client
+            "Caller", readuntil_connection=self.client.connection
         )
         logger.info("Caller initialised")
         caller_description = self.caller.describe()
