@@ -47,13 +47,10 @@ _DefaultDAQValues = DefaultDAQValues()
 
 
 class Caller(CallerABC):
-    def __init__(self, minknow_connection=None, debug_log=None, **kwargs):
+    def __init__(self, run_information=None, debug_log=None, **kwargs):
         self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
-        # ToDo: In a future version of readfish, we should have a central minknow object
-        # that is passed to all plugins for sharing of specific data.
-        # This will allow us to remove the minknow_connection from plugins and
-        # instead interrogate the minknow object for the data we need.
-        self.minknow_connection = minknow_connection
+
+        self.run_information = run_information
 
         # Set our own priority
         self.guppy_params = kwargs
@@ -96,15 +93,15 @@ class Caller(CallerABC):
                     f"The user account running readfish doesn't appear to have permissions to write to the guppy base-caller socket. Please check permissions on {self.guppy_params['address']}. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."
                 )
         ### If we are connected to a live run, test if the basecaller model is acceptable.
-        if self.minknow_connection:
+        if self.run_information:
             if (
                 self.guppy_params["config"]
-                not in self.minknow_connection.protocol.get_run_info()
-                .meta_info.tags["available basecall models"]
-                .array_value
+                not in self.run_information.meta_info.tags[
+                    "available basecall models"
+                ].array_value
             ):
                 raise RuntimeError(
-                    f"The basecalling model you have selected is not suitable for this flowcell and kit. Please check your settings.\n You selected {self.guppy_params['config']}.\n It should be one of {self.minknow_connection.protocol.get_run_info().meta_info.tags['available basecall models'].array_value}"
+                    f"The basecalling model you have selected is not suitable for this flowcell and kit. Please check your settings.\n You selected {self.guppy_params['config']}.\n It should be one of {self.run_information.meta_info.tags['available basecall models'].array_value}"
                 )
         return None
 
