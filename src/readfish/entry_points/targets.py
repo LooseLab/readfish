@@ -162,7 +162,7 @@ class Analysis:
         )
         logger.info("Initialising Caller")
         self.caller: CallerABC = conf.caller_settings.load_object(
-            "Caller", minknow_connection=self.client.connection
+            "Caller", run_information=self.client.connection.protocol.get_run_info()
         )
         logger.info("Caller initialised")
         caller_description = self.caller.describe()
