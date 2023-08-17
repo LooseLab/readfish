@@ -7,6 +7,7 @@ name = "readfish"
 authors = [
     { name = "Alexander Payne", email = "" },
     { name = "Rory Munro", email = "" },
+    { name = "Matt Loose", email = "matt.loose@nottingham.ac.uk"}
 ]
 license = "MIT"
 readme = "README.md"
