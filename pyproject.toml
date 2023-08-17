@@ -38,6 +38,7 @@ dependencies = [
     "more_itertools",
     'exceptiongroup ; python_version<"3.11"',
     "read_until @ git+https://github.com/nanoporetech/read_until_api@v3.4.1",
+    "readfish[all]",
 ]
 dynamic = ["version"]
 
