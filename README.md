@@ -147,6 +147,8 @@ See '<command> --help' to read about a specific sub-command.
 TOML File
 ---------
 For information on the TOML files see [TOML.md](docs/toml.md).
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish_dev/tree/refactor/docs/_static/example_tomls.
+
 <details style="margin-top: 10px; margin-bottom: 10px"><summary id="testing"><h1 style="display: inline">Testing</h1></summary>
 <!-- begin-test -->
 To test readfish on your configuration we recommend first running a playback experiment to test unblock speed and then selection.
@@ -225,7 +227,7 @@ every single read on the flow cell.
     ```console
     readfish unblock-all --device <YOUR_DEVICE_ID> --experiment-name "Testing readfish Unblock All"
     ```
-2. Leave the run for a further 5 minutes and observe the read length histogram.
+1. Leave the run for a further 5 minutes and observe the read length histogram.
 If unblocks are happening correctly you will see something like the below:
     ![alt text](/_static/images/Unblock.png "Unblock Image")
 A closeup of the unblock peak shows reads being unblocked quickly:
@@ -243,11 +245,11 @@ and configure a TOML file.
 
 1. First make a local copy of the example TOML file:
     ```console
-    curl -O https://raw.githubusercontent.com/LooseLab/readfish/master/docs/_static/human_chr_selection.toml
+    curl -O https://raw.githubusercontent.com/LooseLab/readfish/master/docs/_static/example_tomls/human_chr_selection.toml
     ```
 1. Modify the `fn_idx_in` field in the file to be the full path to a [minimap2](https://github.com/lh3/minimap2) index of the human genome.
 
-1. Modify the `targets` fields for each condition to reflect the naming convention used in your index. This is the sequence name only, up to but not including any whitespace. Provided is chromosome 20 and 21 as named in the hg38 reference assembly.
+1. Modify the `targets` fields for each condition to reflect the naming convention used in your index. This is the sequence name only, up to but not including any whitespace.
 e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match, then target matching will fail.
 
 We can now validate this TOML file to see if it will be loaded correctly.
@@ -300,12 +302,12 @@ We can now validate this TOML file to see if it will be loaded correctly.
  The only way to test readfish on a playback run is to look at changes in read length for rejected vs accepted reads. To do this:
 
  1. Start a fresh simulation run using the bulkfile provided above.
- 2. Restart the readfish command (as above):
+ 1. Restart the readfish command (as above):
     ```console
     readfish targets --toml <PATH_TO_TOML> --device <YOUR_DEVICE_ID> --log-file test.log --experiment-name human_select_test
     ```
- 3. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
- 4. After 15 minutes it should look something like this:
+ 1. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
+ 1. After 15 minutes it should look something like this:
         ![alt text](/_static/images/PlaybackRunUnblock.png "Playback Unblock Image")
 Zoomed in on the unblocks:
         ![alt text](/_static/images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")

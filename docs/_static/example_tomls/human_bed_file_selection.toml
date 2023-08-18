@@ -1,0 +1,58 @@
+# Summary: TOML config file for real-time basecalling and selecting genomic targets from a bed file,
+# describing a small example subset of the # COSMIC cancer panel.
+# This example is configured for running with an R9.4.1 bulk file for testing.
+
+# NB. This config Assumes readfish is run from the same directory as the bed file.
+# Any Bed file must be formatted with the first six columns.
+# See TOMLS.md or https://looselab.github.io/readfish/toml.html for more information.
+
+# In this example, a single region will cover all channels across the flowcell.
+
+# All of the below fields are explained in more detail in the documentation
+# - https://looselab.github.io/readfish/toml.html.
+
+# Basecaller configuration
+[caller_settings.guppy]
+#               ^^^^^^ - ".guppy" specifies our chosen basecaller
+# Guppy base-calling configuration file name
+config = "dna_r9.4.1_450bps_fast"
+# Address of the guppy basecaller - The default address for guppy is ipc:///tmp/.guppy/5555.
+address = "ipc:///tmp/.guppy/5555"
+# Fastq output for individual reads. This is OPTIONAL - as these files can become quite large.
+# Remove line to disable.
+debug_log = "live_reads.fq"
+
+# Aligner Configuration
+[mapper_settings.mappy]
+#               ^^^^^^ - ".mappy" specifies mappy or mappy-rs as the aligner
+# Alignment reference to use. Should be either FASTA or an MMI
+fn_idx_in = "/path/to/hg38.mmi"
+# Optional PAF output for live alignments.
+# Remove line to disable.
+debug_log = "live_alignments.paf"
+# Number of threads for indexing (mappy and mappy-rs) and mapping (mappy-rs only)
+n_threads = 4
+
+
+# Region Configuration - see https://looselab.github.io/readfish/toml.html#analysis-regions for more information.
+# Definitions of "unblock", "proceed" and "stop_receivings" are as follows
+
+    # proceed: Allow one more chunk to be captured, before trying to make another decision, i.e proceed for now
+
+    # unblock: Unblock the read
+
+    # stop_receiving: Allow the read to be sequenced, and stop receiving signal chunks for it.
+[[regions]]
+# Name of the region.
+name = "COSMIC Targets"
+min_chunks = 1 # minimum number of chunks before a decision can be made
+max_chunks = 4 # maximum number of chunks to use in decision making - after this perform the above_max_chunks action
+targets = "COSMIC_cancer_panel.bed" # the important line - setting targets as a path to a bed file, either relative or absolute.
+single_on = "stop_receiving"  # Action to take if there is one mapping on target.
+multi_on = "stop_receiving"   # Action to take if there is more than one mapping, with at least one target.
+single_off = "unblock"        # Action to take if there is one mapping and it is off target
+multi_off = "unblock"         # Action to take if there are multiple mappings, where all are off target.
+no_seq = "proceed"            # Action to take if no sequence data.
+no_map = "proceed"            # Action to take if no alignments returned.
+above_max_chunks = "unblock"  # Action to take if above max_chunks.
+below_min_chunks = "proceed"  # Action to take if below min_chunks.

@@ -1,0 +1,150 @@
+# Summary: TOML config file for real-time basecalling and selecting genomic targets from barcoded human samples.
+# Configured for running with r10.4.1 flowcells and 5khz sample rate.
+
+# Each barcode is selecting for certain chromosomes listed directly in this toml as targets,
+# except for Barcode04, which is a control, and Barcode05, which has targets in a BED file.
+# If a BED file is provided, all of the first six columns must be provided.
+
+# Genomic targets are specified directly in the toml file in the form
+#   "contig"
+# or as:
+#   "contig,start,end,strand"
+# for example, "chr2,0,100,+"" or "chr2".
+# If chr2 is specified, the entire contig will be considered a target, on both strands.
+# These patterns can be mixed, both in the toml or in a .csv file.
+
+# The [barcodes.<barcode_name>] must match what the base caller identifes the barcode as, i.e for guppy: barcode01,barcode02...
+# However the name field in the barcode table can be anything.
+# Changing the targets between each `barcodes` table allows for each barcode to have unique targets.
+
+# All of the below fields are explained in more detail in the documentation - https://looselab.github.io/readfish/toml.html
+
+# Basecaller configuration
+[caller_settings.guppy]
+#               ^^^^^^ - ".guppy" specifies our chosen basecaller
+# Guppy base-calling configuration file name
+config = "dna_r10.4.1_e8.2_400bps_5khz_fast"
+# Address of the guppy basecaller - The default address for guppy is ipc:///tmp/.guppy/5555.
+address = "ipc:///tmp/.guppy/5555"
+# Fastq output for individual reads. This is OPTIONAL - as these files can become quite large.
+# Remove line to disable.
+debug_log = "live_barcoded_reads.fq"
+# Enable barcode classification.
+# Specify multiple barcode kits as a space separated string: `"KIT1 KIT2"`
+barcode_kits = "EXP-NBD196"
+
+# Aligner Configuration
+[mapper_settings.mappy]
+#               ^^^^^^ - ".mappy" specifies mappy or mappy-rs as the aligner
+# Alignment reference to use. Should be either FASTA or an MMI
+fn_idx_in = "/path/to/hg38.mmi"
+# Optional PAF output for live alignments.
+# Remove line to disable.
+debug_log = "live_alignments.paf"
+# Number of threads for indexing (mappy and mappy-rs) and mapping (mappy-rs only)
+n_threads = 4
+
+# Unclassified barcode reads. This table is required.
+# This table acts as a "catch all" for any reads that are not assigned to a barcode.
+# Read more -  https://looselab.github.io/readfish/toml.html#barcode-specific-configuration
+# Definitions of "unblock", "proceed" and "stop_receivings" are as follows
+
+    # proceed: Allow one more chunk to be captured, before trying to make another decision, i.e proceed for now
+
+    # unblock: Unblock the read
+
+    # stop_receiving: Allow the read to be sequenced, and stop receiving signal chunks for it.
+[barcodes.unclassified]
+name = "unclassified_reads"  # Name of this Barcode - can be sample related
+min_chunks = 0 # minimum number of chunks before a decision can be made
+max_chunks = 4 # maximum number of chunks to use in decision making - after this perform the above_max_chunks action (default unblock)
+single_on = "unblock"   # Action to take if there is one mapping on target.
+multi_on = "unblock"    # Action to take if there is more than one mapping, with at least one target.
+single_off = "unblock"  # Action to take if there is one mapping and it is off target
+multi_off = "unblock"   # Action to take if there are multiple mappings, where all are off target.
+no_seq = "proceed"  # Action to take if no sequence data
+no_map = "unblock"  # Action to take if unable to map
+above_max_chunks = "unblock"  # Action to take if above max_chunks.
+below_min_chunks = "proceed"  # Action to take if below min_chunks.
+
+# Classified barcode reads
+# This table is also required, and acts as the logical opposite of the unclassified table.
+# This table acts as a "catch all" for any reads assigned to barcodes that are not specified in the [barcodes] tables.
+[barcodes.classified]
+name = "classified_reads"
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+min_chunks = 0
+max_chunks = 4
+no_seq = "proceed"
+no_map = "unblock"
+
+# Barcode 01 configuration. Selecting for Chromosome 20 and 21.
+[barcodes.barcode01]
+name = "barcode01_chr20_chr21"
+min_chunks = 0
+max_chunks = 4
+targets = ["chr20", "chr21"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+
+# Barcode 02 configuration. Selecting for Chromosome 18 and 19.
+[barcodes.barcode02]
+name = "barcode02_chr18_chr19"
+min_chunks = 0
+max_chunks = 4
+targets = ["chr18", "chr19"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+
+# Barcode 03 configuration. Selecting for Chromosome 18,19,20 and 21.
+[barcodes.barcode03]
+name = "barcode03_chr18_chr21"
+min_chunks = 0
+max_chunks = 4
+targets = ["chr18", "chr19", "chr20", "chr21"]
+single_on = "unblock"
+multi_on = "unblock"
+single_off = "stop_receiving"
+multi_off = "stop_receiving"
+no_seq = "proceed"
+no_map = "proceed"
+
+# Barcode 04 configuration. It's a control barcode, all reads are sequenced, even if targets are provided.
+[barcodes.barcode04]
+name = "barcode04_chr18_chr21"
+# As this is barcode has control set to true, the targets field is effectively ignored.
+# readfish will still call signal and map to the targets but will not implement any adaptive sampling.
+control = true
+min_chunks = 0
+max_chunks = 4
+targets = ["chr18", "chr19", "chr20", "chr21"]
+single_on = "unblock"
+multi_on = "unblock"
+single_off = "stop_receiving"
+multi_off = "stop_receiving"
+no_seq = "proceed"
+no_map = "proceed"
+
+# Barcode 05 configuration. Targets are provided in a BED file.
+[barcodes.barcode05]
+name = "Barcode 05 COSMIC Targets"
+min_chunks = 1
+max_chunks = 4
+targets = "COSMIC_cancer_panel.bed"
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
