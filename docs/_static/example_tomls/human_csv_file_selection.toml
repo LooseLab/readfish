@@ -1,0 +1,46 @@
+# Summary: TOML config file for live base-calling and selecting genomic targets
+# using a csv file containing a small example subset of the COSMIC cancer panel genomic coordinates.
+# Here we presume that readfish is being run from the same directory as the csv file.
+
+# Genomic targets are specified directly in the toml file in the form
+#   "contig"
+# or as:
+#   "contig,start,end,strand"
+# for example, "chr2,0,100,+"" or "chr2".
+# If chr2 is specified, the entire contig will be considered a target, on both strands.
+# These patterns can be mixed, both in the toml or in a .csv file.
+
+# In this example, a single region will cover all channels across the flowcell.
+# This example is configured for running with an R9.4.1 bulk file for testing.
+
+# All of the below fields are explained in more detail in the documentation
+# - https://looselab.github.io/readfish/toml.html.
+
+[caller_settings.guppy]
+# Caller Configuration for Guppy Basecaller
+config = "dna_r9.4.1_450bps_fast"  # Specify the basecaller configuration
+address = "ipc:///tmp/.guppy/5555"  # Address of the guppy basecaller - The default address for guppy is ipc:///tmp/.guppy/5555.
+debug_log = "live_reads.fq"  # Fastq output for individual reads (Optional, delete line to disable)
+
+[mapper_settings.mappy]
+# Mapper Configuration for Mappy
+fn_idx_in = "/path/to/hg38.mmi"  # Reference to map with
+n_threads = 4  # Number of threads for indexing a reference and mapping
+debug_log = "live_alignments.paf"  # Alignment output file (Optional, delete line to disable)
+
+[[regions]]
+# Configuration for the region.
+# We specify a path to a csv file in the targets field.
+# See TOMLS.md for more information.
+name = "COSMIC Targets"
+min_chunks = 1
+max_chunks = 4
+targets = "COSMIC_cancer_panel.csv"  # Path to the CSV file containing genomic targets
+single_on = "stop_receiving"  # Action to take if there is one mapping on target.
+multi_on = "stop_receiving"   # Action to take if there is more than one mapping, with at least one target.
+single_off = "unblock"        # Action to take if there is one mapping and it is off target
+multi_off = "unblock"         # Action to take if there are multiple mappings, where all are off target.
+no_seq = "proceed"            # Action to take if there is no sequence information
+no_map = "proceed"            # Action to take if there is no mapping information
+above_max_chunks = "unblock"  # Action to take if the number of chunks received is above max_chunks
+below_min_chunks = "proceed"  # Action to take if the number of chunks received is below min_chunks

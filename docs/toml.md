@@ -3,7 +3,7 @@
 Readfish experiments are configured using [TOML] files, which are minimal and easy-to-read markup files.
 Our configuration only uses [tables] and [arrays of tables] populated with [key-value pairs].
 The TOML file contains almost all the information required for running readfish, such as information on barcodes, control/analysis regions, what basecaller or aligner to use.
-
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish_dev/tree/refactor/docs/_static/example_tomls.
 ## Data model
 
 To understand each section of the TOML file it helps to understand the work that readfish does:
@@ -363,7 +363,7 @@ Any errors that occur while loading the configuration will be written to the ter
 As an example - if the reference is missing.
 
 ```text
-2023-06-27 16:07:03,041 readfish /home/adoni5/mambaforge/envs/readfish_dev/bin/readfish validate docs/_static/human_chr_selection.toml --check-plugins
+2023-06-27 16:07:03,041 readfish /home/adoni5/mambaforge/envs/readfish_dev/bin/readfish validate docs/_static/example_tomls/human_chr_selection.toml
 2023-06-27 16:07:03,041 readfish check_plugins=True
 2023-06-27 16:07:03,041 readfish command='validate'
 2023-06-27 16:07:03,042 readfish log_file=None
