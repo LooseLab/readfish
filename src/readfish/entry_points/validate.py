@@ -3,6 +3,7 @@
 This script is used to check that an experiment configuration file can be loaded.
 By default, this will attempt to load the ``Caller`` and ``Aligner`` plugins as specified in the
 :doc:`TOML <toml>` file. The ``--no-check-plugins`` flag can be used to skip this step.
+The ``--no-describe`` flag can be used to skip printing a description of the configuration to terminal. Description will error if there a re contigs listed as targets which are not found in the reference.
 
 These basic checks are for compatibility and do not indicate that a configuration/plugins will work efficiently with readfish.
 
@@ -11,7 +12,7 @@ If you require help understanding or resolving an error you can check the :doc:`
 
 Example run command::
 
-   readfish validate my_exp.toml --check-plugins
+   readfish validate my_exp.toml
 
 .. _`open an issue`: https://github.com/LooseLab/readfish/issues/new
 """
@@ -41,6 +42,13 @@ _cli = BASE_ARGS + (
         "--no-check-plugins",
         dict(
             help="Do not attempt to load the plugins with the supplied toml file configuration.",
+            action="store_true",
+        ),
+    ),
+    (
+        "--no-describe",
+        dict(
+            help="Do not describe the experimental and plugin configuration. Always disabled if --no-check-plugins is passed.",
             action="store_true",
         ),
     ),
@@ -81,12 +89,20 @@ def run(parser, args, extras) -> int:
 
         logger.info("Initialising Aligner")
         try:
-            _ = conf.mapper_settings.load_object("Aligner", readfish_config=conf)
+            al = conf.mapper_settings.load_object("Aligner", readfish_config=conf)
         except Exception as exc:
             logger.error("Aligner could not be initialised, see below for details")
             logger.error(str(exc))
             errors += 1
         else:
             logger.info("Aligner initialised")
+
+        if args.no_describe:
+            logger.info("Skipping descriptions of Config and Plugins.")
+        elif not errors:
+            logger.info(conf.describe_experiment())
+            logger.info(al.describe())
+        else:
+            logger.info("Skipping descriptions due to errors.")
 
     return errors

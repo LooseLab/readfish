@@ -1,12 +1,22 @@
-"""Mapping interface for readfish.
+"""Mapping interface for readfish, using Minimap2 mappy, or mappy-rs (if available).
+If available, mappy-rs will be used, otherwise mappy will be used.
+If neither are available, an ImportError will be raised.
 """
+from itertools import chain, repeat
 from pathlib import Path
 from typing import Optional, Iterable
 
 from readfish._config import Conf
 from readfish._loggers import setup_debug_logger
 from readfish.plugins.abc import AlignerABC
-from readfish.plugins.utils import Decision, Result
+from readfish.plugins.utils import (
+    Decision,
+    Result,
+    Strand,
+    count_dict_elements,
+    sum_target_coverage,
+)
+from readfish._utils import nice_join
 
 _mappy_rs = False
 try:
@@ -161,3 +171,55 @@ class Aligner(AlignerABC):
             yield result
         for result in skipped:
             result.alignment_data = []
+
+    def describe(self) -> str:
+        """
+        Describe the mappy Aligner plugin instance. Returns human readable information about the plugin.
+
+        :return: Human readable string to be logged to readfish and MinKNOW
+        """
+        description = []
+        mappy_type = "mappy_rs" if _mappy_rs else "mappy"
+        if self.initialised:
+            description.append(
+                f"Using the {mappy_type} plugin. Using reference: {(self.aligner_params['fn_idx_in'])}.\n"
+            )
+            seq_names = set(self.aligner.seq_names)
+            # Get total seq length of the reference.
+            ref_len = sum(len(self.aligner.seq(sn)) * 2 for sn in seq_names)
+            # Print out for each region
+            for condition, region_or_barcode_str in chain(
+                zip(self.config.regions, repeat("Region", len(self.config.regions))),
+                zip(
+                    self.config.barcodes.values(),
+                    repeat("Barcode", len(self.config.barcodes)),
+                ),
+            ):
+                unique_contigs = set(condition.targets._targets[Strand.forward].keys())
+                unique_contigs.update(
+                    set(condition.targets._targets[Strand.reverse].keys())
+                )
+                num_unique_contigs = len(unique_contigs)
+                # More than one contig should be plural!
+                pluralise = {1: ""}.get(num_unique_contigs, "s")
+                num_in_ref_contigs = len(unique_contigs & seq_names)
+                num_not_in_ref_contigs = len(unique_contigs - seq_names)
+                warn_not_found = (
+                    f"NOTE - The following {num_not_in_ref_contigs} {'contigs are listed as targets but have' if num_not_in_ref_contigs > 1 else 'contig is listed as a target but has'} not been found on the target reference:\n {nice_join(sorted(unique_contigs - seq_names), conjunction='and')}"
+                    if num_not_in_ref_contigs
+                    else ""
+                )
+                if warn_not_found:
+                    raise SystemExit(warn_not_found)
+                num_targets = count_dict_elements(condition.targets._targets)
+                num_bases_in_targets = sum_target_coverage(
+                    condition.targets._targets, self.aligner
+                )
+                percentage_ref_covered = round(num_bases_in_targets / ref_len * 100, 2)
+                # add some front padding to the flowcell print out
+                description.append(
+                    f"""{region_or_barcode_str} {condition.name} has targets on {num_unique_contigs} contig{pluralise}, with {num_in_ref_contigs} found in the provided reference.
+This {region_or_barcode_str.lower()} has {num_targets} total targets (+ve and -ve strands), covering approximately {percentage_ref_covered} percent of the genome.\n"""
+                )
+            return "\n".join(description)
+        return "Aligner is not initialised yet. No reference has been provided, readfish will not proceed until the Aligner is initialised."

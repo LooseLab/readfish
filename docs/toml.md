@@ -381,6 +381,8 @@ As an example - if the reference is missing.
 ```
 
 This command has a flag `--no-check-plugins` which will disable the loading and validation of plugins. However this is only recommended if you absolutely must not validate the plugins. For example the above TOML, missing the reference, would pass validation if using the `--no-check-plugins` flag.
+The validate command also describes the experiment, and will error if contigs are listed in the targets that are not in the reference.
+This can be disabled by passing the `--no-describe` flag.
 
 
 [TOML]: https://toml.io

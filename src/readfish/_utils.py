@@ -171,7 +171,7 @@ def nice_join(seq: Sequence[Any], sep: str = ", ", conjunction: str = "or") -> s
         return f"{sep.join(seq[:-1])} {conjunction} {seq[-1]}"
 
 
-def get_coords(channel: int, flowcell_size: int):
+def get_coords(channel: int, flowcell_size: int) -> tuple[int, int]:
     """Return a channel's coordinates given a flowcell size
 
     :param channel: The channel to retrieve the coordinates for
@@ -238,6 +238,67 @@ def get_flowcell_array(flowcell_size: int) -> npt.ArrayLike:
 
     # return the reversed array, to get the right orientation
     return b[::-1]
+
+
+def stringify_grid(grid: list[list[str]]) -> str:
+    """
+    Convert a nested list of characters into a 2d grid.
+
+    :param grid: The grid to convert. Represents the flowcell array.
+    :return: String representation of the flowcell in ASCII art
+    """
+    x = []
+    for row in grid:
+        x.append("".join(row))
+    return "\n".join(x)
+
+
+def draw_flowcell_split(
+    flowcell_size: int, split: int = 1, axis: int = 1, index: int = 0
+) -> str:
+    """
+    Draw unicode representation of the flowcell. If the flowcell is split more than once, and index is passed, the region of the
+    flowcell represented by the index is highlighted solid, whilst the rest is filled with Xs
+
+    Rather than representing all the possible channels, we draw a 32 column wide flowcell for gridion and 120 for promethion and divide
+    accordingly
+
+    Example
+
+    draw_flowcell_split(512)
+
+    XXXX
+    XXXX
+
+    draw_flowcell_split(512, split = 2)
+    XX00
+    XX00
+
+    draw_flowcell_split(512, split = 2, index = 1)
+    00XX
+    00XX
+
+    :param flowcell_size: Number of channels on the flow cell
+    :param split: The number of regions to split into, defaults to 1
+    :param index: The index of the region to highlight, defaults to 0
+    :return: String representation of the flowcell in ASCII art
+    """
+    depth, width = get_flowcell_array(flowcell_size).shape
+    depth = round((depth / 2) + 0.5)
+    cells = []
+    for _h in range(depth):
+        row = [
+            "    ",
+        ]
+        for _w in range(width):
+            row.append(".")
+        cells.append(row)
+    cells = np.array(cells)
+    region = generate_flowcell(flowcell_size, split, axis)[index]
+    for pos in region:
+        row, col = get_coords(pos, flowcell_size)
+        cells[(col // 2), row + 1] = "#"
+    return f"\n{stringify_grid(cells)}\n"
 
 
 def generate_flowcell(
@@ -343,122 +404,6 @@ def iter_exception_group(exc: BaseExceptionGroup, level: int = 0) -> str:
             yield from iter_exception_group(e, level + 1)
     else:
         yield f"{indent}- {exc!r}"
-
-
-# TODO: Rewrite to use the new Conf class, maybe make a method on the Conf?
-def describe_experiment(conditions, mapper):
-    """
-
-    Parameters
-    ----------
-    conditions : List[NamedTuple, ...]
-        List of named tuples, should be conditions from get_run_info
-    mapper : mappy.mapper
-        Instance of mappy.mapper initialised with the reference passed from
-        get_run_info
-
-    Yields
-    ------
-    str
-        Message string
-    severity : Severity
-        One of Severity.INFO, Severity.WARN or Severity.ERROR
-
-    """
-    # TODO: conditional 's' here
-    yield "This experiment has {} region{} on the flowcell".format(
-        len(conditions), {1: ""}.get(len(conditions), "s")
-    ), Severity.INFO
-
-    if mapper.initialised:
-        yield f"Using reference: {mapper.index}", Severity.INFO
-        seq_names = set(mapper.seq_names)
-
-        # Get total seq length of the reference.
-        ref_len = 0
-        for seq_name in seq_names:
-            ref_len += len(mapper.seq(seq_name))
-
-        # Convert to double stranded
-        ref_len = 2 * ref_len
-
-        for region in conditions:
-            conds = {
-                "unblock": [],
-                "stop_receiving": [],
-                "proceed": [],
-            }
-            for m in (
-                "single_on",
-                "single_off",
-                "multi_on",
-                "multi_off",
-                "no_map",
-                "no_seq",
-            ):
-                conds[getattr(region, m)].append(m)
-            conds = {k: nice_join(v) for k, v in conds.items()}
-
-            target_total = 0
-            target_count = 0
-            for strand in ["+", "-"]:
-                for chromosome in region.coords[strand]:
-                    total = 0
-                    for s, f in region.coords[strand][chromosome]:
-                        region_len = abs(f - s)
-                        if np.isinf(region_len):
-                            region_len = len(mapper.seq(chromosome))
-                        total += region_len
-                        target_count += 1
-                    target_total += total
-
-            s = (
-                "Region '{}' (control={}) has {} contig{} of which {} are in the reference. "
-                "There are {} targets (including +/- strand) representing {}% of the reference. "
-                "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
-                "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
-                    region.name,
-                    region.control,
-                    len(region.targets),
-                    {1: ""}.get(len(region.targets), "s"),
-                    len(region.targets & seq_names),
-                    target_count,
-                    round(target_total / ref_len * 100, 2),
-                    **conds,
-                )
-            )
-            yield s, Severity.INFO
-    else:
-        yield "No reference file provided", Severity.WARN
-        for region in conditions:
-            conds = {
-                "unblock": [],
-                "stop_receiving": [],
-                "proceed": [],
-            }
-            for m in (
-                "single_on",
-                "single_off",
-                "multi_on",
-                "multi_off",
-                "no_map",
-                "no_seq",
-            ):
-                conds[getattr(region, m)].append(m)
-            conds = {k: nice_join(v) for k, v in conds.items()}
-            s = (
-                "Region '{}' (control={}) has {} contig{}. "
-                "Reads will be unblocked when classed as {unblock}; sequenced when classed as "
-                "{stop_receiving}; and polled for more data when classed as {proceed}.".format(
-                    region.name,
-                    region.control,
-                    len(region.targets),
-                    {1: ""}.get(len(region.targets), "s"),
-                    **conds,
-                )
-            )
-
-            yield s, Severity.WARN
 
 
 def get_device(

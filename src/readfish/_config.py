@@ -1,4 +1,5 @@
 from __future__ import annotations
+from collections import defaultdict
 import sys
 import traceback
 import importlib
@@ -10,7 +11,12 @@ import attrs
 import cattrs
 import rtoml
 
-from readfish._utils import generate_flowcell, compress_and_encode_string
+from readfish._utils import (
+    generate_flowcell,
+    compress_and_encode_string,
+    nice_join,
+    draw_flowcell_split,
+)
 
 from readfish.plugins.utils import Targets, Action, Decision
 
@@ -55,6 +61,30 @@ class _Condition:
         :param decision: :class:`Decision` for a read
         """
         return getattr(self, decision.name)
+
+    def pretty_print(self) -> str:
+        """
+        Pretty print how the conditions match up to the resulting Actions. Used in the describe function.
+
+        :return: A pretty format string containing all the variables
+        """
+        d = defaultdict(list)
+        for decision in [
+            "single_on",
+            "single_off",
+            "multi_on",
+            "multi_off",
+            "no_map",
+            "no_seq",
+            "below_min_chunks",
+            "above_max_chunks",
+        ]:
+            d[getattr(self, decision)].append(decision)
+        s = [
+            f"Read will be sent {k.name} when classed as:\n\t{nice_join(v)}."
+            for k, v in d.items()
+        ]
+        return "\n".join(s)
 
 
 @attrs.define
@@ -170,7 +200,7 @@ class Conf:
     :param mapper_settings: The mapper settings as listed in the TOML
     :param regions: The regions as listed in the Toml file.
     :param barcodes: A Dictionary of barcode names to Barcode Classes
-    :param _channel_map:
+    :param _channel_map: A map of channels number (1 to flowcell size) to the index of the Region (in self.regions) they are part of.
     """
 
     channels: int
@@ -336,6 +366,41 @@ class Conf:
         d.pop("_channel_map")
         with open(path, "w") as fh:
             rtoml.dump(d, fh, pretty=True)
+
+    def describe_experiment(self) -> str:
+        """
+        Describe the experiment from the given Conf class.
+        For Barcodes we describe the targets and the conditions, but not the region.
+
+        :return: The description string, human readable.
+        """
+        split = len(self.regions)
+        description = ["Configuration description:"]
+        # - 2 so we do not include classified and unclassified
+        num_barcodes = len(self.barcodes) - 2
+        if len(self.barcodes):
+            description.append(
+                f"Number of barcodes in the Conf (excluding unclassified and classified): {num_barcodes}"
+            )
+            description.append(
+                nice_join(
+                    (
+                        f"Barcode {barcode.name} (control={barcode.control})"
+                        for barcode in self.barcodes.values()
+                    ),
+                    conjunction="and",
+                )
+            )
+            # lazy way of adding a new line between barcodes and regions
+            description.append("")
+
+        for index, region in enumerate(self.regions):
+            description.append(
+                f"""Region {region.name} (control={region.control}).
+Region applies to section of flow cell (# = applied, . = not applied):
+{draw_flowcell_split(self.channels, split, index=index)}"""
+            )
+        return "\n".join(description)
 
 
 # TODO: Docs! (barcodes have higher precedence for targets than regions)

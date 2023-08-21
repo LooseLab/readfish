@@ -42,7 +42,12 @@ from readfish._cli_args import DEVICE_BASE_ARGS
 from readfish._client import RUClient
 from readfish._config import Action, Conf
 from readfish._loggers import setup_debug_logger
-from readfish._utils import get_device, send_message, ChunkTracker, Severity
+from readfish._utils import (
+    get_device,
+    send_message,
+    ChunkTracker,
+    Severity,
+)
 from readfish.plugins.abc import AlignerABC, CallerABC
 from readfish.plugins.utils import Decision
 
@@ -128,12 +133,14 @@ class Analysis:
         logger.info("Initialising Caller")
         self.caller: CallerABC = conf.caller_settings.load_object("Caller")
         logger.info("Caller initialised")
+        caller_description = self.caller.describe()
+        self.logger.info(caller_description)
+        send_message(self.client.connection, caller_description, Severity.INFO)
         logger.info("Initialising Aligner")
         self.mapper: AlignerABC = conf.mapper_settings.load_object(
             "Aligner", readfish_config=self.conf
         )
         self.logger.info("Aligner initialised")
-
         # count how often a read is seen
         self.chunk_tracker = ChunkTracker(self.client.channel_count)
 
@@ -161,6 +168,10 @@ class Analysis:
         last_live_mtime = 0
 
         self.logger.info("Starting main loop")
+        mapper_description = self.mapper.describe()
+        self.logger.info(mapper_description)
+        send_message(self.client.connection, mapper_description, Severity.INFO)
+
         while self.client.is_running:
             t0 = timer()
             if not self.client.is_phase_sequencing:
@@ -317,6 +328,7 @@ def run(
 
     # Load TOML configuration
     conf = Conf.from_file(args.toml, read_until_client.channel_count, logger=logger)
+    logger.info(conf.describe_experiment())
 
     send_message(
         read_until_client.connection,

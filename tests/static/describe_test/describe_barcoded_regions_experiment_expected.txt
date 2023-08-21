@@ -1,0 +1,27 @@
+Configuration description:
+Number of barcodes in the Conf (excluding unclassified and classified): 2
+Barcode unclassified_reads (control=False), Barcode classified_reads (control=False), Barcode barcode01_dupli_contigs (control=False) and Barcode barcode02_chr19 (control=False)
+
+Region Experimental (control=False).
+Region applies to section of flow cell (# = applied, . = not applied):
+
+    ################................
+    ################................
+    ################................
+    ################................
+    ################................
+    ################................
+    ################................
+    ################................
+
+Region Control (control=True).
+Region applies to section of flow cell (# = applied, . = not applied):
+
+    ................################
+    ................################
+    ................################
+    ................################
+    ................################
+    ................################
+    ................################
+    ................################

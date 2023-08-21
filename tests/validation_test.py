@@ -72,7 +72,7 @@ def test_validation(capsys, toml, error_txts, exit_check):
     `validate` sub-command.
     """
     with pytest.raises(SystemExit) as exc_info:
-        readfish._cli_base.main(["validate", toml])
+        readfish._cli_base.main(["validate", toml, "--no-describe"])
     assert exit_check(exc_info.value.code)
     out, err = capsys.readouterr()
     for error_txt in error_txts:

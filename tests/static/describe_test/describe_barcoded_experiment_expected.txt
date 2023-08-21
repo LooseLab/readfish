@@ -1,0 +1,3 @@
+Configuration description:
+Number of barcodes in the Conf (excluding unclassified and classified): 2
+Barcode unclassified_reads (control=False), Barcode classified_reads (control=False), Barcode barcode01_NC_001133_chr21 (control=False) and Barcode barcode02_NC_001136_chr19 (control=False)

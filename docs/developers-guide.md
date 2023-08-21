@@ -156,7 +156,6 @@ Things we suggest that are validated:
  - correctly typed values - Values that have been passed in ar eof the correct instance
  - available input files - Check the existence of paths
  - writable outputs - Check permissions on output files
- - sufficient space/RAM/resource - Check Disk space at least
 
 
 Let's dissect the structure of `mappy.py`.
@@ -288,6 +287,74 @@ This function is why we had to pass in the `Conf` instance, so we could determin
         elif len(results) > 1:
             return Decision.multi_on if coord_match else Decision.multi_off
         raise ValueError()
+```
+
+The below `describe` function is required. The contents of the description string is left to the developer of any plugins - all that need be returned is a string
+describe what the aligner is seeing before it starts. This will be logged in the readfish log file and MinKNOW logs,
+so things to bear in mind are things that will be useful when retrospectively analysing the run.
+This function is called in `targets.py` to be logged to the terminal.
+This is a more complicated function, so I've commented details more thoroughly below.
+
+```python
+    def describe(self) -> str:
+        """
+        Describe the mappy Aligner plugin instance. Returns human readable information about the plugin.
+
+        :return: Human readable string to be logged to readfish and MinKNOW
+        """
+        # List to store strings, that will be concatenated at the end and returned.
+        description = []
+        mappy_type = "mappy_rs" if _mappy_rs else "mappy"
+        # Check we have a reference.
+        if self.initialised:
+            # Append first useful information.
+            description.append(
+                f"Using the {mappy_type} plugin. Using reference: {(self.aligner_params['fn_idx_in'])}.\n"
+            )
+            # All the contig names that are in the reference.
+            seq_names = set(self.aligner.seq_names)
+            # Get total seq length of the reference.
+            ref_len = sum(len(self.aligner.seq(sn)) * 2 for sn in seq_names)
+            # Print out for each region and barcode. Zip an identifying string in with the class containing the Condition data.
+            for condition, region_or_barcode_str in chain(
+                zip(self.config.regions, repeat("Region", len(self.config.regions))),
+                zip(
+                    self.config.barcodes.values(),
+                    repeat("Barcode", len(self.config.barcodes)),
+                ),
+            ):
+                # Create a set of all contigs listed as targets to get them uniquely
+                unique_contigs = set(condition.targets._targets[Strand.forward].keys())
+                unique_contigs.update(
+                    set(condition.targets._targets[Strand.reverse].keys())
+                )
+                num_unique_contigs = len(unique_contigs)
+                # More than one contig should be plural in the final string!
+                pluralise = {1: ""}.get(num_unique_contigs, "s")
+                num_in_ref_contigs = len(unique_contigs & seq_names)
+                # Check all targets are in the reference.
+                num_not_in_ref_contigs = len(unique_contigs - seq_names)
+                warn_not_found = (
+                    f"NOTE - The following {num_not_in_ref_contigs} {'contigs are listed as targets but have' if num_not_in_ref_contigs > 1 else 'contig is listed as a target but has'} not been found on the target reference:\n {nice_join(sorted(unique_contigs - seq_names), conjunction='and')}"
+                    if num_not_in_ref_contigs
+                    else ""
+                )
+                # NOTE - we raise an error if we have a contig in the targets that is not in the reference.
+                if warn_not_found:
+                    raise SystemExit(warn_not_found)
+                # Calculate some fun stats
+                num_targets = count_dict_elements(condition.targets._targets)
+                num_bases_in_targets = sum_target_coverage(
+                    condition.targets._targets, self.aligner
+                )
+                percentage_ref_covered = round(num_bases_in_targets / ref_len * 100, 2)
+                # Append a useful summation of each region or barcode
+                description.append(
+                    f"""{region_or_barcode_str} {condition.name} has targets on {num_unique_contigs} contig{pluralise}, with {num_in_ref_contigs} found in the provided reference.
+This {region_or_barcode_str.lower()} has {num_targets} total targets (+ve and -ve strands), covering approximately {percentage_ref_covered} percent of the genome.\n"""
+                )
+            return "\n".join(description)
+        return "Aligner is not initialised yet. No reference has been provided, readfish will not proceed until the Aligner is initialised."
 ```
 
 Our final required function - map_reads.
