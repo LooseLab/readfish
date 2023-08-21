@@ -7,6 +7,60 @@ from io import StringIO
 import csv
 
 import attrs
+import numpy as np
+
+
+def count_dict_elements(d: dict[Any]) -> int:
+    """
+    Recursively count all the bottom elements of an arbitrarily nested dictionary
+
+    :param d: Dictionary to count elements of, may or may not be nested
+    :return: Count of elements at lowest point in tree
+    """
+    return sum(
+        (count_dict_elements(v) if isinstance(v, dict) else 1 for v in d.values())
+    )
+
+
+def _check_inf(v: list[tuple[float, float]] | float, k: str, al) -> float:
+    """
+    Take in the value of a given target, either in the form of (target_start, target_stop),
+    or np.inf. If inf, get the length of the contig out of the mappy index. If tuple, return the absolute distance
+    covered by the target, calculated by target_stop - target start.
+
+    :param v: The value of the target coordinates.
+    :param k: The name of the reference contig this target is on
+    :param al: The mappy aligner instance.
+    :type al: AlignerABC
+    :return: The distance covered by the target.
+    """
+    for t_start, t_stop in v:
+        rl = abs(t_start - t_stop)
+        if np.isinf(rl):
+            seq = al.seq(k)
+            rl = 0 if seq is None else len(al.seq(k))
+        return rl
+
+
+def sum_target_coverage(d: dict[Any], al) -> int:
+    """
+    Recursively find the coverage of the range of a set of Targets - ASSUMES bottoms elements are in the form
+    dict[chromosome_name, tuple[float, float]] or tuple[int, int], i.e genomic coordinates
+
+    :param d: Dictionary to sum elements of, may or may not be nested
+    :param al: The Aligner instance, used to provide the length of the entire chromosome if that is the target
+    :type al: AlignerABC
+    :return: sum of distance covered by ranges of targets at lowest point in tree
+    """
+    # Empty targets
+    if not d:
+        return 0
+    return sum(
+        (
+            sum_target_coverage(v, al) if isinstance(v, dict) else _check_inf(v, k, al)
+            for k, v in d.items()
+        )
+    )
 
 
 @unique
@@ -85,7 +139,7 @@ class Targets:
     """The targets for a given region
 
     :param value: The raw value from the TOML file
-    :param _targets: The parsed targets.
+    :param _targets: The parsed targets. Strand -> Contig -> List of Coordinates list[(start, stop)]
     """
 
     value: Union[List[str], Path] = attrs.field(default=attrs.Factory(list))

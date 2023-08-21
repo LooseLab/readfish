@@ -54,6 +54,15 @@ class AlignerABC(abc.ABC):
         """
 
     @abc.abstractmethod
+    def describe(self) -> str:
+        """
+        Informatively describe the Aligner and how it is setup, to be logged for the user.
+        For example reference size, reference file etc.
+
+        :return: A string containing (preferably pretty formatted) information about the aligner
+        """
+
+    @abc.abstractmethod
     def map_reads(self, basecall_results: Iterable[Result]) -> Iterable[Result]:
         """Map and make a decision on an iterable of basecalled data.
 
@@ -98,6 +107,15 @@ class CallerABC(abc.ABC):
         :param daq_values: Mapping of channel number to it's ``CALIBRATION`` values.
 
         :returns: Yields ``Result`` classes with the ``Result.channel``, ``Result.read_number``, ``Result.read_id``, and ``Result.seq`` fields set.
+        """
+
+    @abc.abstractmethod
+    def describe(self) -> str:
+        """
+        Informatively describe the Caller and how it is setup, to be logged for the user.
+        For example the name of the caller, any connections made for basecalling, models used etc.
+
+        :return: A string containing (preferably pretty formatted) information about the caller
         """
 
     @abc.abstractmethod

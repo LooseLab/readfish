@@ -1,0 +1,13 @@
+Using the mappy_rs plugin. Using reference: tests/static/describe_test/yeast_8kb_contigs_test.mmi.
+
+Barcode unclassified_reads has targets on 0 contigs, with 0 found in the provided reference.
+This barcode has 0 total targets (+ve and -ve strands), covering approximately 0.0 percent of the genome.
+
+Barcode classified_reads has targets on 0 contigs, with 0 found in the provided reference.
+This barcode has 0 total targets (+ve and -ve strands), covering approximately 0.0 percent of the genome.
+
+Barcode barcode01_NC_001133_chr21 has targets on 1 contig, with 1 found in the provided reference.
+This barcode has 1 total targets (+ve and -ve strands), covering approximately 0.37 percent of the genome.
+
+Barcode barcode02_NC_001136_chr19 has targets on 1 contig, with 1 found in the provided reference.
+This barcode has 2 total targets (+ve and -ve strands), covering approximately 5.88 percent of the genome.

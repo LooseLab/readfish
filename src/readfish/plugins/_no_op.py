@@ -53,6 +53,14 @@ class Aligner(AlignerABC):
         """Pass through the ``basecall_results`` iterable that is supplied."""
         return basecall_results
 
+    def describe(self) -> str:
+        """
+        Describe the no_op Aligner instance
+
+        :return: _description_
+        """
+        return "Using the `no_op` Aligner. No alignments will be performed, and all Results will be passed through."
+
     def disconnect(self) -> None:
         """Will always return ``None``, does nothing."""
         return
@@ -94,6 +102,14 @@ class Caller(CallerABC):
                 read_id=read.id,
                 seq="",
             )
+
+    def describe(self) -> str:
+        """
+        Describe the `no_op` Caller.
+
+        :return: A description string for the `no_op` Caller instance.
+        """
+        return "Using the `no_op` Caller. No base-calling will be performed, and minimum viable results will be yielded back for each read provided."
 
     def disconnect(self) -> None:
         """Will always return ``None``, does nothing."""

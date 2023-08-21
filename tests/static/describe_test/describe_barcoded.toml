@@ -1,0 +1,62 @@
+
+[caller_settings.no_op]
+
+[mapper_settings.mappy]
+fn_idx_in = "tests/static/describe_test/yeast_8kb_contigs_test.mmi"
+
+
+[barcodes.unclassified]
+name = "unclassified_reads"
+control = false
+min_chunks = 0
+max_chunks = 4
+targets = []
+single_on = "unblock"
+multi_on = "unblock"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "unblock"
+
+[barcodes.classified]
+name = "classified_reads"
+control = false
+min_chunks = 0
+max_chunks = 4
+targets = []
+single_on = "unblock"
+multi_on = "unblock"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "unblock"
+
+[barcodes.barcode01]
+name = "barcode01_NC_001133_chr21"
+control = false
+min_chunks = 0
+max_chunks = 4
+targets = ["NC_001133.9,0,1000,+"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "unblock"
+below_min_chunks = "proceed"
+
+[barcodes.barcode02]
+name = "barcode02_NC_001136_chr19"
+control = false
+min_chunks = 0
+max_chunks = 4
+targets = ["NC_001136.10"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "unblock"
+below_min_chunks = "proceed"

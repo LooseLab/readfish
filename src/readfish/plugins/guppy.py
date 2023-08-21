@@ -178,3 +178,14 @@ class Caller(CallerABC):
                         basecall_data=res,
                     )
                     reads_received += 1
+
+    def describe(self) -> str:
+        """
+        Describe the guppy Caller
+
+        :return: Description of parameters passed to this guppy Caller plugin
+        """
+        description = ["Utilising the Guppy base-caller plugin:"]
+        for param in self.guppy_params.keys():
+            description.append(f"\t- {param}: {self.guppy_params[param]}")
+        return "\n".join(description)

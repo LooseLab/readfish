@@ -1,0 +1,30 @@
+
+[caller_settings.no_op]
+
+[mapper_settings.mappy]
+fn_idx_in = "tests/static/describe_test/yeast_8kb_contigs_test.mmi"
+
+[[regions]]
+name = "select two contigs"
+min_chunks = 1
+max_chunks = 4
+targets = ["NC_001137.3", "NC_001138.5", "NC_001145.3,10,1000,+"]
+single_off = "unblock"
+multi_off = "unblock"
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+no_seq = "proceed"
+no_map = "proceed"
+
+
+[[regions]]
+name = "control"
+control = true
+min_chunks = 1
+max_chunks = 4
+single_off = "unblock"
+multi_off = "unblock"
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+no_seq = "proceed"
+no_map = "proceed"

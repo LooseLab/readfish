@@ -1,0 +1,7 @@
+Using the mappy_rs plugin. Using reference: tests/static/describe_test/yeast_8kb_contigs_test.mmi.
+
+Region select two contigs has targets on 3 contigs, with 3 found in the provided reference.
+This region has 5 total targets (+ve and -ve strands), covering approximately 12.13 percent of the genome.
+
+Region control has targets on 0 contigs, with 0 found in the provided reference.
+This region has 0 total targets (+ve and -ve strands), covering approximately 0.0 percent of the genome.
