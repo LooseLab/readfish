@@ -63,7 +63,6 @@ _cli = DEVICE_BASE_ARGS + (
         ),
     ),
     (
-        "--chunk-log",
         "--debug-log",
         dict(
             help="Chunk log",
@@ -98,7 +97,7 @@ class Analysis:
     :param client: An instance of the ReadUntilClient object
     :param conf: readfish._config.Conf
     :param logger: The command level logger for this module
-    :param debug_logger: The debug logger that writes the chunks. If None no chunks are logged.
+    :param debug_log_filename: The debug log filename for chunks. If None no chunks are logged.
     :param throttle: The number of seconds interval between requests to the ReadUntilClient, defaults to 0.1
     :param unblock_duration: Time, in seconds, to apply unblock voltage, defaults to 0.5
     :param dry_run: If True unblocks are replaced with `stop_receiving` commands, defaults to False
@@ -110,7 +109,7 @@ class Analysis:
         client: ReadUntilClient,
         conf: Conf,
         logger: logging.Logger,
-        debug_logger: logging.Logger | None,
+        debug_log_filename: str | None,
         throttle: float = 0.1,
         unblock_duration: float = 0.5,
         dry_run: bool = False,
@@ -119,15 +118,15 @@ class Analysis:
         self.client = client
         self.conf = conf
         self.logger = logger
-        self.debug_logger = debug_logger
+        self.debug_log_filename = debug_log_filename
         self.throttle = throttle
         self.unblock_duration = unblock_duration
         self.dry_run = dry_run
         self.toml = Path(f"{toml}_live").resolve()
 
-        self.chunk_log = setup_debug_logger(
-            "chunk_log",
-            log_file=debug_logger,
+        self.debug_log = setup_debug_logger(
+            "debug_chunk_log",
+            log_file=self.debug_log_filename,
             header="\t".join(CHUNK_LOG_FIELDS),
         )
         logger.info("Initialising Caller")
@@ -260,7 +259,7 @@ class Analysis:
                         (result.channel, result.read_number, result.read_id)
                     )
 
-                self.chunk_log.debug(
+                self.debug_log.debug(
                     f"{loop_counter}\t"
                     f"{number_reads}\t"
                     f"{result.read_id}\t"
@@ -350,7 +349,7 @@ def run(
         read_until_client,
         conf=conf,
         logger=logger,
-        debug_logger=args.chunk_log,
+        debug_log_filename=args.debug_log,
         unblock_duration=args.unblock_duration,
         throttle=args.throttle,
         dry_run=args.dry_run,
