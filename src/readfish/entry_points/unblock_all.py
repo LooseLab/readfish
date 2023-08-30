@@ -24,7 +24,6 @@ _cli = DEVICE_BASE_ARGS + (
         dict(
             help="Debug log, write a TSV for all records",
             default=None,
-            dest="chunk_log",
         ),
     ),
 )
