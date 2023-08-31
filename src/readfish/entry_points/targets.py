@@ -22,6 +22,35 @@ Example run command::
            --log-file rf.log \\
            --debug-log chunks.tsv
 
+In the debug_log chunks.tsv file, if this argument is passed, each line represents detailed information about a batch of
+read signal that has been processed in an iteration.
+
+The format of each line is as follows:
+loop_counter  number_reads  read_id  channel  read_number  seq_length  seen_count
+decision  action  condition  barcode  previous_action  timestamp  action_overridden
+
+- loop_counter (int): The iteration number for the loop.
+- number_reads (int): The number of reads processed in this iteration.
+- read_id (str): UUID4 string representing the reads unique read_id.
+- channel (int): Channel number the read is being sequenced on.
+- read_number (int): The number this read is in the sequencing run as a whole.
+- seq_length (int): Length of the base-called signal chunk (includes any previous chunks).
+- seen_count (int): Number of times this read has been seen in previous iterations.
+- decision (str): The name of the :class:`~readfish.plugins.utils.Decision` variant taken for this read, one of `single_on, single_off, multi_on, multi_off, no_map`, or `no_seq`.
+- action (str): The name of the :class:`~readfish.plugins.utils.Action` variant sent to the sequencer for this read, one of `unblock, stop_receiving`, or `proceed`.
+- condition (str): Name of the :class:`~readfish._config._Condition` that the read has been addressed with.
+- barcode (str or None): :class: The name of the :class:`~readfish._config.Barcode` for this read if present, otherwise None.
+- previous_action (str or None): Name of the last :class:`~readfish.plugins.utils.Action` taken for a read sequenced by this channel or None if this is the first read on a channel.
+- timestamp (float): Current time as given by the time module in seconds.
+- action_overridden (bool): Indicates if the action has been overridden. Currently actions are always overridden to be `stop_receiving`.
+Actions being overridden occurs when the readfish run is a dry run and the action is unblock, or when the read is the first read seen for a channel by readfish.
+This prevents trying to unblock reads of unknown length.
+
+Example line in debug_log.tsv:
+
+1   10   cde5271b-13c2-43af-88e1-4268ab88928e  2  15  2  5 single_on  unblock  Condition_A  None  None  1678768540.879  False
+
+
 """
 # Core imports
 from __future__ import annotations
@@ -49,7 +78,7 @@ from readfish._utils import (
     Severity,
 )
 from readfish.plugins.abc import AlignerABC, CallerABC
-from readfish.plugins.utils import Decision
+from readfish.plugins.utils import Decision, PreviouslySentActionTracker
 
 
 _help = "Run targeted sequencing"
@@ -71,6 +100,7 @@ _cli = DEVICE_BASE_ARGS + (
     ),
 )
 
+# See module level docstring for an explanation of the fields in this log.
 CHUNK_LOG_FIELDS = (
     "client_iteration",
     "read_in_loop",
@@ -85,6 +115,7 @@ CHUNK_LOG_FIELDS = (
     "barcode",
     "previous_action",
     "timestamp",
+    "action_override",
 )
 
 
@@ -143,6 +174,17 @@ class Analysis:
         # count how often a read is seen
         self.chunk_tracker = ChunkTracker(self.client.channel_count)
 
+        # This is an object to keep track of the last action sent to the client for each channel
+        self.previous_action_tracker = PreviouslySentActionTracker()
+
+        # Check status when we start the run.
+        # We assume that sequencing is already running unless we are told otherwise.
+        # It starts as false which will prevent the first
+        # read seen from a channel being unblocked, over riding the action to a stop_receiving.
+        # If the run is not in sequencing phase when the read until loop starts then will
+        # be set to true and the first read seen may be unblocked.
+        self.started_during_sequencing = True
+
     def run(self):
         """Run the read until loop, in one continuous while loop."""
 
@@ -173,10 +215,18 @@ class Analysis:
 
         while self.client.is_running:
             t0 = timer()
-            if not self.client.is_phase_sequencing:
+            if not (self.client.is_phase_sequencing):
+                self.logger.info(
+                    "readfish started in mux phase, waiting for sequencing to begin."
+                )
+                self.started_during_sequencing = False  # We are not in sequencing phase, so we can unblock the first read we see as we will be sequencing it from the start
                 time.sleep(self.throttle)
                 continue
-
+            else:
+                if self.started_during_sequencing and loop_counter == 0:
+                    self.logger.info(
+                        "readfish started in sequencing phase. Ignoring first read from each channel."
+                    )
             if not self.mapper.initialised:
                 # TODO: Log when in this trap
                 time.sleep(self.throttle)
@@ -223,8 +273,6 @@ class Analysis:
                 )
                 seen_count = self.chunk_tracker.seen(result.channel, result.read_number)
                 action = condition.get_action(result.decision)
-                # TODO: Create a tracker for previous channel end action
-                previous_action = "TODO!"
 
                 if control:
                     action = Action.stop_receiving
@@ -248,16 +296,49 @@ class Analysis:
                         action = condition.below_min_chunks
                         result.decision = Decision.below_min_chunks
 
-                    # TODO: Check previous read decision here
+                # previous_action will be None if the read has not been seen before.
+                # otherwise previous_action will contain the last Action sent for a read on this channel.
+                previous_action = self.previous_action_tracker.get_action(
+                    result.channel
+                )
+                # Default is action has not been overridden
+                action_overridden = False
+                # Check if this is the first time a read has been seen from this channel, and we started mid sequencing run
+                if previous_action is None and self.started_during_sequencing:
+                    self.logger.debug(
+                        f"This is the first suitable read chunk from channel {result.channel}. Translocated read length unknown, sequencing."
+                    )
+                    action_overridden = True
+                    action = Action.stop_receiving
 
                 if action is Action.stop_receiving:
                     stop_receiving_action_list.append(
                         (result.channel, result.read_number)
                     )
+                    # We do this here so that we only update the previous read
+                    # tracker with reads that have decisions made on them.
+                    self.previous_action_tracker.add_action(
+                        result.channel, action
+                    )  # This populates the last seen tracker with the current result.
                 elif action is Action.unblock:
-                    unblock_batch_action_list.append(
-                        (result.channel, result.read_number, result.read_id)
-                    )
+                    if self.dry_run:
+                        # We wish to log that a read would have been unblocked, so
+                        # we log overriding the action, but we instead send a stop receiving.
+                        # This ensures that the read is not unblocked and is not processed
+                        # further but we still log that it would have been unblocked.
+                        action_overridden = True
+                        stop_receiving_action_list.append(
+                            (result.channel, result.read_number)
+                        )
+                    else:
+                        # We do this here so that we only update the previous read
+                        # tracker with a seen and decided read.
+                        unblock_batch_action_list.append(
+                            (result.channel, result.read_number, result.read_id)
+                        )
+                    self.previous_action_tracker.add_action(
+                        result.channel, action
+                    )  # This populates the last seen tracker with the current result.
 
                 self.debug_log.debug(
                     f"{loop_counter}\t"
@@ -271,8 +352,9 @@ class Analysis:
                     f"{action.name}\t"
                     f"{condition.name}\t"
                     f"{result.barcode}\t"
-                    f"{previous_action}\t"
-                    f"{time.time()}"
+                    f"{previous_action.name if previous_action is not None else previous_action}\t"
+                    f"{time.time()}\t"
+                    f"{action_overridden}"
                 )
             #######################################################################
             self.client.unblock_read_batch(
