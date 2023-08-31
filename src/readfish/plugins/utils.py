@@ -87,7 +87,27 @@ class Decision(Enum):
 
 @unique
 class Action(Enum):
-    """Action to take for a read"""
+    """
+    Action to take for a read.
+
+    This enum class represents different actions that can be taken for a read during sequencing.
+    Each action has a corresponding string value used for logging.
+
+    :cvar unblock: Send an unblock command to the sequencer.
+    :cvar stop_receiving: Allow the read to finish sequencing.
+    :cvar proceed: Sample another chunk of data.
+
+    :Example:
+
+    Define an Action:
+
+    >>> action = Action.unblock
+
+    Access the string value of an Action:
+
+    >>> action.value
+    'unblock'
+    """
 
     #: Send an unblock command to the sequencer
     unblock = "unblock"
@@ -261,3 +281,59 @@ class Targets:
         intervals = self._targets[strand_][contig]
         # TODO: Binary search intervals when intervals > 30? -> pytest parameterise and benchmark
         return any(start <= coord <= end for start, end in intervals)
+
+
+@attrs.define
+class PreviouslySentActionTracker:
+    """
+    A class to keep track of the last action sent from a channel.
+
+    This class provides methods to add and retrieve the last action sent for each channel.
+
+    :param last_action: A dictionary mapping channel IDs to the last sent action for that channel.
+
+    :Example:
+
+    Initialize a PreviouslySentActionTracker:
+
+    >>> tracker = PreviouslySentActionTracker()
+
+    Add an action for channel number 1:
+
+    >>> from readfish.plugins.utils import Action
+    >>> action = Action.unblock
+    >>> tracker.add_action(1, action)
+
+    Retrieve the last action for a channel:
+
+    >>> retrieved_action = tracker.get_action(1)
+    >>> retrieved_action
+    <Action.unblock: 'unblock'>
+
+    Retrieve the last action for a channel that hasn't sent any actions:
+
+    >>> no_action = tracker.get_action(2)
+    >>> no_action is None
+    True
+    """
+
+    last_actions: Dict[int, Action] = attrs.Factory(dict)
+
+    def add_action(self, channel: int, action: Action) -> None:
+        """
+        This method adds an action to the last sent action tracker.
+
+        :param channel: The channel to add the action to.
+        :param action: The action to add to the channel.
+        """
+        self.last_actions[channel] = action
+
+    def get_action(self, channel: int) -> Optional[Action]:
+        """
+        This method checks the last action sent for a channel, returning the action if it exists,
+        otherwise returning None.
+
+        :param channel: The channel to check the last action for.
+        :return: The last action sent for the channel, or None if no action has been sent.
+        """
+        return self.last_actions.get(channel, None)
