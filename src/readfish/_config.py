@@ -225,7 +225,7 @@ class Conf:
 
         # This check ensures that when there are no `regions` on the flow cell
         #   there are
-        if not self.regions:
+        if not self.regions or self.barcodes:
             # There are no analysis/control regions defined in this TOML file.
 
             if not all(k in self.barcodes for k in required_barcodes):
