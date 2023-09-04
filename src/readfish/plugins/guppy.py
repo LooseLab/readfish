@@ -58,21 +58,30 @@ class Caller(CallerABC):
         # Connected to a live run via the minknow_api - get supported basecall and barcoding kits from the run info.
         if run_information is not None:
             tags = run_information.meta_info.tags
+
             self.supported_basecall_models = tags[
                 "available basecall models"
             ].array_value
+            # Make a CSV str a list of strings, removing quotes and square brackets
+            if self.supported_basecall_models and isinstance(
+                self.supported_basecall_models, str
+            ):
+                self.supported_basecall_models = (
+                    tags["available basecall models"]
+                    .array_value[1:-1]
+                    .replace('"', "")
+                    .split(",")
+                )
             # Faff on with sorting out available barcoding kits
             # See https://github.com/nanoporetech/minknow_api/blob/829dbe8ac8e49efdf268d385b50440c52473188b/python/minknow_api/tools/protocols.py#L97C1-L97C7
             self.supported_barcode_kits = tags["barcoding kits"].array_value
             # workaround for the set of barcoding kits being returned as a string rather
             # that array of strings
-            if self.supported_barcode_kits and len(self.supported_barcode_kits[0]) == 1:
+            if self.supported_barcode_kits and isinstance(
+                self.supported_barcode_kits, str
+            ):
                 self.supported_barcode_kits = (
-                    tags["barcoding kits"]
-                    .array_value["barcoding kits"]
-                    .array_value[1:-1]
-                    .replace('"', "")
-                    .split(",")
+                    tags["barcoding kits"].array_value[1:-1].replace('"', "").split(",")
                 )
             if tags["barcoding"].bool_value:
                 self.supported_barcode_kits.append(tags["kit"].string_value)
@@ -120,7 +129,8 @@ class Caller(CallerABC):
         # If we are connected to a live run, test if the base-caller model is acceptable.
         if (
             self.supported_basecall_models
-            and self.guppy_params["config"] not in self.supported_basecall_models
+            and f"{self.guppy_params['config'].replace('.cfg', '')}.cfg"
+            not in self.supported_basecall_models
         ):
             raise RuntimeError(
                 """The {} base-calling config listed in the readfish config TOML is not suitable for this flowcell and kit combination.
