@@ -55,36 +55,7 @@ class Caller(CallerABC):
         self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
         self.supported_barcode_kits = None
         self.supported_basecall_models = None
-        # Connected to a live run via the minknow_api - get supported basecall and barcoding kits from the run info.
-        if run_information is not None:
-            tags = run_information.meta_info.tags
-
-            self.supported_basecall_models = tags[
-                "available basecall models"
-            ].array_value
-            # Make a CSV str a list of strings, removing quotes and square brackets
-            if self.supported_basecall_models and isinstance(
-                self.supported_basecall_models, str
-            ):
-                self.supported_basecall_models = (
-                    tags["available basecall models"]
-                    .array_value[1:-1]
-                    .replace('"', "")
-                    .split(",")
-                )
-            # Faff on with sorting out available barcoding kits
-            # See https://github.com/nanoporetech/minknow_api/blob/829dbe8ac8e49efdf268d385b50440c52473188b/python/minknow_api/tools/protocols.py#L97C1-L97C7
-            self.supported_barcode_kits = tags["barcoding kits"].array_value
-            # workaround for the set of barcoding kits being returned as a string rather
-            # that array of strings
-            if self.supported_barcode_kits and isinstance(
-                self.supported_barcode_kits, str
-            ):
-                self.supported_barcode_kits = (
-                    tags["barcoding kits"].array_value[1:-1].replace('"', "").split(",")
-                )
-            if tags["barcoding"].bool_value:
-                self.supported_barcode_kits.append(tags["kit"].string_value)
+        self.run_information = run_information
 
         # Set our own priority
         self.guppy_params = kwargs
@@ -127,35 +98,73 @@ class Caller(CallerABC):
                     f"The user account running readfish doesn't appear to have permissions to write to the guppy base-caller socket. Please check permissions on {self.guppy_params['address']}. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."
                 )
         # If we are connected to a live run, test if the base-caller model is acceptable.
-        if (
-            self.supported_basecall_models
-            and f"{self.guppy_params['config'].replace('.cfg', '')}.cfg"
-            not in self.supported_basecall_models
-        ):
-            raise RuntimeError(
-                """The {} base-calling config listed in the readfish config TOML is not suitable for this flowcell and kit combination.
-Please check the guppy_config value in the caller_settings.guppy section of your TOML file.
-The following models are are given by ONT as suitable for this flow cell/kit combo:\n\t{}""".format(
-                    self.guppy_params["config"],
-                    nice_join(
-                        self.supported_basecall_models, sep="\n\t", conjunction="and"
+        # Connected to a live run via the minknow_api - get supported basecall and barcoding kits from the run info.
+        #  Check them against provided values
+        if self.run_information is not None:
+            tags = self.run_information.meta_info.tags
+
+            self.supported_basecall_models = tags[
+                "available basecall models"
+            ].array_value
+            # Make a CSV str a list of strings, removing quotes and square brackets
+            if self.supported_basecall_models and isinstance(
+                self.supported_basecall_models, str
+            ):
+                self.supported_basecall_models = (
+                    tags["available basecall models"]
+                    .array_value[1:-1]
+                    .replace('"', "")
+                    .split(",")
+                )
+            # Faff on with sorting out available barcoding kits
+            # See https://github.com/nanoporetech/minknow_api/blob/829dbe8ac8e49efdf268d385b50440c52473188b/python/minknow_api/tools/protocols.py#L97C1-L97C7
+            self.supported_barcode_kits = tags["barcoding kits"].array_value
+            # workaround for the set of barcoding kits being returned as a string rather
+            # that array of strings
+            if self.supported_barcode_kits and isinstance(
+                self.supported_barcode_kits, str
+            ):
+                self.supported_barcode_kits = (
+                    tags["barcoding kits"].array_value[1:-1].replace('"', "").split(",")
+                )
+
+            if tags["barcoding"].bool_value:
+                self.supported_barcode_kits.append(tags["kit"].string_value)
+            # If we are connected to a live run, and have suitable base calling models check the base-caller model is suitable for the flowcell and kit
+            if (
+                self.supported_basecall_models
+                and f"{self.guppy_params['config'].replace('.cfg', '')}.cfg"
+                not in self.supported_basecall_models
+            ):
+                raise RuntimeError(
+                    """The {} base-calling config listed in the readfish config TOML is not suitable for this flowcell and kit combination.
+    Please check the guppy_config value in the caller_settings.guppy section of your TOML file.
+    The following models are are given by ONT as suitable for this flow cell/kit combo:\n\t{}""".format(
+                        self.guppy_params["config"],
+                        nice_join(
+                            self.supported_basecall_models,
+                            sep="\n\t",
+                            conjunction="and",
+                        ),
+                    )
+                )
+
+            # If we are barcoding and have connected to a live run - try checking the listed barcode kit works with the flowcell and kit
+            if (
+                barcoding_kits := self.guppy_params.get("barcode_kits", None)
+            ) is not None:
+                barcoding_kits = barcoding_kits.split()
+            if barcoding_kits and not set(barcoding_kits).issubset(
+                self.supported_barcode_kits
+            ):
+                raise RuntimeError(
+                    "Barcoding kits specified in TOML {} not amongst those supported by the selected kit and protocol.\nSupported kits are:\n\t{}".format(
+                        nice_join(barcoding_kits, conjunction="and"),
+                        nice_join(
+                            self.supported_barcode_kits, sep="\n\t", conjunction="and"
+                        ),
                     ),
                 )
-            )
-        # If we are barcoding and have connected to a live run - try checking the listed barcode kit works with the flowcell and kit
-        if (barcoding_kits := self.guppy_params.get("barcode_kits", None)) is not None:
-            barcoding_kits = barcoding_kits.split()
-        if barcoding_kits and not set(barcoding_kits).issubset(
-            self.supported_barcode_kits
-        ):
-            raise RuntimeError(
-                "Barcoding kits specified in TOML {} not amongst those supported by the selected kit and protocol.\nSupported kits are:\n\t{}".format(
-                    nice_join(barcoding_kits, conjunction="and"),
-                    nice_join(
-                        self.supported_barcode_kits, sep="\n\t", conjunction="and"
-                    ),
-                ),
-            )
         return None
 
     def disconnect(self) -> None:
