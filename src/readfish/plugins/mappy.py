@@ -13,8 +13,8 @@ from readfish.plugins.utils import (
     Decision,
     Result,
     Strand,
+    _summary_percent_reference_covered,
     count_dict_elements,
-    sum_target_coverage,
 )
 from readfish._utils import nice_join
 
@@ -212,10 +212,9 @@ class Aligner(AlignerABC):
                 if warn_not_found:
                     raise SystemExit(warn_not_found)
                 num_targets = count_dict_elements(condition.targets._targets)
-                num_bases_in_targets = sum_target_coverage(
-                    condition.targets._targets, self.aligner
+                percentage_ref_covered = _summary_percent_reference_covered(
+                    ref_len, condition.targets._targets, self.aligner
                 )
-                percentage_ref_covered = round(num_bases_in_targets / ref_len * 100, 2)
                 # add some front padding to the flowcell print out
                 description.append(
                     f"""{region_or_barcode_str} {condition.name} has targets on {num_unique_contigs} contig{pluralise}, with {num_in_ref_contigs} found in the provided reference.

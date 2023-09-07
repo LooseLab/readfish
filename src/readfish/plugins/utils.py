@@ -1,7 +1,10 @@
 from __future__ import annotations
 from enum import Enum, unique
+from functools import partial
+from itertools import filterfalse
 from typing import Any, List, Dict, Tuple, Optional, Union
 from collections import defaultdict
+from collections.abc import Container
 from pathlib import Path
 from io import StringIO
 import csv
@@ -10,22 +13,136 @@ import attrs
 import numpy as np
 
 
+def _summary_percent_reference_covered(
+    ref_len: int, target_intervals: dict[Any, list[float, float]], aligner
+) -> float:
+    """
+    Calculate the percentage of the reference covered by target intervals.
+
+    This function takes the length of a reference sequence, a dictionary of target intervals,
+    and an aligner instance (used for getting contig lengths if we have entire contigs as targets).
+    It calculates the total length covered by the target intervals
+    and returns the percentage of the reference sequence that is covered by this length.
+
+    :param ref_len: The length of the reference sequence.
+    :param target_intervals: A dictionary of target intervals, where keys represent chromosome names
+                             and values are lists of pairs (start, stop) specifying target intervals.
+                             This may be nested further to be Strand dict[Strand, dict[Contig, List of Coordinates list[(start, stop)]]]
+    :param aligner: The aligner instance used to retrieve sequence lengths when target end is infinity, meaning
+
+    :return: The percentage of the reference sequence covered by the target intervals, rounded to two decimal places.
+    :rtype: float
+    """
+    num_bases_in_targets = sum_target_coverage(target_intervals, aligner)
+    percentage_ref_covered = round(num_bases_in_targets / ref_len * 100, 2)
+    return percentage_ref_covered
+
+
+def is_empty(item: Any) -> bool:
+    """
+    Check if an item is empty.
+
+    This function checks whether the given item is empty. An item is considered empty if it is an empty Container (Set, Tuple, Dict, List etc.).
+    For primitive types (Float, Int, String etc.), this function considers them non-empty.
+    considers them non-empty.
+
+    :param item: The item to check for emptiness.
+
+    :return: True if the item is empty, False otherwise.
+
+    :Examples:
+
+    >>> is_empty(42)
+    False
+    >>> is_empty("Hello, world!")
+    False
+    >>> is_empty([])
+    True
+    >>> is_empty({})
+    True
+    >>> is_empty([1, 2, 3])
+    False
+    >>> is_empty({"a": 1, "b": 2})
+    False
+    >>> is_empty([[], [], []])
+    False
+    >>> is_empty([{}, {}])
+    False
+    >>> is_empty(None)
+    False
+    """
+    if isinstance(item, Container):
+        return not bool(item)
+    return False
+
+
 def count_dict_elements(d: dict[Any]) -> int:
     """
-    Recursively count all the bottom elements of an arbitrarily nested dictionary
+    Recursively count all the bottom elements of an arbitrarily nested dictionary.
+    If the bottom element v is a list, return the length of the list, else return 1 for each v at the bottom of the list.
+
+    Note - This will break for nested lists, i.e will only count the list as one, ignoring the sublists - see the last doctest for an example.
+    This is not a problem for the current use case, but may be in the future.
 
     :param d: Dictionary to count elements of, may or may not be nested
     :return: Count of elements at lowest point in tree
+
+    >>> simple_dict = {"a": 1, "b": 2, "c": 3}
+    >>> count_dict_elements(simple_dict)
+    3
+
+    >>> string_dict = {"a": 1, "b": {"x": ["10", "2000"]}, "c": {"y": {"z": [30, 40, 50]}}}
+    >>> count_dict_elements(string_dict)
+    6
+
+    >>> nested_dict = {"a": 1, "b": {"x": [10, 20]}, "c": {"y": {"z": [30, 40, 50]}}}
+    >>> count_dict_elements(nested_dict)
+    6
+
+    >>> empty_dict = {"a": {}, "b": {"x": {}}, "c": {"y": {"z": []}}}
+    >>> count_dict_elements(empty_dict)
+    0
+
+    >>> mixed_dict = {"a": 1, "b": {"x": [10, 20]}, "c": {"y": {"z": [30, 40, 50], "w": 7.0}}}
+    >>> count_dict_elements(mixed_dict)
+    7
+
+    >>> empty_list_dict = {"a": [], "b": [{}], "c": [[], [], []]}
+    >>> count_dict_elements(empty_list_dict)
+    0
+
+    # Nested lists are not counted properly
+
+    >>> nested_list_dict = {"a": [], "b": [{}], "c": [[1, 2, [1, 2]], [], []]}
+    >>> count_dict_elements(nested_list_dict)
+    1
     """
     return sum(
-        (count_dict_elements(v) if isinstance(v, dict) else 1 for v in d.values())
+        (
+            count_dict_elements(v) if isinstance(v, dict)
+            # If v is a list, tuple, sequence, dict etc., return the length of the container filtering out any empty sun elements,
+            else len(list(filterfalse(partial(is_empty), v)))
+            if isinstance(v, Container)
+            else 1
+            for v in d.values()
+        )
     )
 
 
-def _check_inf(v: list[tuple[float, float]] | float, k: str, al) -> float:
+def _calculate_length(t_start, t_stop, k, al):
+    target_interval_length = abs(t_stop - t_start)
+    # If inf, get the length of the contig out of the mappy index
+    if np.isinf(target_interval_length):
+        seq = al.seq(k)
+        # Check if the contig exists, else return 0
+        target_interval_length = 0 if seq is None else len(seq)
+    return target_interval_length
+
+
+def target_coverage(v: list[tuple[float, float]] | float, k: str, al) -> float:
     """
     Take in the value of a given target, either in the form of (target_start, target_stop),
-    or np.inf. If inf, get the length of the contig out of the mappy index. If tuple, return the absolute distance
+    or 0, np.inf. If 0, inf, get the length of the contig out of the mappy index. If tuple, return the absolute distance
     covered by the target, calculated by target_stop - target start.
 
     :param v: The value of the target coordinates.
@@ -34,12 +151,7 @@ def _check_inf(v: list[tuple[float, float]] | float, k: str, al) -> float:
     :type al: AlignerABC
     :return: The distance covered by the target.
     """
-    for t_start, t_stop in v:
-        rl = abs(t_start - t_stop)
-        if np.isinf(rl):
-            seq = al.seq(k)
-            rl = 0 if seq is None else len(al.seq(k))
-        return rl
+    return sum(_calculate_length(t_start, t_stop, k, al) for t_start, t_stop in v)
 
 
 def sum_target_coverage(d: dict[Any], al) -> int:
@@ -57,7 +169,9 @@ def sum_target_coverage(d: dict[Any], al) -> int:
         return 0
     return sum(
         (
-            sum_target_coverage(v, al) if isinstance(v, dict) else _check_inf(v, k, al)
+            sum_target_coverage(v, al)
+            if isinstance(v, dict)
+            else target_coverage(v, k, al)
             for k, v in d.items()
         )
     )
