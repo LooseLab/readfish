@@ -2,8 +2,8 @@ from __future__ import annotations
 from enum import Enum, unique
 from functools import partial
 from itertools import filterfalse
-from typing import Any, List, Dict, Tuple, Optional, Union
-from collections import defaultdict
+from typing import Any, Iterator, List, Dict, Tuple, Optional, Union
+from collections import defaultdict, namedtuple
 from collections.abc import Container
 from pathlib import Path
 from io import StringIO
@@ -12,29 +12,44 @@ import csv
 import attrs
 import numpy as np
 
+TARGET_INTERVAL = namedtuple("TargetInterval", "chromosome start end strand")
+
+
+def get_contig_lengths(al) -> dict[str, int]:
+    """
+    Get the lengths of all contigs in the reference genome provided by an Aligner instance.
+
+    :param al: An Aligner instance representing the reference genome.
+    :type al: AlignerABC
+    :return: A dictionary mapping contig names to their respective lengths.
+    """
+    genome = {}
+    for seq in al.seq_names:
+        if seq in genome:
+            raise RuntimeError(f"Duplicate sequence name {seq} in reference file")
+        genome[seq] = len(al.seq(seq))
+    return genome
+
 
 def _summary_percent_reference_covered(
-    ref_len: int, target_intervals: dict[Any, list[float, float]], aligner
+    ref_len: int, targets: Targets, genome: dict[str, int]
 ) -> float:
     """
-    Calculate the percentage of the reference covered by target intervals.
+    Calculate the percentage of the reference covered by target intervals. Not formatted (i.e is a decimal)
 
-    This function takes the length of a reference sequence, a dictionary of target intervals,
-    and an aligner instance (used for getting contig lengths if we have entire contigs as targets).
+    This function takes the length of a reference sequence, The targets class for a given _Condition class,
+    and a dictionary of contig names to contig lengths (used for getting contig lengths if we have entire contigs as targets).
     It calculates the total length covered by the target intervals
     and returns the percentage of the reference sequence that is covered by this length.
 
     :param ref_len: The length of the reference sequence.
-    :param target_intervals: A dictionary of target intervals, where keys represent chromosome names
-                             and values are lists of pairs (start, stop) specifying target intervals.
-                             This may be nested further to be Strand dict[Strand, dict[Contig, List of Coordinates list[(start, stop)]]]
-    :param aligner: The aligner instance used to retrieve sequence lengths when target end is infinity, meaning
+    :param targets: The targets class for a given _Condition class
+    :param genome: A dictionary of contig names to contig lengths. Used if a target is in the entire contig.
 
-    :return: The percentage of the reference sequence covered by the target intervals, rounded to two decimal places.
-    :rtype: float
+    :return: The percentage of the reference sequence covered by the target intervals.
     """
-    num_bases_in_targets = sum_target_coverage(target_intervals, aligner)
-    percentage_ref_covered = round(num_bases_in_targets / ref_len * 100, 2)
+    num_bases_in_targets = sum_target_coverage(targets.iter_targets(), genome)
+    percentage_ref_covered = num_bases_in_targets / ref_len
     return percentage_ref_covered
 
 
@@ -129,52 +144,40 @@ def count_dict_elements(d: dict[Any]) -> int:
     )
 
 
-def _calculate_length(t_start, t_stop, k, al):
-    target_interval_length = abs(t_stop - t_start)
-    # If inf, get the length of the contig out of the mappy index
-    if np.isinf(target_interval_length):
-        seq = al.seq(k)
-        # Check if the contig exists, else return 0
-        target_interval_length = 0 if seq is None else len(seq)
-    return target_interval_length
-
-
-def target_coverage(v: list[tuple[float, float]] | float, k: str, al) -> float:
+def _calculate_length(target_interval: TARGET_INTERVAL, genomes: dict[str, int]) -> int:
     """
     Take in the value of a given target, either in the form of (target_start, target_stop),
     or 0, np.inf. If 0, inf, get the length of the contig out of the mappy index. If tuple, return the absolute distance
     covered by the target, calculated by target_stop - target start.
 
     :param v: The value of the target coordinates.
-    :param k: The name of the reference contig this target is on
-    :param al: The mappy aligner instance.
-    :type al: AlignerABC
-    :return: The distance covered by the target.
-    """
-    return sum(_calculate_length(t_start, t_stop, k, al) for t_start, t_stop in v)
+    :param k: The name of the reference contig this target is on"""
+    target_interval_length = abs(target_interval.end - target_interval.start)
+    # If inf, get the length of the contig out of the mappy index
+    if np.isinf(target_interval_length):
+        target_interval_length = genomes[target_interval.chromosome]
+    return target_interval_length
 
 
-def sum_target_coverage(d: dict[Any], al) -> int:
+def sum_target_coverage(
+    targets: Iterator[TARGET_INTERVAL], genomes: dict[str, int]
+) -> int:
     """
     Recursively find the coverage of the range of a set of Targets - ASSUMES bottoms elements are in the form
     dict[chromosome_name, tuple[float, float]] or tuple[int, int], i.e genomic coordinates
 
-    :param d: Dictionary to sum elements of, may or may not be nested
-    :param al: The Aligner instance, used to provide the length of the entire chromosome if that is the target
-    :type al: AlignerABC
-    :return: sum of distance covered by ranges of targets at lowest point in tree
+    If there are no targets, return 0.
+
+    :param targets: An iterator of TARGET_INTERVAL objects. Obtained from the Targets.iter_targets() method.
+    :param genomes: A dictionary of contig names to contig lengths. Used if a target is in the entire contig.
+    :return: sum of distance covered by ranges of targets in `d`.
     """
     # Empty targets
-    if not d:
-        return 0
-    return sum(
-        (
-            sum_target_coverage(v, al)
-            if isinstance(v, dict)
-            else target_coverage(v, k, al)
-            for k, v in d.items()
-        )
+    summed_coverage = None
+    summed_coverage = sum(
+        (_calculate_length(target_interval, genomes) for target_interval in targets)
     )
+    return summed_coverage if summed_coverage is not None else 0
 
 
 @unique
@@ -395,6 +398,40 @@ class Targets:
         intervals = self._targets[strand_][contig]
         # TODO: Binary search intervals when intervals > 30? -> pytest parameterise and benchmark
         return any(start <= coord <= end for start, end in intervals)
+
+    def iter_targets(self):
+        """
+        Iterate over the intervals for a _Conditions target intervals, yielding TARGET_INTERVAL objects.
+
+        This method iterates over the target intervals stored in the `Targets` object and yields
+        `TARGET_INTERVAL` objects representing each target interval.
+
+        :return: Generator that yields `TARGET_INTERVAL` objects.
+
+        :Example:
+
+        >>> targets = Targets(["chr1,10,20,+", "chr1,15,30,+"])
+        >>> for target in targets.iter_targets():
+        ...     print(target)
+        TargetInterval(chromosome='chr1', start=10.0, end=30.0, strand=<Strand.forward: '+'>)
+
+        >>> targets = Targets(["chr1,10,20,+", "chr2,5,15,-"])
+        >>> for target in targets.iter_targets():
+        ...     print((target.chromosome, target.start, target.end, target.strand))
+        ('chr1', 10.0, 20.0, <Strand.forward: '+'>)
+        ('chr2', 5.0, 15.0, <Strand.reverse: '-'>)
+
+        >>> targets = Targets(["chr1,10,20,+", "chr2,5,15,-", "chr1,25,35,-"])
+        >>> for target in targets.iter_targets():
+        ...     print(target.chromosome, target.start, target.end, target.strand)
+        chr1 10.0 20.0 Strand.forward
+        chr2 5.0 15.0 Strand.reverse
+        chr1 25.0 35.0 Strand.reverse
+        """
+        for strand, regions in self._targets.items():
+            for chrom, coords_list in regions.items():
+                for start, end in coords_list:
+                    yield TARGET_INTERVAL(chrom, start, end, strand)
 
 
 @attrs.define

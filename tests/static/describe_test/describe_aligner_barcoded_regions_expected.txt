@@ -1,19 +1,19 @@
 Using the mappy_rs plugin. Using reference: tests/static/describe_test/yeast_8kb_contigs_test.mmi.
 
 Region Experimental has targets on 0 contigs, with 0 found in the provided reference.
-This region has 0 total targets (+ve and -ve strands), covering approximately 0.0 percent of the genome.
+This region has 0 total targets (+ve and -ve strands), covering approximately 0.00% of the genome.
 
 Region Control has targets on 0 contigs, with 0 found in the provided reference.
-This region has 0 total targets (+ve and -ve strands), covering approximately 0.0 percent of the genome.
+This region has 0 total targets (+ve and -ve strands), covering approximately 0.00% of the genome.
 
 Barcode unclassified_reads has targets on 1 contig, with 1 found in the provided reference.
-This barcode has 1 total targets (+ve and -ve strands), covering approximately 1.1 percent of the genome.
+This barcode has 1 total targets (+ve and -ve strands), covering approximately 1.10% of the genome.
 
 Barcode classified_reads has targets on 0 contigs, with 0 found in the provided reference.
-This barcode has 0 total targets (+ve and -ve strands), covering approximately 0.0 percent of the genome.
+This barcode has 0 total targets (+ve and -ve strands), covering approximately 0.00% of the genome.
 
 Barcode barcode01_dupli_contigs has targets on 1 contig, with 1 found in the provided reference.
-This barcode has 2 total targets (+ve and -ve strands), covering approximately 5.88 percent of the genome.
+This barcode has 2 total targets (+ve and -ve strands), covering approximately 5.88% of the genome.
 
 Barcode barcode02_chr19 has targets on 1 contig, with 1 found in the provided reference.
-This barcode has 2 total targets (+ve and -ve strands), covering approximately 5.88 percent of the genome.
+This barcode has 2 total targets (+ve and -ve strands), covering approximately 5.88% of the genome.
