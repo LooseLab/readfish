@@ -15,6 +15,7 @@ from readfish.plugins.utils import (
     Strand,
     _summary_percent_reference_covered,
     count_dict_elements,
+    get_contig_lengths,
 )
 from readfish._utils import nice_join
 
@@ -186,8 +187,8 @@ class Aligner(AlignerABC):
             )
             seq_names = set(self.aligner.seq_names)
             # Get total seq length of the reference.
-            ref_len = sum(len(self.aligner.seq(sn)) * 2 for sn in seq_names)
-            # Print out for each region
+            genome = get_contig_lengths(self.aligner)
+            ref_len = sum(genome.values()) * 2  # Print out for each region
             for condition, region_or_barcode_str in chain(
                 zip(self.config.regions, repeat("Region", len(self.config.regions))),
                 zip(
@@ -212,13 +213,13 @@ class Aligner(AlignerABC):
                 if warn_not_found:
                     raise SystemExit(warn_not_found)
                 num_targets = count_dict_elements(condition.targets._targets)
-                percentage_ref_covered = _summary_percent_reference_covered(
-                    ref_len, condition.targets._targets, self.aligner
+                ref_covered = _summary_percent_reference_covered(
+                    ref_len, condition.targets, genome
                 )
                 # add some front padding to the flowcell print out
                 description.append(
                     f"""{region_or_barcode_str} {condition.name} has targets on {num_unique_contigs} contig{pluralise}, with {num_in_ref_contigs} found in the provided reference.
-This {region_or_barcode_str.lower()} has {num_targets} total targets (+ve and -ve strands), covering approximately {percentage_ref_covered} percent of the genome.\n"""
+This {region_or_barcode_str.lower()} has {num_targets} total targets (+ve and -ve strands), covering approximately {ref_covered:.2%} of the genome.\n"""
                 )
             return "\n".join(description)
         return "Aligner is not initialised yet. No reference has been provided, readfish will not proceed until the Aligner is initialised."
