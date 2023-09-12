@@ -14,12 +14,6 @@ from read_until import ReadUntilClient
 from readfish._loggers import setup_logger
 from grpc import RpcError
 
-log = setup_logger(
-    __name__,
-    level=logging.INFO,
-    log_format="%(asctime)s %(name)s %(message)s",
-)
-
 
 class RUClient(ReadUntilClient):
     """Subclasses ONTs read_until_api ReadUntilClient adding extra function that logs unblocks read_ids."""
@@ -28,6 +22,11 @@ class RUClient(ReadUntilClient):
         super().__init__(*args, **kwargs)
         # disable the read until client logger
         self.logger.disabled = True
+        self.log = setup_logger(
+            __name__,
+            level=logging.INFO,
+            log_format="%(asctime)s %(name)s %(message)s",
+        )
         self.current_phase = self.connection.protocol.get_current_protocol_run().phase  # type: ignore
         self.phase_errors = 0
         self.max_phase_errors = 1
@@ -125,14 +124,14 @@ class RUClient(ReadUntilClient):
             current_phase = self.connection.protocol.get_current_protocol_run().phase  # type: ignore
         except RpcError as e:
             if self.phase_errors < self.max_phase_errors:
-                log.info(f"Got RPC exception\n{e}")
-                log.info("Run may have ended")
+                self.log.info(f"Got RPC exception\n{e}")
+                self.log.info("Run may have ended")
                 self.phase_errors += 1
             return False
 
         if current_phase != self.current_phase:
             self.current_phase = current_phase
-            log.info(
+            self.log.info(
                 f"Protocol phase changed to {protocol_service.ProtocolPhase.Name(self.current_phase)}"
             )
         return current_phase == protocol_service.PHASE_SEQUENCING
