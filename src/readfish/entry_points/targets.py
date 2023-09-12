@@ -68,7 +68,7 @@ from read_until import ReadUntilClient
 
 # Library
 from readfish._cli_args import DEVICE_BASE_ARGS
-from readfish._client import RUClient
+from readfish._read_until_client import RUClient
 from readfish._config import Action, Conf
 from readfish._loggers import setup_debug_logger
 from readfish._utils import (
