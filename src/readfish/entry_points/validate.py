@@ -89,7 +89,7 @@ def run(parser, args, extras) -> int:
 
         logger.info("Initialising Aligner")
         try:
-            al = conf.mapper_settings.load_object("Aligner", readfish_config=conf)
+            al = conf.mapper_settings.load_object("Aligner")
         except Exception as exc:
             logger.error("Aligner could not be initialised, see below for details")
             logger.error(str(exc))
@@ -101,7 +101,7 @@ def run(parser, args, extras) -> int:
             logger.info("Skipping descriptions of Config and Plugins.")
         elif not errors:
             logger.info(conf.describe_experiment())
-            logger.info(al.describe())
+            logger.info(al.describe(conf.regions, conf.barcodes))
         else:
             logger.info("Skipping descriptions due to errors.")
 

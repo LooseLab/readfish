@@ -18,8 +18,8 @@ else:
         "Cannot find either `mappy-rs` nor `mappy`. One of these is required."
     )
 
-TestSet = collections.namedtuple(
-    "TestSet",
+FileSet = collections.namedtuple(
+    "FileSet",
     "conf, experiment_description, aligner_expectation, caller_description",
 )
 
@@ -38,7 +38,7 @@ def _read_expected(file_path):
 @pytest.mark.parametrize(
     "test_conf",
     [
-        TestSet(
+        FileSet(
             _load_conf(TEST_DIR / "describe.toml"),
             TEST_DIR / "describe_experiment_regions_expected.txt",
             nullcontext(
@@ -46,7 +46,7 @@ def _read_expected(file_path):
             ),
             None,
         ),
-        TestSet(
+        FileSet(
             _load_conf(TEST_DIR / "describe_barcoded.toml"),
             TEST_DIR / "describe_barcoded_experiment_expected.txt",
             nullcontext(
@@ -54,13 +54,13 @@ def _read_expected(file_path):
             ),
             None,
         ),
-        TestSet(
+        FileSet(
             _load_conf(TEST_DIR / "describe_barcoded_missing.toml"),
             None,
             pytest.raises(SystemExit),
             None,
         ),
-        TestSet(
+        FileSet(
             _load_conf(TEST_DIR / "describe_region_and_barcode.toml"),
             TEST_DIR / "describe_barcoded_regions_experiment_expected.txt",
             nullcontext(
@@ -70,7 +70,7 @@ def _read_expected(file_path):
             ),
             None,
         ),
-        TestSet(
+        FileSet(
             _load_conf(TEST_DIR / "describe_region_and_barcode_missing.toml"),
             None,
             pytest.raises(SystemExit),
@@ -84,9 +84,9 @@ def test_describe(test_conf):
         with open(test_conf.experiment_description) as fh:
             assert conf.describe_experiment() == fh.read()
     if test_conf.aligner_expectation:
-        al = conf.mapper_settings.load_object("Aligner", readfish_config=conf)
+        al = conf.mapper_settings.load_object("Aligner")
         with test_conf.aligner_expectation as e:
-            assert al.describe() == e
+            assert al.describe(conf.regions, conf.barcodes) == e
     if test_conf.caller_description:
         ca = conf.caller_settings.load_object("Caller")
         with open(test_conf.caller_description) as fh:

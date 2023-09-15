@@ -69,7 +69,7 @@ from read_until import ReadUntilClient
 # Library
 from readfish._cli_args import DEVICE_BASE_ARGS
 from readfish._read_until_client import RUClient
-from readfish._config import Action, Conf
+from readfish._config import Action, Conf, make_decision
 from readfish._loggers import setup_debug_logger
 from readfish._utils import (
     get_device,
@@ -161,7 +161,7 @@ class Analysis:
             header="\t".join(CHUNK_LOG_FIELDS),
         )
         logger.info("Initialising Caller")
-        self.caller: CallerABC = conf.caller_settings.load_object(
+        self.caller: CallerABC = self.conf.caller_settings.load_object(
             "Caller", run_information=self.client.connection.protocol.get_run_info()
         )
         logger.info("Caller initialised")
@@ -169,9 +169,7 @@ class Analysis:
         self.logger.info(caller_description)
         send_message(self.client.connection, caller_description, Severity.INFO)
         logger.info("Initialising Aligner")
-        self.mapper: AlignerABC = conf.mapper_settings.load_object(
-            "Aligner", readfish_config=self.conf
-        )
+        self.mapper: AlignerABC = self.conf.mapper_settings.load_object("Aligner")
         self.logger.info("Aligner initialised")
         # count how often a read is seen
         self.chunk_tracker = ChunkTracker(self.client.channel_count)
@@ -211,7 +209,7 @@ class Analysis:
         last_live_mtime = 0
 
         self.logger.info("Starting main loop")
-        mapper_description = self.mapper.describe()
+        mapper_description = self.mapper.describe(self.conf.regions, self.conf.barcodes)
         self.logger.info(mapper_description)
         send_message(self.client.connection, mapper_description, Severity.INFO)
 
@@ -274,6 +272,7 @@ class Analysis:
                     result.channel, result.barcode
                 )
                 seen_count = self.chunk_tracker.seen(result.channel, result.read_number)
+                result.decision = make_decision(self.conf, result)
                 action = condition.get_action(result.decision)
 
                 if control:

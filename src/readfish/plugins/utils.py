@@ -2,7 +2,7 @@ from __future__ import annotations
 from enum import Enum, unique
 from functools import partial
 from itertools import filterfalse
-from typing import Any, Iterator, List, Dict, Tuple, Optional, Union
+from typing import Any, Iterator, List, Dict, Tuple, Optional, Union, Protocol
 from collections import defaultdict, namedtuple
 from collections.abc import Container
 from pathlib import Path
@@ -180,6 +180,47 @@ def sum_target_coverage(
     return summed_coverage if summed_coverage is not None else 0
 
 
+class _AlignmentAttribute(Protocol):
+    ctg: str
+    r_st: int
+    r_en: int
+    strand: Strand | int | str
+
+
+class _AlignmentProperty(Protocol):
+    """
+    >>> from collections import namedtuple
+    >>> from dataclasses import dataclass
+    >>> from typing import NamedTuple
+    >>> Example1 = namedtuple("Example1", "ctg r_st r_en strand")
+    >>> @dataclass
+    ... class Example2:
+    ...     ctg: str
+    ...     r_st: int
+    ...     r_en: int
+    ...     strand: int
+    >>> Example3 = NamedTuple("Example3", [("ctg", str), ("r_st", int), ("r_en", int), ("strand", Strand)])
+    >>> eg1 = Example1("chr1", 10, 100, "+")
+    >>> eg2 = Example2("chr2", 20, 200, -1)
+    >>> eg3 = Example3("chr3", 30, 300, Strand("+"))
+    """
+
+    # fmt: off
+    @property
+    def ctg(self) -> str: ...
+    @property
+    def r_st(self) -> int: ...
+    @property
+    def r_en(self) -> int: ...
+    @property
+    def strand(self) -> Strand | int | str: ...
+    # fmt: on
+
+
+# Use a `Union` here to allow both attributes and properties
+Alignment = Union[_AlignmentAttribute, _AlignmentProperty]
+
+
 @unique
 class Decision(Enum):
     """Decision readfish has made about a read after Alignment"""
@@ -258,7 +299,7 @@ class Result:
     decision: Decision = attrs.field(default=Decision.no_seq)
     barcode: Optional[str] = attrs.field(default=None)
     basecall_data: Optional[Any] = attrs.field(default=None)
-    alignment_data: Optional[Any] = attrs.field(default=None)
+    alignment_data: Optional[list[Alignment]] = attrs.field(default=None)
 
 
 @unique
