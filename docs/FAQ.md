@@ -1,10 +1,5 @@
 
 # Frequently Asked Questions
-- [Connection error. \[bad_reply\] Could not interpret message from server for request: LOAD_CONFIG. Reply: INVALID_PROTOCOL](#connection-error-\[bad_reply\]-could-not-interpret-message-from-server-for-request:-load_config-reply:-invalid_protocol)
-- [Connection error. \[timed_out\] Timeout waiting for reply to request: LOAD_CONFIG](#connection-error-\[timed_out\]-timeout-waiting-for-reply-to-request:-load_config)
-- [How do I create a readfish python environment?](#how-do-i-create-a-readfish-python-environment)
-- [What should my batch times look like.](#what-should-my-batch-times-look-like)
-- [Which branch of readfish should I use?](#which-branch-of-readfish-should-i-use)
 
 <a name="connection-error-\[bad_reply\]-could-not-interpret-message-from-server-for-request:-load_config-reply:-invalid_protocol"></a>
 ## Connection error. \[bad_reply\] Could not interpret message from server for request: LOAD_CONFIG. Reply: INVALID_PROTOCOL

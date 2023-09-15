@@ -1,5 +1,4 @@
 repos:
-
   - repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
@@ -33,3 +32,5 @@ repos:
         entry: '(?i)read fish'
         language: pygrep
         files: .+\.(yml|yaml|py|md|rst)
+
+exclude: '^tests/static'

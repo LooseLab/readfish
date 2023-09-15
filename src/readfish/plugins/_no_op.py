@@ -53,7 +53,7 @@ class Aligner(AlignerABC):
         """Pass through the ``basecall_results`` iterable that is supplied."""
         return basecall_results
 
-    def describe(self) -> str:
+    def describe(self, *args, **kwargs) -> str:
         """
         Describe the no_op Aligner instance
 

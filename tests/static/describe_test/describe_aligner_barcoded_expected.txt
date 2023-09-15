@@ -1,4 +1,4 @@
-Using the mappy_rs plugin. Using reference: tests/static/describe_test/yeast_8kb_contigs_test.mmi.
+Using the mappy plugin. Using reference: tests/static/describe_test/yeast_8kb_contigs_test.mmi.
 
 Barcode unclassified_reads has targets on 0 contigs, with 0 found in the provided reference.
 This barcode has 0 total targets (+ve and -ve strands), covering approximately 0.00% of the genome.

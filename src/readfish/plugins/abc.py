@@ -16,11 +16,11 @@ from __future__ import annotations
 import abc
 from typing import Iterable, TYPE_CHECKING
 
+from readfish._config import Region, Barcode
+from readfish.plugins.utils import Result
+
 import numpy as np
 from read_until.base import CALIBRATION
-
-from readfish._config import Conf
-from readfish.plugins.utils import Result
 
 if TYPE_CHECKING:
     import minknow_api
@@ -30,9 +30,8 @@ class AlignerABC(abc.ABC):
     """Aligner base class."""
 
     @abc.abstractmethod
-    def __init__(self, readfish_config: Conf, debug_log: str | None, **kwargs) -> None:
+    def __init__(self, debug_log: str | None, **kwargs) -> None:
         """
-        :param readfish_config: Cannot be passed in using the TOML. This is for retrieving target regions.
         :param debug_log: Filename for the aligner debug log
         :param kwargs: Keyword arguments that are passed through to the Aligner
         """
@@ -54,7 +53,7 @@ class AlignerABC(abc.ABC):
         """
 
     @abc.abstractmethod
-    def describe(self) -> str:
+    def describe(self, regions: list[Region], barcodes: dict[Barcode]) -> str:
         """
         Informatively describe the Aligner and how it is setup, to be logged for the user.
         For example reference size, reference file etc.

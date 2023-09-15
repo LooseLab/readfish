@@ -18,7 +18,32 @@ from readfish._utils import (
     draw_flowcell_split,
 )
 
-from readfish.plugins.utils import Targets, Action, Decision
+from readfish.plugins.utils import Targets, Action, Decision, Result
+
+
+def make_decision(conf: Conf, result: Result) -> Decision:
+    if result.alignment_data is None:
+        result.alignment_data = []
+    targets = conf.get_targets(result.channel, result.barcode)
+    results = result.alignment_data
+    matches = []
+    for al in results:
+        contig = al.ctg
+        strand = al.strand
+        coord = al.r_st if al.strand == -1 else al.r_en
+        matches.append(targets.check_coord(contig, strand, coord))
+    coord_match = any(matches)
+
+    if not results:
+        if len(result.seq) > 0:
+            return Decision.no_map
+        else:
+            return Decision.no_seq
+    elif len(results) == 1:
+        return Decision.single_on if coord_match else Decision.single_off
+    elif len(results) > 1:
+        return Decision.multi_on if coord_match else Decision.multi_off
+    raise ValueError()
 
 
 @attrs.define
@@ -135,7 +160,7 @@ class _PluginModule:
         builtins = {
             "guppy": "guppy",
             "mappy": "mappy",
-            "mappy_rs": "mappy",
+            "mappy_rs": "mappy_rs",
             "no_op": "_no_op",
         }
         if self.name in builtins and not override:
@@ -235,6 +260,12 @@ class Conf:
                     "This TOML configuration does not contain any `regions`"
                     "or `barcodes` and cannot be used by readfish"
                 )
+
+        if self.mapper_settings.name == "mappy" and self.channels > 512:
+            raise RuntimeError(
+                "We do not allow the use of the 'mappy' aligner with PromethION devices. "
+                "Please use 'mappy-rs' in your experiemnt TOML."
+            )
 
         split_channels = generate_flowcell(self.channels, len(self.regions) or 1)
         self._channel_map = {
