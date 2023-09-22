@@ -32,8 +32,6 @@ dependencies = [
     "minknow_api",
     "numpy",
     "cattrs",
-    "toml",    # Maybe removed in favour of rtoml
-    "tomlkit", # Maybe removed in favour of rtoml
     "rtoml",
     "more_itertools",
     'exceptiongroup ; python_version<"3.11"',
