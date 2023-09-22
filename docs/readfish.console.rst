@@ -25,3 +25,8 @@ Commands
 *********************
 
 .. automodule:: readfish.entry_points.validate
+
+``readfish stats``
+*********************
+
+.. automodule:: readfish.entry_points.stats

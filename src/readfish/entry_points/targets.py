@@ -43,6 +43,7 @@ decision  action  condition  barcode  previous_action  timestamp  action_overrid
 - previous_action (str or None): Name of the last :class:`~readfish.plugins.utils.Action` taken for a read sequenced by this channel or None if this is the first read on a channel.
 - timestamp (float): Current time as given by the time module in seconds.
 - action_overridden (bool): Indicates if the action has been overridden. Currently actions are always overridden to be `stop_receiving`.
+
 Actions being overridden occurs when the readfish run is a dry run and the action is unblock, or when the read is the first read seen for a channel by readfish.
 This prevents trying to unblock reads of unknown length.
 

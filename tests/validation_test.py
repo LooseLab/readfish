@@ -64,6 +64,7 @@ FAIL_TESTS = list(_generate_test_params("fail", non_zero_exit))
 PASS_TESTS = list(_generate_test_params("pass", zero_exit))
 
 
+@pytest.mark.alignment
 @pytest.mark.parametrize("toml,error_txts,exit_check", FAIL_TESTS + PASS_TESTS)
 def test_validation(capsys, toml, error_txts, exit_check):
     """Test validating TOML files

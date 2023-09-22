@@ -2,6 +2,7 @@
 functions and utilities used internally.
 """
 from __future__ import annotations
+import math
 import sys
 import logging
 from collections import Counter
@@ -51,6 +52,44 @@ class Severity(IntEnum):
     INFO = 1
     WARN = 2
     ERROR = 3
+
+
+def format_bases(number: int) -> str:
+    """
+    Formats a given number of bases into a human-readable string with appropriate units (Kb, Mb, Gb, etc.).
+
+    :param number: The number of bases to be formatted.
+    :type number: int
+    :return: A string representing the formatted number of bases with the appropriate unit.
+    :rtype: str
+
+    :Example:
+
+    >>> format_bases(1_000)
+    '1.00 Kb'
+    >>> format_bases(1_000_000)
+    '1.00 Mb'
+    >>> format_bases(1_630_000)
+    '1.63 Mb'
+    >>> format_bases(1_000_000_000)
+    '1.00 Gb'
+    """
+    number = float(number)
+    units = ["", "K", "M", "G", "T", "P", "E", "Z", "Y"]
+    base = 1000.0
+
+    if abs(number) < base:
+        return f"{int(math.ceil(number))} b"
+
+    exponent = int(math.log(abs(number), base))
+    unit_idx = (
+        min(exponent, len(units) - 1)
+        if exponent >= 0
+        else max(exponent + len(units), 0)
+    )
+
+    formatted_number = math.ceil(number) / base**exponent
+    return f"{formatted_number:.2f} {units[unit_idx]}b"
 
 
 def nested_get(obj: Mapping, key: Any, default: Any = None, *, delim: str = ".") -> Any:

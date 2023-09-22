@@ -353,10 +353,8 @@ From ONT:
 Stu Reid, Chris Wright, Rosemary Dokos, Chris Seymour, Clive Brown, George Pimm, Jon Pugh
 
 From the Nanopore World:
-Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, Nick Goldman, Miten Jain
+Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, Nick Goldman, Miten Jain. Lukas Weilungy
 
 And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com/tim_bassford) from [@TurbineCreative](https://twitter.com/TurbineCreative)!
 
 <!-- end-epilog -->
-
-[FAQ question on Guppy server versions]: docs/FAQ.md#connection-error-bad-reply-could-not-interpret-message-from-server-for-request-load-config-reply-invalid-protocol
