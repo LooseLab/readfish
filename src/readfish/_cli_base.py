@@ -32,6 +32,7 @@ def main(argv: list[str] | None = None) -> None:
         ("barcode-targets", "targets"),
         ("unblock-all", "unblock_all"),
         ("validate", "validate"),
+        ("stats", "stats"),
     ]
     for cmd, module in cmds:
         _module = importlib.import_module(f"readfish.entry_points.{module}")

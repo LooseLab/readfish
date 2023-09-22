@@ -143,7 +143,6 @@ def test_sum_target_coverage_with_inf():
     assert result == 1000 + 2000  # Lengths of entire chromosome1 and chromosome2
 
 
-# Test _summary_percent_reference_covered function
 @pytest.mark.parametrize(
     "targets_data, expected_answer", summary_test_data, indirect=["targets_data"]
 )

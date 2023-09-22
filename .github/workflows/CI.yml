@@ -2,17 +2,19 @@ name: tests
 
 on: [push, pull_request]
 
-env:
-  PYTHON_LATEST: "3.10"
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    name: "Test Python ${{ matrix.python-version }}"
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: ${{env.PYTHON_LATEST}}
+          python-version: "${{ matrix.python-version }}"
       - name: "Run tests"
         run: |
           set -xe
@@ -20,4 +22,4 @@ jobs:
           python -m site
           python -m pip install -U pip setuptools wheel
           python -m pip install -e ".[dev]"
-          python -m pytest -sv --doctest-modules
+          python -m pytest -svv --doctest-modules
