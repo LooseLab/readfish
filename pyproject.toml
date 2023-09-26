@@ -5,8 +5,8 @@ build-backend = "hatchling.build"
 [project]
 name = "readfish"
 authors = [
-    { name = "Alexander Payne", email = "" },
-    { name = "Rory Munro", email = "" },
+    { name = "Alexander Payne" },
+    { name = "Rory Munro", email = "rory.munro@nottingham.ac.uk" },
     { name = "Matt Loose", email = "matt.loose@nottingham.ac.uk"}
 ]
 license = "MIT"
