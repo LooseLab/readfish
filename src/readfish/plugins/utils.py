@@ -8,11 +8,16 @@ from collections.abc import Container
 from pathlib import Path
 from io import StringIO
 import csv
+import sys
+
+if sys.version_info < (3, 11):
+    from exceptiongroup import BaseExceptionGroup
 
 import attrs
 import numpy as np
 
 TARGET_INTERVAL = namedtuple("TargetInterval", "chromosome start end strand")
+STRAND_VALUES = {"+", "-", "."}
 
 
 def get_contig_lengths(al) -> dict[str, int]:
@@ -180,6 +185,159 @@ def sum_target_coverage(
     return summed_coverage if summed_coverage is not None else 0
 
 
+def coord_validator(row: dict[str, str]) -> tuple[dict, list[str]]:
+    """
+    Validates and converts the 'start' and 'end' fields in the given row
+    dictionary to integers. If conversion is not possible, or if 'start'
+    is greater than 'end', appends appropriate error messages to a list
+    and returns the list along with the row dictionary. The error
+    messages as intended to be collected and converted to a ValueError
+    as part of a BaseExceptionGroup.
+
+    :param row: A dictionary containing 'start' and 'end' fields,
+                presumably as strings.
+    :return: A tuple containing the possibly modified row dictionary
+             and a list of error messages.
+
+    :Example:
+
+    >>> row = {'start': '10', 'end': '5'}
+    >>> coord_validator(row)
+    ({'start': 10, 'end': 5}, ['{target_specification_format} {line_number} start > end (10 > 5)'])
+
+    >>> row = {'start': 'a', 'end': '20'}
+    >>> coord_validator(row)
+    ({'start': 'a', 'end': 20}, ["{target_specification_format} {line_number} start coordinate \'a\' could not be converted to an integer"])
+
+    >>> row = {'start': '10', 'end': '20'}
+    >>> coord_validator(row)
+    ({'start': 10, 'end': 20}, [])
+    """
+    errors = []
+    int_error = False
+    for f in ("start", "end"):
+        try:
+            row[f] = int(row[f])
+        except ValueError:
+            errors.append(
+                f"{{target_specification_format}} {{line_number}} {f} coordinate {row[f]!r} could not be converted to an integer"
+            )
+            int_error = True
+    if not int_error and row["start"] > row["end"]:
+        errors.append(
+            f"{{target_specification_format}} {{line_number}} start > end ({row['start']} > {row['end']})"
+        )
+    return row, errors
+
+
+def strand_validator(row: dict[str, str]) -> tuple[dict, list[str]]:
+    """
+    Validates the 'strand' field in the given row dictionary to be either '+',
+    '-', or '.'. If the 'strand' field is '.', it is converted to '+-'. If the
+    'strand' field is not one of the mentioned valid values, an error message
+    is added to a list of errors, and the list of error messages along with the modified
+    row dictionary are returned.
+
+    :param row: A dictionary containing a 'strand' field.
+    :return: A tuple containing the possibly modified row dictionary and a
+             list of error messages.
+
+    :Example:
+
+    >>> row = {'strand': '.'}
+    >>> strand_validator(row)
+    ({'strand': '+-'}, [])
+
+    >>> row = {'strand': 'x'}
+    >>> strand_validator(row)
+    ({'strand': 'x'}, ["{target_specification_format} {line_number} strand 'x' not one of ['+', '-', '.']"])
+    >>> row = {'strand': '+'}
+    >>> strand_validator(row)
+    ({'strand': '+'}, [])
+
+    Refer to http://genome.ucsc.edu/FAQ/FAQformat#format1 for more details on
+    the strand field in BED format.
+    """
+    errors = []
+    if row["strand"] is None or row["strand"] not in STRAND_VALUES:
+        errors.append(
+            f"{{target_specification_format}} {{line_number}} strand {row['strand']!r} not one of {sorted(STRAND_VALUES)!r}"
+        )
+    # If strand is . (No strand in the bed format), set to +-, see http://genome.ucsc.edu/FAQ/FAQformat#format1 for more details
+    #  Done here so we can allow CSV to use it as well
+    if row["strand"] == ".":
+        row["strand"] = "+-"
+    return row, errors
+
+
+def row_checker(
+    row: dict[str, str], mode: Optional[str] = "csv"
+) -> tuple[dict, list[str]]:
+    """
+    Validates the given row dictionary based on the mode and returns
+    the row along with any errors found during the validation.
+
+    The mode alters the behaviour. If the mode is 'csv', the row is
+    allowed to only contain the contig. If it is "bed", the first 6
+    columns of the BED format are required.
+
+    Refer to http://genome.ucsc.edu/FAQ/FAQformat#format1 for more details on
+    the strand field in BED format.
+
+    :param row: A dictionary containing the row data.
+    :param mode: A string indicating the target specification type, either 'csv' or 'bed'.
+    :return: A tuple containing the validated (and possibly corrected) row
+             and a list of error messages encountered during validation.
+
+    >>> row = {'chrom': 'chr1', 'start': '1000', 'end': '2000', 'strand': '+'}
+    >>> row_checker(row, mode='csv')  # No errors, valid row
+    ({'chrom': 'chr1', 'start': 1000, 'end': 2000, 'strand': '+'}, [])
+
+    >>> row = {'chrom': 'chr1', 'start': '2000', 'end': '1000', 'strand': '+'}
+    >>> # Coord validator will report an error due to start > end
+    >>> row_checker(row, mode='csv')
+    ({'chrom': 'chr1', 'start': 2000, 'end': 1000, 'strand': '+'}, ['{target_specification_format} {line_number} start > end (2000 > 1000)'])
+
+    >>> row = {'chrom': None, 'start': '1000', 'end': '2000', 'strand': '+'}
+    >>> # Chromosome value is missing, an error will be reported
+    >>> row_checker(row, mode='csv')
+    ({'chrom': None, 'start': 1000, 'end': 2000, 'strand': '+'}, ['{target_specification_format} {line_number} has no chromosome value'])
+
+    >>> row = ["chr1", 0, 1000, "+"]
+    >>> # Chromosome value is missing, an error will be reported
+    >>> row_checker(row, mode='csv')
+    (['chr1', 0, 1000, '+'], ['Input row is not a valid dictionary'])
+
+    :raises ValueError: If the mode is neither 'csv' nor 'bed'.
+    """
+    errors = []
+    if row is None or not isinstance(row, dict):
+        return row, ["Input row is not a valid dictionary"]
+
+    if mode not in ["csv", "bed"]:
+        return row, [f"Invalid mode {mode!r}, expected 'csv' or 'bed'"]
+    # Check for the chromosome value
+    if not row.get("chrom"):
+        errors.append(
+            "{target_specification_format} {line_number} has no chromosome value"
+        )
+    # if contig but no start stop, set targets as whole contig for both strands
+    if mode == "csv" and all(row[f] is None for f in ("start", "end", "strand")):
+        row["start"] = 0
+        row["end"] = float("inf")
+        row["strand"] = "+-"
+        return row, errors
+    elif mode == "bed" and any(
+        row[f] is None for f in ("chrom", "start", "end", "name", "score", "strand")
+    ):
+        errors.append(
+            "{target_specification_format} {line_number} is an improperly formatted BED record"
+        )
+    row, coord_errors = coord_validator(row)
+    row, strand_error = strand_validator(row)
+    return row, errors + coord_errors + strand_error
+
+
 class _AlignmentAttribute(Protocol):
     ctg: str
     r_st: int
@@ -314,10 +472,26 @@ class Strand(Enum):
 
 @attrs.define
 class Targets:
-    """The targets for a given region
+    """
+    Class representation of target regions of a genome.
 
-    :param value: The raw value from the TOML file
-    :param _targets: The parsed targets. Strand -> Contig -> List of Coordinates list[(start, stop)]
+    This class is responsible for parsing and managing target regions specified either
+    through a TOML file or provided as a list of strings.
+
+    :ivar Union[List[str], Path] value: The raw value from the TOML file, either a list of strings or a path.
+    :ivar Dict[Strand, Dict[str, List[Tuple[float, float]]]] _targets: A nested dictionary containing parsed target
+        information. This is not intended to be a part of the public API.
+
+    .. note::
+        Example:
+
+        - Using a list of targets:
+
+            >>> targets = Targets.from_parsed_toml(["chr1,100,200,+"])
+
+        - Using a .bed file:
+
+            targets = Targets.from_parsed_toml("/path/to/targets.bed")
     """
 
     value: Union[List[str], Path] = attrs.field(default=attrs.Factory(list))
@@ -349,37 +523,58 @@ class Targets:
         raise ValueError(f"Could not use value {targets!r} for targets.")
 
     def __attrs_post_init__(self):
-        """Post initialisation
+        """
+        Post-initialization hook for the Targets class.
 
-        Used to fully parse the targets as this requires reading the values from a file/array
+        This method is executed immediately after the instance is created.
+        It's responsible for parsing the targets either from a list or a file
+        and initializing the private _targets attribute.
 
-        :raises ValueError: Too many columns in a bed file record
+        :raises ValueError: If a bed file record has too many columns.
+        :raises BaseExceptionGroup: If validation for target intervals fails.
         """
         self._targets = defaultdict(lambda: defaultdict(list))
-        bed_file = False
         if isinstance(self.value, Path):
-            suffixes = [s.lower() for s in self.value.suffixes]
-            if ".bed" in suffixes:
-                delim = "\t"
-                bed_file = True
-            else:
-                delim = ","
+            delim = "\t" if ".bed" in [s.lower() for s in self.value.suffixes] else ","
+            target_specification_format = f"{self.value} line"
             with self.value.open() as fh:
                 values = StringIO(fh.read(), newline="")
         else:
             delim = ","
+            target_specification_format = "TOML targets number"
             values = StringIO("\n".join(self.value), newline="")
-        for line, row in enumerate(csv.reader(values, delimiter=delim), start=1):
-            if bed_file and len(row) != 6:
-                raise ValueError(f"Invalid bed record in {self.value!s} at line {line}")
-            ctg, *coords = row
-            if coords:
-                st, en, *_, strand = coords
-                self._targets[Strand(strand)][ctg].append((float(st), float(en)))
-            else:
-                self._targets[Strand("+")][ctg].append((0, float("inf")))
-                self._targets[Strand("-")][ctg].append((0, float("inf")))
+        bed_file = delim == "\t"
+        fields = ["chrom", "start", "end"]
+        if bed_file:
+            fields += ["name", "score", "strand"]
+        else:
+            fields += ["strand"]
+        all_errors: List[ValueError] = []
 
+        for line_number, row in enumerate(
+            csv.DictReader(values, fieldnames=fields, restkey="extra", delimiter=delim),
+            start=1,
+        ):
+            row, errors = row_checker(row, "bed" if bed_file else "csv")
+            if errors:
+                all_errors.extend(
+                    [
+                        ValueError(
+                            e.format(
+                                target_specification_format=target_specification_format,
+                                line_number=line_number,
+                            )
+                        )
+                        for e in errors
+                    ]
+                )
+                continue
+            for strand in row["strand"]:
+                self._targets[Strand(strand)][row["chrom"]].append(
+                    (row["start"], row["end"])
+                )
+        if all_errors:
+            raise BaseExceptionGroup("Target intervals validation failure", all_errors)
         for strand, inner in self._targets.items():
             for ctg, intervals in inner.items():
                 self._targets[strand][ctg] = self._merge_intervals(intervals)
@@ -390,9 +585,10 @@ class Targets:
     ) -> List[Tuple[float, float]]:
         """If target coordinates overlap, we merge them into a single target
 
-        >>> targets = Targets(["chr1,10,20,+", "chr1,15,30,+"])
-        >>> targets._targets[Strand("+")]["chr1"]
-        [(10.0, 30.0)]
+        >>> Targets._merge_intervals([(10.0, 20.0), (15.0, 30.0), (50.0, 60.0), (40.0, 45.0)])
+        [(10.0, 30.0), (40.0, 45.0), (50.0, 60.0)]
+        >>> Targets._merge_intervals([(10.0, 20.0), (15.0, 30.0), (50.0, 20.0), (50.0, 40.0)])
+        [(10.0, 30.0), (50.0, 20.0), (50.0, 40.0)]
 
         :param intervals: The target start and stop coordinates
         :return: The target stop and start coordinates, with any overlapping coordinates merged into one encompassing coordinate
@@ -425,6 +621,22 @@ class Targets:
         :param coord: The coordinate to be checked
         :raises ValueError: If the strand passed is not recognised
         :return: Boolean representing whether the coordinate is within a target region or not
+
+        >>> targets = Targets(["chr1,10,20,+", "chr1,15,30,+"])
+        >>> targets.check_coord('chr1', "+", 15)
+        True
+        >>> targets.check_coord('chr1', "+", 5)
+        False
+        >>> targets.check_coord('chr1', "-", 15)
+        False
+        >>> targets.check_coord('chr1', "+", 31)  # Example where coord (31) is in reversed target interval (+ve strand) Should fail
+        False
+        >>> targets.check_coord('chr1', "-", 41)  # Example where coord (41) is in reversed target interval (-ve strand) Should fail
+        False
+        >>> targets.check_coord('chr1', "unknown_strand", 15)
+        Traceback (most recent call last):
+        ...
+        ValueError: Unexpected strand unknown_strand
         """
         strand_ = {
             1: Strand.forward,
@@ -435,7 +647,8 @@ class Targets:
             Strand.reverse: Strand.reverse,
         }.get(strand, None)
         if strand_ is None:
-            raise ValueError("Unexpected strand {strand}")
+            error_msg = f"Unexpected strand {strand}"
+            raise ValueError(error_msg)
         intervals = self._targets[strand_][contig]
         # TODO: Binary search intervals when intervals > 30? -> pytest parameterise and benchmark
         return any(start <= coord <= end for start, end in intervals)
@@ -454,20 +667,20 @@ class Targets:
         >>> targets = Targets(["chr1,10,20,+", "chr1,15,30,+"])
         >>> for target in targets.iter_targets():
         ...     print(target)
-        TargetInterval(chromosome='chr1', start=10.0, end=30.0, strand=<Strand.forward: '+'>)
+        TargetInterval(chromosome='chr1', start=10, end=30, strand=<Strand.forward: '+'>)
 
         >>> targets = Targets(["chr1,10,20,+", "chr2,5,15,-"])
         >>> for target in targets.iter_targets():
         ...     print((target.chromosome, target.start, target.end, target.strand))
-        ('chr1', 10.0, 20.0, <Strand.forward: '+'>)
-        ('chr2', 5.0, 15.0, <Strand.reverse: '-'>)
+        ('chr1', 10, 20, <Strand.forward: '+'>)
+        ('chr2', 5, 15, <Strand.reverse: '-'>)
 
         >>> targets = Targets(["chr1,10,20,+", "chr2,5,15,-", "chr1,25,35,-"])
         >>> for target in targets.iter_targets():
         ...     print(target.chromosome, target.start, target.end, target.strand)
-        chr1 10.0 20.0 Strand.forward
-        chr2 5.0 15.0 Strand.reverse
-        chr1 25.0 35.0 Strand.reverse
+        chr1 10 20 Strand.forward
+        chr2 5 15 Strand.reverse
+        chr1 25 35 Strand.reverse
         """
         for strand, regions in self._targets.items():
             for chrom, coords_list in regions.items():
