@@ -10,7 +10,7 @@ repos:
       - id: end-of-file-fixer
         exclude: '^.+\.(patch|diff|fasta|fastq|sam|rbt|bit|target|svg)$'
       - id: trailing-whitespace
-        exclude: '^README.md|.+\.(patch|diff|fasta|fastq|sam|rbt|bit|target|svg)$'
+        exclude: '^(README.md)|.+\.(patch|diff|fasta|fastq|sam|rbt|bit|target|svg)$'
       - id: check-ast
       - id: check-toml
   - repo: https://github.com/astral-sh/ruff-pre-commit

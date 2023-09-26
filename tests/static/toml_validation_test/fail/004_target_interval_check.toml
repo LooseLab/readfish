@@ -1,0 +1,18 @@
+[caller_settings.no_op]
+
+[mapper_settings.no_op]
+
+
+[[regions]]
+name = "COSMIC Targets"
+min_chunks = 1
+max_chunks = 4
+targets = "tests/static/toml_validation_test/fail/COSMIC_cancer_panel_errors.bed"
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "unblock"
+below_min_chunks = "proceed"

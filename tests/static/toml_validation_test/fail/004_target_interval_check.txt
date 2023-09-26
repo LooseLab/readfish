@@ -1,0 +1,7 @@
+While structuring Conf (1 sub-exception):
+ While structuring typing.List[readfish._config.Region] (1 sub-exception):
+  While structuring Region (1 sub-exception):
+   Target intervals validation failure (3 sub-exceptions):
+    - ValueError('tests/static/toml_validation_test/fail/COSMIC_cancer_panel_errors.bed line 1 start > end (60799421 > 50885675)')
+    - ValueError('tests/static/toml_validation_test/fail/COSMIC_cancer_panel_errors.bed line 3 start > end (36746593 > 26860935)')
+    - ValueError('tests/static/toml_validation_test/fail/COSMIC_cancer_panel_errors.bed line 6 start > end (730713946 > 130885683)')
