@@ -1,17 +1,39 @@
-name: tests
+name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+  schedule:
+    - cron:  '0 0 * * SUN'
+  pull_request:
+    types:
+      - closed
+  workflow_dispatch:
 
+env:
+  PYTHON_LATEST: "3.11"
 
 jobs:
+  pre_commit:
+    name: "🅿️ pre-commit"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v4"
+      - uses: "actions/setup-python@v4"
+        with:
+          python-version: ${{env.PYTHON_LATEST}}
+      - uses: "pre-commit/action@v3.0.0"
+
   tests:
     name: "Test Python ${{ matrix.python-version }}"
     runs-on: "ubuntu-latest"
+    needs: "pre_commit"
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: "${{ matrix.python-version }}"
@@ -22,4 +44,49 @@ jobs:
           python -m site
           python -m pip install -U pip setuptools wheel
           python -m pip install -e ".[dev]"
-          python -m pytest -svv --doctest-modules
+          python -m pytest -sv --doctest-modules
+
+
+  deploy-docs:
+    runs-on: ubuntu-22.04
+    needs: "pre_commit"
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      - name: Upgrade pip
+        run: |
+          # install pip=>20.1 to use "pip cache dir"
+          python3 -m pip install --upgrade pip
+
+      - name: Get pip cache dir
+        id: pip-cache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: python3 -m pip install .[docs]
+
+      - run: cd docs && make html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.event.pull_request.merged == true
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build/html/
