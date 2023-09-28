@@ -124,4 +124,12 @@ DEVICE_BASE_ARGS = (
             help="Run the readfish Until experiment without sending unblock commands",
         ),
     ),
+    (
+        "--wait-for-ready",
+        dict(
+            help="Timeout for the MinKNOW data folder to appear, and the device to report it is ready to start sequencing. Default 60 seconds.",
+            required=False,
+            default=60,
+        ),
+    ),
 ) + BASE_ARGS

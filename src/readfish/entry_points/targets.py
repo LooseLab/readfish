@@ -66,6 +66,7 @@ from typing import Any
 import rtoml
 from read_until.read_cache import AccumulatingCache
 from read_until import ReadUntilClient
+from minknow_api import protocol_service
 
 # Library
 from readfish._cli_args import DEVICE_BASE_ARGS
@@ -180,11 +181,11 @@ class Analysis:
 
         # Check status when we start the run.
         # We assume that sequencing is already running unless we are told otherwise.
-        # It starts as false which will prevent the first
-        # read seen from a channel being unblocked, over riding the action to a stop_receiving.
+        # It starts as True which will prevent the first
+        # read seen from a channel being unblocked, overriding the action to a stop_receiving.
         # If the run is not in sequencing phase when the read until loop starts then will
-        # be set to true and the first read seen may be unblocked.
-        self.started_during_sequencing = True
+        # be set to false and the first read seen may be unblocked.
+        self.readfish_started_during_sequencing = True
 
     def run(self):
         """Run the read until loop, in one continuous while loop."""
@@ -208,28 +209,39 @@ class Analysis:
         #       rebasecalling data that is already being unblocked or sequenced
         loop_counter = 0
         last_live_mtime = 0
-
+        # IN order to prevent repeated logging in the below loop we only log each check
+        # message once
+        log_once_in_loop = True
         self.logger.info("Starting main loop")
         mapper_description = self.mapper.describe(self.conf.regions, self.conf.barcodes)
         self.logger.info(mapper_description)
         send_message(self.client.connection, mapper_description, Severity.INFO)
 
-        while self.client.is_running:
+        while self.client.is_sequencing:
             t0 = timer()
-            if not (self.client.is_phase_sequencing):
-                self.logger.info(
-                    "readfish started in mux phase, waiting for sequencing to begin."
-                )
-                self.started_during_sequencing = False  # We are not in sequencing phase, so we can unblock the first read we see as we will be sequencing it from the start
+            # Check of we have started readfish before PHASE_SEQUECING,
+            # if so wait until we are in PHASE_SEQUENCING
+            if self.client.wait_for_sequencing_to_start:
+                if log_once_in_loop:
+                    self.logger.info(
+                        f"MinKNOW is reporting {protocol_service.ProtocolPhase.Name(self.client.current_protocol_phase)}, waiting for PHASE_SEQUENCING to begin."
+                    )
+                    log_once_in_loop = not log_once_in_loop
+                self.readfish_started_during_sequencing = False  # We are not in sequencing phase, so we can unblock the first read we see as we will be sequencing it from the start
                 time.sleep(self.throttle)
                 continue
-            else:
-                if self.started_during_sequencing and loop_counter == 0:
-                    self.logger.info(
-                        "readfish started in sequencing phase. Ignoring first read from each channel."
-                    )
+            # We've left the conditional so we want to log if we go back out of it
+            log_once_in_loop = True
+            if self.readfish_started_during_sequencing and loop_counter == 0:
+                self.logger.info(
+                    "readfish started in PHASE_SEQUENCING. Fully sequencing first read from each channel."
+                )
             if not self.mapper.initialised:
-                # TODO: Log when in this trap
+                self.logger.warning(
+                    "readfish main loop started but mapper is not initialised. Please check your aligners plugin documentation."
+                    "If you are using mappy or mappy-rs this is definitely an error. Please open an issue here - "
+                    "https://github.com/LooseLab/readfish/issues"
+                )
                 time.sleep(self.throttle)
                 continue
             # TODO: Determine how to reload a reference and only do so if changed from previous config.
@@ -306,7 +318,7 @@ class Analysis:
                 # Default is action has not been overridden
                 action_overridden = False
                 # Check if this is the first time a read has been seen from this channel, and we started mid sequencing run
-                if previous_action is None and self.started_during_sequencing:
+                if previous_action is None and self.readfish_started_during_sequencing:
                     self.logger.debug(
                         f"This is the first suitable read chunk from channel {result.channel}. Translocated read length unknown, sequencing."
                     )
@@ -407,6 +419,7 @@ def run(
         mk_port=position.description.rpc_ports.secure,
         filter_strands=True,
         cache_type=AccumulatingCache,
+        timeout=args.wait_for_ready,
     )
 
     # Load TOML configuration
