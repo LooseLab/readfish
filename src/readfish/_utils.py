@@ -2,7 +2,6 @@
 functions and utilities used internally.
 """
 from __future__ import annotations
-import math
 import sys
 import logging
 from collections import Counter
@@ -54,42 +53,30 @@ class Severity(IntEnum):
     ERROR = 3
 
 
-def format_bases(number: int) -> str:
-    """
-    Formats a given number of bases into a human-readable string with appropriate units (Kb, Mb, Gb, etc.).
+def format_bases(num: int, factor: int = 1000, suffix: str = "B") -> str:
+    """Return a human readable string of a large number using SI unit prefixes
 
-    :param number: The number of bases to be formatted.
-    :type number: int
-    :return: A string representing the formatted number of bases with the appropriate unit.
-    :rtype: str
+    :pararm num: A number to convert to decimal form
+    :param factor: The SI factor, use 1000 for SI units and 1024 for binary multiples
+    :param suffix: The suffix to place after the SI prefix, for example use B for SI units and iB for binary multiples
+    :return: The input number formatted to two decimal places with the SI unit and suffix
 
     :Example:
 
     >>> format_bases(1_000)
-    '1.00 Kb'
+    '1.00 kB'
     >>> format_bases(1_000_000)
-    '1.00 Mb'
+    '1.00 MB'
     >>> format_bases(1_630_000)
-    '1.63 Mb'
+    '1.63 MB'
     >>> format_bases(1_000_000_000)
-    '1.00 Gb'
+    '1.00 GB'
     """
-    number = float(number)
-    units = ["", "K", "M", "G", "T", "P", "E", "Z", "Y"]
-    base = 1000.0
-
-    if abs(number) < base:
-        return f"{int(math.ceil(number))} b"
-
-    exponent = int(math.log(abs(number), base))
-    unit_idx = (
-        min(exponent, len(units) - 1)
-        if exponent >= 0
-        else max(exponent + len(units), 0)
-    )
-
-    formatted_number = math.ceil(number) / base**exponent
-    return f"{formatted_number:.2f} {units[unit_idx]}b"
+    for unit in ["", "k", "M", "G", "T", "P", "E", "Z"]:
+        if abs(num) < factor:
+            return f"{num:3.2f} {unit}{suffix}"
+        num /= factor
+    return f"{num:3.2f} Y{suffix}"
 
 
 def nested_get(obj: Mapping, key: Any, default: Any = None, *, delim: str = ".") -> Any:
