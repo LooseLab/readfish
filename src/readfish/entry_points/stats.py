@@ -96,14 +96,21 @@ _cli = BASE_ARGS + (
     (
         "--no-paf-out",
         dict(
-            help="Don't output the alignments in PAF format. Default Enabled.",
+            help="Don't output the alignments in PAF format. By default PAF output Enabled.",
             action="store_false",
         ),
     ),
     (
         "--no-demultiplex",
         dict(
-            help="Don't demultiplex and write out FASTQ. Default Enabled.",
+            help="Don't demultiplex and write out FASTQ. By default Multiplexing Enabled.",
+            action="store_false",
+        ),
+    ),
+    (
+        "--no-csv",
+        dict(
+            help="Use this flag to not output CSV of the calculated summary stats. By default CSV output Enabled.",
             action="store_false",
         ),
     ),
@@ -150,6 +157,7 @@ def run(_parser, args, _extras):
             demultiplex=args.no_demultiplex,
             paf_out=args.no_paf_out,
             prom=args.prom,
+            csv=args.no_csv,
         )
     except Exception as exc:
         logger.error("Fastq data couldn't be summarised, see below for details:")

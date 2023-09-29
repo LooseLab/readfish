@@ -24,6 +24,11 @@ def expected():
     return str(TEST_FILES / "expected_summary.txt")
 
 
+@pytest.fixture(autouse=True)
+def set_ci_env_var(monkeypatch):
+    monkeypatch.setenv("CI", "True")
+
+
 def _generate_test_params():
     yield from [
         (
@@ -50,6 +55,7 @@ def test_fastq_stats(capfd, toml_file, fastq_directory, expected):
                 str(fastq_directory),
                 "--no-paf-out",
                 "--no-demultiplex",
+                "--no-csv",
             ]
         )
     assert exc_info.value.code == 0
