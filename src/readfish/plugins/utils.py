@@ -3,7 +3,7 @@ from enum import Enum, unique
 from functools import partial
 from itertools import filterfalse
 from typing import Any, Iterator, List, Dict, Tuple, Optional, Union, Protocol
-from collections import defaultdict, namedtuple
+from collections import defaultdict, namedtuple, Counter
 from collections.abc import Container
 from pathlib import Path
 from io import StringIO
@@ -16,8 +16,29 @@ if sys.version_info < (3, 11):
 import attrs
 import numpy as np
 
+
 TARGET_INTERVAL = namedtuple("TargetInterval", "chromosome start end strand")
 STRAND_VALUES = {"+", "-", "."}
+
+
+@unique
+class Strand(Enum):
+    """Enum representing the forward and reverse strand of DNA for alignments"""
+
+    #: Forward strand
+    forward = "+"
+    #: Reverse strand
+    reverse = "-"
+
+
+STRANDS = {
+    1: Strand.forward,
+    "+": Strand.forward,
+    Strand.forward: Strand.forward,
+    -1: Strand.reverse,
+    "-": Strand.reverse,
+    Strand.reverse: Strand.reverse,
+}
 
 
 def get_contig_lengths(al) -> dict[str, int]:
@@ -460,16 +481,6 @@ class Result:
     alignment_data: Optional[list[Alignment]] = attrs.field(default=None)
 
 
-@unique
-class Strand(Enum):
-    """Enum representing the forward and reverse strand of DNA for alignments"""
-
-    #: Forward strand
-    forward = "+"
-    #: Reverse strand
-    reverse = "-"
-
-
 @attrs.define
 class Targets:
     """
@@ -495,9 +506,10 @@ class Targets:
     """
 
     value: Union[List[str], Path] = attrs.field(default=attrs.Factory(list))
-    _targets: Dict[Strand, Dict[str, List[Tuple[float, float]]]] = attrs.field(
+    _targets: Dict[Strand, Dict[str, Counter]] = attrs.field(
         repr=False, alias="_targets", init=False
     )
+    padding: int = attrs.field(default=0)
 
     @classmethod
     def from_parsed_toml(cls, targets: List[str] | str) -> Targets:
@@ -524,7 +536,7 @@ class Targets:
 
     def __attrs_post_init__(self):
         """
-        Post-initialization hook for the Targets class.
+        Post-initialisation hook for the Targets class.
 
         This method is executed immediately after the instance is created.
         It's responsible for parsing the targets either from a list or a file
@@ -533,7 +545,8 @@ class Targets:
         :raises ValueError: If a bed file record has too many columns.
         :raises BaseExceptionGroup: If validation for target intervals fails.
         """
-        self._targets = defaultdict(lambda: defaultdict(list))
+        self._targets = defaultdict(lambda: defaultdict(Counter))
+
         if isinstance(self.value, Path):
             delim = "\t" if ".bed" in [s.lower() for s in self.value.suffixes] else ","
             target_specification_format = f"{self.value} line"
@@ -570,9 +583,9 @@ class Targets:
                 )
                 continue
             for strand in row["strand"]:
-                self._targets[Strand(strand)][row["chrom"]].append(
+                self._targets[Strand(strand)][row["chrom"]][
                     (row["start"], row["end"])
-                )
+                ] = 0
         if all_errors:
             raise BaseExceptionGroup("Target intervals validation failure", all_errors)
         for strand, inner in self._targets.items():
@@ -581,41 +594,56 @@ class Targets:
 
     @staticmethod
     def _merge_intervals(
-        intervals: List[Tuple[float, float]]
-    ) -> List[Tuple[float, float]]:
-        """If target coordinates overlap, we merge them into a single target
+        intervals: Counter[Tuple[float, float], int]
+    ) -> Counter[Tuple[float, float], int]:
+        """
+        Merges overlapping intervals and returns a Counter object with the merged intervals as keys
+        and the sum of the counts of the merged intervals as values.
 
-        >>> Targets._merge_intervals([(10.0, 20.0), (15.0, 30.0), (50.0, 60.0), (40.0, 45.0)])
-        [(10.0, 30.0), (40.0, 45.0), (50.0, 60.0)]
-        >>> Targets._merge_intervals([(10.0, 20.0), (15.0, 30.0), (50.0, 20.0), (50.0, 40.0)])
-        [(10.0, 30.0), (50.0, 20.0), (50.0, 40.0)]
+        The method will compare each interval with the next one in the sorted order and merge them if they overlap.
+        If an interval does not overlap with any other, it remains unchanged in the output Counter object.
 
-        :param intervals: The target start and stop coordinates
-        :return: The target stop and start coordinates, with any overlapping coordinates merged into one encompassing coordinate
+        :param intervals: A Counter object where keys are tuples representing intervals (start, end) and
+                          values are the counts associated with each interval.
+
+        :return: A Counter object with keys as the merged intervals and values as the aggregated count
+                 of the original intervals that were merged.
+
+        :raises ValueError: If the input intervals are not properly formatted.
+
+        :Examples:
+        >>> from collections import Counter
+        >>> intervals = Counter({(1.0, 2.0): 1, (2.0, 3.0): 1, (3.0, 4.0): 1})
+        >>> Targets._merge_intervals(intervals)
+        Counter({(1.0, 4.0): 3})
+
+        >>> intervals = Counter({(1.0, 2.0): 1, (3.0, 4.0): 1})
+        >>> Targets._merge_intervals(intervals)
+        Counter({(1.0, 2.0): 1, (3.0, 4.0): 1})
+
+        :Notes:
+        - The intervals are assumed to be half-open intervals [start, end), meaning that start is inclusive and end is exclusive.
         """
         if len(intervals) < 2:
             return intervals
-        intervals.sort()
-        n_args = len(intervals)
-        res = [intervals[0]]
-        for next_idx, (curr_s, curr_e) in enumerate(intervals, start=1):
-            if next_idx == n_args:
-                # Last interval, set last end position
-                res[-1] = res[-1][0], max(res[-1][1], curr_e)
-                break
 
-            next_s, next_e = intervals[next_idx]
-            if curr_e >= next_s or res[-1][1] >= next_s:
-                # current end and next start overlap OR
-                #   previous end and next start overlap
-                res[-1] = res[-1][0], max(curr_e, next_e, res[-1][1])
-            else:
-                res.append((next_s, next_e))
-        return res
+        collapsed_intervals = Counter()
+        intervals_items = sorted(intervals.items())
+        (curr_start, curr_end), curr_count = intervals_items[0]
+
+        for (start, end), count in intervals_items[1:]:
+            if start > curr_end:  # We have a new non-overlapping start
+                collapsed_intervals[(curr_start, curr_end)] = curr_count
+                curr_start, curr_end, curr_count = start, end, count
+            else:  # Start is within the current range
+                curr_end = max(curr_end, end)
+                curr_count += count
+
+        collapsed_intervals[(curr_start, curr_end)] = curr_count
+        return collapsed_intervals
 
     def check_coord(self, contig: str, strand: Strand | int | str, coord: int) -> bool:
         """Check to see if a coordinate is within any of the target regions
-
         :param contig: The target contig name
         :param strand: The strand that the alignment is to
         :param coord: The coordinate to be checked
@@ -638,20 +666,39 @@ class Targets:
         ...
         ValueError: Unexpected strand unknown_strand
         """
-        strand_ = {
-            1: Strand.forward,
-            "+": Strand.forward,
-            Strand.forward: Strand.forward,
-            -1: Strand.reverse,
-            "-": Strand.reverse,
-            Strand.reverse: Strand.reverse,
-        }.get(strand, None)
+        strand_ = STRANDS.get(strand, None)
         if strand_ is None:
-            error_msg = f"Unexpected strand {strand}"
-            raise ValueError(error_msg)
+            message = f"Unexpected strand {strand}"
+            raise ValueError(message)
+
         intervals = self._targets[strand_][contig]
         # TODO: Binary search intervals when intervals > 30? -> pytest parameterise and benchmark
-        return any(start <= coord <= end for start, end in intervals)
+        start_offset, end_offset = self.get_offset(strand_)
+        for start, end in intervals:
+            if (start + start_offset) <= coord <= (end + end_offset):
+                intervals[(start, end)] += 1
+                return True
+        return False
+
+    def get_offset(self, strand: Strand):
+        """
+        Get the start and end padding offsets for a given strand.
+
+        :param strand_: The strand for which to get the offsets.
+
+        :return: A tuple containing the start and end offsets.
+
+        :Examples:
+        >>> targets = Targets(["chr1,10,20,+", "chr1,15,30,+"], padding=10)
+        >>> targets.get_offset(Strand.forward)
+        (-10, 0)
+        >>> targets.get_offset(Strand.reverse)
+        (0, 10)
+        """
+        start_offset, end_offset = -self.padding, 0
+        if strand == Strand.reverse:
+            start_offset, end_offset = end_offset, -start_offset
+        return start_offset, end_offset
 
     def iter_targets(self):
         """

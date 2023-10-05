@@ -63,6 +63,16 @@ API Reference
 
 ----
 
+``readfish._statistics`` module
+--------------------------------
+
+.. automodule:: readfish._statistics
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :member-order: bysource
+
+----
 
 ``readfish._cli_base`` module
 -----------------------------

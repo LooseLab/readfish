@@ -41,15 +41,15 @@ decision  action  condition  barcode  previous_action  timestamp  action_overrid
 - condition (str): Name of the :class:`~readfish._config._Condition` that the read has been addressed with.
 - barcode (str or None): :class: The name of the :class:`~readfish._config.Barcode` for this read if present, otherwise None.
 - previous_action (str or None): Name of the last :class:`~readfish.plugins.utils.Action` taken for a read sequenced by this channel or None if this is the first read on a channel.
-- timestamp (float): Current time as given by the time module in seconds.
 - action_overridden (bool): Indicates if the action has been overridden. Currently actions are always overridden to be `stop_receiving`.
+- timestamp (float): Current time as given by the time module in seconds.
 
 Actions being overridden occurs when the readfish run is a dry run and the action is unblock, or when the read is the first read seen for a channel by readfish.
 This prevents trying to unblock reads of unknown length.
 
 Example line in debug_log.tsv:
 
-1   10   cde5271b-13c2-43af-88e1-4268ab88928e  2  15  2  5 single_on  unblock  Condition_A  None  None  1678768540.879  False
+1   10   cde5271b-13c2-43af-88e1-4268ab88928e  2  15  2  5 single_on  unblock  Condition_A  None  None  False   1678768540.879
 
 
 """
@@ -63,7 +63,6 @@ from pathlib import Path
 from typing import Any
 
 # Third party imports
-import rtoml
 from read_until.read_cache import AccumulatingCache
 from read_until import ReadUntilClient
 from minknow_api import protocol_service
@@ -71,8 +70,8 @@ from minknow_api import protocol_service
 # Library
 from readfish._cli_args import DEVICE_BASE_ARGS
 from readfish._read_until_client import RUClient
-from readfish._config import Action, Conf, make_decision
-from readfish._loggers import setup_debug_logger
+from readfish._config import Action, Conf, make_decision, _Condition
+from readfish._statistics import ReadfishStatistics
 from readfish._utils import (
     get_device,
     send_message,
@@ -80,7 +79,7 @@ from readfish._utils import (
     Severity,
 )
 from readfish.plugins.abc import AlignerABC, CallerABC
-from readfish.plugins.utils import Decision, PreviouslySentActionTracker
+from readfish.plugins.utils import Decision, PreviouslySentActionTracker, Result
 
 
 _help = "Run targeted sequencing"
@@ -94,30 +93,22 @@ _cli = DEVICE_BASE_ARGS + (
         ),
     ),
     (
-        "--debug-log",
+        "--no-debug-log",
         dict(
-            help="Chunk log",
-            default=None,
+            help="Disable debug output of information about chunks seen into a .tsv formatted log. Default enabled.",
+            action="store_false",
+            dest="debug_log",
         ),
     ),
-)
-
-# See module level docstring for an explanation of the fields in this log.
-CHUNK_LOG_FIELDS = (
-    "client_iteration",
-    "read_in_loop",
-    "read_id",
-    "channel",
-    "read_number",
-    "seq_len",
-    "counter",
-    "mode",
-    "decision",
-    "condition",
-    "barcode",
-    "previous_action",
-    "timestamp",
-    "action_override",
+    (
+        "--padding",
+        dict(
+            help="Number of bases to pad the target sequences with",
+            default=0,
+            type=int,
+            metavar="PADDING",
+        ),
+    ),
 )
 
 
@@ -130,7 +121,7 @@ class Analysis:
     :param client: An instance of the ReadUntilClient object
     :param conf: readfish._config.Conf
     :param logger: The command level logger for this module
-    :param debug_log_filename: The debug log filename for chunks. If None no chunks are logged.
+    :param debug_log: Whether to output the Debug Log. log Name is generated. Defaults to False.
     :param throttle: The number of seconds interval between requests to the ReadUntilClient, defaults to 0.1
     :param unblock_duration: Time, in seconds, to apply unblock voltage, defaults to 0.5
     :param dry_run: If True unblocks are replaced with `stop_receiving` commands, defaults to False
@@ -142,7 +133,7 @@ class Analysis:
         client: ReadUntilClient,
         conf: Conf,
         logger: logging.Logger,
-        debug_log_filename: str | None,
+        debug_log: bool,
         throttle: float = 0.1,
         unblock_duration: float = 0.5,
         dry_run: bool = False,
@@ -151,20 +142,32 @@ class Analysis:
         self.client = client
         self.conf = conf
         self.logger = logger
-        self.debug_log_filename = debug_log_filename
+        self.debug_log = debug_log
         self.throttle = throttle
         self.unblock_duration = unblock_duration
         self.dry_run = dry_run
-        self.toml = Path(f"{toml}_live").resolve()
+        self.live_toml = Path(f"{toml}_live").resolve()
+        self.run_information = self.client.connection.protocol.get_run_info()
 
-        self.debug_log = setup_debug_logger(
-            "debug_chunk_log",
-            log_file=self.debug_log_filename,
-            header="\t".join(CHUNK_LOG_FIELDS),
+        # Generate a run specific read log
+        read_log_name = (
+            f"{self.run_information.run_id}_readfish.tsv" if debug_log else None
+        )
+
+        self.logger.info("Fetching Run Configuration")
+        self.break_reads_after_seconds = (
+            self.client.connection.analysis_configuration.get_analysis_configuration().read_detection.break_reads_after_seconds.value
+        )
+        self.logger.info("Run Configuration Received")
+        self.logger.info(f"run_id={self.run_information.run_id}")
+        self.logger.info(f"break_reads_after_seconds={self.break_reads_after_seconds}")
+        # Create our statistics tracker
+        self.loop_statistics = ReadfishStatistics(
+            read_log_name, self.break_reads_after_seconds
         )
         logger.info("Initialising Caller")
         self.caller: CallerABC = self.conf.caller_settings.load_object(
-            "Caller", run_information=self.client.connection.protocol.get_run_info()
+            "Caller", run_information=self.run_information
         )
         logger.info("Caller initialised")
         caller_description = self.caller.describe()
@@ -179,39 +182,152 @@ class Analysis:
         # This is an object to keep track of the last action sent to the client for each channel
         self.previous_action_tracker = PreviouslySentActionTracker()
 
-        # Check status when we start the run.
-        # We assume that sequencing is already running unless we are told otherwise.
-        # It starts as True which will prevent the first
-        # read seen from a channel being unblocked, overriding the action to a stop_receiving.
-        # If the run is not in sequencing phase when the read until loop starts then will
-        # be set to false and the first read seen may be unblocked.
+        # We assume that sequencing is already running.
+        # If the run is not in sequencing phase when the read until loop starts will
+        # be set to false and the first read seen can be unblocked.
         self.readfish_started_during_sequencing = True
+
+        # This is a flag to prevent repeated logging of the same message
+        self.log_once_in_loop = True
+
+    @property
+    def wait_for_sequencing(self) -> bool:
+        """
+        Wait for minKNOW to report PHASE_SEQUENCING before starting readfish tight loop.
+        The check occurs in out RUClient wrapper.
+
+        :return: True if we are waiting for PHASE_SEQUENCING, False otherwise
+
+        """
+        if self.client.wait_for_sequencing_to_start:
+            if self.log_once_in_loop:
+                self.logger.info(
+                    f"MinKNOW is reporting {protocol_service.ProtocolPhase.Name(self.client.current_protocol_phase)}, waiting for PHASE_SEQUENCING to begin."
+                )
+                self.log_once_in_loop = not self.log_once_in_loop
+            self.readfish_started_during_sequencing = False  # We are not in sequencing phase, so we can unblock the first read we see as we will be sequencing it from the start
+            return True
+        return False
+
+    def reload_toml(self, last_toml_mtime: float) -> float:
+        """
+        Reload the toml to refresh the conf with any updates.
+        Reloading is determined by checking the modified time of the toml file.
+        If it is more recent, reload the conf.
+
+        :param last_live_mtime: The last modified time for the toml file.
+
+        :return: The last modified time for the toml file, updated if changed.
+        """
+        if (
+            self.live_toml.is_file()
+            and self.live_toml.stat().st_mtime > last_toml_mtime
+        ):
+            try:
+                self.conf = Conf.from_file(
+                    self.live_toml, self.client.channel_count, self.logger
+                )
+            # FIXME: Broad exception
+            except Exception:
+                pass
+            last_toml_mtime = self.live_toml.stat().st_mtime
+        return last_toml_mtime
+
+    def check_override_action(
+        self,
+        control: bool,
+        action: Action,
+        result: Result,
+        seen_count: int,
+        condition: _Condition,
+        stop_receiving_action_list: list[tuple[int, int]],
+        unblock_batch_action_list: list[tuple[int, int]],
+    ) -> tuple[Action, bool]:
+        """
+        Check the chosen Action and amend it based on conditional checks.
+        The action lists are appended to in place, so no return is required.
+
+        Checks include:
+            1. If the read is in a control region, the action is always stop_receiving.
+            1. If the read is below the minimum chunks, use value in toml or default to proceed
+            1. If the read is above the maximum chunks, use value in toml or default unblock
+            1. First read seen for channel and readfish started during sequencing, override to stop_receiving
+            1. If action is unblock and we are dry-running, override to stop_receiving
+
+        :param control: Indicates read from a channel in a control region
+        :param action: What action was decided for this read before any meddling
+        :param result: Information about the current read.
+        :param seen_count: Number of times other chunks from the read have been observed.
+        :param condition: The set of conditions for deciding the action.
+        :param stop_receiving_action_list: List to append channels and read numbers for which 'stop receiving' action is decided.
+        :param unblock_batch_action_list: List to append channels, read numbers, and read IDs for which 'unblock' action is decided.
+
+        :return: A tuple containing the previous action taken for this read, and a boolean indicating if the action was overridden.
+
+        """
+
+        # Easy dub
+        if control:
+            action = Action.stop_receiving
+        else:
+            # TODO: Document the less than logic here
+            below_min_chunks = seen_count < condition.min_chunks
+            above_max_chunks = seen_count > condition.max_chunks
+
+            # TODO: This will also factor into the precedence and documentation
+            # If we have seen this read more than the max chunks and want to
+            #   evaluate it again (Action.proceed) then we will overrule that
+            #   action using the above_max_chunks_action, unblock by default
+            if above_max_chunks and action is Action.proceed:
+                action = condition.above_max_chunks
+                result.decision = Decision.above_max_chunks
+
+            # If we are below min chunks and we get an action that is not PROCEED
+            #   then we will overrule that action using the below_min_chunks_action
+            #   which by default is proceed.
+            if below_min_chunks and action is not Action.proceed:
+                action = condition.below_min_chunks
+                result.decision = Decision.below_min_chunks
+
+        # previous_action will be None if the read has not been seen before.
+        previous_action = self.previous_action_tracker.get_action(result.channel)
+        action_overridden = False
+
+        if previous_action is None and self.readfish_started_during_sequencing:
+            self.logger.debug(
+                f"This is the first suitable read chunk from channel {result.channel}. Translocated read length unknown, sequencing."
+            )
+            action_overridden = True
+            action = Action.stop_receiving
+
+        if action is Action.stop_receiving:
+            stop_receiving_action_list.append((result.channel, result.read_number))
+            # Add decided Action
+            self.previous_action_tracker.add_action(result.channel, action)
+        elif action is Action.unblock:
+            if self.dry_run:
+                # Log an 'unblock' action to previous action, but send a 'stop receiving' to prevent further read processing.
+                action_overridden = True
+                stop_receiving_action_list.append((result.channel, result.read_number))
+            else:
+                unblock_batch_action_list.append(
+                    (result.channel, result.read_number, result.read_id)
+                )
+            # Add decided Action
+            self.previous_action_tracker.add_action(result.channel, action)
+        return previous_action, action_overridden
 
     def run(self):
         """Run the read until loop, in one continuous while loop."""
 
         # TODO: Swap this for a CSV record later
-        d = {"conditions": dict()}
-        for idx, r in enumerate(self.conf.regions):
-            g = d["conditions"].setdefault(str(idx), {})
-            g["channels"] = [c for c, i in self.conf._channel_map.items() if i == idx]
-            g["name"] = r.name
-        channels_out = str(Path(self.client.mk_run_dir) / "channels.toml")
-        with open(channels_out, "w") as fh:
-            fh.write(
-                "# This file is written as a record of the condition each channel is assigned.\n"
-                "# It may be changed or overwritten if you restart readfish.\n"
-                "# In the future this file may become a CSV file.\n"
-            )
-            rtoml.dump(d, fh)
+        self.conf.write_channels_toml(self.client.mk_run_dir)
 
         # TODO: This could still be passed through to the basecaller to prevent
         #       rebasecalling data that is already being unblocked or sequenced
         loop_counter = 0
-        last_live_mtime = 0
-        # IN order to prevent repeated logging in the below loop we only log each check
-        # message once
-        log_once_in_loop = True
+
+        last_live_toml_mtime = 0
         self.logger.info("Starting main loop")
         mapper_description = self.mapper.describe(self.conf.regions, self.conf.barcodes)
         self.logger.info(mapper_description)
@@ -219,19 +335,13 @@ class Analysis:
 
         while self.client.is_sequencing:
             t0 = timer()
-            # Check of we have started readfish before PHASE_SEQUECING,
-            # if so wait until we are in PHASE_SEQUENCING
-            if self.client.wait_for_sequencing_to_start:
-                if log_once_in_loop:
-                    self.logger.info(
-                        f"MinKNOW is reporting {protocol_service.ProtocolPhase.Name(self.client.current_protocol_phase)}, waiting for PHASE_SEQUENCING to begin."
-                    )
-                    log_once_in_loop = not log_once_in_loop
-                self.readfish_started_during_sequencing = False  # We are not in sequencing phase, so we can unblock the first read we see as we will be sequencing it from the start
+            # Check if we have started readfish before PHASE_SEQUENCING,
+            if self.wait_for_sequencing:
                 time.sleep(self.throttle)
                 continue
-            # We've left the conditional so we want to log if we go back out of it
-            log_once_in_loop = True
+            # Set back to true for when we re-enter a non sequencing phase
+            self.log_once_in_loop = True
+
             if self.readfish_started_during_sequencing and loop_counter == 0:
                 self.logger.info(
                     "readfish started in PHASE_SEQUENCING. Fully sequencing first read from each channel."
@@ -244,33 +354,13 @@ class Analysis:
                 )
                 time.sleep(self.throttle)
                 continue
-            # TODO: Determine how to reload a reference and only do so if changed from previous config.
-            # Specify that to load a new reference it must have a different name.
-            if self.toml.is_file() and self.toml.stat().st_mtime > last_live_mtime:
-                try:
-                    self.conf = Conf.from_file(
-                        self.toml, self.client.channel_count, self.logger
-                    )
-                # FIXME: Broad exception
-                except Exception:
-                    pass
-                last_live_mtime = self.toml.stat().st_mtime
 
+            last_live_toml_mtime = self.reload_toml(last_live_toml_mtime)
+            ########### Main Loop ###########
             loop_counter += 1
             number_reads = 0
             unblock_batch_action_list = []
             stop_receiving_action_list = []
-
-            #######################################################################
-            # New config
-            #######################################################################
-            # TODO: Filters Data flow
-            #       chunks: list[tuple[channel, ReadData]]
-            #       calls:  Iterable[readfish.plugins.utils.Result]
-            #       maps:   Iterable[readfish.plugins.utils.Result]
-            #       The filtering and partitions should be moved to the plugin module
-            #       this streamlines this function, and makes them expected behaviour
-            #       in the plugins that we provide, not enforced on third-party code.
 
             chunks = self.client.get_read_chunks(self.client.channel_count, last=True)
             calls = self.caller.basecall(
@@ -284,93 +374,42 @@ class Analysis:
                 control, condition = self.conf.get_conditions(
                     result.channel, result.barcode
                 )
-                seen_count = self.chunk_tracker.seen(result.channel, result.read_number)
                 result.decision = make_decision(self.conf, result)
                 action = condition.get_action(result.decision)
-
-                if control:
-                    action = Action.stop_receiving
-                else:
-                    # TODO: Document the less than logic here
-                    below_min_chunks = seen_count < condition.min_chunks
-                    above_max_chunks = seen_count > condition.max_chunks
-
-                    # TODO: This will also factor into the precedence and documentation
-                    # If we have seen this read more than the max chunks and want to
-                    #   evaluate it again (Action.proceed) then we will overrule that
-                    #   action using the above_max_chunks_action, unblock by default
-                    if above_max_chunks and action is Action.proceed:
-                        action = condition.above_max_chunks
-                        result.decision = Decision.above_max_chunks
-
-                    # If we are below min chunks and we get an action that is not PROCEED
-                    #   then we will overrule that action using the below_min_chunks_action
-                    #   which by default is proceed.
-                    if below_min_chunks and action is not Action.proceed:
-                        action = condition.below_min_chunks
-                        result.decision = Decision.below_min_chunks
-
-                # previous_action will be None if the read has not been seen before.
-                # otherwise previous_action will contain the last Action sent for a read on this channel.
-                previous_action = self.previous_action_tracker.get_action(
-                    result.channel
+                seen_count = self.chunk_tracker.seen(result.channel, result.read_number)
+                #  Check if there any conditions that override the action chose, exceed_max_chunks etc...
+                previous_action, action_overridden = self.check_override_action(
+                    control,
+                    action,
+                    result,
+                    seen_count,
+                    condition,
+                    stop_receiving_action_list,
+                    unblock_batch_action_list,
                 )
-                # Default is action has not been overridden
-                action_overridden = False
-                # Check if this is the first time a read has been seen from this channel, and we started mid sequencing run
-                if previous_action is None and self.readfish_started_during_sequencing:
-                    self.logger.debug(
-                        f"This is the first suitable read chunk from channel {result.channel}. Translocated read length unknown, sequencing."
-                    )
-                    action_overridden = True
-                    action = Action.stop_receiving
-
-                if action is Action.stop_receiving:
-                    stop_receiving_action_list.append(
-                        (result.channel, result.read_number)
-                    )
-                    # We do this here so that we only update the previous read
-                    # tracker with reads that have decisions made on them.
-                    self.previous_action_tracker.add_action(
-                        result.channel, action
-                    )  # This populates the last seen tracker with the current result.
-                elif action is Action.unblock:
-                    if self.dry_run:
-                        # We wish to log that a read would have been unblocked, so
-                        # we log overriding the action, but we instead send a stop receiving.
-                        # This ensures that the read is not unblocked and is not processed
-                        # further but we still log that it would have been unblocked.
-                        action_overridden = True
-                        stop_receiving_action_list.append(
-                            (result.channel, result.read_number)
-                        )
-                    else:
-                        # We do this here so that we only update the previous read
-                        # tracker with a seen and decided read.
-                        unblock_batch_action_list.append(
-                            (result.channel, result.read_number, result.read_id)
-                        )
-                    self.previous_action_tracker.add_action(
-                        result.channel, action
-                    )  # This populates the last seen tracker with the current result.
-
-                self.debug_log.debug(
-                    f"{loop_counter}\t"
-                    f"{number_reads}\t"
-                    f"{result.read_id}\t"
-                    f"{result.channel}\t"
-                    f"{result.read_number}\t"
-                    f"{len(result.seq)}\t"
-                    f"{seen_count}\t"
-                    f"{result.decision.name}\t"
-                    f"{action.name}\t"
-                    f"{condition.name}\t"
-                    f"{result.barcode}\t"
-                    f"{previous_action.name if previous_action is not None else previous_action}\t"
-                    f"{time.time()}\t"
-                    f"{action_overridden}"
+                self.loop_statistics.log_read(
+                    client_iteration=loop_counter,
+                    read_in_loop=number_reads,
+                    read_id=result.read_id,
+                    channel=result.channel,
+                    read_number=result.read_number,
+                    seq_len=len(result.seq),
+                    counter=seen_count,
+                    mode=result.decision.name,
+                    decision=action.name,
+                    condition=condition.name,
+                    barcode=result.barcode,
+                    previous_action=previous_action.name
+                    if previous_action is not None
+                    else previous_action,
+                    action_overridden=action_overridden,
+                    timestamp=time.time(),
+                    # Anything below here is not included in the Debug log
+                    region_name=self.conf.get_region(result.channel).name,
                 )
+
             #######################################################################
+            # Compile actions to be sent
             self.client.unblock_read_batch(
                 unblock_batch_action_list, duration=self.unblock_duration
             )
@@ -378,7 +417,11 @@ class Analysis:
 
             t1 = timer()
             if number_reads > 0:
-                self.logger.info(f"{number_reads}R/{t1 - t0:.5f}s")
+                self.loop_statistics.add_batch_performance(
+                    number_of_reads=number_reads, batch_time=t1 - t0
+                )
+                self.logger.info(self.loop_statistics.get_batch_performance())
+
             # limit the rate at which we make requests
             if t0 + self.throttle > t1:
                 time.sleep(self.throttle + t0 - t1)
@@ -424,6 +467,13 @@ def run(
 
     # Load TOML configuration
     conf = Conf.from_file(args.toml, read_until_client.channel_count, logger=logger)
+
+    # Set the padding if it is specified.
+    if padding := getattr(args, "padding", None):
+        for region in conf.regions:
+            region.targets.padding = padding
+        for barcode in conf.barcodes:
+            conf.barcodes[barcode].targets.padding = padding
     logger.info(conf.describe_experiment())
 
     send_message(
@@ -446,7 +496,7 @@ def run(
         read_until_client,
         conf=conf,
         logger=logger,
-        debug_log_filename=args.debug_log,
+        debug_log=args.debug_log,
         unblock_duration=args.unblock_duration,
         throttle=args.throttle,
         dry_run=args.dry_run,
@@ -457,6 +507,7 @@ def run(
     try:
         worker.run()
     except KeyboardInterrupt:
+        logger.info("Keyboard interrupt received, stopping readfish.")
         pass
     finally:
         read_until_client.reset()
