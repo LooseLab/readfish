@@ -149,7 +149,7 @@ TOML File
 For information on the TOML files see [TOML.md](docs/toml.md).
 There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish_dev/tree/refactor/docs/_static/example_tomls.
 
-<details style="margin-top: 10px; margin-bottom: 10px"><summary id="testing"><h1 style="display: inline">Testing</h1></summary>
+<details style="margin-top: 10px; margin-bottom: 10px" open><summary id="testing"><h1 style="display: inline">Testing</h1></summary>
 <!-- begin-test -->
 To test readfish on your configuration we recommend first running a playback experiment to test unblock speed and then selection.
 
@@ -255,44 +255,101 @@ e.g. `>chr1 human chromosome 1` would become `chr1`. If these names do not match
 We can now validate this TOML file to see if it will be loaded correctly.
 
 
-    ```console
-    readfish validate human_chr_selection.toml
-    ```
+```console
+readfish validate human_chr_selection.toml
+```
 
-    Errors with the configuration will be written to the terminal along with a text description of the conditions for the experiment as below.
+Errors with the configuration will be written to the terminal along with a text description of the conditions for the experiment as below.
 
-    ```text
-     2023-07-19 11:14:31,091 readfish /path/to/readfish validate human_chr_selection.toml
-     2023-07-19 11:14:31,091 readfish command='validate'
-     2023-07-19 11:14:31,091 readfish log_file=None
-     2023-07-19 11:14:31,091 readfish log_format='%(asctime)s %(name)s %(message)s'
-     2023-07-19 11:14:31,091 readfish log_level='info'
-     2023-07-19 11:14:31,091 readfish no_check_plugins=True
-     2023-07-19 11:14:31,091 readfish prom=False
-     2023-07-19 11:14:31,091 readfish toml='human_chr_selection.toml'
-     2023-07-19 11:14:31,092 readfish.validate eJydVl1r5TYQffevEM7rre+mzUJbyMNSWBpou6FN6UMIRrbHtogsOZKc5P77zowsX3vjsLQhJNbXnDMzZ0a6EHe98gJ/pbj78vtvoramVZ1olQbRWie0egZRSQ+11FqZTkjTCA8a6oCj7EKEFyvq3tnBejuAFy1+itCD6KdBGtGBwWmhDAJ4PIFmHXTKmgLP3hjcidg12uczmx3iRWmNhJ7B8SKYoByy0valBq3JAJOHVzmMeIoMMfvJQcPk3WQMcX5RoUfi4s+fiqviUlSTfmQP0QJtC+DJmSLLsntyE1zpIdCUL7ppHE8PCQp/iUmCkYFoVtrWj9EQrbEBIvcP+jNCrdqTmMgxwbYiGdr5Dla0F707hx5jsEVFKtG6QmeVWfFC10A3yYBsGgfex8nlSPQjrdmWhze3vwiP2BBS5Ci/GxLFJg4NtHLS4YyBMWAnEngD1dSV2na78EaiMmZsFlywopU+PAk7hXEKZA8Ngax79LBRz6qZpEZ1yObMY/LQTpqhGa3jTM6RuBZ5Y2TpOO/l1ccP1ehLgsizxBm3qLH++Xg8hmE8xhwcP+JPnp3Z4yYqhJKgfdE+5aiUQY7jOns0/k9KiQZ2lcK2VkrZx9oqxUELDkzNYcQN8fieTFpTqua1xNGilM/MaVVMYWPR93bC9FVY1d0PP3IPUA2gIk541thAfgZJRW5OmIbannxBXknvJ8zxuj9IFxPf4CItXB7o7/cHAaH+/7KZBcOi1qozAzYLX6ySsSeT6IdPYfEBx9I14vbTZ9o4yJAImTL0nPt9QtNQYX0ypbgLGSEgo6Fw4ZXBYjwlxhOtItRhKVtqf3ias/qd8wc+SCPW8oW4lY6qTy87iLU1+oQmnyaV2t2IUYbQ33z5Q3gsV4i9ekmdDEKDRPFTzhaHrsVVkZ0VgUo//u3B+SO6H7S1Ho6LDvyR0l96RRIphkHt1cgq/qNs82wDRS32PrZ3/7AuFvluqcjVhXG3ifZsR5zshDE0HHI0hfrztVPVWfB0sxVDw2pZzJCKviWvGVncBAaoeEG6SgUn3QnDabrQpwpGUeFFMlcwC6q3ju4WZESExkA5st6r6kxjUKas+8k8es7WIF/TkLn5pTGEuFkN05B28vcSDjTYyIBxjMdRgkgXJYFpA+6XS7+ORbhCvhaXX6OzLC7EXwBvIhjVaR3d6rFMVtkJ0nUQ9utk3QYivfiQIPmmV8OiNTL4K36KF8TRevIY8gDnp8ebhwc5sEXhVHox4Fl0LdT9fJ3F6VkbG8C75Q1SWnPAkzoo/kqTbbvM0qex2JOf+D913G3KZjRZs6DR4SAf0Z0eDGtacu9xUANWDVGXM8sULacCOCUTLzsGVjvlLvfBjmU8i8zyg8gnwyWDnxSInBMPTV7spnB++LyXRFnho6tcqYFMVoAPr3Klmh2B7viaYr5U7Xx6cZyKn/AEEmIM2s/vQbyfe4sQhfjU0eXioydE8ttyzLiOsSnhO7SkKsyzreKzrdqzpNxrcZ/TjfQhP/D/y/whWzRBBr+KfZZUsrd21g2tphxli4Q2s1FNNJWyl83CWk+9Sc7axJskrU9m/wKwWCn4
-     2023-07-19 11:14:31,096 readfish.validate Loaded TOML config without error
-     2023-07-19 11:14:31,096 readfish.validate Initialising Caller
-     2023-07-19 11:14:31,484 readfish.validate Caller initialised
-     2023-07-19 11:14:31,484 readfish.validate Initialising Aligner
-     2023-07-19 11:14:38,422 readfish.validate Aligner initialised
-    ```
+```text
+2023-10-05 15:29:18,934 readfish /home/adoni5/mambaforge/envs/readfish_dev/bin/readfish validate human_chr_selection.toml
+2023-10-05 15:29:18,934 readfish command='validate'
+2023-10-05 15:29:18,934 readfish log_file=None
+2023-10-05 15:29:18,934 readfish log_format='%(asctime)s %(name)s %(message)s'
+2023-10-05 15:29:18,934 readfish log_level='info'
+2023-10-05 15:29:18,934 readfish no_check_plugins=False
+2023-10-05 15:29:18,934 readfish no_describe=False
+2023-10-05 15:29:18,934 readfish prom=False
+2023-10-05 15:29:18,934 readfish toml='human_chr_selection.toml'
+2023-10-05 15:29:18,934 readfish.validate eJydVk1v2zgQvetXEMqlxdryxyZAGyAHt0WKAk1TNNlTkBVoiZKIUKQiUonTX79vSEmW2zRo1/BBIkdvZt68GfKIXXV1zdunU3Z9efGZZUYXsmSFVIIVpmWt4GruZC3YlluRcaWkLmdM6FZmFR7JKDpi7tGwrGpNbayphWWv8MLWS8Z1ztar16zAFnOVYFVXc81KoWHGpGacWaDAWStKaXQCrOtK2v6V8aZREnjOMLiGC661UJbxrDXWesTHylCsyjxmTCiVRAOE2PG6wRYeQ1ZdK/KQVKc1xf4oXYUQ2be3yXGyYttO3e0zd8I6GHm8jxSvzJjjbSkc3LeC2UZkspCAzGUrMqeeKB+KyJlaBZx+AXA1UBiLEYiTZYwXeOD2dLo6s4B3M6FzPLVgjswokj6RGQyrdj1bzlbL5eyvOCYMvxQTbZ8KqsCa0h1Dm3n3AugIOHhB0iBy61+tzAVxwvvEZgyUbw1ICQHYUA5hBWu4c6LVoBJ84eta7gjeG0/TRki+qklmHzwHnr8NXJrCW20FKoUdofLAo9g1ikuNMPBhbbCSC8elGmBzk3U1UuCOBDEHWuVcY08XC2WMFYpvkxJ17LaJNAvINS+krRYUTFK5WpH7d710RTsqwaNFN2E1tcJRrW1Sdk3zdOurMv39639szuJgEY8UW2Y6oFaIRI8tIqglPpKhX5r3bXPoPChE81pEfdOdsTjXPG1XS5JjKt4k6/R4udw2Nj25q76nBbeONLHJ81ZA/T2j5eioz3FONQOLBe+UY7y3JiUFUyhENhkIXLi6WYSMFif4JdFgjFCeNyH/54jjHnm7pnMeVupcPsi844rmBWQTGhD/y6/Xny6/bD4jJu7bFVKivAcdZTQG7jvpBFMkQRLcN1GbB7xDE9T3ubR8SzrKxbYrU2U8UUo+iDQ4K+7joDFZamT//rDCNUbItML0/nKFvcW0wn6BlO0f5q3tc8FI8i4H56RSEFCgp3TmY++sSNhVZTqVU9MI6BQRnm+urjd+AGh2cfEpKnQq810KvSOxRQVKFjw3Wp4sPvTat4t30khNcwRpZRY6L+yiKv9+k2qTcuXAAk/K74nFuHRhA8MgvUjqWlLJLhtiA/X5ujmfVo5oDGl4N39G/+S7hhfk5ktXb5GgF6YvziAPsSP9vwpM0qEwUPl6fNsbEMNGq6fXkU4HnDN2HPng/LFwUGMUzQrxZ1PhiIOMJyvtPBw0IVA/fUaaw2n0QRRSS+dtkFfc6a0y2V2Mady0JhMij30KsXWmgSIzgVaA0GI/3DgBK0w8G0UksyPWf3RKMxGD0IBl7zarOn1HhNNo5o2jwwrzVRS06donoge7Nb8DqjZeSDkUahHZjMlEDMg+E20eB4d9wKfsn/DglUuMDAaHgQ+BDVZ9SFbcd6RqxETZ0jds/AZneEni8jn0NXc/HuX+3An3huFmkdux8s7fH/obAz2tkujmpi/O7W1Ec5KEh/tDSidzHNVSp73DM7ZCHliQdVczPYqw3+5J5CNf4yHGcxHVfLfHOSYcvnseJzQ0nUsjEMpB0WO6FTgeQRryxbghBYUJsUUvpRMXPPNjabhInLGb+Mv7dLlav10vk1V8SwX58bbhbyN7JqNwY0qNnxeH1Yvp+433QeE6Uov0x0TrL0Jebj3lZOI9JFGNg0L+CvBlRC9eh3vZFHvWX60cUwKHhd8afA3RFwV5G9ppmMO/HT3pRDq/CqQAPuTxPPQL2NSq/lu6L/YeLJIIm9AtGez9JBGmLjqCvIxDYPJ7MQltxmaazhqChOdnA/8NyIGWKeJP4jvA/gXiz7IPWqD7mQ16ZnvIyF/n0oNenFDyv3yEG+IeMvoPUvBL7w==
+2023-10-05 15:29:18,937 readfish.validate Loaded TOML config without error
+2023-10-05 15:29:18,937 readfish.validate Initialising Caller
+2023-10-05 15:29:18,945 readfish.validate Caller initialised
+2023-10-05 15:29:18,945 readfish.validate Initialising Aligner
+2023-10-05 15:29:18,947 readfish.validate Aligner initialised
+2023-10-05 15:29:18,948 readfish.validate Configuration description:
+Region hum_test (control=False).
+Region applies to section of flow cell (# = applied, . = not applied):
+
+    ################################
+    ################################
+    ################################
+    ################################
+    ################################
+    ################################
+    ################################
+    ################################
+
+2023-10-05 15:29:18,948 readfish.validate Using the mappy plugin. Using reference: /home/adoni5/Documents/Bioinformatics/refs/hg38_no_alts.fa.gz.split/hg38_chr_M.mmi.
+
+Region hum_test has targets on 1 contig, with 1 found in the provided reference.
+This region has 2 total targets (+ve and -ve strands), covering approximately 100.00% of the genome.
+```
 1. If your toml file validates then run the following command:
+
+1. 
     ```console
     readfish targets --toml <PATH_TO_TOML> --device <YOUR_DEVICE_ID> --log-file test.log --experiment-name human_select_test
     ```
+
 1. In the terminal window you should see messages reporting the speed of mapping of the form:
     ```text
-    2023-06-27 14:10:09,405 readfish.targets 341R/0.31656s
-    2023-06-27 14:10:09,838 readfish.targets 283R/0.34924s
-    2023-06-27 14:10:10,251 readfish.targets 397R/0.36161s
-    2023-06-27 14:10:10,633 readfish.targets 261R/0.34265s
-    2023-06-27 14:10:11,048 readfish.targets 394R/0.35735s
+    2023-10-05 15:24:03,910 readfish.targets MinKNOW is reporting PHASE_MUX_SCAN, waiting for PHASE_SEQUENCING to begin.
+    2023-10-05 15:25:48,150 readfish._read_until_client Protocol phase changed to PHASE_SEQUENCING
+    2023-10-05 15:25:48,724 readfish.targets 0494R/0.5713s; Avg: 0494R/0.5713s; Seq:0; Unb:494; Pro:0; Slow batches (>1.00s): 0/1
+    2023-10-05 15:25:52,132 readfish.targets 0004R/0.1831s; Avg: 0249R/0.3772s; Seq:0; Unb:498; Pro:0; Slow batches (>1.00s): 0/2
+    2023-10-05 15:25:52,600 readfish.targets 0122R/0.2494s; Avg: 0206R/0.3346s; Seq:0; Unb:620; Pro:0; Slow batches (>1.00s): 0/3
+    2023-10-05 15:25:52,967 readfish.targets 0072R/0.2144s; Avg: 0173R/0.3046s; Seq:0; Unb:692; Pro:0; Slow batches (>1.00s): 0/4
+    2023-10-05 15:25:53,349 readfish.targets 0043R/0.1932s; Avg: 0147R/0.2823s; Seq:0; Unb:735; Pro:0; Slow batches (>1.00s): 0/5
+    2023-10-05 15:25:53,759 readfish.targets 0048R/0.2011s; Avg: 0130R/0.2688s; Seq:0; Unb:783; Pro:0; Slow batches (>1.00s): 0/6
+    2023-10-05 15:25:54,206 readfish.targets 0126R/0.2458s; Avg: 0129R/0.2655s; Seq:0; Unb:909; Pro:0; Slow batches (>1.00s): 0/7
+    2023-10-05 15:25:54,580 readfish.targets 0082R/0.2180s; Avg: 0123R/0.2595s; Seq:0; Unb:991; Pro:0; Slow batches (>1.00s): 0/8
+    2023-10-05 15:25:54,975 readfish.targets 0053R/0.2110s; Avg: 0116R/0.2542s; Seq:0; Unb:1,044; Pro:0; Slow batches (>1.00s): 0/9
+    2023-10-05 15:25:55,372 readfish.targets 0057R/0.2051s; Avg: 0110R/0.2492s; Seq:0; Unb:1,101; Pro:0; Slow batches (>1.00s): 0/10
+    2023-10-05 15:25:55,817 readfish.targets 0135R/0.2467s; Avg: 0112R/0.2490s; Seq:0; Unb:1,236; Pro:0; Slow batches (>1.00s): 0/11
+    2023-10-05 15:25:56,192 readfish.targets 0086R/0.2206s; Avg: 0110R/0.2466s; Seq:0; Unb:1,322; Pro:0; Slow batches (>1.00s): 0/12
+    2023-10-05 15:25:56,588 readfish.targets 0060R/0.2138s; Avg: 0106R/0.2441s; Seq:0; Unb:1,382; Pro:0; Slow batches (>1.00s): 0/13
+    2023-10-05 15:25:56,989 readfish.targets 0060R/0.2123s; Avg: 0103R/0.2418s; Seq:0; Unb:1,442; Pro:0; Slow batches (>1.00s): 0/14
+    2023-10-05 15:25:57,429 readfish.targets 0133R/0.2502s; Avg: 0105R/0.2424s; Seq:0; Unb:1,575; Pro:0; Slow batches (>1.00s): 0/15
+    2023-10-05 15:25:57,809 readfish.targets 0089R/0.2280s; Avg: 0104R/0.2415s; Seq:0; Unb:1,664; Pro:0; Slow batches (>1.00s): 0/16
+    2023-10-05 15:25:58,210 readfish.targets 0059R/0.2247s; Avg: 0101R/0.2405s; Seq:0; Unb:1,723; Pro:0; Slow batches (>1.00s): 0/17
+    ^C2023-10-05 15:25:58,238 readfish.targets Keyboard interrupt received, stopping readfish
     ```
 
-    | :warning: WARNING          |
-    |:---------------------------|
-    |**Note: if these times are longer than the number of seconds specified in the break read chunk in the sequencing TOML, you will have performance issues. Contact us via github issues for support.**      |
+| WARNING                    |
+|:---------------------------|
+|**Note: if these times are longer than the number of seconds specified in the break read chunk in the sequencing TOML, you will have performance issues. Contact us via github issues for support.**      |
+<!-- start-heartbeat-log -->
+This log is a little dense at first. Moving from left to right, we have:
+
+    [Date Time] [Logger Name] [Batch Stats]; [Average Batch Stats]; [Count commands sent]; [Slow Batch Info]
+
+Using the provided log as an example:
+
+On 2023-10-05 at 15:25:56,989, the Readfish targets command logged a batch of read signal:
+
+    - It saw 60 reads in the current batch.
+    - The batch took 0.2123 seconds.
+    - On average, batches are 103 reads, which are processed in 0.2418 seconds.
+    - Since the start, 0 reads were sequenced, 1,442 reads were unblocked, and 0 reads were asked to proceed.
+    - Out of 14 total batches processed, 0 were considered slow (took more than 1 second).
+
+The important thing to note here is that the average batch time is less than the break read chunk time in the sequencing TOML.
+The slow batch section will show the number of batches that were slower than break reads. 
+If the average is lower, or the slow batch count is high,  you will have performance issues.
+Contact us via github issues for support.
+<!-- end-heartbeat-log -->
+If you are happy with the speed of mapping, move on to testing a selection.
 
 </details>
 
@@ -302,12 +359,12 @@ We can now validate this TOML file to see if it will be loaded correctly.
  The only way to test readfish on a playback run is to look at changes in read length for rejected vs accepted reads. To do this:
 
  1. Start a fresh simulation run using the bulkfile provided above.
- 1. Restart the readfish command (as above):
+ 2. Restart the readfish command (as above):
     ```console
     readfish targets --toml <PATH_TO_TOML> --device <YOUR_DEVICE_ID> --log-file test.log --experiment-name human_select_test
     ```
- 1. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
- 1. After 15 minutes it should look something like this:
+ 3. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
+ 4. After 15 minutes it should look something like this:
         ![alt text](/_static/images/PlaybackRunUnblock.png "Playback Unblock Image")
 Zoomed in on the unblocks:
         ![alt text](/_static/images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")

@@ -3,9 +3,8 @@ Subclasses ONTs read_until_api ReadUntilClient added extra function that logs un
 """
 from __future__ import annotations
 import logging
-import queue
 import time
-from logging.handlers import QueueHandler, QueueListener
+
 from pathlib import Path
 
 from minknow_api.acquisition_pb2 import AcquisitionState
@@ -50,6 +49,7 @@ class RUClient(ReadUntilClient):
             __name__,
             level=logging.INFO,
             log_format="%(asctime)s %(name)s %(message)s",
+            propagate=True,
         )
         self.current_protocol_phase = None
         self.current_protocol_state = None
@@ -82,18 +82,12 @@ class RUClient(ReadUntilClient):
             self.mk_run_dir = "."
             ids_log = self.mk_run_dir.joinpath("unblocked_read_ids.txt")
             ids_log.touch(exist_ok=True)
-
-        self.log_queue = queue.Queue(-1)
-        self.queue_handler = QueueHandler(self.log_queue)
-        self.unblock_logger = logging.getLogger("unblocks")
-        self.unblock_logger.setLevel(logging.DEBUG)
-        self.unblock_logger.propagate = False
-        self.unblock_logger.addHandler(self.queue_handler)
-        fmt = logging.Formatter("%(message)s")
-        self.file_handler = logging.FileHandler(str(ids_log), mode="a")
-        self.file_handler.setFormatter(fmt)
-        self.listener = QueueListener(self.log_queue, self.file_handler)
-        self.listener.start()
+        self.unblock_logger = setup_logger(
+            "unblock_logger",
+            log_file=ids_log,
+            log_format="%(message)s",
+            queue_bound=-1,
+        )
 
     def unblock_read_batch(
         self, reads: list[tuple[int, int, str]], duration: float = 0.1
@@ -146,9 +140,11 @@ class RUClient(ReadUntilClient):
             current_phase = protocol_run.phase
         except RpcError as e:
             self.log.info(f"Got RPC exception\n{e}")
-            self.log.info("Run may have ended")
+            self.log.error(
+                f"{e.details()}, Run is currently not underway, Please check MinKNOW UI."
+            )
             self.phase_errors += 1
-            raise SystemError(1)
+            raise SystemExit(1)
         if current_phase != self.current_protocol_phase:
             self.current_protocol_phase = current_phase
             self.log.info(
@@ -172,7 +168,7 @@ class RUClient(ReadUntilClient):
                 self.log.info("Run may have ended")
                 self.phase_errors += 1
             else:
-                raise SystemError(1)
+                raise SystemExit(1)
 
     def wait_for_minknow_folder(self, timeout: int = TIMEOUT):
         """

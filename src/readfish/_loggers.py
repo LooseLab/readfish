@@ -1,78 +1,92 @@
 from __future__ import annotations
 import logging
 import argparse
-from pathlib import Path
+from logging.handlers import QueueHandler, QueueListener
+import queue
 from typing import Callable
 
 
 def setup_logger(
     name: str,
+    header: str | None = None,
     log_format: str = "%(message)s",
     log_file: str | None = None,
     log_console: bool = False,
     mode: str = "a",
     level: int = logging.DEBUG,
     propagate: bool = False,
+    queue_bound: int = 100_000,
 ) -> logging.Logger:
-    """Setup loggers
+    """
+    Configures and returns a `logging.Logger` object with handlers specified by the values
+    set in ``log_file`` and ``log_format``, specified format, and level.
 
-    :param name: Name to give the logger
-    :param log_format: logging format string using % formatting
-    :param log_file: File to record logs to, sys.stderr if not set
-    :param log_console: Add a console streamhandler, will be used if True or `log_file` is None
-    :param mode: Mode to use for FileHandler, default is 'a'
-    :param level: Where logging.LEVEL is one of (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-    :param propagate: Pass through for logger.propagate, default is False
+    A custom header can be included if logging to a file.
+    Log messages will be formatted using the provided format string.
 
-    :returns: :class:`logging.Logger` instance
+    :param name: Name to assign to the logger.
+    :param header: Optional header to write at the top of the log file.
+    :param log_format: Format string for log messages using % formatting, default is "%(message)s".
+    :param log_file: Path to the file where logs should be written.
+    :param log_console: Whether to log to console. If True, a console StreamHandler is added.
+    :param mode: Mode to use when opening the log file, default is 'a' (append).
+    :param level: Logging level, where logging.LEVEL is one of (DEBUG, INFO, WARNING, ERROR, CRITICAL). Default is logging.DEBUG.
+    :param propagate: Whether the logger should propagate messages to higher-level loggers, default is False.
+    :param queue_bound: Maximum number of log messages to store in the queue, default is 100_000. If full, adding to queue will block until space is available.
+
+    :returns: Configured :class:`logging.Logger` instance.
+
+    :Example:
+
+        >>> logger = setup_logger('my_logger', log_console=True, level=logging.INFO)
+        >>> logger.info('This is an info message')
+
+        >>> import tempfile
+        >>> with tempfile.NamedTemporaryFile(mode='w+', delete=True) as tmpfile:
+        ...     logger = setup_logger('my_logger', log_file=tmpfile.name, header='Time\tMessage', level=logging.INFO)
+
+
+    :raises IOError: If an I/O error occurs while opening or writing to the file.
+
+    :Note:
+        - If `log_file` is specified, a QueueHandler and QueueListener will be used to send logs to the specified file.
+            The Queue will be bounded, with a default size of 100_000. Putting to queue will block if full.
+        - If `log_file` is specified and `log_console` is False, logs will only be recorded to the specified file.
+        - If `log_console` is True, logs will be sent to console irrespective of whether `log_file` is specified.
+        - If `log_file` is None and `log_console` is False, logs will be sent to a `logging.NullHandler` instance.
+        - If `header` is provided and the file specified by `filename` already exists,
+            the header will not be written to the file.
     """
     logger = logging.getLogger(name)
     formatter = logging.Formatter(log_format)
 
     if log_file is not None:
-        handler = logging.FileHandler(log_file, mode=mode)
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
+        try:
+            if header is not None:
+                with open(log_file, "x") as file:
+                    file.write(f"{header}\n")
+        except FileExistsError:
+            pass  # File already exists, proceed to normal logging.
+        except IOError as e:
+            logging.error(f"Unable to write header to {log_file}: {e}")
+        log_queue = queue.Queue(queue_bound)
+        queue_handler = QueueHandler(log_queue)
+        logger.addHandler(queue_handler)
 
-    if log_console or log_file is None:
+        handler = logging.FileHandler(log_file, mode=mode, encoding="utf-8")
+        handler.setFormatter(formatter)
+
+        listener = QueueListener(log_queue, handler)
+        listener.start()
+    if log_console:
         handler = logging.StreamHandler()
         handler.setFormatter(formatter)
         logger.addHandler(handler)
+    if log_file is None and not log_console:
+        logger.addHandler(logging.NullHandler())
 
     logger.setLevel(level)
     logger.propagate = propagate
-    return logger
-
-
-def setup_debug_logger(
-    name: str,
-    log_file: str | None = None,
-    header: str | None = None,
-    **kwargs,
-) -> logging.Logger:
-    """This function sets up a logger for debugging purposes.
-
-    If a log file is specified a new logger
-    is created with the specified name and log file. If the log file does not
-    exist, an optional header string is added to the log file this is intended
-    to be CSV column names or a comment on the file. If no ``log_file`` is specified,
-    the function returns a disabled logger.
-
-    :param name: The name of the logger to set up.
-    :param log_file: The file path to write logs to. If not specified, a disabled logger will be returned.
-    :param header: A string to write to the log file if a new file is created, will not be used if the ``log_file`` already exists.
-    :param kwargs: Additional keyword arguments to pass to the :func:`setup_logger` function if a ``log_file`` is specified.
-
-    :returns: A :class:`logging.Logger` object.
-    """
-    if log_file is not None:
-        file_exists = Path(log_file).is_file()
-        logger = setup_logger(name, log_file=log_file, **kwargs)
-        if not file_exists and header is not None:
-            logger.debug(header)
-    else:
-        logger = logging.getLogger(name)
-        logger.disabled = True
     return logger
 
 

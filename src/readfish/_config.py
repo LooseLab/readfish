@@ -22,6 +22,18 @@ from readfish.plugins.utils import Targets, Action, Decision, Result
 
 
 def make_decision(conf: Conf, result: Result) -> Decision:
+    """
+    The main decision making function for readfish.
+    Chooses the decision that is looked up in the TOML based
+    on the mapped coordinates of the read, checked against the targets.
+    Decision is one of single_on, multi_on, single_off, multi_off, no_map, no_seq.
+
+    :param conf: The Conf object for the experiment
+    :param result: The result of the alignment and base calling for the read
+    :raises ValueError: If readfish fails to make a decision based on
+        the passed Result object length
+    :return: The decision that readfish has made for this read
+    """
     if result.alignment_data is None:
         result.alignment_data = []
     targets = conf.get_targets(result.channel, result.barcode)
@@ -398,6 +410,28 @@ class Conf:
         with open(path, "w") as fh:
             rtoml.dump(d, fh, pretty=True)
 
+    def write_channels_toml(self, out_dir: Path) -> None:
+        """
+        Write out a channels toml file to the given directory.
+        This file is a map of each channel number to the corresponding region name.
+
+        :param out_dir: Read Until client we are connected to.
+        """
+        d = {"conditions": {}}
+
+        for idx, r in enumerate(self.regions):
+            g = d["conditions"].setdefault(str(idx), {})
+            g["channels"] = [c for c, i in self._channel_map.items() if i == idx]
+            g["name"] = r.name
+        channels_out = out_dir / "channels.toml"
+        with open(channels_out, "w") as fh:
+            fh.write(
+                "# This file is written as a record of the condition each channel is assigned.\n"
+                "# It may be changed or overwritten if you restart readfish.\n"
+                "# In the future this file may become a CSV file.\n"
+            )
+            rtoml.dump(d, fh)
+
     def describe_experiment(self) -> str:
         """
         Describe the experiment from the given Conf class.
@@ -433,8 +467,6 @@ Region applies to section of flow cell (# = applied, . = not applied):
             )
         return "\n".join(description)
 
-
-# TODO: Docs! (barcodes have higher precedence for targets than regions)
 
 if __name__ == "__main__":
     try:

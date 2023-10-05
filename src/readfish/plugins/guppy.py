@@ -16,7 +16,7 @@ from minknow_api.protocol_pb2 import ProtocolRunInfo
 from pyguppy_client_lib.helper_functions import package_read
 from pyguppy_client_lib.pyclient import PyGuppyClient
 
-from readfish._loggers import setup_debug_logger
+from readfish._loggers import setup_logger
 from readfish.plugins.abc import CallerABC
 from readfish.plugins.utils import Result
 from readfish._utils import nice_join
@@ -52,7 +52,7 @@ class Caller(CallerABC):
     def __init__(
         self, run_information: ProtocolRunInfo = None, debug_log=None, **kwargs
     ):
-        self.logger = setup_debug_logger("readfish_guppy_logger", log_file=debug_log)
+        self.logger = setup_logger("readfish_guppy_logger", log_file=debug_log)
         self.supported_barcode_kits = None
         self.supported_basecall_models = None
         self.run_information = run_information

@@ -7,7 +7,7 @@ from itertools import chain, repeat
 from pathlib import Path
 from typing import Optional, Iterable
 
-from readfish._loggers import setup_debug_logger
+from readfish._loggers import setup_logger
 from readfish.plugins.abc import AlignerABC
 from readfish.plugins.utils import (
     Result,
@@ -36,7 +36,7 @@ class _Aligner(AlignerABC):
 
     def __init__(self, mappy_impl: Aligners, debug_log: Optional[str] = None, **kwargs):
         self.mappy_impl = mappy_impl
-        self.logger = setup_debug_logger(__name__, log_file=debug_log)
+        self.logger = setup_logger(__name__, log_file=debug_log)
         self.aligner_params = kwargs
         self.validate()
 
