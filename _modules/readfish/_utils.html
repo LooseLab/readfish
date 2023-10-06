@@ -1,0 +1,713 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>readfish._utils - readfish 2023.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --font-stack--monospace: 'Ubuntu Mono', monospace;
+  --code-font-size: 90%;
+  --color-api-background: #f8f9fb;
+  --color-highlight-on-target: transparent;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">readfish 2023.1.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../_static/readfish_light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../_static/readfish_dark.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../toml.html">TOML files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readfish.console.html">readfish console scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../post-analysis.html">Readfish analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developers-guide.html">Developer’s guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readfish.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readfish.plugins.html">readfish plugins API</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for readfish._utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;utils.py</span>
+<span class="sd">functions and utilities used internally.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
+<span class="kn">from</span> <span class="nn">minknow_api.manager</span> <span class="kn">import</span> <span class="n">Manager</span><span class="p">,</span> <span class="n">FlowCellPosition</span>
+<span class="kn">from</span> <span class="nn">minknow_api</span> <span class="kn">import</span> <span class="n">Connection</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">exceptiongroup</span> <span class="kn">import</span> <span class="n">BaseExceptionGroup</span>
+
+<span class="kn">from</span> <span class="nn">readfish._channels</span> <span class="kn">import</span> <span class="n">FLONGLE_CHANNELS</span><span class="p">,</span> <span class="n">MINION_CHANNELS</span>
+
+
+<span class="n">MODULE_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ChunkTracker"><a class="viewcode-back" href="../../readfish.html#readfish._utils.ChunkTracker">[docs]</a><span class="k">class</span> <span class="nc">ChunkTracker</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channels</span><span class="p">):</span>
+        <span class="c1"># https://wiki.python.org/moin/TimeComplexity</span>
+        <span class="c1"># self.tracker = defaultdict(Counter)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="p">[</span><span class="n">Counter</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">channels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="ChunkTracker.seen"><a class="viewcode-back" href="../../readfish.html#readfish._utils.ChunkTracker.seen">[docs]</a>    <span class="k">def</span> <span class="nf">seen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">read_number</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">read_number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">][</span><span class="n">read_number</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">][</span><span class="n">read_number</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="Severity"><a class="viewcode-back" href="../../readfish.html#readfish._utils.Severity">[docs]</a><span class="k">class</span> <span class="nc">Severity</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Severity states for messaging to MinKNOW</span>
+
+<span class="sd">    :param INFO: Info level</span>
+<span class="sd">    :param WARN: Warn level</span>
+<span class="sd">    :param ERROR: Error level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">INFO</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">WARN</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="mi">3</span></div>
+
+
+<div class="viewcode-block" id="format_bases"><a class="viewcode-back" href="../../readfish.html#readfish._utils.format_bases">[docs]</a><span class="k">def</span> <span class="nf">format_bases</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a human readable string of a large number using SI unit prefixes</span>
+
+<span class="sd">    :pararm num: A number to convert to decimal form</span>
+<span class="sd">    :param factor: The SI factor, use 1000 for SI units and 1024 for binary multiples</span>
+<span class="sd">    :param suffix: The suffix to place after the SI prefix, for example use B for SI units and iB for binary multiples</span>
+<span class="sd">    :return: The input number formatted to two decimal places with the SI unit and suffix</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; format_bases(1_000)</span>
+<span class="sd">    &#39;1.00 kB&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_bases(1_000_000)</span>
+<span class="sd">    &#39;1.00 MB&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_bases(1_630_000)</span>
+<span class="sd">    &#39;1.63 MB&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_bases(1_000_000_000)</span>
+<span class="sd">    &#39;1.00 GB&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">factor</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">:</span><span class="s2">3.2f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">unit</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">num</span> <span class="o">/=</span> <span class="n">factor</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">:</span><span class="s2">3.2f</span><span class="si">}</span><span class="s2"> Y</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="nested_get"><a class="viewcode-back" href="../../readfish.html#readfish._utils.nested_get">[docs]</a><span class="k">def</span> <span class="nf">nested_get</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">delim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a value from a nested structure</span>
+
+<span class="sd">    &gt;&gt;&gt; class C:</span>
+<span class="sd">    ...     def __init__(self, x=None):</span>
+<span class="sd">    ...         self.x = x</span>
+<span class="sd">    ...     def __repr__(self): return f&quot;C(x={self.x!r})&quot;</span>
+<span class="sd">    &gt;&gt;&gt; data = {&quot;a&quot;: {&quot;b&quot;: {&quot;c&quot;: &quot;d&quot;, &quot;e&quot;: C(999)}}}</span>
+<span class="sd">    &gt;&gt;&gt; cls = C(C(data))</span>
+<span class="sd">    &gt;&gt;&gt; nested_get(data, &quot;a.b.c&quot;)</span>
+<span class="sd">    &#39;d&#39;</span>
+<span class="sd">    &gt;&gt;&gt; nested_get(data, &quot;a.b.c&quot;, 0)</span>
+<span class="sd">    &#39;d&#39;</span>
+<span class="sd">    &gt;&gt;&gt; nested_get(data, &quot;a.b.c.d.e&quot;, 0)</span>
+<span class="sd">    0</span>
+<span class="sd">    &gt;&gt;&gt; nested_get(cls, &quot;x.x&quot;)</span>
+<span class="sd">    {&#39;a&#39;: {&#39;b&#39;: {&#39;c&#39;: &#39;d&#39;, &#39;e&#39;: C(x=999)}}}</span>
+<span class="sd">    &gt;&gt;&gt; nested_get(cls, &quot;x.x.a.b.e.x&quot;)</span>
+<span class="sd">    999</span>
+<span class="sd">    &gt;&gt;&gt; nested_get(cls, &quot;missing&quot;, &quot;MISSING&quot;)</span>
+<span class="sd">    &#39;MISSING&#39;</span>
+
+<span class="sd">    :param obj: Any with a __get_item__ method</span>
+<span class="sd">    :param key: The key to get from the Mapping</span>
+<span class="sd">    :param default: The default value to return if the key is not present, defaults to None</span>
+<span class="sd">    :param delim: Split a string by given the delimiter, to access the Mapping using each key in turn, defaults to &quot;.&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">o</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">_get</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delim</span><span class="p">),</span> <span class="n">obj</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compress_and_encode_string"><a class="viewcode-back" href="../../readfish.html#readfish._utils.compress_and_encode_string">[docs]</a><span class="k">def</span> <span class="nf">compress_and_encode_string</span><span class="p">(</span><span class="n">original_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compresses a string, encodes it in base-64, and returns an ASCII string representation of the compressed blob.</span>
+
+<span class="sd">    :param original_str: The string to be compressed and encoded.</span>
+<span class="sd">    :return: An ASCII string representation of the compressed and base-64 encoded blob.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert the string to bytes</span>
+    <span class="n">bytes_str</span> <span class="o">=</span> <span class="n">original_str</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="c1"># Compress the bytes</span>
+    <span class="n">compressed</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">bytes_str</span><span class="p">)</span>
+    <span class="c1"># Encode the compressed bytes in base-64</span>
+    <span class="n">b64_encoded</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">compressed</span><span class="p">)</span>
+    <span class="c1"># Convert the base-64 encoded bytes to an ASCII string</span>
+    <span class="n">ascii_str</span> <span class="o">=</span> <span class="n">b64_encoded</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ascii_str</span></div>
+
+
+<div class="viewcode-block" id="decode_and_decompress_string"><a class="viewcode-back" href="../../readfish.html#readfish._utils.decode_and_decompress_string">[docs]</a><span class="k">def</span> <span class="nf">decode_and_decompress_string</span><span class="p">(</span><span class="n">encoded_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decodes an ASCII string representation of a compressed blob, decompresses it, and returns the original string.</span>
+<span class="sd">    This is the reverse of `compress_and_encode_string`.</span>
+
+<span class="sd">    :param encoded_str: An ASCII string representation of the compressed and base-64 encoded blob.</span>
+<span class="sd">    :return: The original string that was compressed and encoded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert the ASCII string to base-64 encoded bytes</span>
+    <span class="n">b64_encoded</span> <span class="o">=</span> <span class="n">encoded_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+    <span class="c1"># Decode the base-64 encoded bytes to compressed bytes</span>
+    <span class="n">compressed</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">b64_encoded</span><span class="p">)</span>
+    <span class="c1"># Decompress the compressed bytes to get the original bytes</span>
+    <span class="n">bytes_str</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">compressed</span><span class="p">)</span>
+    <span class="c1"># Convert the bytes to a string</span>
+    <span class="n">original_str</span> <span class="o">=</span> <span class="n">bytes_str</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">original_str</span></div>
+
+
+<div class="viewcode-block" id="escape_message_to_minknow"><a class="viewcode-back" href="../../readfish.html#readfish._utils.escape_message_to_minknow">[docs]</a><span class="k">def</span> <span class="nf">escape_message_to_minknow</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chars</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Escape characters in the chars list if they are in message</span>
+
+<span class="sd">    &gt;&gt;&gt; escape_message_to_minknow(&quot;20%&quot;, [&quot;%&quot;])</span>
+<span class="sd">    &#39;20\\%&#39;</span>
+<span class="sd">    &gt;&gt;&gt; escape_message_to_minknow(&quot;20\\%&quot;, [&quot;%&quot;])</span>
+<span class="sd">    &#39;20\\%&#39;</span>
+<span class="sd">    &gt;&gt;&gt; escape_message_to_minknow(&quot;20&quot;, [&quot;%&quot;])</span>
+<span class="sd">    &#39;20&#39;</span>
+
+<span class="sd">    :param message: The message that is being sent</span>
+<span class="sd">    :param chars:  The characters to escape</span>
+<span class="sd">    :return: message that has been escaped</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;(?&lt;!</span><span class="se">\\</span><span class="s2">)</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">rf</span><span class="s2">&quot;</span><span class="se">\\</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">message</span></div>
+
+
+<div class="viewcode-block" id="send_message"><a class="viewcode-back" href="../../readfish.html#readfish._utils.send_message">[docs]</a><span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="n">rpc_connection</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">severity</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send a message to MinKNOW</span>
+
+<span class="sd">    :param rpc_connection: An instance of the rpc.Connection</span>
+<span class="sd">    :param message: The message to send</span>
+<span class="sd">    :param severity: The severity to use for the message: 1=info, 2=warning, 3=error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">escape_message_to_minknow</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span>
+    <span class="n">rpc_connection</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">send_user_message</span><span class="p">(</span><span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">user_message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="nice_join"><a class="viewcode-back" href="../../readfish.html#readfish._utils.nice_join">[docs]</a><span class="k">def</span> <span class="nf">nice_join</span><span class="p">(</span><span class="n">seq</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="p">,</span> <span class="n">conjunction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;or&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Join lists nicely</span>
+
+<span class="sd">    :param seq: A sequence of objects that have a __str__ method.</span>
+<span class="sd">    :param sep: The separator for the join, defaults to &quot;, &quot;</span>
+<span class="sd">    :param conjunction: A conjunction between the joined list and the last element, defaults to &quot;or&quot;</span>
+<span class="sd">    :return: The nicely joined string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">conjunction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">conjunction</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="get_coords"><a class="viewcode-back" href="../../readfish.html#readfish._utils.get_coords">[docs]</a><span class="k">def</span> <span class="nf">get_coords</span><span class="p">(</span><span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a channel&#39;s coordinates given a flowcell size</span>
+
+<span class="sd">    :param channel: The channel to retrieve the coordinates for</span>
+<span class="sd">    :param flowcell_size: The flowcell size, this is used to determine the flowcell layout</span>
+<span class="sd">    :return: The column and row of a channel number in the flowcell</span>
+<span class="sd">    :raises ValueError: channel cannot be below 0 or above flowcell_size</span>
+<span class="sd">    :raises ValueError: Raised if flowcell_size not one of [128, 512, 3000]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">channel</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">channel</span> <span class="o">&gt;</span> <span class="n">flowcell_size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;channel cannot be below 0 or above flowcell_size&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">flowcell_size</span> <span class="o">==</span> <span class="mi">3000</span><span class="p">:</span>
+        <span class="c1"># find which block of 12 we are in:</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="p">(</span><span class="n">channel</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">250</span>
+        <span class="n">remainder</span> <span class="o">=</span> <span class="p">(</span><span class="n">channel</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">250</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">remainder</span> <span class="o">//</span> <span class="mi">10</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">remainder</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">block</span> <span class="o">*</span> <span class="mi">10</span>
+        <span class="k">return</span> <span class="n">column</span><span class="p">,</span> <span class="n">row</span>
+    <span class="k">elif</span> <span class="n">flowcell_size</span> <span class="o">==</span> <span class="mi">126</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FLONGLE_CHANNELS</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">flowcell_size</span> <span class="o">==</span> <span class="mi">512</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MINION_CHANNELS</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;flowcell_size is not recognised&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_flowcell_array"><a class="viewcode-back" href="../../readfish.html#readfish._utils.get_flowcell_array">[docs]</a><span class="k">def</span> <span class="nf">get_flowcell_array</span><span class="p">(</span><span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a numpy.ndarray in the shape of a flowcell</span>
+
+<span class="sd">    :param flowcell_size: The total number of channels on the flowcell; 126 for Flongle, 512 for MinION, and 3000 for PromethION</span>
+<span class="sd">    :return: An N-dimensional array representation of the flowcell</span>
+
+<span class="sd">    &gt;&gt;&gt; get_flowcell_array(126).shape</span>
+<span class="sd">    (10, 13)</span>
+<span class="sd">    &gt;&gt;&gt; get_flowcell_array(512).shape</span>
+<span class="sd">    (16, 32)</span>
+<span class="sd">    &gt;&gt;&gt; get_flowcell_array(3000).shape</span>
+<span class="sd">    (25, 120)</span>
+<span class="sd">    &gt;&gt;&gt; get_flowcell_array(128)</span>
+<span class="sd">    Traceback (most recent call last):</span>
+<span class="sd">        ...</span>
+<span class="sd">    ValueError: flowcell_size is not recognised</span>
+<span class="sd">    &gt;&gt;&gt; get_flowcell_array(126)[9][-1]</span>
+<span class="sd">    0</span>
+<span class="sd">    &gt;&gt;&gt; get_flowcell_array(512)[15][-1]</span>
+<span class="sd">    1</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Make a list of tuples of (column, row, channel)</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="p">[(</span><span class="o">*</span><span class="n">get_coords</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">flowcell_size</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">flowcell_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+
+    <span class="c1"># Initialise a nd array using the max row and column from coords</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="nb">max</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nb">max</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Mimic flowcell layout in an array</span>
+    <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">chan</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">:</span>
+        <span class="n">b</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">+=</span> <span class="n">chan</span>
+
+    <span class="c1"># return the reversed array, to get the right orientation</span>
+    <span class="k">return</span> <span class="n">b</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="stringify_grid"><a class="viewcode-back" href="../../readfish.html#readfish._utils.stringify_grid">[docs]</a><span class="k">def</span> <span class="nf">stringify_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a nested list of characters into a 2d grid.</span>
+
+<span class="sd">    :param grid: The grid to convert. Represents the flowcell array.</span>
+<span class="sd">    :return: String representation of the flowcell in ASCII art</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">grid</span><span class="p">:</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="draw_flowcell_split"><a class="viewcode-back" href="../../readfish.html#readfish._utils.draw_flowcell_split">[docs]</a><span class="k">def</span> <span class="nf">draw_flowcell_split</span><span class="p">(</span>
+    <span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draw unicode representation of the flowcell. If the flowcell is split more than once, and index is passed, the region of the</span>
+<span class="sd">    flowcell represented by the index is highlighted solid, whilst the rest is filled with Xs</span>
+
+<span class="sd">    Rather than representing all the possible channels, we draw a 32 column wide flowcell for gridion and 120 for promethion and divide</span>
+<span class="sd">    accordingly</span>
+
+<span class="sd">    Example</span>
+
+<span class="sd">    draw_flowcell_split(512)</span>
+
+<span class="sd">    XXXX</span>
+<span class="sd">    XXXX</span>
+
+<span class="sd">    draw_flowcell_split(512, split = 2)</span>
+<span class="sd">    XX00</span>
+<span class="sd">    XX00</span>
+
+<span class="sd">    draw_flowcell_split(512, split = 2, index = 1)</span>
+<span class="sd">    00XX</span>
+<span class="sd">    00XX</span>
+
+<span class="sd">    :param flowcell_size: Number of channels on the flow cell</span>
+<span class="sd">    :param split: The number of regions to split into, defaults to 1</span>
+<span class="sd">    :param index: The index of the region to highlight, defaults to 0</span>
+<span class="sd">    :return: String representation of the flowcell in ASCII art</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">depth</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">get_flowcell_array</span><span class="p">(</span><span class="n">flowcell_size</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">depth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">depth</span><span class="p">):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;    &quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">_w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="n">generate_flowcell</span><span class="p">(</span><span class="n">flowcell_size</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">axis</span><span class="p">)[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">region</span><span class="p">:</span>
+        <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">get_coords</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">flowcell_size</span><span class="p">)</span>
+        <span class="n">cells</span><span class="p">[(</span><span class="n">col</span> <span class="o">//</span> <span class="mi">2</span><span class="p">),</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">stringify_grid</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="generate_flowcell"><a class="viewcode-back" href="../../readfish.html#readfish._utils.generate_flowcell">[docs]</a><span class="k">def</span> <span class="nf">generate_flowcell</span><span class="p">(</span>
+    <span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">odd_even</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an list of lists with channels to use in conditions</span>
+
+<span class="sd">    Representations generated by this method are evenly split based on the physical layout of the flowcell.</span>
+<span class="sd">    Each sub-list is the same size. Axis determines whether the flowcell divisions will go left-right (0) or top-bottom (1).</span>
+<span class="sd">    As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</span>
+
+
+<span class="sd">    :param flowcell_size: The total number of channels on the flowcell; 126 for Flongle, 512 for MinION, and 3000 for PromethION</span>
+<span class="sd">    :param split: The number of sections to split the flowcell into, must be a positive factor of the flowcell dimension, defaults to 1</span>
+<span class="sd">    :param axis: The axis along which to split, see: https://docs.scipy.org/doc/numpy/glossary.html?highlight=axis, defaults to 1</span>
+<span class="sd">    :param odd_even: Return a list of two lists split into odd-even channels, ignores `split` and `axis`, defaults to False</span>
+<span class="sd">    :raises ValueError: Raised when split is not a positive integer</span>
+<span class="sd">    :raises ValueError: Raised when the value for split is not a factor on the axis provided</span>
+<span class="sd">    :return: A list of lists with channels divided equally</span>
+
+<span class="sd">    &gt;&gt;&gt; len(generate_flowcell(512))</span>
+<span class="sd">    1</span>
+<span class="sd">    &gt;&gt;&gt; len(generate_flowcell(512)[0])</span>
+<span class="sd">    512</span>
+<span class="sd">    &gt;&gt;&gt; len(generate_flowcell(512, split=4))</span>
+<span class="sd">    4</span>
+<span class="sd">    &gt;&gt;&gt; for x in generate_flowcell(512, split=4):</span>
+<span class="sd">    ...     print(len(x))</span>
+<span class="sd">    128</span>
+<span class="sd">    128</span>
+<span class="sd">    128</span>
+<span class="sd">    128</span>
+<span class="sd">    &gt;&gt;&gt; generate_flowcell(512, split=5)</span>
+<span class="sd">    Traceback (most recent call last):</span>
+<span class="sd">        ...</span>
+<span class="sd">    ValueError: The flowcell cannot be split evenly</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">odd_even</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">flowcell_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">flowcell_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+        <span class="p">]</span>
+
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">get_flowcell_array</span><span class="p">(</span><span class="n">flowcell_size</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">split</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;split must be a positive integer&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="c1"># The number of targets cannot be split evenly over the flowcell.</span>
+        <span class="c1">#   For MinION flowcells the number of targets must be a factor of 16 or</span>
+        <span class="c1">#   32 for axis 0 or 1 respectively; for PromethION flowcells the number</span>
+        <span class="c1">#   of targets must be a factor of 25 or 120 for axis 0 or 1 respectively.</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The flowcell cannot be split evenly&quot;</span><span class="p">)</span>
+
+    <span class="n">arr</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">arr</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span></div>
+
+
+<div class="viewcode-block" id="iter_exception_group"><a class="viewcode-back" href="../../readfish.html#readfish._utils.iter_exception_group">[docs]</a><span class="k">def</span> <span class="nf">iter_exception_group</span><span class="p">(</span><span class="n">exc</span><span class="p">:</span> <span class="n">BaseExceptionGroup</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Traverses an exception tree, yielding formatted strings for each exception encountered</span>
+
+<span class="sd">    :param exc: The exception group to traverse</span>
+<span class="sd">    :param level: The current indentation level, defaults to 0, defaults to 0</span>
+<span class="sd">    :yield: Formatted (and indented) string representation of each exception encountered in the tree.</span>
+
+<span class="sd">    &gt;&gt;&gt; exc = BaseExceptionGroup(</span>
+<span class="sd">    ...     &quot;level 1.0&quot;,</span>
+<span class="sd">    ...     [</span>
+<span class="sd">    ...         BaseExceptionGroup(</span>
+<span class="sd">    ...             &quot;level 2.0&quot;,</span>
+<span class="sd">    ...             [</span>
+<span class="sd">    ...                 BaseExceptionGroup(</span>
+<span class="sd">    ...                     &quot;level 3.0&quot;,</span>
+<span class="sd">    ...                     [</span>
+<span class="sd">    ...                         ValueError(&quot;abc&quot;),</span>
+<span class="sd">    ...                         KeyError(&quot;99&quot;),</span>
+<span class="sd">    ...                         BaseExceptionGroup(&quot;level 4.0&quot;, [TabError(&quot;nu uh&quot;)]),</span>
+<span class="sd">    ...                     ],</span>
+<span class="sd">    ...                 )</span>
+<span class="sd">    ...             ],</span>
+<span class="sd">    ...         ),</span>
+<span class="sd">    ...         BaseExceptionGroup(&quot;level 2.1&quot;, [ValueError(&quot;345&quot;)]),</span>
+<span class="sd">    ...     ],</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;\n&quot;.join(iter_exception_group(exc)))</span>
+<span class="sd">    level 1.0 (2 sub-exceptions):</span>
+<span class="sd">     level 2.0 (1 sub-exception):</span>
+<span class="sd">      level 3.0 (3 sub-exceptions):</span>
+<span class="sd">       - ValueError(&#39;abc&#39;)</span>
+<span class="sd">       - KeyError(&#39;99&#39;)</span>
+<span class="sd">       level 4.0 (1 sub-exception):</span>
+<span class="sd">        - TabError(&#39;nu uh&#39;)</span>
+<span class="sd">     level 2.1 (1 sub-exception):</span>
+<span class="sd">      - ValueError(&#39;345&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indent</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">level</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">BaseExceptionGroup</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">indent</span><span class="si">}{</span><span class="n">exc</span><span class="si">!s}</span><span class="s2">:&quot;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">exc</span><span class="o">.</span><span class="n">exceptions</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">iter_exception_group</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">indent</span><span class="si">}</span><span class="s2">- </span><span class="si">{</span><span class="n">exc</span><span class="si">!r}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="get_device"><a class="viewcode-back" href="../../readfish.html#readfish._utils.get_device">[docs]</a><span class="k">def</span> <span class="nf">get_device</span><span class="p">(</span>
+    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FlowCellPosition</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a position for a specific device over the minknow API</span>
+
+<span class="sd">    :param device: The device name - example X1 or MS00000</span>
+<span class="sd">    :param host: The host the RPC is listening on, defaults to &quot;127.0.0.1&quot;</span>
+<span class="sd">    :param port: The port the RPC is listening on, defaults to None</span>
+<span class="sd">    :raises ValueError: If their is no match on any of the positions for the given device name</span>
+<span class="sd">    :return: The position representation from the MinkKNOW API</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">manager</span><span class="o">.</span><span class="n">flow_cell_positions</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">position</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">device</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">position</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find device </span><span class="si">{</span><span class="n">device</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Loose Lab
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1e7f7872"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>

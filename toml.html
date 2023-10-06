@@ -1,0 +1,893 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="readfish console scripts" href="readfish.console.html" /><link rel="prev" title="Getting Started" href="getting-started.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>TOML files - readfish 2023.1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --font-stack--monospace: 'Ubuntu Mono', monospace;
+  --code-font-size: 90%;
+  --color-api-background: #f8f9fb;
+  --color-highlight-on-target: transparent;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">readfish 2023.1.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="_static/readfish_light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">TOML files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readfish.console.html">readfish console scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post-analysis.html">Readfish analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developers-guide.html">Developer’s guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="readfish.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readfish.plugins.html">readfish plugins API</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="toml-files">
+<h1>TOML files<a class="headerlink" href="#toml-files" title="Permalink to this heading">#</a></h1>
+<p>Readfish experiments are configured using <a class="reference external" href="https://toml.io">TOML</a> files, which are minimal and easy-to-read markup files.
+Our configuration only uses <a class="reference external" href="https://toml.io/en/v1.0.0#table">tables</a> and <a class="reference external" href="https://toml.io/en/v1.0.0#array-of-tables">arrays of tables</a> populated with <a class="reference external" href="https://toml.io/en/v1.0.0#keyvalue-pair">key-value pairs</a>.
+The TOML file contains almost all the information required for running readfish, such as information on barcodes, control/analysis regions, what basecaller or aligner to use.
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/refactor/docs/_static/example_tomls.</p>
+<section id="data-model">
+<h2>Data model<a class="headerlink" href="#data-model" title="Permalink to this heading">#</a></h2>
+<p>To understand each section of the TOML file it helps to understand the work that readfish does:</p>
+<ol class="arabic simple">
+<li><p>Initialise a connection to the MinKNOW API via the Read Until API</p></li>
+<li><p>Initialise a basecaller</p></li>
+<li><p>Initialise an aligner with a pre-computed reference file</p></li>
+<li><p>Begin streaming live data from the live sequencing experiment</p></li>
+<li><p>For each batch of the Read Until API read chunks:</p>
+<ol class="arabic simple">
+<li><p>Basecall the raw signal chunks</p></li>
+<li><p>Align the basecalled chunks</p></li>
+<li><p>Parse the alignments using the experiment configuration, determining whether the read is on or off target, then pass the decision to the Read Until API for it to be effected on the sequencer</p></li>
+<li><p>(Optionally) Check for updated configuration parameters with a new reference or targets</p></li>
+</ol>
+</li>
+</ol>
+<figure class="align-center" id="id1">
+<img alt="Flow diagram showing a MinION, computer, and box labelled 'readfish'. The flow show 'raw data' going from the minion, through the computer, into readfish. Where it passes through a basecaller and an Aligner. The return arrow then passes from readfish, to the computer, to the MinION; this line is labelled unblock commands." src="_images/data_model.png" />
+<figcaption>
+<p><span class="caption-text">Flow diagram of data flow from the sequencer to readfish and back.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>As readfish is designed around the need to both basecall and align data we have two TOML sections for configuring these tools.
+The first, <code class="docutils literal notranslate"><span class="pre">caller_settings</span></code>, controls the basecaller and the second, <code class="docutils literal notranslate"><span class="pre">mapper_settings</span></code> controls the aligner.
+These are expanded on in the <a class="reference internal" href="#plugins-config"><span class="std std-ref">plugin configuration</span></a> section.</p>
+<p>In addition readfish also manages barcodes and analysis regions on the flow cell.
+These allow for arbitrary configuration schemas that match your experimental needs.
+These are expanded on in the <a class="reference internal" href="#barcodes-config"><span class="std std-ref">barcode configuration</span></a> and <a class="reference internal" href="#analysis-regions"><span class="std std-ref">analysis regions</span></a> sections.</p>
+</section>
+<section id="plugin-configuration">
+<span id="plugins-config"></span><h2>Plugin configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this heading">#</a></h2>
+<p>Readfish uses “plugins” to configure basecalling and alignment.
+We provide some default plugins using Guppy (via <a class="reference external" href="https://pypi.org/p/ont-pyguppy-client-lib"><code class="docutils literal notranslate"><span class="pre">ont-pyguppy-client-lib</span></code></a>) and mappy (via <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python"><code class="docutils literal notranslate"><span class="pre">mappy</span></code></a>), for basecalling and alignment respectively.
+The way that you tell readfish what plugin to load is by specifying it after the table name, for example:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.guppy]</span>
+<span class="w">               </span><span class="c1"># ^^^^^^</span>
+<span class="w">               </span><span class="c1"># Chooses the Guppy plugin</span>
+</pre></div>
+</div>
+<p>This indicates that readfish should use Guppy for basecalling.</p>
+<section id="basecaller">
+<h3>Basecaller<a class="headerlink" href="#basecaller" title="Permalink to this heading">#</a></h3>
+<section id="guppy">
+<h4>Guppy<a class="headerlink" href="#guppy" title="Permalink to this heading">#</a></h4>
+<p>This section is specific to the Guppy plugin for basecalling.
+The <code class="docutils literal notranslate"><span class="pre">caller_settings.guppy</span></code> [table] specifies the basecalling parameters used by the basecaller.
+An example table is given below:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.guppy]</span>
+<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dna_r10.4.1_e8.2_400bps_hac&quot;</span>
+<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ipc:///tmp/.guppy/5555&quot;</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;basecalled_chunks.fq&quot;</span><span class="w"> </span><span class="c1">#optional</span>
+</pre></div>
+</div>
+<p>The only required keys are <code class="docutils literal notranslate"><span class="pre">address</span></code> and <code class="docutils literal notranslate"><span class="pre">config</span></code> these indicate to Guppy what server to connect to and what basecalling model to load.
+The <code class="docutils literal notranslate"><span class="pre">config</span></code> parameter must a valid Guppy configuration excluding the file extension; these are found in the Guppy <code class="docutils literal notranslate"><span class="pre">data</span></code> folder (on linux <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">/opt/ont/guppy/data/*.cfg</span></code>).
+The <code class="docutils literal notranslate"><span class="pre">address</span></code> is the path to the IPC socket Guppy is listening on, for Guppy servers run by MinKNOW the default is <code class="docutils literal notranslate"><span class="pre">ipc:///tmp/.guppy/5555</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">debug_log</span></code> is an optional file that the basecalled FASTQ are written to.</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Key</p></th>
+<th class="head text-center"><p>Type</p></th>
+<th class="head text-center"><p>Description</p></th>
+<th class="head text-left"><p>Required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">config</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>Name of base calling config</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"> <span class="pre">address</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>Address of Guppy socket - default ipc:///tmp/.guppy/5555</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">debug_log</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>Optional - Filepath to write out base-calls to - should end in a FASTQ suffix.</p></td>
+<td class="text-left"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Any extra key value pairs are passed varbatim to the <code class="docutils literal notranslate"><span class="pre">PyGuppyClient</span></code> instance upon initialisation as keyword arguments.</p>
+<p>For example:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">server_file_load_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span>
+</pre></div>
+</div>
+<p>Will set the <code class="docutils literal notranslate"><span class="pre">server_file_load_timeout</span></code> parameter to 60 seconds for Guppy.</p>
+<details>
+<summary>Example Guppy server parameters</summary>
+<!-- blank line above is essential for this to work -->
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">PyGuppyClient.</span></span><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyguppy_client_lib.client_lib.GuppyClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">guppy::Result</span></span></span><a class="reference internal" href="_modules/pyguppy_client_lib/pyclient.html#PyGuppyClient.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Parameter setter for connection to the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – Dictionary of named parameters.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A code indicating whether the call was success.</p>
+</dd>
+</dl>
+<p>The allowed parameters are:</p>
+<ul class="simple">
+<li><p>client_name (str):                    A name for the client, which will appear in server log entries.</p></li>
+<li><p>query_timeout (int):                  Milliseconds to wait for a server response before timing out. Default is 2000ms.</p></li>
+<li><p>server_file_load_timeout (int):       Seconds to wait for files to be loaded on the server. Default is 180s.</p></li>
+<li><dl class="simple">
+<dt>pass_read_timeout (int):              Default value to use if the optional pass_read parameter wait_duration_ms is</dt><dd><p>not supplied. The default value for this is zero, which if applied means pass_read
+will be non-blocking.</p>
+</dd>
+</dl>
+</li>
+<li><p>connection_timeout (int):             Milliseconds to wait for a server connection attempt. Default is 15000ms.</p></li>
+<li><dl class="simple">
+<dt>reconnect_timeout (int):              Seconds to wait for the client to reconnect to the server if the connection is</dt><dd><p>broken. Default is 300s.</p>
+</dd>
+</dl>
+</li>
+<li><p>max_message_size (int):               Size of blocks to be sent to the server, in samples. Default is 256000.</p></li>
+<li><p>max_reads_queued (int):               Maximum number of reads (or read batches) to queue for sending to the server. Default is 20.</p></li>
+<li><dl class="simple">
+<dt>max_server_read_failures (int):       Maximum number of times a read can be in-flight when the client has to reconnect before the</dt><dd><p>client will stop resubmitting the in-flight reads. Default is 10.</p>
+</dd>
+</dl>
+</li>
+<li><p>priority (ReadPriority):              Priority of the client (low, medium, or high). Default is medium.</p></li>
+<li><p>move_and_trace_enabled (bool):        Flag indicating whether to return trace and move data. Default is True.</p></li>
+<li><p>post_out (bool):                      Flag indicating whether to return full posterior state data. Default is False.</p></li>
+<li><dl class="simple">
+<dt>gpu_runners_per_device (int):         For GPU basecalling only. Specifies how many batches of read-chunks should be</dt><dd><p>submitted to the GPU as a single job.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>chunks_per_runner (int):              For GPU basecalling only. Determines how many chunks should be included in a</dt><dd><p>single job submitted to the GPU.</p>
+</dd>
+</dl>
+</li>
+<li><p>barcode_kits (list):                  Strings naming each barcode kit to use. Default is to not do barcoding.</p></li>
+<li><p>lamp_kit (str):                       String naming LAMP barcode kit to use. Default is to not do LAMP barcoding.</p></li>
+<li><p>require_barcodes_both_ends (bool):    Flag indicating that barcodes must be at both ends. Default is False.</p></li>
+<li><dl class="simple">
+<dt>detect_mid_strand_barcodes (bool):    Flag indicating that read will be marked as unclassified if barcodes appear</dt><dd><p>within the strand itself. Default is False.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>detect_mid_strand_adapter (bool):     Flag indicating that read will be marked as unclassified if the adapter</dt><dd><p>sequence appears within the strand itself. Default is False.</p>
+</dd>
+</dl>
+</li>
+<li><p>min_score_barcode_front (float):      Minimum score for a front barcode to be classified. Default is 60.</p></li>
+<li><dl class="simple">
+<dt>min_score_barcode_rear (float):       Minimum score for a rear barcode to be classified. Default is to use the front</dt><dd><p>minimum.</p>
+</dd>
+</dl>
+</li>
+<li><p>min_score_barcode_mid (float):        Minimum score for mid barcodes to be detected. Default is 50.</p></li>
+<li><p>detect_adapter (bool):                Enable detection of adapters at the front and rear of the sequence.</p></li>
+<li><p>detect_primer (bool):                 Enable detection of primers at the front and rear of the sequence.</p></li>
+<li><p>min_score_adapter (float):            Minimum score for a front or rear adapter to be classified. Default is 60.</p></li>
+<li><p>min_score_primer (float):             Minimum score for a front or rear primer to be classified. Default is 60.</p></li>
+<li><p>enable_trim_barcodes (bool):          Option indicating that barcodes should be trimmed. Default is False, set to true to enable trimming.</p></li>
+<li><p>trim_adapters (bool):                 Flag indicating that adapters should be trimmed. Default is False.</p></li>
+<li><p>trim_primers (bool):                  Flag indicating that primers should be trimmed. Default is False.</p></li>
+<li><p>align_ref (str):                      Filename of index file to use for alignment (if any). Default is to not align.</p></li>
+<li><p>bed_file (str):                       Filename of BED file to use for alignment (if any). Default is to not align.</p></li>
+<li><dl class="simple">
+<dt>align_type (str):                     Type of alignment requested. Valid values are “auto”, “coarse”, and “full”.</dt><dd><p>Default is “auto”.</p>
+</dd>
+</dl>
+</li>
+<li><p>min_score_lamp (float):               Minimum score for a LAMP barcode to be detected. Default is 80.</p></li>
+<li><p>min_score_lamp_mask (float):          Minimum score for a LAMP barcode mask to be detected. Default is 50.</p></li>
+<li><p>min_score_lamp_target (float):        Minimum score for a LAMP target to be detected. Default is 50.</p></li>
+<li><dl class="simple">
+<dt>additional_lamp_context_bases (int):  Number of additional bases from context to include in lamp barcode comparison.</dt><dd><p>Default is 2.</p>
+</dd>
+</dl>
+</li>
+<li><p>barcode_list (list):                  An optional list of barcodes to filter against. Default is no restriction.</p></li>
+</ul>
+<p>Possible return values are:</p>
+<ul class="simple">
+<li><p>success:             The parameters have been set.</p></li>
+<li><p>already_connected:   The parameters cannot be changed after the client is connected to the server.</p></li>
+<li><p>failed:              The parameter dict was not formatted correctly.</p></li>
+</ul>
+</dd></dl>
+
+</details>
+<p>To see parameters that <em>your</em> Guppy installation has run the following python snippet in your <code class="docutils literal notranslate"><span class="pre">readfish</span></code> environment</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">PAGER=cat python -c &quot;import pyguppy_client_lib.pyclient as pgc; help(pgc.PyGuppyClient.set_params)&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="basecaller-no-operation-no-op">
+<h4>Basecaller no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#basecaller-no-operation-no-op" title="Permalink to this heading">#</a></h4>
+<p>In addition to the Guppy basecaller we provide a “no operation” basecaller.
+This plugin does nothing.
+It will only iterate the live chunks of data and pass through the minimal amount of data that is needed for the next steps.
+This is added using:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.no_op]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="aligner">
+<h3>Aligner<a class="headerlink" href="#aligner" title="Permalink to this heading">#</a></h3>
+<section id="minimap2">
+<h4>minimap2<a class="headerlink" href="#minimap2" title="Permalink to this heading">#</a></h4>
+<p>Currently we provide two mapping plugins, <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python"><code class="docutils literal notranslate"><span class="pre">mappy</span></code></a>, and <a class="reference external" href="https://github.com/Adoni5/mappy-rs"><code class="docutils literal notranslate"><span class="pre">mappy-rs</span></code></a>.
+Happily these both take the same fields in the TOML file, so you can switch between them without changing your TOML file parameters.</p>
+<p>Currently, these plugins take the same TOML file plugins section, and which Aligner is used is chosen based on the TOML mapper_settings section name.
+.. warning::
+It is worth noting that for <em>PromethION</em> runs, <code class="docutils literal notranslate"><span class="pre">mappy</span></code> will not be able to keep up and <code class="docutils literal notranslate"><span class="pre">mappy-rs</span></code> with at least four threads is recommended.</p>
+<p>For mappy (single threaded)</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[mapper_settings.mappy]</span>
+<span class="w">               </span><span class="c1"># ^^^^^^</span>
+<span class="w">               </span><span class="c1"># Chooses the mappy plugin</span>
+</pre></div>
+</div>
+<p>For mappy-rs (multi threaded)</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[mapper_settings.mappy_rs]</span>
+<span class="w">               </span><span class="c1"># ^^^^^^</span>
+<span class="w">               </span><span class="c1"># Chooses the mappy-rs plugin</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">fn_idx_in</span></code> field is the path to the reference, accepting either a precomputed <code class="docutils literal notranslate"><span class="pre">minimap2</span></code> index, an <code class="docutils literal notranslate"><span class="pre">.mmi</span></code> file, or a uncompressed or gzipped <code class="docutils literal notranslate"><span class="pre">fasta</span></code> file.
+We <strong>strongly prefer</strong> an already created MMI.
+The <code class="docutils literal notranslate"><span class="pre">debug_log</span></code> field is the file name that the mappings produced by <code class="docutils literal notranslate"><span class="pre">mappy-rs</span></code>/<code class="docutils literal notranslate"><span class="pre">mappy</span></code> are written into, in the <code class="docutils literal notranslate"><span class="pre">PAF</span></code> format.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mappy-rs</span></code> also takes an optional <code class="docutils literal notranslate"><span class="pre">n_threads</span></code> field, which determines the number of threads which are used for alignment.
+<code class="docutils literal notranslate"><span class="pre">n_threads</span></code> defaults to 1, so if you need more you must set it!</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[mapper_settings.mappy_rs]</span>
+<span class="n">fn_idx_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/Path/To/Reference.mmi&quot;</span>
+<span class="n">n_threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;mapped_chunks.paf&quot;</span>
+</pre></div>
+</div>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Key</p></th>
+<th class="head text-center"><p>Type</p></th>
+<th class="head text-center"><p>Description</p></th>
+<th class="head text-left"><p>Required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">fn_idx_in</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>Absolute path to the reference FASTA/mmi</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">debug_log</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>File to write PAF records to from alignments seen</p></td>
+<td class="text-left"><p>False</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">n_threads</span></code></p></td>
+<td class="text-center"><p>int</p></td>
+<td class="text-center"><p>Optional - if using <code class="docutils literal notranslate"><span class="pre">mappy_rs</span></code>, number of threads for alignment</p></td>
+<td class="text-left"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Any extra key value pairs are passed varbatim to the <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> instance upon initialisation as keyword arguments.</p>
+<p>For example:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">best_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>Will set the <code class="docutils literal notranslate"><span class="pre">best_n</span></code> parameter on the <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> instance to 1.</p>
+<p>All available keyword arguments can be seen on the <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python#class-mappyaligner"><code class="docutils literal notranslate"><span class="pre">mappy</span></code> documentation</a></p>
+</section>
+<section id="aligner-no-operation-no-op">
+<h4>Aligner no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#aligner-no-operation-no-op" title="Permalink to this heading">#</a></h4>
+<p>In addition to the minimap2 based aligners we provide a “no operation” aligner.
+This plugin does nothing.
+It will only iterate the <code class="docutils literal notranslate"><span class="pre">Result</span></code>s from the basecaller and pass them through to the next steps.
+This is added using:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[mapper_settings.no_op]</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="analysis-regions">
+<span id="id2"></span><h2>Analysis regions<a class="headerlink" href="#analysis-regions" title="Permalink to this heading">#</a></h2>
+<p>Analysis regions are the <a class="reference external" href="https://toml.io/en/v1.0.0#array-of-tables">arrays of tables</a> that define different experimental conditions over the surface of the flow cell.
+For experiments that do not use barcodes you must have at least one analysis region.</p>
+<p>The physical layout of each flow cell constrains how many experimental conditions can be used as the number of channels in each region must be equal.
+The number of regions subtables determines how many times the flow cell is divided.
+The maximum number of regions for MinION flow cells is 32 and for PromethION flow cells is 120.
+The number of conditions must be a factor of the number for the selected combination.</p>
+<p>As an example applying two analysis regions to the layout below would split the flow cell into left/right regions.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+------------+     +------+------+
+|  1  2  3  4|     |  1  2|  3  4|
+|  5  6  7  8| --&gt; |  5  6|  7  8|
+|  9 10 11 12|     |  9 10| 11 12|
++------------+     +------+------+
+</pre></div>
+</div>
+<section id="experiments-with-one-region">
+<h3>Experiments with one region<a class="headerlink" href="#experiments-with-one-region" title="Permalink to this heading">#</a></h3>
+<p>When wanting to apply a single targeting strategy over the flow cell a single region can be provided.
+This can be specified like so:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[regions]]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;condition name&quot;</span>
+<span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path/to/targets.bed&quot;</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;stop_receiving&quot;</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="s">&quot;stop_receiving&quot;</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+</pre></div>
+</div>
+<p>A full table of keys that can be given can be found in <a class="reference internal" href="#regions-sub-tables">region sub-table</a>.</p>
+</section>
+<section id="experiments-with-more-than-region">
+<h3>Experiments with more than region<a class="headerlink" href="#experiments-with-more-than-region" title="Permalink to this heading">#</a></h3>
+<p>Experiments with multiple regions (for example those with an analysis and control condition) regions can be specified for each condition.
+For example:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[regions]]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;analysis&quot;</span>
+<span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">...</span>
+
+<span class="k">[[regions]]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;control&quot;</span>
+<span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+</section>
+<section id="regions-sub-tables">
+<span id="id3"></span><h3>Regions sub-tables<a class="headerlink" href="#regions-sub-tables" title="Permalink to this heading">#</a></h3>
+<p>Each Regions sub-table must contain all of the required keys, these are the same between barcoded and non-barcoded toml files.</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Key</p></th>
+<th class="head text-center"><p>Type</p></th>
+<th class="head text-center"><p>Values</p></th>
+<th class="head text-center"><p>Description</p></th>
+<th class="head text-left"><p>Required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>N/A</p></td>
+<td class="text-center"><p>The name given to this condition</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">control</span></code></p></td>
+<td class="text-center"><p>bool</p></td>
+<td class="text-center"><p>N/A</p></td>
+<td class="text-center"><p>Is this a control condition. If <code class="docutils literal notranslate"><span class="pre">true</span></code> all reads will be ignored in this region, default <code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>False</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">min_chunks</span></code></p></td>
+<td class="text-center"><p>int</p></td>
+<td class="text-center"><p>N/A</p></td>
+<td class="text-center"><p>The minimum number of read chunks to evaluate</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">max_chunks</span></code></p></td>
+<td class="text-center"><p>int</p></td>
+<td class="text-center"><p>N/A</p></td>
+<td class="text-center"><p>The maximum number of read chunks to evaluate</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">targets</span></code></p></td>
+<td class="text-center"><p>string or array</p></td>
+<td class="text-center"><p>N/A</p></td>
+<td class="text-center"><p>The genomic targets to accept or reject; see <a class="reference internal" href="#target-formats">target formats</a></p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">single_on</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>[unblock, stop_receiving, proceed]</p></td>
+<td class="text-center"><p>The action to take when a read has a single on-target mapping</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">multi_on</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>[unblock, stop_receiving, proceed]</p></td>
+<td class="text-center"><p>The action to take when a read has multiple mappings with at least one on-target</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">single_off</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>[unblock, stop_receiving, proceed]</p></td>
+<td class="text-center"><p>The action to take when a read has a single off-target mapping</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">multi_off</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>[unblock, stop_receiving, proceed]</p></td>
+<td class="text-center"><p>The action to take when a read has multiple mappings that are all off-target</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">no_seq</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>[unblock, stop_receiving, proceed]</p></td>
+<td class="text-center"><p>The action to take when a read does not basecall</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">no_map</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>[unblock, stop_receiving, proceed]</p></td>
+<td class="text-center"><p>The action to take when a read does not map to your reference</p></td>
+<td class="text-left"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">below_min_chunks</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>[unblock, stop_receiving, proceed]</p></td>
+<td class="text-center"><p>Optional. The action to take when a read has not been seen at least <code class="docutils literal notranslate"><span class="pre">min_chunks</span></code> times, default <code class="docutils literal notranslate"><span class="pre">proceed</span></code></p></td>
+<td class="text-left"><p>False</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">above_max_chunks</span></code></p></td>
+<td class="text-center"><p>string</p></td>
+<td class="text-center"><p>[unblock, stop_receiving, proceed]</p></td>
+<td class="text-center"><p>Optional. The action to take when a read has been seen more than <code class="docutils literal notranslate"><span class="pre">max_chunks</span></code> times, default <code class="docutils literal notranslate"><span class="pre">unblock</span></code></p></td>
+<td class="text-left"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The meanings of <code class="docutils literal notranslate"><span class="pre">unblock</span></code>, <code class="docutils literal notranslate"><span class="pre">stop_receiving</span></code>, and <code class="docutils literal notranslate"><span class="pre">proceed</span></code> are given below.</p>
+<ol class="arabic simple">
+<li><p><strong>proceed</strong>: Allow one more chunk to be captured, before trying to make another decision, i.e proceed for now</p></li>
+<li><p><strong>unblock</strong>: Unblock the read</p></li>
+<li><p><strong>stop_receiving</strong>: Allow the read to be sequenced, and <em>stop receiving</em> signal chunks for it.</p></li>
+</ol>
+</section>
+<section id="target-formats">
+<span id="id4"></span><h3>Target Formats<a class="headerlink" href="#target-formats" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">targets</span></code> field on a region can accept either a string or an array of strings.
+If a string is provided this should be a fully qualified path to a text file that consists of genomic targets in either as CSV or BED entries.
+When an array is given all the elements in the array must conform with the non-BED formats.
+Targets will be collapsed where they overlap.</p>
+<section id="bed-or-csv-targets">
+<h4>BED or CSV targets<a class="headerlink" href="#bed-or-csv-targets" title="Permalink to this heading">#</a></h4>
+<p>If the <code class="docutils literal notranslate"><span class="pre">targets</span></code> entry is a path to a file it must either be a <a class="reference external" href="https://en.wikipedia.org/wiki/BED_(file_format)">six-column-BED formatted file</a> or a CSV.
+If a CSV file there should be no header and the coordinates should be given as</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>contig,start,stop,strand
+</pre></div>
+</div>
+<p>As a concrete example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>chr1,1000,2000,+
+chr2,3000,4000,-
+</pre></div>
+</div>
+<p>Targets given in this format will only select (for or against) reads where the alignment start position is within the region on the given strand.</p>
+</section>
+<section id="toml-array-targets">
+<h4>TOML array targets<a class="headerlink" href="#toml-array-targets" title="Permalink to this heading">#</a></h4>
+<p>If specifying targets in a <a class="reference external" href="https://toml.io/en/v1.0.0#array">TOML array</a> they can be any of <code class="docutils literal notranslate"><span class="pre">contigs</span></code> or <code class="docutils literal notranslate"><span class="pre">coordinates</span></code>:</p>
+<p>For example <code class="docutils literal notranslate"><span class="pre">contigs</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;chr1</span> <span class="pre">Human</span> <span class="pre">chromosome</span> <span class="pre">1</span></code> becomes <code class="docutils literal notranslate"><span class="pre">chr1</span></code></p></li>
+</ul>
+<p>Targets given in this format specify the entire contig as a target to select for or against.</p>
+</section>
+</section>
+</section>
+<section id="barcode-specific-configuration">
+<span id="barcodes-config"></span><h2>Barcode specific configuration<a class="headerlink" href="#barcode-specific-configuration" title="Permalink to this heading">#</a></h2>
+<p>If you are using Guppy for basecalling then the additional <code class="docutils literal notranslate"><span class="pre">barcode_kits</span></code> parameter is required on the <code class="docutils literal notranslate"><span class="pre">caller_settings</span></code> table.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.guppy]</span>
+<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dna_r10.4.1_e8.2_400bps_fast&quot;</span>
+<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ipc:///tmp/.guppy/5555&quot;</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;basecalled_chunks.fq&quot;</span>
+<span class="n">barcode_kits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EXP-NBD196&quot;</span>
+</pre></div>
+</div>
+<p>Note, to specify multiple barcode kits, the format to use is a space separated string, not an array. For example, <code class="docutils literal notranslate"><span class="pre">&quot;KIT1</span> <span class="pre">KIT2&quot;</span></code>.</p>
+<!-- See [Barcoded Tomls](#barcoded-tomls) for more information on setting up conditions per barcode. -->
+<!-- #TODO: Explain how multiple barcode kits are handled. -->
+<p><code class="docutils literal notranslate"><span class="pre">[[regions]]</span></code> are not needed when using a barcoded schema.
+Instead a <a class="reference external" href="https://toml.io/en/v1.0.0#table">TOML table</a> named <code class="docutils literal notranslate"><span class="pre">barcodes</span></code> is required.
+This table has two required sub-tables <code class="docutils literal notranslate"><span class="pre">barcodes.classified</span></code> and <code class="docutils literal notranslate"><span class="pre">barcodes.unclassified</span></code>.
+These are the fallback configurations for unspecified barcodes.
+For specific barcodes a <a class="reference internal" href="#regions-sub-tables">full configuration table</a> should be specified using the barcode name, e.g. <code class="docutils literal notranslate"><span class="pre">barcodes.barcode01</span></code> for “barcode01”.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[barcodes.classified]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;classified_reads&quot;</span>
+<span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+
+<span class="k">[barcodes.unclassified]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unclassified_reads&quot;</span>
+<span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+
+<span class="k">[barcodes.barcode01]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;barcode01_targets&quot;</span>
+<span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;chr1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chr2&quot;</span><span class="p">]</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;stop_receiving&quot;</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;stop_receiving&quot;</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="validating-a-toml">
+<h2>Validating a TOML<a class="headerlink" href="#validating-a-toml" title="Permalink to this heading">#</a></h2>
+<p>We provide an entry point to validate TOML files - <code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">validate</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">readfish validate experiment_conf.toml</span>
+</pre></div>
+</div>
+<p>Any errors that occur while loading the configuration will be written to the terminal.</p>
+<p>As an example - if the reference is missing.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2023-06-27 16:07:03,041 readfish /home/adoni5/mambaforge/envs/readfish_dev/bin/readfish validate docs/_static/example_tomls/human_chr_selection.toml
+2023-06-27 16:07:03,041 readfish check_plugins=True
+2023-06-27 16:07:03,041 readfish command=&#39;validate&#39;
+2023-06-27 16:07:03,042 readfish log_file=None
+2023-06-27 16:07:03,042 readfish log_format=&#39;%(asctime)s %(name)s %(message)s&#39;
+2023-06-27 16:07:03,042 readfish log_level=&#39;info&#39;
+2023-06-27 16:07:03,042 readfish prom=False
+2023-06-27 16:07:03,042 readfish toml=&#39;docs/_static/human_chr_selection.toml&#39;
+2023-06-27 16:07:03,042 readfish.validate eJxtUNtOxCAUfOcrGp4NLU1N1MSnffcHmoZQOLRkuS0Xo38vdOOqWc8TM8wMc5gFNwYiS5CzdlsiWwnhc0HCO6W37rXD0nEW6UAmQhk8kZFNw7CGxHYuMOJSRkip6XQQL33fZxv6a0j/WAcjCWvZmPFHWIaUWQQulU47UReM0Gx5CL8bNFwb3Pv2YrljYm9aAyJr70jgqmXMEbYK07Igxy00y1VzyEfKxhEjq5u7uHPrS5HlHz9wQpnHDXI7z/jtxIY640AoxQ/dDVPyjBeUak0DzCvV3iluNV6ca3wxWd+x32J3dMo+1PUF6PdK3yz/3jlf17y0mxC9AJAHVT/nD9XmC4XQlII=
+2023-06-27 16:07:03,047 readfish.validate Loaded TOML config without error
+2023-06-27 16:07:03,047 readfish.validate Initialising Caller
+2023-06-27 16:07:03,069 readfish.validate Caller initialised
+2023-06-27 16:07:03,069 readfish.validate Initialising Aligner
+2023-06-27 16:07:03,070 readfish.validate Aligner could not be initialised, see below for details
+2023-06-27 16:07:03,071 readfish.validate Did not create or open an index
+</pre></div>
+</div>
+<p>This command has a flag <code class="docutils literal notranslate"><span class="pre">--no-check-plugins</span></code> which will disable the loading and validation of plugins. However this is only recommended if you absolutely must not validate the plugins. For example the above TOML, missing the reference, would pass validation if using the <code class="docutils literal notranslate"><span class="pre">--no-check-plugins</span></code> flag.
+The validate command also describes the experiment, and will error if contigs are listed in the targets that are not in the reference.
+This can be disabled by passing the <code class="docutils literal notranslate"><span class="pre">--no-describe</span></code> flag.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="readfish.console.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">readfish console scripts</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="getting-started.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Getting Started</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Loose Lab
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">TOML files</a><ul>
+<li><a class="reference internal" href="#data-model">Data model</a></li>
+<li><a class="reference internal" href="#plugin-configuration">Plugin configuration</a><ul>
+<li><a class="reference internal" href="#basecaller">Basecaller</a><ul>
+<li><a class="reference internal" href="#guppy">Guppy</a></li>
+<li><a class="reference internal" href="#basecaller-no-operation-no-op">Basecaller no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#aligner">Aligner</a><ul>
+<li><a class="reference internal" href="#minimap2">minimap2</a></li>
+<li><a class="reference internal" href="#aligner-no-operation-no-op">Aligner no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#analysis-regions">Analysis regions</a><ul>
+<li><a class="reference internal" href="#experiments-with-one-region">Experiments with one region</a></li>
+<li><a class="reference internal" href="#experiments-with-more-than-region">Experiments with more than region</a></li>
+<li><a class="reference internal" href="#regions-sub-tables">Regions sub-tables</a></li>
+<li><a class="reference internal" href="#target-formats">Target Formats</a><ul>
+<li><a class="reference internal" href="#bed-or-csv-targets">BED or CSV targets</a></li>
+<li><a class="reference internal" href="#toml-array-targets">TOML array targets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#barcode-specific-configuration">Barcode specific configuration</a></li>
+<li><a class="reference internal" href="#validating-a-toml">Validating a TOML</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1e7f7872"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>

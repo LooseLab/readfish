@@ -1,0 +1,1461 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="API Reference" href="readfish.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>readfish plugins API - readfish 2023.1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --font-stack--monospace: 'Ubuntu Mono', monospace;
+  --code-font-size: 90%;
+  --color-api-background: #f8f9fb;
+  --color-highlight-on-target: transparent;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">readfish 2023.1.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="_static/readfish_light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toml.html">TOML files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readfish.console.html">readfish console scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post-analysis.html">Readfish analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developers-guide.html">Developer’s guide</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="readfish.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="readfish.html">API Reference</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">readfish plugins API</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="readfish-plugins-api">
+<h1>readfish plugins API<a class="headerlink" href="#readfish-plugins-api" title="Permalink to this heading">#</a></h1>
+<section id="module-readfish.plugins.abc">
+<span id="readfish-plugins-abc-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish.plugins.abc</span></code> module<a class="headerlink" href="#module-readfish.plugins.abc" title="Permalink to this heading">#</a></h2>
+<p>Abstract Base Classes for readfish plugins</p>
+<p>These classes define the expected structures and type information for readfish plugins.
+These are expanded on in the <a class="reference internal" href="developers-guide.html"><span class="doc">Developer’s guide</span></a>.</p>
+<p>Validation is left to the author of any plugins that inherits from either the <a class="reference internal" href="#readfish.plugins.abc.AlignerABC" title="readfish.plugins.abc.AlignerABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlignerABC</span></code></a> or <a class="reference internal" href="#readfish.plugins.abc.CallerABC" title="readfish.plugins.abc.CallerABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallerABC</span></code></a>.
+Things we suggest that are validated:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>required keys</strong> - Keys that must be present in the TOML</p></li>
+<li><p><strong>correctly typed values</strong> - Values that have been passed in are correctly parsed</p></li>
+<li><p><strong>available input files</strong> - Check the existence of paths</p></li>
+<li><p><strong>writable outputs</strong> - Check permissions on output files</p></li>
+<li><p><strong>sufficient space/RAM/resource</strong> - Check Disk space at least</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.abc.AlignerABC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.abc.</span></span><span class="sig-name descname"><span class="pre">AlignerABC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug_log</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#AlignerABC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.AlignerABC" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
+<p>Aligner base class.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.abc.AlignerABC.describe">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#AlignerABC.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.AlignerABC.describe" title="Permalink to this definition">#</a></dt>
+<dd><p>Informatively describe the Aligner and how it is setup, to be logged for the user.
+For example reference size, reference file etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string containing (preferably pretty formatted) information about the aligner</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.abc.AlignerABC.disconnect">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#AlignerABC.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.AlignerABC.disconnect" title="Permalink to this definition">#</a></dt>
+<dd><p>Aligner disconnection method, this will be called after readish’s main loop finishes</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="readfish.plugins.abc.AlignerABC.initialised">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initialised</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#readfish.plugins.abc.AlignerABC.initialised" title="Permalink to this definition">#</a></dt>
+<dd><p>Is this aligner instance initialised.</p>
+<p>This method should indicate whether the class is initialised and capable of aligning data.
+If it returns <code class="docutils literal notranslate"><span class="pre">False</span></code> readfish will be paused until it evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.abc.AlignerABC.map_reads">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">map_reads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basecall_results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#AlignerABC.map_reads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.AlignerABC.map_reads" title="Permalink to this definition">#</a></dt>
+<dd><p>Map and make a decision on an iterable of basecalled data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>basecall_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.12)"><em>Iterable</em></a><em>[</em><a class="reference internal" href="#readfish.plugins.utils.Result" title="readfish.plugins.utils.Result"><em>Result</em></a><em>]</em>) – An iterable, ideally from a <a class="reference external" href="https://docs.python.org/3/glossary.html#term-generator" title="(in Python v3.12)"><span class="xref std std-term">generator</span></a>, of <code class="docutils literal notranslate"><span class="pre">Result</span></code> classes</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yields <code class="docutils literal notranslate"><span class="pre">Result</span></code> classes with the <code class="docutils literal notranslate"><span class="pre">Result.decision</span></code> field filled and, optionally, <code class="docutils literal notranslate"><span class="pre">Result.alignment_data</span></code></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.12)"><em>Iterable</em></a>[<a class="reference internal" href="#readfish.plugins.utils.Result" title="readfish.plugins.utils.Result"><em>Result</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.abc.AlignerABC.validate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#AlignerABC.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.AlignerABC.validate" title="Permalink to this definition">#</a></dt>
+<dd><p>Check for valid inputs to Aligner ABC, return none if no issue
+:return: None if setup is valid</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.abc.CallerABC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.abc.</span></span><span class="sig-name descname"><span class="pre">CallerABC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug_log</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#CallerABC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.CallerABC" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
+<p>Caller base class.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.abc.CallerABC.basecall">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">basecall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">daq_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#CallerABC.basecall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.CallerABC.basecall" title="Permalink to this definition">#</a></dt>
+<dd><p>Basecall live data from the Read Until API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chunks</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>minknow_api.data_pb2.GetLiveReadsResponse.ReadData</em><em>]</em><em>]</em>) – Raw data wrapper from the MinKNOW RPC</p></li>
+<li><p><strong>signal_dtype</strong> (<em>np.dtype</em>) – The NumPy <code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.dtype</span></code> for the raw signal bytes.</p></li>
+<li><p><strong>daq_values</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>CALIBRATION</em><em>]</em>) – Mapping of channel number to it’s <code class="docutils literal notranslate"><span class="pre">CALIBRATION</span></code> values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yields <code class="docutils literal notranslate"><span class="pre">Result</span></code> classes with the <code class="docutils literal notranslate"><span class="pre">Result.channel</span></code>, <code class="docutils literal notranslate"><span class="pre">Result.read_number</span></code>, <code class="docutils literal notranslate"><span class="pre">Result.read_id</span></code>, and <code class="docutils literal notranslate"><span class="pre">Result.seq</span></code> fields set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Iterable[<a class="reference internal" href="#readfish.plugins.utils.Result" title="readfish.plugins.utils.Result">Result</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.abc.CallerABC.describe">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#CallerABC.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.CallerABC.describe" title="Permalink to this definition">#</a></dt>
+<dd><p>Informatively describe the Caller and how it is setup, to be logged for the user.
+For example the name of the caller, any connections made for basecalling, models used etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string containing (preferably pretty formatted) information about the caller</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.abc.CallerABC.disconnect">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#CallerABC.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.CallerABC.disconnect" title="Permalink to this definition">#</a></dt>
+<dd><p>Caller disconnection method, this will be called after readfish’s main loop finishes</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.abc.CallerABC.validate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/abc.html#CallerABC.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.abc.CallerABC.validate" title="Permalink to this definition">#</a></dt>
+<dd><p>Check for valid inputs to Caller ABC, return none if no issue
+:return: None if setup is valid</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="module-readfish.plugins.utils">
+<span id="readfish-plugins-utils-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish.plugins.utils</span></code> module<a class="headerlink" href="#module-readfish.plugins.utils" title="Permalink to this heading">#</a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.TARGET_INTERVAL">
+<span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">TARGET_INTERVAL</span></span><a class="headerlink" href="#readfish.plugins.utils.TARGET_INTERVAL" title="Permalink to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">TargetInterval</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Strand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">Strand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Strand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Strand" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Enum representing the forward and reverse strand of DNA for alignments</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Strand.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'+'</span></em><a class="headerlink" href="#readfish.plugins.utils.Strand.forward" title="Permalink to this definition">#</a></dt>
+<dd><p>Forward strand</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Strand.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-'</span></em><a class="headerlink" href="#readfish.plugins.utils.Strand.reverse" title="Permalink to this definition">#</a></dt>
+<dd><p>Reverse strand</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="readfish.plugins.utils.get_contig_lengths">
+<span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">get_contig_lengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">al</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#get_contig_lengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.get_contig_lengths" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the lengths of all contigs in the reference genome provided by an Aligner instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>al</strong> (<a class="reference internal" href="#readfish.plugins.abc.AlignerABC" title="readfish.plugins.abc.AlignerABC"><em>AlignerABC</em></a>) – An Aligner instance representing the reference genome.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary mapping contig names to their respective lengths.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="readfish.plugins.utils.is_empty">
+<span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#is_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.is_empty" title="Permalink to this definition">#</a></dt>
+<dd><p>Check if an item is empty.</p>
+<p>This function checks whether the given item is empty. An item is considered empty if it is an empty Container (Set, Tuple, Dict, List etc.).
+For primitive types (Float, Int, String etc.), this function considers them non-empty.
+considers them non-empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>item</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>) – The item to check for emptiness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the item is empty, False otherwise.</p>
+</dd>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">([])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">({})</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">([[],</span> <span class="p">[],</span> <span class="p">[]])</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">([{},</span> <span class="p">{}])</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_empty</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="readfish.plugins.utils.count_dict_elements">
+<span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">count_dict_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#count_dict_elements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.count_dict_elements" title="Permalink to this definition">#</a></dt>
+<dd><p>Recursively count all the bottom elements of an arbitrarily nested dictionary.
+If the bottom element v is a list, return the length of the list, else return 1 for each v at the bottom of the list.</p>
+<p>Note - This will break for nested lists, i.e will only count the list as one, ignoring the sublists - see the last doctest for an example.
+This is not a problem for the current use case, but may be in the future.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><em>Any</em><em>]</em>) – Dictionary to count elements of, may or may not be nested</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Count of elements at lowest point in tree</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">simple_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_dict_elements</span><span class="p">(</span><span class="n">simple_dict</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">string_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;2000&quot;</span><span class="p">]},</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">]}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_dict_elements</span><span class="p">(</span><span class="n">string_dict</span><span class="p">)</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nested_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]},</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">]}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_dict_elements</span><span class="p">(</span><span class="n">nested_dict</span><span class="p">)</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">empty_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">{}},</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="p">[]}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_dict_elements</span><span class="p">(</span><span class="n">empty_dict</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mixed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]},</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">7.0</span><span class="p">}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_dict_elements</span><span class="p">(</span><span class="n">mixed_dict</span><span class="p">)</span>
+<span class="go">7</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">empty_list_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[{}],</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">[[],</span> <span class="p">[],</span> <span class="p">[]]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_dict_elements</span><span class="p">(</span><span class="n">empty_list_dict</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<p># Nested lists are not counted properly</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nested_list_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[{}],</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[]]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_dict_elements</span><span class="p">(</span><span class="n">nested_list_dict</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="readfish.plugins.utils.sum_target_coverage">
+<span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">sum_target_coverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genomes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#sum_target_coverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.sum_target_coverage" title="Permalink to this definition">#</a></dt>
+<dd><p>Recursively find the coverage of the range of a set of Targets - ASSUMES bottoms elements are in the form
+dict[chromosome_name, tuple[float, float]] or tuple[int, int], i.e genomic coordinates</p>
+<p>If there are no targets, return 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>targets</strong> (<em>Iterator</em><em>[</em><em>TARGET_INTERVAL</em><em>]</em>) – An iterator of TARGET_INTERVAL objects. Obtained from the Targets.iter_targets() method.</p></li>
+<li><p><strong>genomes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em>) – A dictionary of contig names to contig lengths. Used if a target is in the entire contig.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sum of distance covered by ranges of targets in <cite>d</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="readfish.plugins.utils.coord_validator">
+<span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">coord_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#coord_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.coord_validator" title="Permalink to this definition">#</a></dt>
+<dd><p>Validates and converts the ‘start’ and ‘end’ fields in the given row
+dictionary to integers. If conversion is not possible, or if ‘start’
+is greater than ‘end’, appends appropriate error messages to a list
+and returns the list along with the row dictionary. The error
+messages as intended to be collected and converted to a ValueError
+as part of a BaseExceptionGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>row</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – A dictionary containing ‘start’ and ‘end’ fields,
+presumably as strings.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the possibly modified row dictionary
+and a list of error messages.</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>]]</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="s1">&#39;10&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coord_validator</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="go">({&#39;start&#39;: 10, &#39;end&#39;: 5}, [&#39;{target_specification_format} {line_number} start &gt; end (10 &gt; 5)&#39;])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;20&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coord_validator</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="go">({&#39;start&#39;: &#39;a&#39;, &#39;end&#39;: 20}, [&quot;{target_specification_format} {line_number} start coordinate &#39;a&#39; could not be converted to an integer&quot;])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="s1">&#39;10&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;20&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coord_validator</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="go">({&#39;start&#39;: 10, &#39;end&#39;: 20}, [])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="readfish.plugins.utils.strand_validator">
+<span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">strand_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#strand_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.strand_validator" title="Permalink to this definition">#</a></dt>
+<dd><p>Validates the ‘strand’ field in the given row dictionary to be either ‘+’,
+‘-’, or ‘.’. If the ‘strand’ field is ‘.’, it is converted to ‘+-’. If the
+‘strand’ field is not one of the mentioned valid values, an error message
+is added to a list of errors, and the list of error messages along with the modified
+row dictionary are returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>row</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – A dictionary containing a ‘strand’ field.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the possibly modified row dictionary and a
+list of error messages.</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>]]</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;strand&#39;</span><span class="p">:</span> <span class="s1">&#39;.&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">strand_validator</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="go">({&#39;strand&#39;: &#39;+-&#39;}, [])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;strand&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">strand_validator</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="go">({&#39;strand&#39;: &#39;x&#39;}, [&quot;{target_specification_format} {line_number} strand &#39;x&#39; not one of [&#39;+&#39;, &#39;-&#39;, &#39;.&#39;]&quot;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;strand&#39;</span><span class="p">:</span> <span class="s1">&#39;+&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">strand_validator</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="go">({&#39;strand&#39;: &#39;+&#39;}, [])</span>
+</pre></div>
+</div>
+<p>Refer to <a class="reference external" href="http://genome.ucsc.edu/FAQ/FAQformat#format1">http://genome.ucsc.edu/FAQ/FAQformat#format1</a> for more details on
+the strand field in BED format.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="readfish.plugins.utils.row_checker">
+<span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">row_checker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#row_checker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.row_checker" title="Permalink to this definition">#</a></dt>
+<dd><p>Validates the given row dictionary based on the mode and returns
+the row along with any errors found during the validation.</p>
+<p>The mode alters the behaviour. If the mode is ‘csv’, the row is
+allowed to only contain the contig. If it is “bed”, the first 6
+columns of the BED format are required.</p>
+<p>Refer to <a class="reference external" href="http://genome.ucsc.edu/FAQ/FAQformat#format1">http://genome.ucsc.edu/FAQ/FAQformat#format1</a> for more details on
+the strand field in BED format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – A dictionary containing the row data.</p></li>
+<li><p><strong>mode</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – A string indicating the target specification type, either ‘csv’ or ‘bed’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the validated (and possibly corrected) row
+and a list of error messages encountered during validation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>]]</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;chrom&#39;</span><span class="p">:</span> <span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="s1">&#39;1000&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;2000&#39;</span><span class="p">,</span> <span class="s1">&#39;strand&#39;</span><span class="p">:</span> <span class="s1">&#39;+&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row_checker</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">)</span>  <span class="c1"># No errors, valid row</span>
+<span class="go">({&#39;chrom&#39;: &#39;chr1&#39;, &#39;start&#39;: 1000, &#39;end&#39;: 2000, &#39;strand&#39;: &#39;+&#39;}, [])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;chrom&#39;</span><span class="p">:</span> <span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="s1">&#39;2000&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;1000&#39;</span><span class="p">,</span> <span class="s1">&#39;strand&#39;</span><span class="p">:</span> <span class="s1">&#39;+&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Coord validator will report an error due to start &gt; end</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row_checker</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">)</span>
+<span class="go">({&#39;chrom&#39;: &#39;chr1&#39;, &#39;start&#39;: 2000, &#39;end&#39;: 1000, &#39;strand&#39;: &#39;+&#39;}, [&#39;{target_specification_format} {line_number} start &gt; end (2000 &gt; 1000)&#39;])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;chrom&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="s1">&#39;1000&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;2000&#39;</span><span class="p">,</span> <span class="s1">&#39;strand&#39;</span><span class="p">:</span> <span class="s1">&#39;+&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Chromosome value is missing, an error will be reported</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row_checker</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">)</span>
+<span class="go">({&#39;chrom&#39;: None, &#39;start&#39;: 1000, &#39;end&#39;: 2000, &#39;strand&#39;: &#39;+&#39;}, [&#39;{target_specification_format} {line_number} has no chromosome value&#39;])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;chr1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Chromosome value is missing, an error will be reported</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row_checker</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">)</span>
+<span class="go">([&#39;chr1&#39;, 0, 1000, &#39;+&#39;], [&#39;Input row is not a valid dictionary&#39;])</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If the mode is neither ‘csv’ nor ‘bed’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">Decision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Decision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Decision" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Decision readfish has made about a read after Alignment</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision.single_on">
+<span class="sig-name descname"><span class="pre">single_on</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'single_on'</span></em><a class="headerlink" href="#readfish.plugins.utils.Decision.single_on" title="Permalink to this definition">#</a></dt>
+<dd><p>The read aligned to a single location that is within a target region</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision.single_off">
+<span class="sig-name descname"><span class="pre">single_off</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'single_off'</span></em><a class="headerlink" href="#readfish.plugins.utils.Decision.single_off" title="Permalink to this definition">#</a></dt>
+<dd><p>The read aligned to a single location that is not in a target region</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision.multi_on">
+<span class="sig-name descname"><span class="pre">multi_on</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'multi_on'</span></em><a class="headerlink" href="#readfish.plugins.utils.Decision.multi_on" title="Permalink to this definition">#</a></dt>
+<dd><p>The read aligned to multiple locations, where at least one alignment is within a target region</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision.multi_off">
+<span class="sig-name descname"><span class="pre">multi_off</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'multi_off'</span></em><a class="headerlink" href="#readfish.plugins.utils.Decision.multi_off" title="Permalink to this definition">#</a></dt>
+<dd><p>The read aligned to multiple locations, none of which were in a target region</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision.no_map">
+<span class="sig-name descname"><span class="pre">no_map</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'no_map'</span></em><a class="headerlink" href="#readfish.plugins.utils.Decision.no_map" title="Permalink to this definition">#</a></dt>
+<dd><p>The read was basecalled but did not align</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision.no_seq">
+<span class="sig-name descname"><span class="pre">no_seq</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'no_seq'</span></em><a class="headerlink" href="#readfish.plugins.utils.Decision.no_seq" title="Permalink to this definition">#</a></dt>
+<dd><p>The read did not basecall</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision.above_max_chunks">
+<span class="sig-name descname"><span class="pre">above_max_chunks</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'above_max_chunks'</span></em><a class="headerlink" href="#readfish.plugins.utils.Decision.above_max_chunks" title="Permalink to this definition">#</a></dt>
+<dd><p>Too many signal chunks have been collected for this read</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Decision.below_min_chunks">
+<span class="sig-name descname"><span class="pre">below_min_chunks</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'below_min_chunks'</span></em><a class="headerlink" href="#readfish.plugins.utils.Decision.below_min_chunks" title="Permalink to this definition">#</a></dt>
+<dd><p>Fewer signal chunks for this read collected than required</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Action">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">Action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Action" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Action to take for a read.</p>
+<p>This enum class represents different actions that can be taken for a read during sequencing.
+Each action has a corresponding string value used for logging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unblock</strong> – Send an unblock command to the sequencer.</p></li>
+<li><p><strong>stop_receiving</strong> – Allow the read to finish sequencing.</p></li>
+<li><p><strong>proceed</strong> – Sample another chunk of data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>Define an Action:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">action</span> <span class="o">=</span> <span class="n">Action</span><span class="o">.</span><span class="n">unblock</span>
+</pre></div>
+</div>
+<p>Access the string value of an Action:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">action</span><span class="o">.</span><span class="n">value</span>
+<span class="go">&#39;unblock&#39;</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Action.unblock">
+<span class="sig-name descname"><span class="pre">unblock</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unblock'</span></em><a class="headerlink" href="#readfish.plugins.utils.Action.unblock" title="Permalink to this definition">#</a></dt>
+<dd><p>Send an unblock command to the sequencer</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Action.stop_receiving">
+<span class="sig-name descname"><span class="pre">stop_receiving</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'stop_receiving'</span></em><a class="headerlink" href="#readfish.plugins.utils.Action.stop_receiving" title="Permalink to this definition">#</a></dt>
+<dd><p>Allow the read to finish sequencing</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Action.proceed">
+<span class="sig-name descname"><span class="pre">proceed</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'proceed'</span></em><a class="headerlink" href="#readfish.plugins.utils.Action.proceed" title="Permalink to this definition">#</a></dt>
+<dd><p>Sample another chunk of data</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Decision.no_seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basecall_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Result" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Result holder</p>
+<p>This should be progressively filled with data from the basecaller,
+barcoder, and then the aligner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The channel that this read is being sequenced on</p></li>
+<li><p><strong>read_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The read number value from the Read Until API</p></li>
+<li><p><strong>read_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The read ID assigned to this read by MinKNOW</p></li>
+<li><p><strong>seq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The basecalled sequence for this read</p></li>
+<li><p><strong>decision</strong> (<a class="reference internal" href="#readfish.plugins.utils.Decision" title="readfish.plugins.utils.Decision"><em>Decision</em></a>) – The <code class="docutils literal notranslate"><span class="pre">Decision</span></code> that has been made, this will by used to determine the <code class="docutils literal notranslate"><span class="pre">Action</span></code></p></li>
+<li><p><strong>barcode</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – The barcode that has been assigned to this read</p></li>
+<li><p><strong>basecall_data</strong> (<em>Optional</em><em>[</em><em>Any</em><em>]</em>) – Any extra data that the basecaller may want to send to the aligner</p></li>
+<li><p><strong>alignment_data</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><em>Alignment</em><em>]</em><em>]</em>) – Any extra alignment data</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result.channel">
+<span class="sig-name descname"><span class="pre">channel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Result.channel" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result.read_number">
+<span class="sig-name descname"><span class="pre">read_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Result.read_number" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result.read_id">
+<span class="sig-name descname"><span class="pre">read_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Result.read_id" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result.seq">
+<span class="sig-name descname"><span class="pre">seq</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Result.seq" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result.decision">
+<span class="sig-name descname"><span class="pre">decision</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#readfish.plugins.utils.Decision" title="readfish.plugins.utils.Decision"><span class="pre">Decision</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Result.decision" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result.barcode">
+<span class="sig-name descname"><span class="pre">barcode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Result.barcode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result.basecall_data">
+<span class="sig-name descname"><span class="pre">basecall_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Result.basecall_data" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Result.alignment_data">
+<span class="sig-name descname"><span class="pre">alignment_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Alignment</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Result.alignment_data" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Targets">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">Targets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Targets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Targets" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class representation of target regions of a genome.</p>
+<p>This class is responsible for parsing and managing target regions specified either
+through a TOML file or provided as a list of strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>, </em><em>Path</em><em>]</em>) – The raw value from the TOML file, either a list of strings or a path.</p></li>
+<li><p><strong>_targets</strong> (<em>Dict</em><em>[</em><a class="reference internal" href="#readfish.plugins.utils.Strand" title="readfish.plugins.utils.Strand"><em>Strand</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>List</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em><em>]</em><em>]</em><em>]</em>) – A nested dictionary containing parsed target
+information. This is not intended to be a part of the public API.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Example:</p>
+<ul>
+<li><p>Using a list of targets:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span> <span class="o">=</span> <span class="n">Targets</span><span class="o">.</span><span class="n">from_parsed_toml</span><span class="p">([</span><span class="s2">&quot;chr1,100,200,+&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</li>
+<li><p>Using a .bed file:</p>
+<blockquote>
+<div><p>targets = Targets.from_parsed_toml(“/path/to/targets.bed”)</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Targets.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><span class="pre">Path</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Targets.value" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Targets.padding">
+<span class="sig-name descname"><span class="pre">padding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#readfish.plugins.utils.Targets.padding" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Targets.from_parsed_toml">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_parsed_toml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Targets.from_parsed_toml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Targets.from_parsed_toml" title="Permalink to this definition">#</a></dt>
+<dd><p>Create the target array from the targets that have been read from the provided TOML file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>targets</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>] </em><em>| </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The targets array or a target file, containing a file per line</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – Raised if the supplied target is a file that cannot be parsed</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If we fail to initialise class</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Initialised targets class</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#readfish.plugins.utils.Targets" title="readfish.plugins.utils.Targets">Targets</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Targets.check_coord">
+<span class="sig-name descname"><span class="pre">check_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coord</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Targets.check_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Targets.check_coord" title="Permalink to this definition">#</a></dt>
+<dd><p>Check to see if a coordinate is within any of the target regions
+:param contig: The target contig name
+:param strand: The strand that the alignment is to
+:param coord: The coordinate to be checked
+:raises ValueError: If the strand passed is not recognised
+:return: Boolean representing whether the coordinate is within a target region or not</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span> <span class="o">=</span> <span class="n">Targets</span><span class="p">([</span><span class="s2">&quot;chr1,10,20,+&quot;</span><span class="p">,</span> <span class="s2">&quot;chr1,15,30,+&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span><span class="o">.</span><span class="n">check_coord</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span><span class="o">.</span><span class="n">check_coord</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span><span class="o">.</span><span class="n">check_coord</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span><span class="o">.</span><span class="n">check_coord</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>  <span class="c1"># Example where coord (31) is in reversed target interval (+ve strand) Should fail</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span><span class="o">.</span><span class="n">check_coord</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">41</span><span class="p">)</span>  <span class="c1"># Example where coord (41) is in reversed target interval (-ve strand) Should fail</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span><span class="o">.</span><span class="n">check_coord</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s2">&quot;unknown_strand&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Unexpected strand unknown_strand</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Targets.get_offset">
+<span class="sig-name descname"><span class="pre">get_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strand</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Targets.get_offset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Targets.get_offset" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the start and end padding offsets for a given strand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strand</strong> (<a class="reference internal" href="#readfish.plugins.utils.Strand" title="readfish.plugins.utils.Strand"><em>Strand</em></a>) – The strand for which to get the offsets.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the start and end offsets.</p>
+</dd>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span> <span class="o">=</span> <span class="n">Targets</span><span class="p">([</span><span class="s2">&quot;chr1,10,20,+&quot;</span><span class="p">,</span> <span class="s2">&quot;chr1,15,30,+&quot;</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span><span class="o">.</span><span class="n">get_offset</span><span class="p">(</span><span class="n">Strand</span><span class="o">.</span><span class="n">forward</span><span class="p">)</span>
+<span class="go">(-10, 0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span><span class="o">.</span><span class="n">get_offset</span><span class="p">(</span><span class="n">Strand</span><span class="o">.</span><span class="n">reverse</span><span class="p">)</span>
+<span class="go">(0, 10)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.utils.Targets.iter_targets">
+<span class="sig-name descname"><span class="pre">iter_targets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#Targets.iter_targets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.Targets.iter_targets" title="Permalink to this definition">#</a></dt>
+<dd><p>Iterate over the intervals for a _Conditions target intervals, yielding TARGET_INTERVAL objects.</p>
+<p>This method iterates over the target intervals stored in the <cite>Targets</cite> object and yields
+<cite>TARGET_INTERVAL</cite> objects representing each target interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generator that yields <cite>TARGET_INTERVAL</cite> objects.</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span> <span class="o">=</span> <span class="n">Targets</span><span class="p">([</span><span class="s2">&quot;chr1,10,20,+&quot;</span><span class="p">,</span> <span class="s2">&quot;chr1,15,30,+&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="o">.</span><span class="n">iter_targets</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+<span class="go">TargetInterval(chromosome=&#39;chr1&#39;, start=10, end=30, strand=&lt;Strand.forward: &#39;+&#39;&gt;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span> <span class="o">=</span> <span class="n">Targets</span><span class="p">([</span><span class="s2">&quot;chr1,10,20,+&quot;</span><span class="p">,</span> <span class="s2">&quot;chr2,5,15,-&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="o">.</span><span class="n">iter_targets</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">((</span><span class="n">target</span><span class="o">.</span><span class="n">chromosome</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">strand</span><span class="p">))</span>
+<span class="go">(&#39;chr1&#39;, 10, 20, &lt;Strand.forward: &#39;+&#39;&gt;)</span>
+<span class="go">(&#39;chr2&#39;, 5, 15, &lt;Strand.reverse: &#39;-&#39;&gt;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">targets</span> <span class="o">=</span> <span class="n">Targets</span><span class="p">([</span><span class="s2">&quot;chr1,10,20,+&quot;</span><span class="p">,</span> <span class="s2">&quot;chr2,5,15,-&quot;</span><span class="p">,</span> <span class="s2">&quot;chr1,25,35,-&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="o">.</span><span class="n">iter_targets</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">chromosome</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>
+<span class="go">chr1 10 20 Strand.forward</span>
+<span class="go">chr2 5 15 Strand.reverse</span>
+<span class="go">chr1 25 35 Strand.reverse</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.utils.PreviouslySentActionTracker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.utils.</span></span><span class="sig-name descname"><span class="pre">PreviouslySentActionTracker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">last_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#PreviouslySentActionTracker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.PreviouslySentActionTracker" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A class to keep track of the last action sent from a channel.</p>
+<p>This class provides methods to add and retrieve the last action sent for each channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>last_action</strong> – A dictionary mapping channel IDs to the last sent action for that channel.</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>Initialize a PreviouslySentActionTracker:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tracker</span> <span class="o">=</span> <span class="n">PreviouslySentActionTracker</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Add an action for channel number 1:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">readfish.plugins.utils</span> <span class="kn">import</span> <span class="n">Action</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">action</span> <span class="o">=</span> <span class="n">Action</span><span class="o">.</span><span class="n">unblock</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tracker</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retrieve the last action for a channel:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">retrieved_action</span> <span class="o">=</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_action</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">retrieved_action</span>
+<span class="go">&lt;Action.unblock: &#39;unblock&#39;&gt;</span>
+</pre></div>
+</div>
+<p>Retrieve the last action for a channel that hasn’t sent any actions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">no_action</span> <span class="o">=</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_action</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">no_action</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readfish.plugins.utils.PreviouslySentActionTracker.last_actions">
+<span class="sig-name descname"><span class="pre">last_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#readfish.plugins.utils.Action" title="readfish.plugins.utils.Action"><span class="pre">Action</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#readfish.plugins.utils.PreviouslySentActionTracker.last_actions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.utils.PreviouslySentActionTracker.add_action">
+<span class="sig-name descname"><span class="pre">add_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#PreviouslySentActionTracker.add_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.PreviouslySentActionTracker.add_action" title="Permalink to this definition">#</a></dt>
+<dd><p>This method adds an action to the last sent action tracker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The channel to add the action to.</p></li>
+<li><p><strong>action</strong> (<a class="reference internal" href="#readfish.plugins.utils.Action" title="readfish.plugins.utils.Action"><em>Action</em></a>) – The action to add to the channel.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.utils.PreviouslySentActionTracker.get_action">
+<span class="sig-name descname"><span class="pre">get_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/utils.html#PreviouslySentActionTracker.get_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.utils.PreviouslySentActionTracker.get_action" title="Permalink to this definition">#</a></dt>
+<dd><p>This method checks the last action sent for a channel, returning the action if it exists,
+otherwise returning None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The channel to check the last action for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The last action sent for the channel, or None if no action has been sent.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#readfish.plugins.utils.Action" title="readfish.plugins.utils.Action"><em>Action</em></a> | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="module-readfish.plugins.guppy">
+<span id="readfish-plugins-guppy-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish.plugins.guppy</span></code> module<a class="headerlink" href="#module-readfish.plugins.guppy" title="Permalink to this heading">#</a></h2>
+<p>Guppy plugin module</p>
+<p>Extension of pyguppy Caller that maintains a connection to the basecaller</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins.guppy.Caller">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins.guppy.</span></span><span class="sig-name descname"><span class="pre">Caller</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_information</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/guppy.html#Caller"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.guppy.Caller" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#readfish.plugins.abc.CallerABC" title="readfish.plugins.abc.CallerABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallerABC</span></code></a></p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.guppy.Caller.basecall">
+<span class="sig-name descname"><span class="pre">basecall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">daq_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/guppy.html#Caller.basecall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.guppy.Caller.basecall" title="Permalink to this definition">#</a></dt>
+<dd><p>Basecall live data from minknow RPC</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reads</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>minknow_api.data_pb2.GetLiveReadsResponse.ReadData</em><em>]</em><em>]</em>) – List or generator of tuples containing (channel, MinKNOW.rpc.Read)</p></li>
+<li><p><strong>signal_dtype</strong> (<em>npt.DTypeLike</em>) – Numpy dtype of the raw data</p></li>
+<li><p><strong>daq_values</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>namedtuple</em><em>]</em>) – Dictionary mapping channel to offset and scaling values.
+If not provided default values of 1.0 and 0.0 are used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yield<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#readfish.plugins.utils.Result" title="readfish.plugins.utils.Result">readfish.plugins.utils.Result</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.guppy.Caller.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/guppy.html#Caller.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.guppy.Caller.describe" title="Permalink to this definition">#</a></dt>
+<dd><p>Describe the guppy Caller</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Description of parameters passed to this guppy Caller plugin</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.guppy.Caller.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/guppy.html#Caller.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.guppy.Caller.disconnect" title="Permalink to this definition">#</a></dt>
+<dd><p>Call the disconnect method on the PyGuppyClient</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins.guppy.Caller.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/guppy.html#Caller.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins.guppy.Caller.validate" title="Permalink to this definition">#</a></dt>
+<dd><p>Validate the parameters passed to Guppy to ensure they will initialise PyGuppy Client correctly</p>
+<dl class="simple">
+<dt>Currently checks:</dt><dd><ol class="arabic simple">
+<li><p>That the socket file exists</p></li>
+<li><p>That the Socket file has the correct permissions</p></li>
+<li><p>That the version of py guppy client lib installed matches the system version</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None, if the parameters pass all the checks</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="module-readfish.plugins.mappy">
+<span id="readfish-plugins-mappy-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish.plugins.mappy</span></code> module<a class="headerlink" href="#module-readfish.plugins.mappy" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="module-readfish.plugins._no_op">
+<span id="readfish-plugins-no-op-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish.plugins._no_op</span></code> module<a class="headerlink" href="#module-readfish.plugins._no_op" title="Permalink to this heading">#</a></h2>
+<p>A no operation plugin module, used for pass through behaviour.</p>
+<p>This module implements a basic Aligner and Caller that do nothing and the minimum required behaviours respectively.
+They are here for when readfish expects an action that may not be required.
+For example if using a signal based alignment approach that module can replace the <code class="docutils literal notranslate"><span class="pre">Caller</span></code> and completely remove the extra alignment step.</p>
+<p>To achieve this the <code class="docutils literal notranslate"><span class="pre">_no_op.Caller</span></code> will only iterate the raw data from the Read Until API and <code class="docutils literal notranslate"><span class="pre">yield</span></code> the minimal <code class="docutils literal notranslate"><span class="pre">Result</span></code> structs for the <code class="docutils literal notranslate"><span class="pre">targets</span></code> script to use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Result</span><span class="p">(</span>
+    <span class="n">channel</span><span class="o">=&lt;</span><span class="n">channel</span> <span class="n">number</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">read_number</span><span class="o">=&lt;</span><span class="n">read_number</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">read_id</span><span class="o">=&lt;</span><span class="n">read_id</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">seq</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">seq</span></code> field will always be empty.
+This is of little (essentially no) use outside of an unblock all or something completely random where you don’t want or need any sequence.</p>
+<p>In addition the <code class="docutils literal notranslate"><span class="pre">_no_op.Aligner</span></code> will pass through the iterable from the caller module without modifying/adding anything.
+This behaviour can be useful if a plugin can complete it’s entire decision in a single step.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Aligner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins._no_op.</span></span><span class="sig-name descname"><span class="pre">Aligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Aligner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Aligner" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#readfish.plugins.abc.AlignerABC" title="readfish.plugins.abc.AlignerABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlignerABC</span></code></a></p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Aligner.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Aligner.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Aligner.describe" title="Permalink to this definition">#</a></dt>
+<dd><p>Describe the no_op Aligner instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Aligner.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Aligner.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Aligner.disconnect" title="Permalink to this definition">#</a></dt>
+<dd><p>Will always return <code class="docutils literal notranslate"><span class="pre">None</span></code>, does nothing.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Aligner.initialised">
+<span class="sig-name descname"><span class="pre">initialised</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Aligner.initialised"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Aligner.initialised" title="Permalink to this definition">#</a></dt>
+<dd><p>Will always return <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Aligner.map_reads">
+<span class="sig-name descname"><span class="pre">map_reads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basecall_results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Aligner.map_reads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Aligner.map_reads" title="Permalink to this definition">#</a></dt>
+<dd><p>Pass through the <code class="docutils literal notranslate"><span class="pre">basecall_results</span></code> iterable that is supplied.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Aligner.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Aligner.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Aligner.validate" title="Permalink to this definition">#</a></dt>
+<dd><p>Validate the “Aligner” - will always return None, as there is no Aligner</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None, always</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Caller">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish.plugins._no_op.</span></span><span class="sig-name descname"><span class="pre">Caller</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Caller"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Caller" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#readfish.plugins.abc.CallerABC" title="readfish.plugins.abc.CallerABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallerABC</span></code></a></p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Caller.basecall">
+<span class="sig-name descname"><span class="pre">basecall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Caller.basecall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Caller.basecall" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a minimal <code class="docutils literal notranslate"><span class="pre">Result</span></code> instance from live data from the Read Until API.</p>
+<p>This will use the actual channel, read number, and read ID but will set an empty string for the <code class="docutils literal notranslate"><span class="pre">seq</span></code> field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chunks</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>minknow_api.data_pb2.GetLiveReadsResponse.ReadData</em><em>]</em><em>]</em>) – Raw data wrapper from the MinKNOW RPC</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yields <code class="docutils literal notranslate"><span class="pre">Result</span></code> classes with the <code class="docutils literal notranslate"><span class="pre">Result.channel</span></code>, <code class="docutils literal notranslate"><span class="pre">Result.read_number</span></code>, <code class="docutils literal notranslate"><span class="pre">Result.read_id</span></code>, and <code class="docutils literal notranslate"><span class="pre">Result.seq</span></code> fields set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Iterable[<a class="reference internal" href="#readfish.plugins.utils.Result" title="readfish.plugins.utils.Result">Result</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Caller.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Caller.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Caller.describe" title="Permalink to this definition">#</a></dt>
+<dd><p>Describe the <cite>no_op</cite> Caller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A description string for the <cite>no_op</cite> Caller instance.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Caller.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Caller.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Caller.disconnect" title="Permalink to this definition">#</a></dt>
+<dd><p>Will always return <code class="docutils literal notranslate"><span class="pre">None</span></code>, does nothing.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readfish.plugins._no_op.Caller.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/plugins/_no_op.html#Caller.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish.plugins._no_op.Caller.validate" title="Permalink to this definition">#</a></dt>
+<dd><p>Validate the “Caller” - will always return None, as there is no Caller</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None, always</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          <a class="prev-page" href="readfish.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">API Reference</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Loose Lab
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">readfish plugins API</a><ul>
+<li><a class="reference internal" href="#module-readfish.plugins.abc"><code class="docutils literal notranslate"><span class="pre">readfish.plugins.abc</span></code> module</a><ul>
+<li><a class="reference internal" href="#readfish.plugins.abc.AlignerABC"><code class="docutils literal notranslate"><span class="pre">AlignerABC</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.abc.AlignerABC.describe"><code class="docutils literal notranslate"><span class="pre">AlignerABC.describe</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.abc.AlignerABC.disconnect"><code class="docutils literal notranslate"><span class="pre">AlignerABC.disconnect</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.abc.AlignerABC.initialised"><code class="docutils literal notranslate"><span class="pre">AlignerABC.initialised</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.abc.AlignerABC.map_reads"><code class="docutils literal notranslate"><span class="pre">AlignerABC.map_reads</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.abc.AlignerABC.validate"><code class="docutils literal notranslate"><span class="pre">AlignerABC.validate</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readfish.plugins.abc.CallerABC"><code class="docutils literal notranslate"><span class="pre">CallerABC</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.abc.CallerABC.basecall"><code class="docutils literal notranslate"><span class="pre">CallerABC.basecall</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.abc.CallerABC.describe"><code class="docutils literal notranslate"><span class="pre">CallerABC.describe</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.abc.CallerABC.disconnect"><code class="docutils literal notranslate"><span class="pre">CallerABC.disconnect</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.abc.CallerABC.validate"><code class="docutils literal notranslate"><span class="pre">CallerABC.validate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-readfish.plugins.utils"><code class="docutils literal notranslate"><span class="pre">readfish.plugins.utils</span></code> module</a><ul>
+<li><a class="reference internal" href="#readfish.plugins.utils.TARGET_INTERVAL"><code class="docutils literal notranslate"><span class="pre">TARGET_INTERVAL</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Strand"><code class="docutils literal notranslate"><span class="pre">Strand</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.utils.Strand.forward"><code class="docutils literal notranslate"><span class="pre">Strand.forward</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Strand.reverse"><code class="docutils literal notranslate"><span class="pre">Strand.reverse</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readfish.plugins.utils.get_contig_lengths"><code class="docutils literal notranslate"><span class="pre">get_contig_lengths</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.is_empty"><code class="docutils literal notranslate"><span class="pre">is_empty</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.count_dict_elements"><code class="docutils literal notranslate"><span class="pre">count_dict_elements</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.sum_target_coverage"><code class="docutils literal notranslate"><span class="pre">sum_target_coverage</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.coord_validator"><code class="docutils literal notranslate"><span class="pre">coord_validator</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.strand_validator"><code class="docutils literal notranslate"><span class="pre">strand_validator</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.row_checker"><code class="docutils literal notranslate"><span class="pre">row_checker</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision"><code class="docutils literal notranslate"><span class="pre">Decision</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision.single_on"><code class="docutils literal notranslate"><span class="pre">Decision.single_on</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision.single_off"><code class="docutils literal notranslate"><span class="pre">Decision.single_off</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision.multi_on"><code class="docutils literal notranslate"><span class="pre">Decision.multi_on</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision.multi_off"><code class="docutils literal notranslate"><span class="pre">Decision.multi_off</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision.no_map"><code class="docutils literal notranslate"><span class="pre">Decision.no_map</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision.no_seq"><code class="docutils literal notranslate"><span class="pre">Decision.no_seq</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision.above_max_chunks"><code class="docutils literal notranslate"><span class="pre">Decision.above_max_chunks</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Decision.below_min_chunks"><code class="docutils literal notranslate"><span class="pre">Decision.below_min_chunks</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Action"><code class="docutils literal notranslate"><span class="pre">Action</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.utils.Action.unblock"><code class="docutils literal notranslate"><span class="pre">Action.unblock</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Action.stop_receiving"><code class="docutils literal notranslate"><span class="pre">Action.stop_receiving</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Action.proceed"><code class="docutils literal notranslate"><span class="pre">Action.proceed</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result.channel"><code class="docutils literal notranslate"><span class="pre">Result.channel</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result.read_number"><code class="docutils literal notranslate"><span class="pre">Result.read_number</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result.read_id"><code class="docutils literal notranslate"><span class="pre">Result.read_id</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result.seq"><code class="docutils literal notranslate"><span class="pre">Result.seq</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result.decision"><code class="docutils literal notranslate"><span class="pre">Result.decision</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result.barcode"><code class="docutils literal notranslate"><span class="pre">Result.barcode</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result.basecall_data"><code class="docutils literal notranslate"><span class="pre">Result.basecall_data</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Result.alignment_data"><code class="docutils literal notranslate"><span class="pre">Result.alignment_data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Targets"><code class="docutils literal notranslate"><span class="pre">Targets</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.utils.Targets.value"><code class="docutils literal notranslate"><span class="pre">Targets.value</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Targets.padding"><code class="docutils literal notranslate"><span class="pre">Targets.padding</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Targets.from_parsed_toml"><code class="docutils literal notranslate"><span class="pre">Targets.from_parsed_toml</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Targets.check_coord"><code class="docutils literal notranslate"><span class="pre">Targets.check_coord</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Targets.get_offset"><code class="docutils literal notranslate"><span class="pre">Targets.get_offset</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.Targets.iter_targets"><code class="docutils literal notranslate"><span class="pre">Targets.iter_targets</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readfish.plugins.utils.PreviouslySentActionTracker"><code class="docutils literal notranslate"><span class="pre">PreviouslySentActionTracker</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.utils.PreviouslySentActionTracker.last_actions"><code class="docutils literal notranslate"><span class="pre">PreviouslySentActionTracker.last_actions</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.PreviouslySentActionTracker.add_action"><code class="docutils literal notranslate"><span class="pre">PreviouslySentActionTracker.add_action</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.utils.PreviouslySentActionTracker.get_action"><code class="docutils literal notranslate"><span class="pre">PreviouslySentActionTracker.get_action</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-readfish.plugins.guppy"><code class="docutils literal notranslate"><span class="pre">readfish.plugins.guppy</span></code> module</a><ul>
+<li><a class="reference internal" href="#readfish.plugins.guppy.Caller"><code class="docutils literal notranslate"><span class="pre">Caller</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins.guppy.Caller.basecall"><code class="docutils literal notranslate"><span class="pre">Caller.basecall</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.guppy.Caller.describe"><code class="docutils literal notranslate"><span class="pre">Caller.describe</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.guppy.Caller.disconnect"><code class="docutils literal notranslate"><span class="pre">Caller.disconnect</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins.guppy.Caller.validate"><code class="docutils literal notranslate"><span class="pre">Caller.validate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-readfish.plugins.mappy"><code class="docutils literal notranslate"><span class="pre">readfish.plugins.mappy</span></code> module</a></li>
+<li><a class="reference internal" href="#module-readfish.plugins._no_op"><code class="docutils literal notranslate"><span class="pre">readfish.plugins._no_op</span></code> module</a><ul>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Aligner"><code class="docutils literal notranslate"><span class="pre">Aligner</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Aligner.describe"><code class="docutils literal notranslate"><span class="pre">Aligner.describe</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Aligner.disconnect"><code class="docutils literal notranslate"><span class="pre">Aligner.disconnect</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Aligner.initialised"><code class="docutils literal notranslate"><span class="pre">Aligner.initialised</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Aligner.map_reads"><code class="docutils literal notranslate"><span class="pre">Aligner.map_reads</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Aligner.validate"><code class="docutils literal notranslate"><span class="pre">Aligner.validate</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Caller"><code class="docutils literal notranslate"><span class="pre">Caller</span></code></a><ul>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Caller.basecall"><code class="docutils literal notranslate"><span class="pre">Caller.basecall</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Caller.describe"><code class="docutils literal notranslate"><span class="pre">Caller.describe</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Caller.disconnect"><code class="docutils literal notranslate"><span class="pre">Caller.disconnect</span></code></a></li>
+<li><a class="reference internal" href="#readfish.plugins._no_op.Caller.validate"><code class="docutils literal notranslate"><span class="pre">Caller.validate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1e7f7872"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>

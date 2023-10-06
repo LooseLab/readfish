@@ -1,0 +1,736 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>readfish._config - readfish 2023.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --font-stack--monospace: 'Ubuntu Mono', monospace;
+  --code-font-size: 90%;
+  --color-api-background: #f8f9fb;
+  --color-highlight-on-target: transparent;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">readfish 2023.1.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../_static/readfish_light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../_static/readfish_dark.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../toml.html">TOML files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readfish.console.html">readfish console scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../post-analysis.html">Readfish analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developers-guide.html">Developer’s guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readfish.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readfish.plugins.html">readfish plugins API</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for readfish._config</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">attrs</span>
+<span class="kn">import</span> <span class="nn">cattrs</span>
+<span class="kn">import</span> <span class="nn">rtoml</span>
+
+<span class="kn">from</span> <span class="nn">readfish._utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">generate_flowcell</span><span class="p">,</span>
+    <span class="n">compress_and_encode_string</span><span class="p">,</span>
+    <span class="n">nice_join</span><span class="p">,</span>
+    <span class="n">draw_flowcell_split</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">readfish.plugins.utils</span> <span class="kn">import</span> <span class="n">Targets</span><span class="p">,</span> <span class="n">Action</span><span class="p">,</span> <span class="n">Decision</span><span class="p">,</span> <span class="n">Result</span>
+
+
+<span class="k">def</span> <span class="nf">make_decision</span><span class="p">(</span><span class="n">conf</span><span class="p">:</span> <span class="n">Conf</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Decision</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The main decision making function for readfish.</span>
+<span class="sd">    Chooses the decision that is looked up in the TOML based</span>
+<span class="sd">    on the mapped coordinates of the read, checked against the targets.</span>
+<span class="sd">    Decision is one of single_on, multi_on, single_off, multi_off, no_map, no_seq.</span>
+
+<span class="sd">    :param conf: The Conf object for the experiment</span>
+<span class="sd">    :param result: The result of the alignment and base calling for the read</span>
+<span class="sd">    :raises ValueError: If readfish fails to make a decision based on</span>
+<span class="sd">        the passed Result object length</span>
+<span class="sd">    :return: The decision that readfish has made for this read</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">alignment_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">alignment_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">targets</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get_targets</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">alignment_data</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">al</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">contig</span> <span class="o">=</span> <span class="n">al</span><span class="o">.</span><span class="n">ctg</span>
+        <span class="n">strand</span> <span class="o">=</span> <span class="n">al</span><span class="o">.</span><span class="n">strand</span>
+        <span class="n">coord</span> <span class="o">=</span> <span class="n">al</span><span class="o">.</span><span class="n">r_st</span> <span class="k">if</span> <span class="n">al</span><span class="o">.</span><span class="n">strand</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">al</span><span class="o">.</span><span class="n">r_en</span>
+        <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">targets</span><span class="o">.</span><span class="n">check_coord</span><span class="p">(</span><span class="n">contig</span><span class="p">,</span> <span class="n">strand</span><span class="p">,</span> <span class="n">coord</span><span class="p">))</span>
+    <span class="n">coord_match</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Decision</span><span class="o">.</span><span class="n">no_map</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Decision</span><span class="o">.</span><span class="n">no_seq</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Decision</span><span class="o">.</span><span class="n">single_on</span> <span class="k">if</span> <span class="n">coord_match</span> <span class="k">else</span> <span class="n">Decision</span><span class="o">.</span><span class="n">single_off</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Decision</span><span class="o">.</span><span class="n">multi_on</span> <span class="k">if</span> <span class="n">coord_match</span> <span class="k">else</span> <span class="n">Decision</span><span class="o">.</span><span class="n">multi_off</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="_Condition"><a class="viewcode-back" href="../../readfish.html#readfish._config._Condition">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<span class="k">class</span> <span class="nc">_Condition</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation of an experimental condition.</span>
+<span class="sd">    This can either be a :class:`Barcode` or an experimental :class:`Region` of the flow cell.</span>
+
+<span class="sd">    :param name: The name of the condition.</span>
+<span class="sd">    :param single_on: The :class:`Action` to perform when a read has a single, on-target, alignment</span>
+<span class="sd">    :param single_off: The :class:`Action` to perform when a read has a single, off-target, alignment</span>
+<span class="sd">    :param multi_on: The :class:`Action` to perform when a read has multiple alignments, with at least one on-target</span>
+<span class="sd">    :param multi_off: The :class:`Action` to perform when a read has multiple aligments, with all off-target</span>
+<span class="sd">    :param no_map: The :class:`Action` to perform when a read has no aligments</span>
+<span class="sd">    :param no_seq: The :class:`Action` to perform when a read did not basecall</span>
+<span class="sd">    :param control: Whether the region should be treated as a control. Defaults to False</span>
+<span class="sd">    :param targets: The target sequences for the condition. See :class:`Targets` for details</span>
+<span class="sd">    :param min_chunks: The minimum number of chunks required before a decision will be made. Defaults to 1</span>
+<span class="sd">    :param max_chunks: The maximum number of chunks that readfish will assess for any single read. Defaults to 2</span>
+<span class="sd">    :param below_min_chunks: The :class:`Action` to take when we haven&#39;t evaluated at least ``min_chunks``. Defaults to ``Action.proceed``</span>
+<span class="sd">    :param above_max_chunks: The :class:`Action` to take when we have exceeded ``max_chunks``. Defaults to ``Action.unblock``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">single_on</span><span class="p">:</span> <span class="n">Action</span>
+    <span class="n">single_off</span><span class="p">:</span> <span class="n">Action</span>
+    <span class="n">multi_on</span><span class="p">:</span> <span class="n">Action</span>
+    <span class="n">multi_off</span><span class="p">:</span> <span class="n">Action</span>
+    <span class="n">no_map</span><span class="p">:</span> <span class="n">Action</span>
+    <span class="n">no_seq</span><span class="p">:</span> <span class="n">Action</span>
+    <span class="n">control</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">targets</span><span class="p">:</span> <span class="n">Targets</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">attrs</span><span class="o">.</span><span class="n">Factory</span><span class="p">(</span><span class="n">Targets</span><span class="p">))</span>
+    <span class="n">min_chunks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">max_chunks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">below_min_chunks</span><span class="p">:</span> <span class="n">Action</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Action</span><span class="o">.</span><span class="n">proceed</span><span class="p">)</span>
+    <span class="n">above_max_chunks</span><span class="p">:</span> <span class="n">Action</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Action</span><span class="o">.</span><span class="n">unblock</span><span class="p">)</span>
+
+<div class="viewcode-block" id="_Condition.get_action"><a class="viewcode-back" href="../../readfish.html#readfish._config._Condition.get_action">[docs]</a>    <span class="k">def</span> <span class="nf">get_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decision</span><span class="p">:</span> <span class="n">Decision</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Action</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the :class:`Action` that corresponds to ``decision``.</span>
+
+<span class="sd">        :param decision: :class:`Decision` for a read</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decision</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_Condition.pretty_print"><a class="viewcode-back" href="../../readfish.html#readfish._config._Condition.pretty_print">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pretty print how the conditions match up to the resulting Actions. Used in the describe function.</span>
+
+<span class="sd">        :return: A pretty format string containing all the variables</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">decision</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;single_on&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;single_off&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;multi_on&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;multi_off&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_map&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_seq&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;below_min_chunks&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;above_max_chunks&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">d</span><span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decision</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">decision</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;Read will be sent </span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> when classed as:</span><span class="se">\n\t</span><span class="si">{</span><span class="n">nice_join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="_PluginModule"><a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<span class="k">class</span> <span class="nc">_PluginModule</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A plugin module</span>
+
+<span class="sd">    :param name: The name of the plugin module.</span>
+<span class="sd">    :param parameters: A dictionary of parameters to be passed to the plugin module.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span>
+
+<div class="viewcode-block" id="_PluginModule.from_dict"><a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_PluginModule</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates an instance of the _PluginModule class from a dictionary.</span>
+
+<span class="sd">        :param params: A dictionary containing a single key-value pair, where the key is</span>
+<span class="sd">                       the name of the plugin module and the value is a dictionary of</span>
+<span class="sd">                       parameters to be passed to the plugin module.</span>
+<span class="sd">        :raises ValueError: If more than one key value pair is provided in the ``params``</span>
+<span class="sd">        :return: An instance of the ``_PluginModule`` class with the specified name and parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A single key-value pair should be provided&quot;</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="n">k</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="_PluginModule.load_module"><a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.load_module">[docs]</a>    <span class="k">def</span> <span class="nf">load_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a plugin module with the given name.</span>
+
+<span class="sd">        If the module is a built-in plugin (as specified in the builtins dictionary), it is loaded from the readfish.plugins package.</span>
+<span class="sd">        Otherwise, it is loaded using the importlib library.</span>
+
+<span class="sd">        :param override: If True, the built-in module names are ignored. Default is False.</span>
+
+<span class="sd">        :return: The loaded module.</span>
+
+<span class="sd">        :raises ModuleNotFoundError: If the plugin module cannot be found or loaded.</span>
+
+<span class="sd">        Note that this method is intended to be used as part of a plugin system, where</span>
+<span class="sd">        plugin modules are loaded dynamically at runtime. The builtins dictionary maps</span>
+<span class="sd">        the names of built-in plugins to the actual module names, and is used to avoid</span>
+<span class="sd">        having to specify the full module name when loading a built-in plugin. If</span>
+<span class="sd">        override=True, the builtin module names are ignored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">builtins</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;guppy&quot;</span><span class="p">:</span> <span class="s2">&quot;guppy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mappy&quot;</span><span class="p">:</span> <span class="s2">&quot;mappy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mappy_rs&quot;</span><span class="p">:</span> <span class="s2">&quot;mappy_rs&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_op&quot;</span><span class="p">:</span> <span class="s2">&quot;_no_op&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">builtins</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">override</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;readfish.plugins.</span><span class="si">{</span><span class="n">builtins</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_PluginModule.load_object"><a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.load_object">[docs]</a>    <span class="k">def</span> <span class="nf">load_object</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">init</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">override</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a specified object from a plugin module.</span>
+
+<span class="sd">        First :meth:`load_module` is called to load the plugin module, then the</span>
+<span class="sd">        specified object is retreived from the module.</span>
+
+<span class="sd">        :param obj: The name of the object to load from the plugin module.</span>
+<span class="sd">        :param init: If True, the returned object is initialized with the parameters provided to the constructor of the parent class, as well as any additional keyword arguments passed in via the ``**kwargs`` parameter.</span>
+<span class="sd">        :param override: If True, ignore builtin readfish plugins.</span>
+<span class="sd">        :param kwargs: Additional keyword arguments to pass to the constructor of the loaded object.</span>
+
+<span class="sd">        :returns: The specified object from the plugin module. If init=True, the object is initialized with the provided parameters and returned.</span>
+
+<span class="sd">        :raises ModuleNotFoundError: If the plugin module cannot be found or loaded.</span>
+<span class="sd">        :raises AttributeError: If the specified object cannot be found in the plugin module.</span>
+<span class="sd">        :raises TypeError:  If the runtime ``**kwargs`` conflict with the module parameters from the TOML file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="n">override</span><span class="o">=</span><span class="n">override</span><span class="p">)</span>
+        <span class="n">obj_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">init</span><span class="p">:</span>
+            <span class="n">overlap</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">overlap</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Attempting to initalise `</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">` with conflicting keys: </span><span class="si">{</span><span class="n">overlap</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">obj_</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_</span></div></div>
+
+
+<span class="c1"># fmt: off</span>
+<span class="c1"># Aliases to defined classes, make for nicer printing</span>
+<div class="viewcode-block" id="CallerSettings"><a class="viewcode-back" href="../../readfish.html#readfish._config.CallerSettings">[docs]</a><span class="k">class</span> <span class="nc">CallerSettings</span><span class="p">(</span><span class="n">_PluginModule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`_PluginModule` for details&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="MapperSettings"><a class="viewcode-back" href="../../readfish.html#readfish._config.MapperSettings">[docs]</a><span class="k">class</span> <span class="nc">MapperSettings</span><span class="p">(</span><span class="n">_PluginModule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`_PluginModule` for details&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="Region"><a class="viewcode-back" href="../../readfish.html#readfish._config.Region">[docs]</a><span class="k">class</span> <span class="nc">Region</span><span class="p">(</span><span class="n">_Condition</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`_Condition` for details&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="Barcode"><a class="viewcode-back" href="../../readfish.html#readfish._config.Barcode">[docs]</a><span class="k">class</span> <span class="nc">Barcode</span><span class="p">(</span><span class="n">_Condition</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`_Condition` for details&quot;&quot;&quot;</span></div>
+<span class="c1"># fmt: on</span>
+
+
+<div class="viewcode-block" id="Conf"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<span class="k">class</span> <span class="nc">Conf</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overall configuration for readfish experiments</span>
+
+
+<span class="sd">    The Conf class is the mother if the adaptive sampling experiment.</span>
+<span class="sd">    It is constructed from the provided ``TOML`` file, via a call to `from_file`.</span>
+
+
+<span class="sd">    :param channels: The number of channels on the flow cell</span>
+<span class="sd">    :param caller_settings: The caller settings as listed in the TOML</span>
+<span class="sd">    :param mapper_settings: The mapper settings as listed in the TOML</span>
+<span class="sd">    :param regions: The regions as listed in the Toml file.</span>
+<span class="sd">    :param barcodes: A Dictionary of barcode names to Barcode Classes</span>
+<span class="sd">    :param _channel_map: A map of channels number (1 to flowcell size) to the index of the Region (in self.regions) they are part of.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">channels</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">caller_settings</span><span class="p">:</span> <span class="n">CallerSettings</span>
+    <span class="n">mapper_settings</span><span class="p">:</span> <span class="n">MapperSettings</span>
+    <span class="n">regions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Region</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">attrs</span><span class="o">.</span><span class="n">Factory</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+    <span class="n">barcodes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Barcode</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">attrs</span><span class="o">.</span><span class="n">Factory</span><span class="p">(</span><span class="nb">dict</span><span class="p">))</span>
+    <span class="n">_channel_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span>
+        <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;_channel_map&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">attrs</span><span class="o">.</span><span class="n">Factory</span><span class="p">(</span><span class="nb">dict</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__attrs_post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># There must be one of:</span>
+        <span class="c1">#  - at least one region for the flow cell</span>
+        <span class="c1">#  - barcode tables with &quot;classified&quot; and &quot;unclassified&quot;</span>
+        <span class="c1"># TODO: Check that there&#39;s at least one region if no barcodes</span>
+
+        <span class="n">required_barcodes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;unclassified&quot;</span><span class="p">,</span> <span class="s2">&quot;classified&quot;</span><span class="p">]</span>
+
+        <span class="c1"># This check ensures that when there are no `regions` on the flow cell</span>
+        <span class="c1">#   there are</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span><span class="p">:</span>
+            <span class="c1"># There are no analysis/control regions defined in this TOML file.</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">required_barcodes</span><span class="p">):</span>
+                <span class="c1"># There are also no `unclassified` or `classified` tables</span>
+
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;This TOML configuration does not contain any `regions`&quot;</span>
+                    <span class="s2">&quot;or `barcodes` and cannot be used by readfish&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper_settings</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;mappy&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span> <span class="o">&gt;</span> <span class="mi">512</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;We do not allow the use of the &#39;mappy&#39; aligner with PromethION devices. &quot;</span>
+                <span class="s2">&quot;Please use &#39;mapper_settings.mappy_rs&#39; in your experiment TOML&quot;</span>
+                <span class="s2">&quot; with n_threads set to at least 4.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">split_channels</span> <span class="o">=</span> <span class="n">generate_flowcell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">channel</span><span class="p">:</span> <span class="n">pos</span>
+            <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">split_channels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">channels</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="Conf.get_conditions"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_conditions">[docs]</a>    <span class="k">def</span> <span class="nf">get_conditions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Barcode</span> <span class="o">|</span> <span class="n">Region</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the condition for this channel or barcode from the Conf TOML</span>
+
+<span class="sd">        The barcoder should return the barcode name e.g. ``barcode01`` or</span>
+<span class="sd">        ``unclassified`` if a barcode could not be assigned. If barcoding</span>
+<span class="sd">        is not being done then the barcode should be ``None`` and channel</span>
+<span class="sd">        will be used instead.</span>
+
+<span class="sd">        :param channel: Channel number for this result</span>
+<span class="sd">        :param barcode: Barcode classification from basecalling</span>
+
+<span class="sd">        :returns control: Whether this channel/barcode combination is a ``control`` condition</span>
+<span class="sd">        :returns condition: The :class:`Barcode` or :class:`Region` that this channel/barcode belongs to</span>
+
+<span class="sd">        :raises ValueError: In the event that the channel/barcode combination does not find a :class:`Region` or a :class:`Barcode`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">region_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+        <span class="n">barcode_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_barcode</span><span class="p">(</span><span class="n">barcode</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">region_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">barcode_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">control</span> <span class="o">=</span> <span class="n">region_</span><span class="o">.</span><span class="n">control</span> <span class="ow">or</span> <span class="n">barcode_</span><span class="o">.</span><span class="n">control</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="n">barcode_</span>
+        <span class="k">elif</span> <span class="n">region_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">barcode_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">control</span> <span class="o">=</span> <span class="n">region_</span><span class="o">.</span><span class="n">control</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="n">region_</span>
+        <span class="k">elif</span> <span class="n">region_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">barcode_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">control</span> <span class="o">=</span> <span class="n">barcode_</span><span class="o">.</span><span class="n">control</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="n">barcode_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Both region (channel=</span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s2">) and barcode (</span><span class="si">{</span><span class="n">barcode</span><span class="si">}</span><span class="s2">) were not found. This config is invalid!&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">control</span><span class="p">,</span> <span class="n">condition</span></div>
+
+<div class="viewcode-block" id="Conf.get_region"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_region">[docs]</a>    <span class="k">def</span> <span class="nf">get_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Region</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the region for a given channel</span>
+
+<span class="sd">        :param channel: The channel number</span>
+<span class="sd">        :return: Returns a region, if there is one, otherwise None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel_map</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel_map</span><span class="p">[</span><span class="n">channel</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="Conf.get_barcode"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_barcode">[docs]</a>    <span class="k">def</span> <span class="nf">get_barcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Barcode</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a barcode for a given barcode name</span>
+
+<span class="sd">        :param barcode: The name of the barcode, example &quot;barcode01&quot;</span>
+<span class="sd">        :return: The barcode class instance for the given barcode name, if there is one</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">barcode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">barcode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span><span class="p">[</span><span class="s2">&quot;classified&quot;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Conf.get_targets"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_targets">[docs]</a>    <span class="k">def</span> <span class="nf">get_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Targets</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the targets for a given channel or barcode, via its condition</span>
+
+<span class="sd">        :param channel: The channel number</span>
+<span class="sd">        :param barcode: The barcode name, optional</span>
+<span class="sd">        :return: The targets list for a given channel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">barcode</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">condition</span><span class="o">.</span><span class="n">targets</span></div>
+
+<div class="viewcode-block" id="Conf.from_file"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Conf</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Conf from a TOML file.</span>
+
+<span class="sd">        Loads the toml using rtoml then calls `from_dict` to create the class.</span>
+
+<span class="sd">        :param path: Path to the toml file</span>
+<span class="sd">        :param channels: Number of channels on the flow cell</span>
+<span class="sd">        :param logger: Logger to write out a base64 encoded compressed toml, defaults to None</span>
+<span class="sd">        :return: The Conf as constructed from this toml</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">compress_and_encode_string</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="n">dict_</span> <span class="o">=</span> <span class="n">rtoml</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">channels</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Conf.from_dict"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dict_</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Conf</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the Conf class from a Dictionary</span>
+
+<span class="sd">        :param dict_: The dictionary that contains the parsed TOML file</span>
+<span class="sd">        :param channels: The number of channels on the flow cell</span>
+<span class="sd">        :raises ValueError: If channel is present in the TOML file raise ValueError as it will overwrite something</span>
+<span class="sd">        :return: The constructed Conf class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;channels&quot;</span> <span class="ow">in</span> <span class="n">dict_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Key &#39;channels&#39; cannot be present in TOML file&quot;</span><span class="p">)</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;channels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">channels</span>
+        <span class="n">conv</span> <span class="o">=</span> <span class="n">cattrs</span><span class="o">.</span><span class="n">GenConverter</span><span class="p">()</span>
+        <span class="n">conv</span><span class="o">.</span><span class="n">register_structure_hook</span><span class="p">(</span><span class="n">Targets</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">from_parsed_toml</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+        <span class="n">conv</span><span class="o">.</span><span class="n">register_structure_hook</span><span class="p">(</span><span class="n">_PluginModule</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">conv</span><span class="o">.</span><span class="n">structure</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Conf.to_file"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a conf to a TOML file</span>
+
+<span class="sd">        :param path: File path to create the TOML file for</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cattrs</span><span class="o">.</span><span class="n">register_unstructure_hook</span><span class="p">(</span>
+            <span class="n">Targets</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="bp">cls</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">cattrs</span><span class="o">.</span><span class="n">register_unstructure_hook</span><span class="p">(</span>
+            <span class="n">_PluginModule</span><span class="p">,</span> <span class="k">lambda</span> <span class="bp">cls</span><span class="p">:</span> <span class="p">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parameters</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">cattrs</span><span class="o">.</span><span class="n">unstructure</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># Pop dynamically added attributes</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;channels&quot;</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_channel_map&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">rtoml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Conf.write_channels_toml"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.write_channels_toml">[docs]</a>    <span class="k">def</span> <span class="nf">write_channels_toml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write out a channels toml file to the given directory.</span>
+<span class="sd">        This file is a map of each channel number to the corresponding region name.</span>
+
+<span class="sd">        :param out_dir: Read Until client we are connected to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">):</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="p">{})</span>
+            <span class="n">g</span><span class="p">[</span><span class="s2">&quot;channels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel_map</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">idx</span><span class="p">]</span>
+            <span class="n">g</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">channels_out</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">&quot;channels.toml&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">channels_out</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s2">&quot;# This file is written as a record of the condition each channel is assigned.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;# It may be changed or overwritten if you restart readfish.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;# In the future this file may become a CSV file.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">rtoml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Conf.describe_experiment"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.describe_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">describe_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Describe the experiment from the given Conf class.</span>
+<span class="sd">        For Barcodes we describe the targets and the conditions, but not the region.</span>
+
+<span class="sd">        :return: The description string, human readable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">split</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Configuration description:&quot;</span><span class="p">]</span>
+        <span class="c1"># - 2 so we do not include classified and unclassified</span>
+        <span class="n">num_barcodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span><span class="p">):</span>
+            <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Number of barcodes in the Conf (excluding unclassified and classified): </span><span class="si">{</span><span class="n">num_barcodes</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">nice_join</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Barcode </span><span class="si">{</span><span class="n">barcode</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (control=</span><span class="si">{</span><span class="n">barcode</span><span class="o">.</span><span class="n">control</span><span class="si">}</span><span class="s2">)&quot;</span>
+                        <span class="k">for</span> <span class="n">barcode</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                    <span class="p">),</span>
+                    <span class="n">conjunction</span><span class="o">=</span><span class="s2">&quot;and&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># lazy way of adding a new line between barcodes and regions</span>
+            <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">region</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">):</span>
+            <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Region </span><span class="si">{</span><span class="n">region</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (control=</span><span class="si">{</span><span class="n">region</span><span class="o">.</span><span class="n">control</span><span class="si">}</span><span class="s2">).</span>
+<span class="s2">Region applies to section of flow cell (# = applied, . = not applied):</span>
+<span class="si">{</span><span class="n">draw_flowcell_split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span><span class="w"> </span><span class="n">split</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">Conf</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">512</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;exceptions&quot;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;exceptions&quot;</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Loose Lab
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1e7f7872"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>

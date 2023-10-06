@@ -1,0 +1,1051 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>readfish.plugins.utils - readfish 2023.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --font-stack--monospace: 'Ubuntu Mono', monospace;
+  --code-font-size: 90%;
+  --color-api-background: #f8f9fb;
+  --color-highlight-on-target: transparent;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">readfish 2023.1.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../../_static/readfish_light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../../_static/readfish_dark.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../toml.html">TOML files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readfish.console.html">readfish console scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../post-analysis.html">Readfish analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developers-guide.html">Developer’s guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readfish.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readfish.plugins.html">readfish plugins API</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for readfish.plugins.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">filterfalse</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Protocol</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Container</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">exceptiongroup</span> <span class="kn">import</span> <span class="n">BaseExceptionGroup</span>
+
+<span class="kn">import</span> <span class="nn">attrs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="n">TARGET_INTERVAL</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;TargetInterval&quot;</span><span class="p">,</span> <span class="s2">&quot;chromosome start end strand&quot;</span><span class="p">)</span>
+<span class="n">STRAND_VALUES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="Strand"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Strand">[docs]</a><span class="nd">@unique</span>
+<span class="k">class</span> <span class="nc">Strand</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enum representing the forward and reverse strand of DNA for alignments&quot;&quot;&quot;</span>
+
+    <span class="c1">#: Forward strand</span>
+    <span class="n">forward</span> <span class="o">=</span> <span class="s2">&quot;+&quot;</span>
+    <span class="c1">#: Reverse strand</span>
+    <span class="n">reverse</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span></div>
+
+
+<span class="n">STRANDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="n">Strand</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span>
+    <span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="n">Strand</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span>
+    <span class="n">Strand</span><span class="o">.</span><span class="n">forward</span><span class="p">:</span> <span class="n">Strand</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">Strand</span><span class="o">.</span><span class="n">reverse</span><span class="p">,</span>
+    <span class="s2">&quot;-&quot;</span><span class="p">:</span> <span class="n">Strand</span><span class="o">.</span><span class="n">reverse</span><span class="p">,</span>
+    <span class="n">Strand</span><span class="o">.</span><span class="n">reverse</span><span class="p">:</span> <span class="n">Strand</span><span class="o">.</span><span class="n">reverse</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="get_contig_lengths"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.get_contig_lengths">[docs]</a><span class="k">def</span> <span class="nf">get_contig_lengths</span><span class="p">(</span><span class="n">al</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the lengths of all contigs in the reference genome provided by an Aligner instance.</span>
+
+<span class="sd">    :param al: An Aligner instance representing the reference genome.</span>
+<span class="sd">    :type al: AlignerABC</span>
+<span class="sd">    :return: A dictionary mapping contig names to their respective lengths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">al</span><span class="o">.</span><span class="n">seq_names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">genome</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duplicate sequence name </span><span class="si">{</span><span class="n">seq</span><span class="si">}</span><span class="s2"> in reference file&quot;</span><span class="p">)</span>
+        <span class="n">genome</span><span class="p">[</span><span class="n">seq</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">al</span><span class="o">.</span><span class="n">seq</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">genome</span></div>
+
+
+<span class="k">def</span> <span class="nf">_summary_percent_reference_covered</span><span class="p">(</span>
+    <span class="n">ref_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">targets</span><span class="p">:</span> <span class="n">Targets</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the percentage of the reference covered by target intervals. Not formatted (i.e is a decimal)</span>
+
+<span class="sd">    This function takes the length of a reference sequence, The targets class for a given _Condition class,</span>
+<span class="sd">    and a dictionary of contig names to contig lengths (used for getting contig lengths if we have entire contigs as targets).</span>
+<span class="sd">    It calculates the total length covered by the target intervals</span>
+<span class="sd">    and returns the percentage of the reference sequence that is covered by this length.</span>
+
+<span class="sd">    :param ref_len: The length of the reference sequence.</span>
+<span class="sd">    :param targets: The targets class for a given _Condition class</span>
+<span class="sd">    :param genome: A dictionary of contig names to contig lengths. Used if a target is in the entire contig.</span>
+
+<span class="sd">    :return: The percentage of the reference sequence covered by the target intervals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_bases_in_targets</span> <span class="o">=</span> <span class="n">sum_target_coverage</span><span class="p">(</span><span class="n">targets</span><span class="o">.</span><span class="n">iter_targets</span><span class="p">(),</span> <span class="n">genome</span><span class="p">)</span>
+    <span class="n">percentage_ref_covered</span> <span class="o">=</span> <span class="n">num_bases_in_targets</span> <span class="o">/</span> <span class="n">ref_len</span>
+    <span class="k">return</span> <span class="n">percentage_ref_covered</span>
+
+
+<div class="viewcode-block" id="is_empty"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.is_empty">[docs]</a><span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if an item is empty.</span>
+
+<span class="sd">    This function checks whether the given item is empty. An item is considered empty if it is an empty Container (Set, Tuple, Dict, List etc.).</span>
+<span class="sd">    For primitive types (Float, Int, String etc.), this function considers them non-empty.</span>
+<span class="sd">    considers them non-empty.</span>
+
+<span class="sd">    :param item: The item to check for emptiness.</span>
+
+<span class="sd">    :return: True if the item is empty, False otherwise.</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; is_empty(42)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_empty(&quot;Hello, world!&quot;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_empty([])</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; is_empty({})</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; is_empty([1, 2, 3])</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_empty({&quot;a&quot;: 1, &quot;b&quot;: 2})</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_empty([[], [], []])</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_empty([{}, {}])</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_empty(None)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Container</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="count_dict_elements"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.count_dict_elements">[docs]</a><span class="k">def</span> <span class="nf">count_dict_elements</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recursively count all the bottom elements of an arbitrarily nested dictionary.</span>
+<span class="sd">    If the bottom element v is a list, return the length of the list, else return 1 for each v at the bottom of the list.</span>
+
+<span class="sd">    Note - This will break for nested lists, i.e will only count the list as one, ignoring the sublists - see the last doctest for an example.</span>
+<span class="sd">    This is not a problem for the current use case, but may be in the future.</span>
+
+<span class="sd">    :param d: Dictionary to count elements of, may or may not be nested</span>
+<span class="sd">    :return: Count of elements at lowest point in tree</span>
+
+<span class="sd">    &gt;&gt;&gt; simple_dict = {&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}</span>
+<span class="sd">    &gt;&gt;&gt; count_dict_elements(simple_dict)</span>
+<span class="sd">    3</span>
+
+<span class="sd">    &gt;&gt;&gt; string_dict = {&quot;a&quot;: 1, &quot;b&quot;: {&quot;x&quot;: [&quot;10&quot;, &quot;2000&quot;]}, &quot;c&quot;: {&quot;y&quot;: {&quot;z&quot;: [30, 40, 50]}}}</span>
+<span class="sd">    &gt;&gt;&gt; count_dict_elements(string_dict)</span>
+<span class="sd">    6</span>
+
+<span class="sd">    &gt;&gt;&gt; nested_dict = {&quot;a&quot;: 1, &quot;b&quot;: {&quot;x&quot;: [10, 20]}, &quot;c&quot;: {&quot;y&quot;: {&quot;z&quot;: [30, 40, 50]}}}</span>
+<span class="sd">    &gt;&gt;&gt; count_dict_elements(nested_dict)</span>
+<span class="sd">    6</span>
+
+<span class="sd">    &gt;&gt;&gt; empty_dict = {&quot;a&quot;: {}, &quot;b&quot;: {&quot;x&quot;: {}}, &quot;c&quot;: {&quot;y&quot;: {&quot;z&quot;: []}}}</span>
+<span class="sd">    &gt;&gt;&gt; count_dict_elements(empty_dict)</span>
+<span class="sd">    0</span>
+
+<span class="sd">    &gt;&gt;&gt; mixed_dict = {&quot;a&quot;: 1, &quot;b&quot;: {&quot;x&quot;: [10, 20]}, &quot;c&quot;: {&quot;y&quot;: {&quot;z&quot;: [30, 40, 50], &quot;w&quot;: 7.0}}}</span>
+<span class="sd">    &gt;&gt;&gt; count_dict_elements(mixed_dict)</span>
+<span class="sd">    7</span>
+
+<span class="sd">    &gt;&gt;&gt; empty_list_dict = {&quot;a&quot;: [], &quot;b&quot;: [{}], &quot;c&quot;: [[], [], []]}</span>
+<span class="sd">    &gt;&gt;&gt; count_dict_elements(empty_list_dict)</span>
+<span class="sd">    0</span>
+
+<span class="sd">    # Nested lists are not counted properly</span>
+
+<span class="sd">    &gt;&gt;&gt; nested_list_dict = {&quot;a&quot;: [], &quot;b&quot;: [{}], &quot;c&quot;: [[1, 2, [1, 2]], [], []]}</span>
+<span class="sd">    &gt;&gt;&gt; count_dict_elements(nested_list_dict)</span>
+<span class="sd">    1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">count_dict_elements</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+            <span class="c1"># If v is a list, tuple, sequence, dict etc., return the length of the container filtering out any empty sun elements,</span>
+            <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">filterfalse</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">is_empty</span><span class="p">),</span> <span class="n">v</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">Container</span><span class="p">)</span>
+            <span class="k">else</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_calculate_length</span><span class="p">(</span><span class="n">target_interval</span><span class="p">:</span> <span class="n">TARGET_INTERVAL</span><span class="p">,</span> <span class="n">genomes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Take in the value of a given target, either in the form of (target_start, target_stop),</span>
+<span class="sd">    or 0, np.inf. If 0, inf, get the length of the contig out of the mappy index. If tuple, return the absolute distance</span>
+<span class="sd">    covered by the target, calculated by target_stop - target start.</span>
+
+<span class="sd">    :param v: The value of the target coordinates.</span>
+<span class="sd">    :param k: The name of the reference contig this target is on&quot;&quot;&quot;</span>
+    <span class="n">target_interval_length</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">target_interval</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="n">target_interval</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+    <span class="c1"># If inf, get the length of the contig out of the mappy index</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">target_interval_length</span><span class="p">):</span>
+        <span class="n">target_interval_length</span> <span class="o">=</span> <span class="n">genomes</span><span class="p">[</span><span class="n">target_interval</span><span class="o">.</span><span class="n">chromosome</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">target_interval_length</span>
+
+
+<div class="viewcode-block" id="sum_target_coverage"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.sum_target_coverage">[docs]</a><span class="k">def</span> <span class="nf">sum_target_coverage</span><span class="p">(</span>
+    <span class="n">targets</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">TARGET_INTERVAL</span><span class="p">],</span> <span class="n">genomes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recursively find the coverage of the range of a set of Targets - ASSUMES bottoms elements are in the form</span>
+<span class="sd">    dict[chromosome_name, tuple[float, float]] or tuple[int, int], i.e genomic coordinates</span>
+
+<span class="sd">    If there are no targets, return 0.</span>
+
+<span class="sd">    :param targets: An iterator of TARGET_INTERVAL objects. Obtained from the Targets.iter_targets() method.</span>
+<span class="sd">    :param genomes: A dictionary of contig names to contig lengths. Used if a target is in the entire contig.</span>
+<span class="sd">    :return: sum of distance covered by ranges of targets in `d`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Empty targets</span>
+    <span class="n">summed_coverage</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">summed_coverage</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">_calculate_length</span><span class="p">(</span><span class="n">target_interval</span><span class="p">,</span> <span class="n">genomes</span><span class="p">)</span> <span class="k">for</span> <span class="n">target_interval</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">summed_coverage</span> <span class="k">if</span> <span class="n">summed_coverage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="coord_validator"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.coord_validator">[docs]</a><span class="k">def</span> <span class="nf">coord_validator</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validates and converts the &#39;start&#39; and &#39;end&#39; fields in the given row</span>
+<span class="sd">    dictionary to integers. If conversion is not possible, or if &#39;start&#39;</span>
+<span class="sd">    is greater than &#39;end&#39;, appends appropriate error messages to a list</span>
+<span class="sd">    and returns the list along with the row dictionary. The error</span>
+<span class="sd">    messages as intended to be collected and converted to a ValueError</span>
+<span class="sd">    as part of a BaseExceptionGroup.</span>
+
+<span class="sd">    :param row: A dictionary containing &#39;start&#39; and &#39;end&#39; fields,</span>
+<span class="sd">                presumably as strings.</span>
+<span class="sd">    :return: A tuple containing the possibly modified row dictionary</span>
+<span class="sd">             and a list of error messages.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; row = {&#39;start&#39;: &#39;10&#39;, &#39;end&#39;: &#39;5&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; coord_validator(row)</span>
+<span class="sd">    ({&#39;start&#39;: 10, &#39;end&#39;: 5}, [&#39;{target_specification_format} {line_number} start &gt; end (10 &gt; 5)&#39;])</span>
+
+<span class="sd">    &gt;&gt;&gt; row = {&#39;start&#39;: &#39;a&#39;, &#39;end&#39;: &#39;20&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; coord_validator(row)</span>
+<span class="sd">    ({&#39;start&#39;: &#39;a&#39;, &#39;end&#39;: 20}, [&quot;{target_specification_format} {line_number} start coordinate \&#39;a\&#39; could not be converted to an integer&quot;])</span>
+
+<span class="sd">    &gt;&gt;&gt; row = {&#39;start&#39;: &#39;10&#39;, &#39;end&#39;: &#39;20&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; coord_validator(row)</span>
+<span class="sd">    ({&#39;start&#39;: 10, &#39;end&#39;: 20}, [])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">int_error</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">f</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="s2">target_specification_format</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">line_number</span><span class="se">}}</span><span class="s2"> </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2"> coordinate </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="si">!r}</span><span class="s2"> could not be converted to an integer&quot;</span>
+            <span class="p">)</span>
+            <span class="n">int_error</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">int_error</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]:</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="s2">target_specification_format</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">line_number</span><span class="se">}}</span><span class="s2"> start &gt; end (</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">errors</span></div>
+
+
+<div class="viewcode-block" id="strand_validator"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.strand_validator">[docs]</a><span class="k">def</span> <span class="nf">strand_validator</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validates the &#39;strand&#39; field in the given row dictionary to be either &#39;+&#39;,</span>
+<span class="sd">    &#39;-&#39;, or &#39;.&#39;. If the &#39;strand&#39; field is &#39;.&#39;, it is converted to &#39;+-&#39;. If the</span>
+<span class="sd">    &#39;strand&#39; field is not one of the mentioned valid values, an error message</span>
+<span class="sd">    is added to a list of errors, and the list of error messages along with the modified</span>
+<span class="sd">    row dictionary are returned.</span>
+
+<span class="sd">    :param row: A dictionary containing a &#39;strand&#39; field.</span>
+<span class="sd">    :return: A tuple containing the possibly modified row dictionary and a</span>
+<span class="sd">             list of error messages.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; row = {&#39;strand&#39;: &#39;.&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; strand_validator(row)</span>
+<span class="sd">    ({&#39;strand&#39;: &#39;+-&#39;}, [])</span>
+
+<span class="sd">    &gt;&gt;&gt; row = {&#39;strand&#39;: &#39;x&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; strand_validator(row)</span>
+<span class="sd">    ({&#39;strand&#39;: &#39;x&#39;}, [&quot;{target_specification_format} {line_number} strand &#39;x&#39; not one of [&#39;+&#39;, &#39;-&#39;, &#39;.&#39;]&quot;])</span>
+<span class="sd">    &gt;&gt;&gt; row = {&#39;strand&#39;: &#39;+&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; strand_validator(row)</span>
+<span class="sd">    ({&#39;strand&#39;: &#39;+&#39;}, [])</span>
+
+<span class="sd">    Refer to http://genome.ucsc.edu/FAQ/FAQformat#format1 for more details on</span>
+<span class="sd">    the strand field in BED format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;strand&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;strand&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">STRAND_VALUES</span><span class="p">:</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="s2">target_specification_format</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">line_number</span><span class="se">}}</span><span class="s2"> strand </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;strand&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2"> not one of </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">STRAND_VALUES</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="c1"># If strand is . (No strand in the bed format), set to +-, see http://genome.ucsc.edu/FAQ/FAQformat#format1 for more details</span>
+    <span class="c1">#  Done here so we can allow CSV to use it as well</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;strand&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;strand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;+-&quot;</span>
+    <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">errors</span></div>
+
+
+<div class="viewcode-block" id="row_checker"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.row_checker">[docs]</a><span class="k">def</span> <span class="nf">row_checker</span><span class="p">(</span>
+    <span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;csv&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validates the given row dictionary based on the mode and returns</span>
+<span class="sd">    the row along with any errors found during the validation.</span>
+
+<span class="sd">    The mode alters the behaviour. If the mode is &#39;csv&#39;, the row is</span>
+<span class="sd">    allowed to only contain the contig. If it is &quot;bed&quot;, the first 6</span>
+<span class="sd">    columns of the BED format are required.</span>
+
+<span class="sd">    Refer to http://genome.ucsc.edu/FAQ/FAQformat#format1 for more details on</span>
+<span class="sd">    the strand field in BED format.</span>
+
+<span class="sd">    :param row: A dictionary containing the row data.</span>
+<span class="sd">    :param mode: A string indicating the target specification type, either &#39;csv&#39; or &#39;bed&#39;.</span>
+<span class="sd">    :return: A tuple containing the validated (and possibly corrected) row</span>
+<span class="sd">             and a list of error messages encountered during validation.</span>
+
+<span class="sd">    &gt;&gt;&gt; row = {&#39;chrom&#39;: &#39;chr1&#39;, &#39;start&#39;: &#39;1000&#39;, &#39;end&#39;: &#39;2000&#39;, &#39;strand&#39;: &#39;+&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; row_checker(row, mode=&#39;csv&#39;)  # No errors, valid row</span>
+<span class="sd">    ({&#39;chrom&#39;: &#39;chr1&#39;, &#39;start&#39;: 1000, &#39;end&#39;: 2000, &#39;strand&#39;: &#39;+&#39;}, [])</span>
+
+<span class="sd">    &gt;&gt;&gt; row = {&#39;chrom&#39;: &#39;chr1&#39;, &#39;start&#39;: &#39;2000&#39;, &#39;end&#39;: &#39;1000&#39;, &#39;strand&#39;: &#39;+&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; # Coord validator will report an error due to start &gt; end</span>
+<span class="sd">    &gt;&gt;&gt; row_checker(row, mode=&#39;csv&#39;)</span>
+<span class="sd">    ({&#39;chrom&#39;: &#39;chr1&#39;, &#39;start&#39;: 2000, &#39;end&#39;: 1000, &#39;strand&#39;: &#39;+&#39;}, [&#39;{target_specification_format} {line_number} start &gt; end (2000 &gt; 1000)&#39;])</span>
+
+<span class="sd">    &gt;&gt;&gt; row = {&#39;chrom&#39;: None, &#39;start&#39;: &#39;1000&#39;, &#39;end&#39;: &#39;2000&#39;, &#39;strand&#39;: &#39;+&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; # Chromosome value is missing, an error will be reported</span>
+<span class="sd">    &gt;&gt;&gt; row_checker(row, mode=&#39;csv&#39;)</span>
+<span class="sd">    ({&#39;chrom&#39;: None, &#39;start&#39;: 1000, &#39;end&#39;: 2000, &#39;strand&#39;: &#39;+&#39;}, [&#39;{target_specification_format} {line_number} has no chromosome value&#39;])</span>
+
+<span class="sd">    &gt;&gt;&gt; row = [&quot;chr1&quot;, 0, 1000, &quot;+&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; # Chromosome value is missing, an error will be reported</span>
+<span class="sd">    &gt;&gt;&gt; row_checker(row, mode=&#39;csv&#39;)</span>
+<span class="sd">    ([&#39;chr1&#39;, 0, 1000, &#39;+&#39;], [&#39;Input row is not a valid dictionary&#39;])</span>
+
+<span class="sd">    :raises ValueError: If the mode is neither &#39;csv&#39; nor &#39;bed&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Input row is not a valid dictionary&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;bed&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Invalid mode </span><span class="si">{</span><span class="n">mode</span><span class="si">!r}</span><span class="s2">, expected &#39;csv&#39; or &#39;bed&#39;&quot;</span><span class="p">]</span>
+    <span class="c1"># Check for the chromosome value</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chrom&quot;</span><span class="p">):</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{target_specification_format}</span><span class="s2"> </span><span class="si">{line_number}</span><span class="s2"> has no chromosome value&quot;</span>
+        <span class="p">)</span>
+    <span class="c1"># if contig but no start stop, set targets as whole contig for both strands</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;csv&quot;</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="s2">&quot;strand&quot;</span><span class="p">)):</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;strand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;+-&quot;</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">errors</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;bed&quot;</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span>
+        <span class="n">row</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;chrom&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="s2">&quot;strand&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{target_specification_format}</span><span class="s2"> </span><span class="si">{line_number}</span><span class="s2"> is an improperly formatted BED record&quot;</span>
+        <span class="p">)</span>
+    <span class="n">row</span><span class="p">,</span> <span class="n">coord_errors</span> <span class="o">=</span> <span class="n">coord_validator</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">row</span><span class="p">,</span> <span class="n">strand_error</span> <span class="o">=</span> <span class="n">strand_validator</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">errors</span> <span class="o">+</span> <span class="n">coord_errors</span> <span class="o">+</span> <span class="n">strand_error</span></div>
+
+
+<span class="k">class</span> <span class="nc">_AlignmentAttribute</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+    <span class="n">ctg</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">r_st</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">r_en</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">strand</span><span class="p">:</span> <span class="n">Strand</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">_AlignmentProperty</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; from collections import namedtuple</span>
+<span class="sd">    &gt;&gt;&gt; from dataclasses import dataclass</span>
+<span class="sd">    &gt;&gt;&gt; from typing import NamedTuple</span>
+<span class="sd">    &gt;&gt;&gt; Example1 = namedtuple(&quot;Example1&quot;, &quot;ctg r_st r_en strand&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; @dataclass</span>
+<span class="sd">    ... class Example2:</span>
+<span class="sd">    ...     ctg: str</span>
+<span class="sd">    ...     r_st: int</span>
+<span class="sd">    ...     r_en: int</span>
+<span class="sd">    ...     strand: int</span>
+<span class="sd">    &gt;&gt;&gt; Example3 = NamedTuple(&quot;Example3&quot;, [(&quot;ctg&quot;, str), (&quot;r_st&quot;, int), (&quot;r_en&quot;, int), (&quot;strand&quot;, Strand)])</span>
+<span class="sd">    &gt;&gt;&gt; eg1 = Example1(&quot;chr1&quot;, 10, 100, &quot;+&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; eg2 = Example2(&quot;chr2&quot;, 20, 200, -1)</span>
+<span class="sd">    &gt;&gt;&gt; eg3 = Example3(&quot;chr3&quot;, 30, 300, Strand(&quot;+&quot;))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># fmt: off</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ctg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r_st</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r_en</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">strand</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Strand</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
+    <span class="c1"># fmt: on</span>
+
+
+<span class="c1"># Use a `Union` here to allow both attributes and properties</span>
+<span class="n">Alignment</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">_AlignmentAttribute</span><span class="p">,</span> <span class="n">_AlignmentProperty</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Decision"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Decision">[docs]</a><span class="nd">@unique</span>
+<span class="k">class</span> <span class="nc">Decision</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decision readfish has made about a read after Alignment&quot;&quot;&quot;</span>
+
+    <span class="c1">#: The read aligned to a single location that is within a target region</span>
+    <span class="n">single_on</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;single_on&quot;</span>
+    <span class="c1">#: The read aligned to a single location that is not in a target region</span>
+    <span class="n">single_off</span> <span class="o">=</span> <span class="s2">&quot;single_off&quot;</span>
+    <span class="c1">#: The read aligned to multiple locations, where at least one alignment is within a target region</span>
+    <span class="n">multi_on</span> <span class="o">=</span> <span class="s2">&quot;multi_on&quot;</span>
+    <span class="c1">#: The read aligned to multiple locations, none of which were in a target region</span>
+    <span class="n">multi_off</span> <span class="o">=</span> <span class="s2">&quot;multi_off&quot;</span>
+    <span class="c1">#: The read was basecalled but did not align</span>
+    <span class="n">no_map</span> <span class="o">=</span> <span class="s2">&quot;no_map&quot;</span>
+    <span class="c1">#: The read did not basecall</span>
+    <span class="n">no_seq</span> <span class="o">=</span> <span class="s2">&quot;no_seq&quot;</span>
+    <span class="c1">#: Too many signal chunks have been collected for this read</span>
+    <span class="n">above_max_chunks</span> <span class="o">=</span> <span class="s2">&quot;above_max_chunks&quot;</span>
+    <span class="c1">#: Fewer signal chunks for this read collected than required</span>
+    <span class="n">below_min_chunks</span> <span class="o">=</span> <span class="s2">&quot;below_min_chunks&quot;</span></div>
+
+
+<div class="viewcode-block" id="Action"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Action">[docs]</a><span class="nd">@unique</span>
+<span class="k">class</span> <span class="nc">Action</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Action to take for a read.</span>
+
+<span class="sd">    This enum class represents different actions that can be taken for a read during sequencing.</span>
+<span class="sd">    Each action has a corresponding string value used for logging.</span>
+
+<span class="sd">    :cvar unblock: Send an unblock command to the sequencer.</span>
+<span class="sd">    :cvar stop_receiving: Allow the read to finish sequencing.</span>
+<span class="sd">    :cvar proceed: Sample another chunk of data.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    Define an Action:</span>
+
+<span class="sd">    &gt;&gt;&gt; action = Action.unblock</span>
+
+<span class="sd">    Access the string value of an Action:</span>
+
+<span class="sd">    &gt;&gt;&gt; action.value</span>
+<span class="sd">    &#39;unblock&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Send an unblock command to the sequencer</span>
+    <span class="n">unblock</span> <span class="o">=</span> <span class="s2">&quot;unblock&quot;</span>
+    <span class="c1">#: Allow the read to finish sequencing</span>
+    <span class="n">stop_receiving</span> <span class="o">=</span> <span class="s2">&quot;stop_receiving&quot;</span>
+    <span class="c1">#: Sample another chunk of data</span>
+    <span class="n">proceed</span> <span class="o">=</span> <span class="s2">&quot;proceed&quot;</span></div>
+
+
+<div class="viewcode-block" id="Result"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Result">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<span class="k">class</span> <span class="nc">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Result holder</span>
+
+<span class="sd">    This should be progressively filled with data from the basecaller,</span>
+<span class="sd">    barcoder, and then the aligner.</span>
+
+<span class="sd">    :param channel: The channel that this read is being sequenced on</span>
+<span class="sd">    :param read_number: The read number value from the Read Until API</span>
+<span class="sd">    :param read_id: The read ID assigned to this read by MinKNOW</span>
+<span class="sd">    :param seq: The basecalled sequence for this read</span>
+<span class="sd">    :param decision: The ``Decision`` that has been made, this will by used to determine the ``Action``</span>
+<span class="sd">    :param barcode: The barcode that has been assigned to this read</span>
+<span class="sd">    :param basecall_data: Any extra data that the basecaller may want to send to the aligner</span>
+<span class="sd">    :param alignment_data: Any extra alignment data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">read_number</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">read_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">seq</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">decision</span><span class="p">:</span> <span class="n">Decision</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Decision</span><span class="o">.</span><span class="n">no_seq</span><span class="p">)</span>
+    <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">basecall_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">alignment_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Alignment</span><span class="p">]]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Targets"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Targets">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<span class="k">class</span> <span class="nc">Targets</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representation of target regions of a genome.</span>
+
+<span class="sd">    This class is responsible for parsing and managing target regions specified either</span>
+<span class="sd">    through a TOML file or provided as a list of strings.</span>
+
+<span class="sd">    :ivar Union[List[str], Path] value: The raw value from the TOML file, either a list of strings or a path.</span>
+<span class="sd">    :ivar Dict[Strand, Dict[str, List[Tuple[float, float]]]] _targets: A nested dictionary containing parsed target</span>
+<span class="sd">        information. This is not intended to be a part of the public API.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Example:</span>
+
+<span class="sd">        - Using a list of targets:</span>
+
+<span class="sd">            &gt;&gt;&gt; targets = Targets.from_parsed_toml([&quot;chr1,100,200,+&quot;])</span>
+
+<span class="sd">        - Using a .bed file:</span>
+
+<span class="sd">            targets = Targets.from_parsed_toml(&quot;/path/to/targets.bed&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">attrs</span><span class="o">.</span><span class="n">Factory</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+    <span class="n">_targets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Strand</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Counter</span><span class="p">]]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span>
+        <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;_targets&quot;</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">padding</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Targets.from_parsed_toml"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Targets.from_parsed_toml">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_parsed_toml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">targets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Targets</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the target array from the targets that have been read from the provided TOML file</span>
+
+<span class="sd">        :param targets: The targets array or a target file, containing a file per line</span>
+<span class="sd">        :raises ValueError: Raised if the supplied target is a file that cannot be parsed</span>
+<span class="sd">        :raises ValueError: If we fail to initialise class</span>
+<span class="sd">        :return: Initialised targets class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="c1"># Assumes all elements are also `str`</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># Assumes that a `str` on it&#39;s own is a Path</span>
+            <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">targets</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Supplied value </span><span class="si">{</span><span class="n">targets</span><span class="si">!r}</span><span class="s2"> is not a readable file. &quot;</span>
+                    <span class="s2">&quot;Ensure that an absolute path is supplied.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not use value </span><span class="si">{</span><span class="n">targets</span><span class="si">!r}</span><span class="s2"> for targets.&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__attrs_post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Post-initialisation hook for the Targets class.</span>
+
+<span class="sd">        This method is executed immediately after the instance is created.</span>
+<span class="sd">        It&#39;s responsible for parsing the targets either from a list or a file</span>
+<span class="sd">        and initializing the private _targets attribute.</span>
+
+<span class="sd">        :raises ValueError: If a bed file record has too many columns.</span>
+<span class="sd">        :raises BaseExceptionGroup: If validation for target intervals fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_targets</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">Counter</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="s2">&quot;.bed&quot;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">suffixes</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;,&quot;</span>
+            <span class="n">target_specification_format</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> line&quot;</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>
+            <span class="n">target_specification_format</span> <span class="o">=</span> <span class="s2">&quot;TOML targets number&quot;</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">bed_file</span> <span class="o">=</span> <span class="n">delim</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;chrom&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">bed_file</span><span class="p">:</span>
+            <span class="n">fields</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="s2">&quot;strand&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fields</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;strand&quot;</span><span class="p">]</span>
+        <span class="n">all_errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="ne">ValueError</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">line_number</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+            <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span> <span class="n">restkey</span><span class="o">=</span><span class="s2">&quot;extra&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delim</span><span class="p">),</span>
+            <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">row</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">row_checker</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="s2">&quot;bed&quot;</span> <span class="k">if</span> <span class="n">bed_file</span> <span class="k">else</span> <span class="s2">&quot;csv&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+                <span class="n">all_errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="n">e</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">target_specification_format</span><span class="o">=</span><span class="n">target_specification_format</span><span class="p">,</span>
+                                <span class="n">line_number</span><span class="o">=</span><span class="n">line_number</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">errors</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">strand</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;strand&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_targets</span><span class="p">[</span><span class="n">Strand</span><span class="p">(</span><span class="n">strand</span><span class="p">)][</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;chrom&quot;</span><span class="p">]][</span>
+                    <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">])</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">all_errors</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseExceptionGroup</span><span class="p">(</span><span class="s2">&quot;Target intervals validation failure&quot;</span><span class="p">,</span> <span class="n">all_errors</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">strand</span><span class="p">,</span> <span class="n">inner</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_targets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">ctg</span><span class="p">,</span> <span class="n">intervals</span> <span class="ow">in</span> <span class="n">inner</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_targets</span><span class="p">[</span><span class="n">strand</span><span class="p">][</span><span class="n">ctg</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_intervals</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_merge_intervals</span><span class="p">(</span>
+        <span class="n">intervals</span><span class="p">:</span> <span class="n">Counter</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Counter</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Merges overlapping intervals and returns a Counter object with the merged intervals as keys</span>
+<span class="sd">        and the sum of the counts of the merged intervals as values.</span>
+
+<span class="sd">        The method will compare each interval with the next one in the sorted order and merge them if they overlap.</span>
+<span class="sd">        If an interval does not overlap with any other, it remains unchanged in the output Counter object.</span>
+
+<span class="sd">        :param intervals: A Counter object where keys are tuples representing intervals (start, end) and</span>
+<span class="sd">                          values are the counts associated with each interval.</span>
+
+<span class="sd">        :return: A Counter object with keys as the merged intervals and values as the aggregated count</span>
+<span class="sd">                 of the original intervals that were merged.</span>
+
+<span class="sd">        :raises ValueError: If the input intervals are not properly formatted.</span>
+
+<span class="sd">        :Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt; from collections import Counter</span>
+<span class="sd">        &gt;&gt;&gt; intervals = Counter({(1.0, 2.0): 1, (2.0, 3.0): 1, (3.0, 4.0): 1})</span>
+<span class="sd">        &gt;&gt;&gt; Targets._merge_intervals(intervals)</span>
+<span class="sd">        Counter({(1.0, 4.0): 3})</span>
+
+<span class="sd">        &gt;&gt;&gt; intervals = Counter({(1.0, 2.0): 1, (3.0, 4.0): 1})</span>
+<span class="sd">        &gt;&gt;&gt; Targets._merge_intervals(intervals)</span>
+<span class="sd">        Counter({(1.0, 2.0): 1, (3.0, 4.0): 1})</span>
+
+<span class="sd">        :Notes:</span>
+<span class="sd">        - The intervals are assumed to be half-open intervals [start, end), meaning that start is inclusive and end is exclusive.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">intervals</span>
+
+        <span class="n">collapsed_intervals</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+        <span class="n">intervals_items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">intervals</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="p">(</span><span class="n">curr_start</span><span class="p">,</span> <span class="n">curr_end</span><span class="p">),</span> <span class="n">curr_count</span> <span class="o">=</span> <span class="n">intervals_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">intervals_items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">curr_end</span><span class="p">:</span>  <span class="c1"># We have a new non-overlapping start</span>
+                <span class="n">collapsed_intervals</span><span class="p">[(</span><span class="n">curr_start</span><span class="p">,</span> <span class="n">curr_end</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curr_count</span>
+                <span class="n">curr_start</span><span class="p">,</span> <span class="n">curr_end</span><span class="p">,</span> <span class="n">curr_count</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">count</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># Start is within the current range</span>
+                <span class="n">curr_end</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">curr_end</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+                <span class="n">curr_count</span> <span class="o">+=</span> <span class="n">count</span>
+
+        <span class="n">collapsed_intervals</span><span class="p">[(</span><span class="n">curr_start</span><span class="p">,</span> <span class="n">curr_end</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curr_count</span>
+        <span class="k">return</span> <span class="n">collapsed_intervals</span>
+
+<div class="viewcode-block" id="Targets.check_coord"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Targets.check_coord">[docs]</a>    <span class="k">def</span> <span class="nf">check_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contig</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">strand</span><span class="p">:</span> <span class="n">Strand</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check to see if a coordinate is within any of the target regions</span>
+<span class="sd">        :param contig: The target contig name</span>
+<span class="sd">        :param strand: The strand that the alignment is to</span>
+<span class="sd">        :param coord: The coordinate to be checked</span>
+<span class="sd">        :raises ValueError: If the strand passed is not recognised</span>
+<span class="sd">        :return: Boolean representing whether the coordinate is within a target region or not</span>
+
+<span class="sd">        &gt;&gt;&gt; targets = Targets([&quot;chr1,10,20,+&quot;, &quot;chr1,15,30,+&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; targets.check_coord(&#39;chr1&#39;, &quot;+&quot;, 15)</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; targets.check_coord(&#39;chr1&#39;, &quot;+&quot;, 5)</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; targets.check_coord(&#39;chr1&#39;, &quot;-&quot;, 15)</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; targets.check_coord(&#39;chr1&#39;, &quot;+&quot;, 31)  # Example where coord (31) is in reversed target interval (+ve strand) Should fail</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; targets.check_coord(&#39;chr1&#39;, &quot;-&quot;, 41)  # Example where coord (41) is in reversed target interval (-ve strand) Should fail</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; targets.check_coord(&#39;chr1&#39;, &quot;unknown_strand&quot;, 15)</span>
+<span class="sd">        Traceback (most recent call last):</span>
+<span class="sd">        ...</span>
+<span class="sd">        ValueError: Unexpected strand unknown_strand</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">strand_</span> <span class="o">=</span> <span class="n">STRANDS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">strand</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">strand_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unexpected strand </span><span class="si">{</span><span class="n">strand</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="n">intervals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_targets</span><span class="p">[</span><span class="n">strand_</span><span class="p">][</span><span class="n">contig</span><span class="p">]</span>
+        <span class="c1"># TODO: Binary search intervals when intervals &gt; 30? -&gt; pytest parameterise and benchmark</span>
+        <span class="n">start_offset</span><span class="p">,</span> <span class="n">end_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_offset</span><span class="p">(</span><span class="n">strand_</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">intervals</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">start_offset</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">coord</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">end</span> <span class="o">+</span> <span class="n">end_offset</span><span class="p">):</span>
+                <span class="n">intervals</span><span class="p">[(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Targets.get_offset"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Targets.get_offset">[docs]</a>    <span class="k">def</span> <span class="nf">get_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strand</span><span class="p">:</span> <span class="n">Strand</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the start and end padding offsets for a given strand.</span>
+
+<span class="sd">        :param strand_: The strand for which to get the offsets.</span>
+
+<span class="sd">        :return: A tuple containing the start and end offsets.</span>
+
+<span class="sd">        :Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt; targets = Targets([&quot;chr1,10,20,+&quot;, &quot;chr1,15,30,+&quot;], padding=10)</span>
+<span class="sd">        &gt;&gt;&gt; targets.get_offset(Strand.forward)</span>
+<span class="sd">        (-10, 0)</span>
+<span class="sd">        &gt;&gt;&gt; targets.get_offset(Strand.reverse)</span>
+<span class="sd">        (0, 10)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_offset</span><span class="p">,</span> <span class="n">end_offset</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">strand</span> <span class="o">==</span> <span class="n">Strand</span><span class="o">.</span><span class="n">reverse</span><span class="p">:</span>
+            <span class="n">start_offset</span><span class="p">,</span> <span class="n">end_offset</span> <span class="o">=</span> <span class="n">end_offset</span><span class="p">,</span> <span class="o">-</span><span class="n">start_offset</span>
+        <span class="k">return</span> <span class="n">start_offset</span><span class="p">,</span> <span class="n">end_offset</span></div>
+
+<div class="viewcode-block" id="Targets.iter_targets"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.Targets.iter_targets">[docs]</a>    <span class="k">def</span> <span class="nf">iter_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate over the intervals for a _Conditions target intervals, yielding TARGET_INTERVAL objects.</span>
+
+<span class="sd">        This method iterates over the target intervals stored in the `Targets` object and yields</span>
+<span class="sd">        `TARGET_INTERVAL` objects representing each target interval.</span>
+
+<span class="sd">        :return: Generator that yields `TARGET_INTERVAL` objects.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; targets = Targets([&quot;chr1,10,20,+&quot;, &quot;chr1,15,30,+&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; for target in targets.iter_targets():</span>
+<span class="sd">        ...     print(target)</span>
+<span class="sd">        TargetInterval(chromosome=&#39;chr1&#39;, start=10, end=30, strand=&lt;Strand.forward: &#39;+&#39;&gt;)</span>
+
+<span class="sd">        &gt;&gt;&gt; targets = Targets([&quot;chr1,10,20,+&quot;, &quot;chr2,5,15,-&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; for target in targets.iter_targets():</span>
+<span class="sd">        ...     print((target.chromosome, target.start, target.end, target.strand))</span>
+<span class="sd">        (&#39;chr1&#39;, 10, 20, &lt;Strand.forward: &#39;+&#39;&gt;)</span>
+<span class="sd">        (&#39;chr2&#39;, 5, 15, &lt;Strand.reverse: &#39;-&#39;&gt;)</span>
+
+<span class="sd">        &gt;&gt;&gt; targets = Targets([&quot;chr1,10,20,+&quot;, &quot;chr2,5,15,-&quot;, &quot;chr1,25,35,-&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; for target in targets.iter_targets():</span>
+<span class="sd">        ...     print(target.chromosome, target.start, target.end, target.strand)</span>
+<span class="sd">        chr1 10 20 Strand.forward</span>
+<span class="sd">        chr2 5 15 Strand.reverse</span>
+<span class="sd">        chr1 25 35 Strand.reverse</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">strand</span><span class="p">,</span> <span class="n">regions</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_targets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">chrom</span><span class="p">,</span> <span class="n">coords_list</span> <span class="ow">in</span> <span class="n">regions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">coords_list</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">TARGET_INTERVAL</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">strand</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PreviouslySentActionTracker"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.PreviouslySentActionTracker">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<span class="k">class</span> <span class="nc">PreviouslySentActionTracker</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to keep track of the last action sent from a channel.</span>
+
+<span class="sd">    This class provides methods to add and retrieve the last action sent for each channel.</span>
+
+<span class="sd">    :param last_action: A dictionary mapping channel IDs to the last sent action for that channel.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    Initialize a PreviouslySentActionTracker:</span>
+
+<span class="sd">    &gt;&gt;&gt; tracker = PreviouslySentActionTracker()</span>
+
+<span class="sd">    Add an action for channel number 1:</span>
+
+<span class="sd">    &gt;&gt;&gt; from readfish.plugins.utils import Action</span>
+<span class="sd">    &gt;&gt;&gt; action = Action.unblock</span>
+<span class="sd">    &gt;&gt;&gt; tracker.add_action(1, action)</span>
+
+<span class="sd">    Retrieve the last action for a channel:</span>
+
+<span class="sd">    &gt;&gt;&gt; retrieved_action = tracker.get_action(1)</span>
+<span class="sd">    &gt;&gt;&gt; retrieved_action</span>
+<span class="sd">    &lt;Action.unblock: &#39;unblock&#39;&gt;</span>
+
+<span class="sd">    Retrieve the last action for a channel that hasn&#39;t sent any actions:</span>
+
+<span class="sd">    &gt;&gt;&gt; no_action = tracker.get_action(2)</span>
+<span class="sd">    &gt;&gt;&gt; no_action is None</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">last_actions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Action</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">Factory</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PreviouslySentActionTracker.add_action"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.PreviouslySentActionTracker.add_action">[docs]</a>    <span class="k">def</span> <span class="nf">add_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method adds an action to the last sent action tracker.</span>
+
+<span class="sd">        :param channel: The channel to add the action to.</span>
+<span class="sd">        :param action: The action to add to the channel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_actions</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span></div>
+
+<div class="viewcode-block" id="PreviouslySentActionTracker.get_action"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.utils.PreviouslySentActionTracker.get_action">[docs]</a>    <span class="k">def</span> <span class="nf">get_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Action</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method checks the last action sent for a channel, returning the action if it exists,</span>
+<span class="sd">        otherwise returning None.</span>
+
+<span class="sd">        :param channel: The channel to check the last action for.</span>
+<span class="sd">        :return: The last action sent for the channel, or None if no action has been sent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_actions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Loose Lab
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=1e7f7872"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>

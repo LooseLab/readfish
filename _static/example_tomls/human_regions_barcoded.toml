@@ -1,0 +1,184 @@
+# Summary: TOML config file configuring live base-calling and selective mapping of genomic targets
+# from barcoded human samples.
+
+# In this example, we combine regions and barcodes such that the flowcell is divided vertically into two regions.
+# One region acts as a control,  and the other implements the instructions as detailed by the barcodes tables.
+# At this time (July 2023), we have no example bulkfile available for testing.
+# See the barcoded_human.toml and half_control_half_as_human.toml for simpler explanations of configuring barcodes and regions.
+
+# Genomic targets are specified directly in the toml file in the form
+#   "contig"
+# or as:
+#   "contig,start,end,strand"
+# for example, "chr2,0,100,+"" or "chr2".
+# If chr2 is specified, the entire contig will be considered a target, on both strands.
+# These patterns can be mixed, both in the toml or in a .csv file.
+
+# This example is configured for running with r10.4.1 flowcells and 5khz sample rate.
+
+# All of the below fields are explained in more detail in the documentation -
+# https://looselab.github.io/readfish/toml.html
+
+# Basecaller configuration
+[caller_settings.guppy]
+#               ^^^^^^ - ".guppy" specifies our chosen basecaller
+# Guppy base-calling configuration file name
+config = "dna_r10.4.1_e8.2_400bps_5khz_fast"
+# Address of the guppy basecaller - The default address for guppy is ipc:///tmp/.guppy/5555.
+address = "ipc:///tmp/.guppy/5555"
+# Fastq output for individual reads. This is OPTIONAL - as these files can become quite large.
+# Remove line to disable.
+debug_log = "live_barcoded_reads.fq"
+# Enable barcode classification.
+# Specify multiple barcode kits as a space separated string: `"KIT1 KIT2"`
+barcode_kits = "EXP-NBD196"
+
+# Aligner Configuration
+[mapper_settings.mappy]
+#               ^^^^^^ - ".mappy" specifies mappy as the aligner.
+# Use mappy_rs for the rust version (required on PromethION)
+# Alignment reference to use. Should be either FASTA or an MMI
+fn_idx_in = "/path/to/hg38.mmi"
+# Optional PAF output for live alignments.
+# Remove line to disable.
+debug_log = "live_alignments.paf"
+# Number of threads for indexing (mappy and mappy-rs) and mapping (mappy-rs only)
+n_threads = 4
+
+[[regions]]
+# Configuration for the first experimental region.
+# This region has no targets as they are derived from the barcodes below.
+name = "Experimental"
+min_chunks = 1
+max_chunks = 4
+targets = []
+single_on = "proceed"
+multi_on = "proceed"
+single_off = "proceed"
+multi_off = "proceed"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "proceed"
+below_min_chunks = "proceed"
+
+[[regions]]
+# Configuration for the second experimental region.
+# This region has no targets as they are derived from the barcodes below.
+# However, this region is specified as a control.
+# As this is a control region, the barcode based targets are effectively ignored.
+# readfish will still ask guppy to demultiplex and call,
+# then map to the reference and check targets but will not implement any adaptive sampling.
+name = "Control"
+min_chunks = 1
+max_chunks = 4
+control = "true"
+targets = []
+single_on = "proceed"
+multi_on = "proceed"
+single_off = "proceed"
+multi_off = "proceed"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "proceed"
+below_min_chunks = "proceed"
+
+# Unclassified barcode reads. This table is required.
+# This table acts as a "catch all" for any reads that are not assigned to a barcode.
+# Read more -  https://looselab.github.io/readfish/toml.html#barcode-specific-configuration
+# Definitions of "unblock", "proceed" and "stop_receivings" are as follows
+
+    # proceed: Allow one more chunk to be captured, before trying to make another decision, i.e proceed for now
+
+    # unblock: Unblock the read
+
+    # stop_receiving: Allow the read to be sequenced, and stop receiving signal chunks for it.
+[barcodes.unclassified]
+name = "unclassified_reads"  # Name of this Barcode - can be sample related
+min_chunks = 0 # minimum number of chunks before a decision can be made
+max_chunks = 4 # maximum number of chunks to use in decision making - after this perform the above_max_chunks action (default unblock)
+single_on = "unblock"   # Action to take if there is one mapping on target.
+multi_on = "unblock"    # Action to take if there is more than one mapping, with at least one target.
+single_off = "unblock"  # Action to take if there is one mapping and it is off target
+multi_off = "unblock"   # Action to take if there are multiple mappings, where all are off target.
+no_seq = "proceed"  # Action to take if no sequence data
+no_map = "unblock"  # Action to take if unable to map
+above_max_chunks = "unblock"  # Action to take if above max_chunks.
+below_min_chunks = "proceed"  # Action to take if below min_chunks.
+
+# Classified barcode reads
+# This table is also required, and acts as the logical opposite of the unclassified table.
+# This table acts as a "catch all" for any reads assigned to barcodes that are not specified in the [barcodes] tables.
+[barcodes.classified]
+name = "classified_reads"
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+min_chunks = 0
+max_chunks = 4
+no_seq = "proceed"
+no_map = "unblock"
+
+[barcodes.barcode01]
+# Configuration for specific barcode 01.
+# This barcode targets chr20 and chr21.
+name = "barcode01_chr20_chr21"
+min_chunks = 0
+max_chunks = 4
+targets = ["chr20", "chr21"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "unblock"
+below_min_chunks = "proceed"
+
+[barcodes.barcode02]
+# Configuration for specific barcode 02.
+# This barcode targets chr18 and chr19.
+name = "barcode02_chr18_chr19"
+min_chunks = 0
+max_chunks = 4
+targets = ["chr18", "chr19"]
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "unblock"
+below_min_chunks = "proceed"
+
+[barcodes.barcode03]
+# Configuration for specific barcode 03.
+# This barcode rejects chr18, chr19, chr20, and chr21.
+name = "barcode03_chr18_chr19_chr20_chr21"
+min_chunks = 0
+max_chunks = 4
+targets = ["chr18", "chr19", "chr20", "chr21"]
+single_on = "unblock"
+multi_on = "unblock"
+single_off = "stop_receiving"
+multi_off = "stop_receiving"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "unblock"
+below_min_chunks = "proceed"
+
+[barcodes.barcode04]
+# Configuration for specific barcode 04.
+# This barcode uses a bed file to specify regions.
+name = "Barcode 04 COSMIC Targets"
+min_chunks = 1
+max_chunks = 4
+targets = "COSMIC_cancer_panel.bed"
+single_on = "stop_receiving"
+multi_on = "stop_receiving"
+single_off = "unblock"
+multi_off = "unblock"
+no_seq = "proceed"
+no_map = "proceed"
+above_max_chunks = "unblock"
+below_min_chunks = "proceed"

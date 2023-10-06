@@ -1,0 +1,644 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>readfish._statistics - readfish 2023.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --font-stack--monospace: 'Ubuntu Mono', monospace;
+  --code-font-size: 90%;
+  --color-api-background: #f8f9fb;
+  --color-highlight-on-target: transparent;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-api-background: #1a1c1e;
+  --color-highlight-on-target: transparent;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">readfish 2023.1.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../_static/readfish_light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../_static/readfish_dark.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../toml.html">TOML files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readfish.console.html">readfish console scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../post-analysis.html">Readfish analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developers-guide.html">Developer’s guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readfish.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readfish.plugins.html">readfish plugins API</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for readfish._statistics</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">This module contains the ReadfishStatistics class, which is designed to</span>
+<span class="sd">track and manage statistics pertaining to a single Readfish run. The ReadfishStatistics</span>
+<span class="sd">class is able to update and query various statistics and counters regarding the</span>
+<span class="sd">performance, decisions, actions, and conditions of Readfish runs.</span>
+
+<span class="sd">The ReadfishStatistics class has the ability to compute and return averages</span>
+<span class="sd">related to chunks per second, batch time, and batch size, and it maintains</span>
+<span class="sd">various counters to keep track of the number of chunks processed, actions taken,</span>
+<span class="sd">decisions made, and conditions met. The class also facilitates the addition of</span>
+<span class="sd">new performance and read records to the existing statistics.</span>
+
+
+<span class="sd">:Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from readfish._statistics import ReadfishStatistics, DEBUG_STATS_LOG_FIELDS</span>
+<span class="sd">    &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">    &gt;&gt;&gt; stats.add_batch_performance(1,1)</span>
+<span class="sd">    &gt;&gt;&gt; stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, &quot;test_read_id&quot;, 7, 1, 100, 3, &quot;single_on&quot;, &quot;stop_receiving&quot;, &quot;exp_region&quot;, None, None, False, 0.0))), region_name=&quot;naff&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(stats.get_batch_performance())</span>
+<span class="sd">    0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (&gt;1.00s): 0/1</span>
+<span class="sd">    &gt;&gt;&gt; print(stats.decisions)</span>
+<span class="sd">    Counter({&#39;single_on&#39;: 1})</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">attrs</span>
+<span class="kn">from</span> <span class="nn">readfish._loggers</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">RLock</span>
+
+<span class="n">DEBUG_STATS_LOG_FIELDS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;client_iteration&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read_in_loop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;channel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read_number&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;seq_len&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;counter&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;decision&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;condition&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;barcode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;previous_action&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;action_override&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="ReadfishStatistics"><a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<span class="k">class</span> <span class="nc">ReadfishStatistics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for tracking and managing statistics for individual Readfish runs.</span>
+
+<span class="sd">    The ReadfishStatistics class is designed to manage and present</span>
+<span class="sd">    statistics from individual Readfish runs, providing insights into performance,</span>
+<span class="sd">    decisions, actions, and conditions encountered during the runs.</span>
+
+<span class="sd">    :ivar break_reads_seconds: The number of seconds between each collection of chunk signal. Default 1.0.</span>
+<span class="sd">    :ivar log_file: The name of the log file to write to. If None, no file is output.</span>
+<span class="sd">    :ivar total_chunks: The total number of chunks processed.</span>
+<span class="sd">    :ivar actions: A counter tracking the number of :class:`Actions &lt;readfish.plugins.utils.Action&gt;` sent.</span>
+<span class="sd">    :ivar conditions: A counter tracking the number of reads seen for each :class:`Condition &lt;readfish._config&gt;_Condition&gt;`.</span>
+<span class="sd">    :ivar actions_conditions: A counter tracking number of condition/action/decision combinations.</span>
+<span class="sd">    :ivar decisions: A counter tracking the number of decisions made, globally.</span>
+<span class="sd">    :ivar first_read_overrides: A counter tracking whether the first read was sequences readfish was started during sequencing or unblocked if it was not.</span>
+<span class="sd">    :ivar batch_statistics: A counter tracking performance metrics such as summed batch times, total chunks in batches, and number of batches seen.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">    &gt;&gt;&gt; stats.add_batch_performance(1, 1)</span>
+<span class="sd">    &gt;&gt;&gt; stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, &quot;test_read_id&quot;,\</span>
+<span class="sd">7, 1, 100, 3, &quot;single_on&quot;, &quot;stop_receiving&quot;, &quot;exp_region&quot;, None, None,\</span>
+<span class="sd">False, 0.0))), region_name=&quot;naff&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(stats.get_batch_performance())</span>
+<span class="sd">    0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (&gt;1.00s): 0/1</span>
+<span class="sd">    &gt;&gt;&gt; print(stats.decisions)</span>
+<span class="sd">    Counter({&#39;single_on&#39;: 1})</span>
+
+<span class="sd">    Example with log file</span>
+
+<span class="sd">    &gt;&gt;&gt; import tempfile</span>
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; import time</span>
+<span class="sd">    &gt;&gt;&gt; from pprint import pformat</span>
+<span class="sd">    &gt;&gt;&gt; from readfish._statistics import ReadfishStatistics, DEBUG_STATS_LOG_FIELDS</span>
+<span class="sd">    &gt;&gt;&gt; with tempfile.TemporaryDirectory() as tmpdir:</span>
+<span class="sd">    ...     # Change the current working directory to the temporary directory</span>
+<span class="sd">    ...     os.chdir(tmpdir)</span>
+<span class="sd">    ...     # Use the current directory for the log file</span>
+<span class="sd">    ...     log_file_name = &quot;readfish.log&quot;</span>
+<span class="sd">    ...     # Create an instance of ReadfishStatistics with the log file in the temporary directory</span>
+<span class="sd">    ...     stats = ReadfishStatistics(log_file=log_file_name)</span>
+<span class="sd">    ...     # Use the log_read method to log a sample read</span>
+<span class="sd">    ...     stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS,\</span>
+<span class="sd">(1, 2, &quot;test_read_id&quot;, 7, 1, 100, 3, &quot;single_on&quot;, &quot;stop_receiving&quot;, &quot;exp_region&quot;,\</span>
+<span class="sd">None, None, False, 0.0))), region_name=&quot;naff&quot;)</span>
+<span class="sd">    ...     # in this test, we need a small amount of time to allow the logger to write the file</span>
+<span class="sd">    ...     time.sleep(0.1)</span>
+<span class="sd">    ...     # Read the content of the file</span>
+<span class="sd">    ...     with open(log_file_name, &#39;r&#39;) as log_file:</span>
+<span class="sd">    ...         content = log_file.read()</span>
+<span class="sd">    ...     # Prepare the expected content</span>
+<span class="sd">    ...     header = &quot; &quot;.join(DEBUG_STATS_LOG_FIELDS)</span>
+<span class="sd">    ...     expected_line = &quot; &quot;.join(map(str, (1, 2, &quot;test_read_id&quot;, 7, 1, 100, 3, &quot;single_on&quot;,\</span>
+<span class="sd">&quot;stop_receiving&quot;, &quot;exp_region&quot;, None, None, False, 0.0)))</span>
+<span class="sd">    ...     expected = f&quot;{header}\\n{expected_line}&quot;</span>
+<span class="sd">    ...     # Check that the content matches, don&#39;t ask about the replaces, it was the only way</span>
+<span class="sd">    ...     expected.replace(&quot;\t&quot;, &quot; &quot;) == content.replace(&quot;\\t&quot;, &quot; &quot;).strip()</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">break_reads_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">total_chunks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">actions</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">Counter</span><span class="p">)</span>
+    <span class="n">conditions</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">Counter</span><span class="p">)</span>
+    <span class="n">actions_conditions</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">Counter</span><span class="p">)</span>
+    <span class="n">decisions</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">Counter</span><span class="p">)</span>
+    <span class="n">first_read_overrides</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">Counter</span><span class="p">)</span>
+    <span class="n">batch_statistics</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">Counter</span><span class="p">)</span>
+    <span class="n">debug_logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">_lock</span><span class="p">:</span> <span class="n">RLock</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">RLock</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__attrs_post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># NOTE if there is no log file specified this returns a NullHandler logger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;chunk_debug_stats&quot;</span><span class="p">,</span>
+            <span class="n">header</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DEBUG_STATS_LOG_FIELDS</span><span class="p">),</span>
+            <span class="n">log_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average_chunks_per_second</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate and return the average number of chunks processed per second.</span>
+
+<span class="sd">        :return: Average number of chunks processed per second.</span>
+
+<span class="sd">        Given:</span>
+<span class="sd">        batch_statistics = {&quot;batch_count&quot;: 2, &quot;batch_size&quot;: 100, &quot;batch_time&quot;: 50}</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.add_batch_performance(number_of_reads=10, batch_time=5)</span>
+<span class="sd">        &gt;&gt;&gt; stats.average_chunks_per_second</span>
+<span class="sd">        2.0</span>
+
+<span class="sd">        More complex example:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.add_batch_performance(number_of_reads=10, batch_time=5)</span>
+<span class="sd">        &gt;&gt;&gt; stats.add_batch_performance(number_of_reads=10, batch_time=5)</span>
+<span class="sd">        &gt;&gt;&gt; stats.add_batch_performance(number_of_reads=40, batch_time=5)</span>
+<span class="sd">        &gt;&gt;&gt; stats.average_chunks_per_second</span>
+<span class="sd">        4.0</span>
+
+<span class="sd">        When batch_count is 0, the result will be 0.</span>
+
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics[&quot;batch_count&quot;] = 0</span>
+<span class="sd">        &gt;&gt;&gt; stats.average_chunks_per_second</span>
+<span class="sd">        0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_count&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;cumulative_batch_size&quot;</span><span class="p">]</span>
+                <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;cumulative_batch_time&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average_batch_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate and return the average time taken per batch.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">        Given:</span>
+<span class="sd">        batch_statistics = {&quot;batch_count&quot;: 3, &quot;cumulative_batch_size&quot;: 150, &quot;cumulative_batch_time&quot;: 60}</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics = {&quot;batch_count&quot;: 3, &quot;cumulative_batch_size&quot;: 150, &quot;cumulative_batch_time&quot;: 60}</span>
+<span class="sd">        &gt;&gt;&gt; stats.average_batch_time</span>
+<span class="sd">        20.0</span>
+
+<span class="sd">        When batch_count is 0, the result should be 0.</span>
+
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics[&quot;batch_count&quot;] = 0</span>
+<span class="sd">        &gt;&gt;&gt; stats.average_batch_time</span>
+<span class="sd">        0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_count&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;cumulative_batch_time&quot;</span><span class="p">]</span>
+                <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_count&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average_batch_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate and return the average size of processed batches.</span>
+
+<span class="sd">        The method computes the average batch size by dividing the total number</span>
+<span class="sd">        of chunks processed by the number of batches seen. If no batches have been</span>
+<span class="sd">        processed, the method returns 0.</span>
+
+<span class="sd">        :return: Average number of reads processed per batch.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.average_batch_size</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; stats.add_batch_performance(50, 20.0)</span>
+<span class="sd">        &gt;&gt;&gt; stats.add_batch_performance(100, 20.0)</span>
+<span class="sd">        &gt;&gt;&gt; stats.average_batch_size</span>
+<span class="sd">        75.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_count&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;cumulative_batch_size&quot;</span><span class="p">]</span>
+                <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_count&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="ReadfishStatistics.get_batch_performance"><a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.get_batch_performance">[docs]</a>    <span class="k">def</span> <span class="nf">get_batch_performance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate and return a formatted string representing batch performance.</span>
+
+<span class="sd">        If no batches have been processed, a placeholder message is returned.</span>
+
+<span class="sd">        :return: String summary of the current performance metrics.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">        When no batches have been processed:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics = {&quot;batch_count&quot;: 0, &quot;cumulative_batch_size&quot;: 0, \</span>
+<span class="sd">            &quot;cumulative_batch_time&quot;: 0, &quot;batch_size&quot;: 0, &quot;batch_time&quot;: 0}</span>
+<span class="sd">        &gt;&gt;&gt; stats.get_batch_performance()</span>
+<span class="sd">        &#39;No performance data yet&#39;</span>
+
+<span class="sd">        When 100 chunks is processed in 10 seconds and it has been lagging for 6 consecutive batches:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics.update({&quot;batch_count&quot;: 6, &quot;cumulative_batch_size&quot;: 100, \</span>
+<span class="sd">            &quot;cumulative_batch_time&quot;: 10, &quot;batch_size&quot;: 10, &quot;batch_time&quot;: 10,\</span>
+<span class="sd">            &quot;cumulative_lagging_batches&quot;: 6, &quot;consecutive_lagging_batches&quot;: 6})</span>
+<span class="sd">        &gt;&gt;&gt; stats.get_batch_performance()</span>
+<span class="sd">        &#39;0010R/10.0000s; Avg: 0016R/1.6667s; Seq:0; Unb:0; Pro:0; Slow batches (&gt;1.00s): 6/6&#39;</span>
+
+<span class="sd">        When three batches of total 300 chunks are processed in a total of 45 seconds:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics.update({&quot;batch_count&quot;: 3, &quot;cumulative_batch_size&quot;: 300, \</span>
+<span class="sd">            &quot;cumulative_batch_time&quot;: 45, &quot;batch_size&quot;: 300, &quot;batch_time&quot;: 45})</span>
+<span class="sd">        &gt;&gt;&gt; stats.get_batch_performance()</span>
+<span class="sd">        &#39;0300R/45.0000s; Avg: 0100R/15.0000s; Seq:0; Unb:0; Pro:0; Slow batches (&gt;1.00s): 0/3&#39;</span>
+
+<span class="sd">        When five batches of total 500 chunks are processed in a total of 120 seconds:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics.update({&quot;batch_count&quot;: 5, &quot;cumulative_batch_size&quot;: 500,\</span>
+<span class="sd">             &quot;cumulative_batch_time&quot;: 120,  &quot;batch_size&quot;: 500, &quot;batch_time&quot;: 120})</span>
+<span class="sd">        &gt;&gt;&gt; stats.get_batch_performance()</span>
+<span class="sd">        &#39;0500R/120.0000s; Avg: 0100R/24.0000s; Seq:0; Unb:0; Pro:0; Slow batches (&gt;1.00s): 0/5&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_count&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;No performance data yet&quot;</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s1">&#39;batch_size&#39;</span><span class="p">])</span><span class="si">:</span><span class="s2">0&gt;4</span><span class="si">}</span><span class="s2">R&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s1">&#39;batch_time&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Avg: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">average_batch_size</span><span class="p">)</span><span class="si">:</span><span class="s2">0&gt;4</span><span class="si">}</span><span class="s2">R&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">average_batch_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Seq:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="s1">&#39;stop_receiving&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Unb:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="s1">&#39;unblock&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Pro:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="s1">&#39;proceed&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Slow batches (&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">break_reads_seconds</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s): &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s1">&#39;cumulative_lagging_batches&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s1">&#39;batch_count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReadfishStatistics.add_batch_performance"><a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.add_batch_performance">[docs]</a>    <span class="k">def</span> <span class="nf">add_batch_performance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_reads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">batch_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the collected statistics with new batch performance data.</span>
+
+<span class="sd">        This method integrates a new set of chunk batch performance metrics into</span>
+<span class="sd">        the class&#39;s statistics, specifically updating the batch size, batch time,</span>
+<span class="sd">        and batch count based on the provided number of reads and the time taken.</span>
+
+<span class="sd">        :param number_of_reads: The number of reads processed in the current batch.</span>
+<span class="sd">        :param batch_time: The time taken to process the current batch in seconds.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats.add_batch_performance(100, 10.5)</span>
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics</span>
+<span class="sd">        Counter({&#39;cumulative_batch_size&#39;: 100, &#39;batch_size&#39;: 100, &#39;cumulative_batch_time&#39;:\</span>
+<span class="sd"> 10.5, &#39;batch_time&#39;: 10.5, &#39;batch_count&#39;: 1, &#39;cumulative_lagging_batches&#39;: 1,\</span>
+<span class="sd"> &#39;consecutive_lagging_batches&#39;: 1})</span>
+<span class="sd">        &gt;&gt;&gt; stats.add_batch_performance(100, 10.5)</span>
+<span class="sd">        &gt;&gt;&gt; stats.batch_statistics</span>
+<span class="sd">        Counter({&#39;cumulative_batch_size&#39;: 200, &#39;batch_size&#39;: 100, &#39;cumulative_batch_time&#39;:\</span>
+<span class="sd"> 21.0, &#39;batch_time&#39;: 10.5, &#39;batch_count&#39;: 2, &#39;cumulative_lagging_batches&#39;: 2,\</span>
+<span class="sd"> &#39;consecutive_lagging_batches&#39;: 2})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;cumulative_batch_size&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">number_of_reads</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;cumulative_batch_time&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">batch_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_count&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_reads</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_time</span>
+            <span class="c1"># Check for lagging batches</span>
+            <span class="k">if</span> <span class="n">batch_time</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">break_reads_seconds</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;cumulative_lagging_batches&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;consecutive_lagging_batches&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;consecutive_lagging_batches&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="ReadfishStatistics.log_read"><a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.log_read">[docs]</a>    <span class="k">def</span> <span class="nf">log_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a new read chunk record into the collected statistics,</span>
+<span class="sd">        and log it to the debug logger.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total_chunks</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">decision</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decision&quot;</span><span class="p">)</span>
+            <span class="n">action_overridden</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_overridden&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Increment total actions count, Unblock, stop_receiving etc.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">decision</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Increment total hits for this condition</span>
+            <span class="n">condition_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;condition&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_condition_counter</span><span class="p">(</span>
+                <span class="n">condition_name</span><span class="p">,</span> <span class="n">region_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decision&quot;</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># increment count for this decision - single_off, single_on etc.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decisions</span><span class="p">[</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Count if read was skipped because it was mid translocation</span>
+            <span class="n">first_read_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;first_read_skipped&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;previous_action&#39;</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">action_overridden</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;read_analysed&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">first_read_overrides</span><span class="p">[</span><span class="n">first_read_key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Count the actions for each condition</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">action_overridden</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">actions_conditions</span><span class="p">[</span>
+                    <span class="p">(</span><span class="n">condition_name</span><span class="p">,</span> <span class="n">decision</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">))</span>
+                <span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Log the read to the debug logger</span>
+            <span class="n">debug_log_record</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">debug_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">debug_log_record</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_condition_counter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">condition_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">decision_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">action_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the condition and action condition counters with the provided parameters.</span>
+
+<span class="sd">        This private method is responsible for incrementing the condition counter.</span>
+<span class="sd">        If the ``condition_name`` differs from the ``region_name``, this method also increments</span>
+<span class="sd">        the condition counter for the ``region_name`` and the action condition counter with the</span>
+<span class="sd">        corresponding ``decision_name`` and ``action_name``.</span>
+
+
+<span class="sd">        :param condition_name: The name of the condition being updated.</span>
+<span class="sd">        :param region_name: The name of the region related to the condition.</span>
+<span class="sd">        :param decision_name: The name of the decision made in relation to the condition.</span>
+<span class="sd">        :param action_name: The name of the action taken in relation to the condition.</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">        Called internally when there&#39;s a need to update the condition counters based</span>
+<span class="sd">        on the received parameters, usually after processing a read or a batch of reads.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">condition_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">condition_name</span> <span class="o">!=</span> <span class="n">region_name</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">region_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">actions_conditions</span><span class="p">[(</span><span class="n">region_name</span><span class="p">,</span> <span class="n">decision_name</span><span class="p">,</span> <span class="n">action_name</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Loose Lab
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1e7f7872"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>
