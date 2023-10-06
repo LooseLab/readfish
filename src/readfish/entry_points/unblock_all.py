@@ -20,10 +20,11 @@ from readfish.entry_points import targets
 _help = "Unblock all reads"
 _cli = DEVICE_BASE_ARGS + (
     (
-        "--debug-log",
+        "--no-debug-log",
         dict(
-            help="Debug log, write a TSV for all records",
-            default=None,
+            help="Disable debug output of information about chunks seen into a .tsv formatted log. Default enabled.",
+            action="store_false",
+            dest="debug_log",
         ),
     ),
 )
