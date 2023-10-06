@@ -38,6 +38,7 @@ example tests).
 The following platforms are supported:
 
 - **PromethION** Big Boy
+- **P2Solo** Smol Power Boy
 - **GridION** Box
 - **MinION** Smol Boy
 
@@ -47,11 +48,11 @@ The following platforms are supported:
  The following OSs are supported:
 
  - **Linux** yay
- - **MacOS** boo
+ - **MacOS** boo (Apple Silicon Only with Dorado)
 
 
 > [!NOTE]  
-> Note - MacOS supports is on MinKNOW 5.7 and greater using Dorado basecaller only.
+> Note - MacOS supports is on MinKNOW 5.7 and greater using Dorado basecaller only. You must have Apple Silicon.
 
 
 <!-- begin-short -->
