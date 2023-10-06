@@ -39,7 +39,13 @@ myst_enable_extensions = [
 ]
 autosectionlabel_prefix_document = True
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "questions/*.md", "Thumbs.db", ".DS_Store"]
+exclude_patterns = [
+    "_build",
+    "questions/*.md",
+    "Thumbs.db",
+    ".DS_Store",
+    "venv",
+]
 
 pygments_dark_style = "monokai"
 

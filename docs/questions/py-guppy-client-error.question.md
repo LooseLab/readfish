@@ -6,6 +6,9 @@ alt_titles:
   - "LOAD_CONFIG error when connecting to Guppy"
 ---
 
+N.B. The answer below was taken from this [issue](https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490)
+Theoretically this should be caught in the latest readfish release, but if you are still having issues, please try the below.
+
 This error often stems from a couple of sources. To test your Guppy Connection you can run
 
 ```console

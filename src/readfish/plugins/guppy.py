@@ -73,7 +73,9 @@ class Caller(CallerABC):
             1. That the socket file exists
             2. That the Socket file has the correct permissions
             3. That the version of py guppy client lib installed matches the system version
+
         :return: None, if the parameters pass all the checks
+
         """
         for key in ("address", "config"):
             if key not in self.guppy_params:

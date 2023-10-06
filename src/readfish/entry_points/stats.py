@@ -1,7 +1,4 @@
 """
-Readfish Stats Entry point
-==========================
-
 This module is the stats entry point into the Readfish package, focussed specifically
 on calculating summary information about a Readfish experiment. It parses base-called
 FASTQ files produced after a Readfish experiment and, by using the same aligner
@@ -21,31 +18,31 @@ FASTQ are demultiplexed into separate files for each combination of the Conditio
 (stop_receiving, unblock or proceed). For example:
 
 
-1. `barcode01_stop_receiving.fastq`
+    #. `barcode01_stop_receiving.fastq.gz`
 
-1. `control_region_unblock.fastq`
+    #. `control_region_unblock.fastq.gz`
 
-:return: Errors encountered during the process, if any. Returns 0 if the process completes successfully without errors.
-:rtype int:
+returns:
+    An exit code. 0 if the process completes successfully without errors, otherwise the number of errors.
 
 Command-Line Arguments
 ----------------------
 The module accepts the following command-line arguments:
 
-- `toml` (required):
+- ``toml`` (required):
     Path to the TOML file used in the Readfish experiment.
 
-- `fastq_dir` (required):
+- ``fastq_dir`` (required):
     Path to the directory containing the FASTQ files produced by the Readfish
     experiment.
 
-- `--no-paf-out` (optional):
+- ``--no-paf-out`` (optional):
     Disables the output of the alignments in PAF format. Enabled by default.
 
-- `--no-demultiplex` (optional):
+- ``--no-demultiplex`` (optional):
     If specified, the module won't demultiplex and write out FASTQ. Demultiplexing is enabled by default.
 
-- `--prom` (optional):
+- ``--prom`` (optional):
     If specified, indicates that the target platform was a PromethION.
 
 
@@ -53,23 +50,25 @@ Usage
 -----
 An example of how to use this module without outputting demultiplexed FASTQ and PAF alignments is shown below:
 
-`
-readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/ --no-paf-out --no-demultiplex
-`
+.. code-block:: bash
+
+    readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/ --no-paf-out --no-demultiplex
 
 To run and demultiplex, but not output PAF alignments
 
-`
-readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/ --no-paf-out
-`
+.. code-block:: bash
+
+    readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/ --no-paf-out
 
 To run and output PAF alignments and demutiplexed FASTQ
-`
-readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/
-`
+
+.. code-block:: bash
+
+    readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/
 
 """
-
+from __future__ import annotations
+import argparse
 from pathlib import Path
 import sys
 import logging
@@ -124,7 +123,7 @@ _cli = BASE_ARGS + (
 )
 
 
-def run(_parser, args, _extras):
+def run(_parser, args: argparse.NameSpace, _extras):
     """
     Calculates summary information about a readfish experiment. Passes fastq into the aligner
     implementation of summarise - which will print out a summary after parsing all the data.
@@ -132,11 +131,11 @@ def run(_parser, args, _extras):
     :param _parser: The parser. Unused, but must be included as targets.py requires it.
 
     :param args: Command-line arguments obtained from the command-line parser.
-    :type args: argparse.Namespace
 
     :param _extras: Additional arguments. Unused, but must be included as targets.py requires it.
 
     :returns: None
+
     """
     logger = logging.getLogger(f"readfish.{args.command}")
     channels = 3000 if args.prom else 512

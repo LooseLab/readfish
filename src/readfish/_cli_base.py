@@ -26,7 +26,7 @@ def main(argv: list[str] | None = None) -> None:
     version = f"readfish {__version__}"
     parser.add_argument("--version", action="version", version=version)
     subparsers = parser.add_subparsers(dest="command", help="Sub-commands", metavar="")
-
+    # add new entry point here
     cmds = [
         ("targets", "targets"),
         ("barcode-targets", "targets"),
@@ -34,6 +34,7 @@ def main(argv: list[str] | None = None) -> None:
         ("validate", "validate"),
         ("stats", "stats"),
     ]
+    # Entry point is imported during runtime, and added as a sub command to readfish
     for cmd, module in cmds:
         _module = importlib.import_module(f"readfish.entry_points.{module}")
         _parser = subparsers.add_parser(cmd, help=_module._help)

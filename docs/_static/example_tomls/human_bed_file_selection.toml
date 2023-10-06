@@ -24,13 +24,14 @@ debug_log = "live_reads.fq"
 
 # Aligner Configuration
 [mapper_settings.mappy]
-#               ^^^^^^ - ".mappy" specifies mappy or mappy-rs as the aligner
+#               ^^^^^^ - ".mappy" specifies mappy as the aligner.
+# Use mappy_rs for the multithreaded rust version (required on PromethION)
 # Alignment reference to use. Should be either FASTA or an MMI
 fn_idx_in = "/path/to/hg38.mmi"
 # Optional PAF output for live alignments.
 # Remove line to disable.
 debug_log = "live_alignments.paf"
-# Number of threads for indexing (mappy and mappy-rs) and mapping (mappy-rs only)
+# Number of threads for indexing (mappy and mappy-rs) and mapping (mappy_rs only)
 n_threads = 4
 
 

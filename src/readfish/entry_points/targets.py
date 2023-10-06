@@ -29,27 +29,40 @@ The format of each line is as follows:
 loop_counter  number_reads  read_id  channel  read_number  seq_length  seen_count
 decision  action  condition  barcode  previous_action  timestamp  action_overridden
 
-- loop_counter (int): The iteration number for the loop.
-- number_reads (int): The number of reads processed in this iteration.
-- read_id (str): UUID4 string representing the reads unique read_id.
-- channel (int): Channel number the read is being sequenced on.
-- read_number (int): The number this read is in the sequencing run as a whole.
-- seq_length (int): Length of the base-called signal chunk (includes any previous chunks).
-- seen_count (int): Number of times this read has been seen in previous iterations.
-- decision (str): The name of the :class:`~readfish.plugins.utils.Decision` variant taken for this read, one of `single_on, single_off, multi_on, multi_off, no_map`, or `no_seq`.
-- action (str): The name of the :class:`~readfish.plugins.utils.Action` variant sent to the sequencer for this read, one of `unblock, stop_receiving`, or `proceed`.
-- condition (str): Name of the :class:`~readfish._config._Condition` that the read has been addressed with.
-- barcode (str or None): :class: The name of the :class:`~readfish._config.Barcode` for this read if present, otherwise None.
-- previous_action (str or None): Name of the last :class:`~readfish.plugins.utils.Action` taken for a read sequenced by this channel or None if this is the first read on a channel.
-- action_overridden (bool): Indicates if the action has been overridden. Currently actions are always overridden to be `stop_receiving`.
-- timestamp (float): Current time as given by the time module in seconds.
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| Parameter         | Type        | Description                                                                                                   |
++===================+=============+===============================================================================================================+
+| loop_counter      | int         | The iteration number for the loop.                                                                            |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| number_reads      | int         | The number of reads processed in this iteration.                                                              |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| read_id           | str         | UUID4 string representing the reads unique read_id.                                                           |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| channel           | int         | Channel number the read is being sequenced on.                                                                |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| read_number       | int         | The number this read is in the sequencing run as a whole.                                                     |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| seq_length        | int         | Length of the base-called signal chunk (includes any previous chunks).                                        |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| seen_count        | int         | Number of times this read has been seen in previous iterations.                                               |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| decision          | str         | The name of the Decision variant taken for this read, see :ref:`regions-sub-tables` for values.               |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| action            | str         | The name of the Action variant sent to the sequencer for this read, see :ref:`regions-sub-tables` for values. |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| condition         | str         | Name of the Condition that the read has been addressed with.                                                  |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| barcode           | str or None | The name of the Barcode for this read if present, otherwise None.                                             |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| previous_action   | str or None | Name of the last Action taken for a read sequenced by this channel or None if first read on a chann           |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| action_overridden | bool        | Indicates if the action has been overridden. Currently, actions are always overridden to be `stop_receiving`. |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
+| timestamp         | float       | Current time as given by the time module in seconds.                                                          |
++-------------------+-------------+---------------------------------------------------------------------------------------------------------------+
 
 Actions being overridden occurs when the readfish run is a dry run and the action is unblock, or when the read is the first read seen for a channel by readfish.
 This prevents trying to unblock reads of unknown length.
-
-Example line in debug_log.tsv:
-
-1   10   cde5271b-13c2-43af-88e1-4268ab88928e  2  15  2  5 single_on  unblock  Condition_A  None  None  False   1678768540.879
 
 
 """
@@ -119,7 +132,7 @@ class Analysis:
     Arguments listed in the __init__ docs.
 
     :param client: An instance of the ReadUntilClient object
-    :param conf: readfish._config.Conf
+    :param conf: An instance of the Conf object
     :param logger: The command level logger for this module
     :param debug_log: Whether to output the Debug Log. log Name is generated. Defaults to False.
     :param throttle: The number of seconds interval between requests to the ReadUntilClient, defaults to 0.1
