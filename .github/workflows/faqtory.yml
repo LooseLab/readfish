@@ -14,7 +14,7 @@ jobs:
       - name: Run Suggest
         env:
           TITLE: ${{ github.event.issue.title }}
-        run: faqtory suggest "$TITLE" > suggest.md
+        run: faqtory suggest -c .github/faq.yml "$TITLE" > suggest.md
       - name: Read suggest.md
         id: suggest
         uses: juliangruber/read-file-action@v1
