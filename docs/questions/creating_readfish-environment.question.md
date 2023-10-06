@@ -32,5 +32,5 @@ dependencies:
   - pip:
     - git+https://github.com/nanoporetech/read_until_api@3.4.1
     - ont-pyguppy-client-lib==X.X.X
-    - git+https://github.com/LooseLab/readfish@dev_staging
+    - git+https://github.com/LooseLab/readfish@refactor
 ```

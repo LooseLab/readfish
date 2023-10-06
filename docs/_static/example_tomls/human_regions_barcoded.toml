@@ -35,7 +35,8 @@ barcode_kits = "EXP-NBD196"
 
 # Aligner Configuration
 [mapper_settings.mappy]
-#               ^^^^^^ - ".mappy" specifies mappy or mappy-rs as the aligner
+#               ^^^^^^ - ".mappy" specifies mappy as the aligner.
+# Use mappy_rs for the rust version (required on PromethION)
 # Alignment reference to use. Should be either FASTA or an MMI
 fn_idx_in = "/path/to/hg38.mmi"
 # Optional PAF output for live alignments.

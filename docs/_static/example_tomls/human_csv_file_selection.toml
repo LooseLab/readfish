@@ -23,7 +23,9 @@ address = "ipc:///tmp/.guppy/5555"  # Address of the guppy basecaller - The defa
 debug_log = "live_reads.fq"  # Fastq output for individual reads (Optional, delete line to disable)
 
 [mapper_settings.mappy]
-# Mapper Configuration for Mappy
+#               ^^^^^^ - ".mappy" specifies mappy as the aligner.
+# Use mappy_rs for the multithreaded rust version (required on PromethION)
+# Alignment reference to use. Should be either FASTA or an MMI
 fn_idx_in = "/path/to/hg38.mmi"  # Reference to map with
 n_threads = 4  # Number of threads for indexing a reference and mapping
 debug_log = "live_alignments.paf"  # Alignment output file (Optional, delete line to disable)

@@ -1,6 +1,4 @@
 """
-Readfish Statistics Module
-==========================
 
 This module contains the ReadfishStatistics class, which is designed to
 track and manage statistics pertaining to a single Readfish run. The ReadfishStatistics
@@ -15,6 +13,7 @@ new performance and read records to the existing statistics.
 
 
 :Example:
+
     >>> from readfish._statistics import ReadfishStatistics, DEBUG_STATS_LOG_FIELDS
     >>> stats = ReadfishStatistics(None)
     >>> stats.add_batch_performance(1,1)
@@ -23,6 +22,7 @@ new performance and read records to the existing statistics.
     0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (>1.00s): 0/1
     >>> print(stats.decisions)
     Counter({'single_on': 1})
+
 """
 from __future__ import annotations
 from collections import Counter

@@ -3,7 +3,7 @@
 Readfish experiments are configured using [TOML] files, which are minimal and easy-to-read markup files.
 Our configuration only uses [tables] and [arrays of tables] populated with [key-value pairs].
 The TOML file contains almost all the information required for running readfish, such as information on barcodes, control/analysis regions, what basecaller or aligner to use.
-There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish_dev/tree/refactor/docs/_static/example_tomls.
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/refactor/docs/_static/example_tomls.
 ## Data model
 
 To understand each section of the TOML file it helps to understand the work that readfish does:
@@ -44,6 +44,8 @@ The way that you tell readfish what plugin to load is by specifying it after the
 
 ```toml
 [caller_settings.guppy]
+               # ^^^^^^
+               # Chooses the Guppy plugin
 ```
 
 This indicates that readfish should use Guppy for basecalling.
@@ -117,11 +119,25 @@ This is added using:
 #### minimap2
 
 Currently we provide two mapping plugins, [`mappy`], and [`mappy-rs`].
-Happily these both take the same fields, and are actually chosen by availability, with `mappy-rs` taking precedence, so the two options can be treated interchangeably.
+Happily these both take the same fields in the TOML file, so you can switch between them without changing your TOML file parameters.
 
-Currently, these plugins take the same TOML file plugins section, and which Aligner is used is chosen based on availability.
-`mappy-rs` is the default, and `mappy` is only used if `mappy-rs` fails to import.
-It is worth noting that for _PromethION_ runs, `mappy` will not be able to keep up and `mappy-rs` with at least four threads is recommended.
+Currently, these plugins take the same TOML file plugins section, and which Aligner is used is chosen based on the TOML mapper_settings section name.
+.. warning::
+    It is worth noting that for _PromethION_ runs, `mappy` will not be able to keep up and `mappy-rs` with at least four threads is recommended.
+
+For mappy (single threaded)
+```toml
+[mapper_settings.mappy]
+               # ^^^^^^
+               # Chooses the mappy plugin
+```
+For mappy-rs (multi threaded)
+
+```toml
+[mapper_settings.mappy_rs]
+               # ^^^^^^
+               # Chooses the mappy-rs plugin
+```
 
 The `fn_idx_in` field is the path to the reference, accepting either a precomputed `minimap2` index, an `.mmi` file, or a uncompressed or gzipped `fasta` file.
 We **strongly prefer** an already created MMI.

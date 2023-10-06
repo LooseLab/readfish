@@ -612,6 +612,7 @@ class Targets:
         :raises ValueError: If the input intervals are not properly formatted.
 
         :Examples:
+
         >>> from collections import Counter
         >>> intervals = Counter({(1.0, 2.0): 1, (2.0, 3.0): 1, (3.0, 4.0): 1})
         >>> Targets._merge_intervals(intervals)
@@ -689,11 +690,13 @@ class Targets:
         :return: A tuple containing the start and end offsets.
 
         :Examples:
+
         >>> targets = Targets(["chr1,10,20,+", "chr1,15,30,+"], padding=10)
         >>> targets.get_offset(Strand.forward)
         (-10, 0)
         >>> targets.get_offset(Strand.reverse)
         (0, 10)
+
         """
         start_offset, end_offset = -self.padding, 0
         if strand == Strand.reverse:

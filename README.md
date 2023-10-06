@@ -26,15 +26,33 @@ the read in progress and so direct sequencing capacity towards reads of interest
 **This implementation of readfish requires Guppy version >= 6.0.0 and MinKNOW version core >= 5.0.0 . It will not work on earlier versions.**
 
 
-**Currently we only recommend LINUX for running readfish. We have not had
-effective performance on other platforms to date.**
-
 The code here has been tested with Guppy in GPU mode using GridION Mk1 and
 NVIDIA RTX2080 on live sequencing runs and an NVIDIA GTX1080 using playback
 on a simulated run (see below for how to test this).
 This code is run at your own risk as it DOES affect sequencing output. You
 are **strongly** advised to test your setup prior to running (see below for
 example tests).
+
+## Supported Sequencing Platforms
+
+The following platforms are supported:
+
+- **PromethION** Big Boy
+- **GridION** Box
+- **MinION** Smol Boy
+
+> [!WARNING]
+> PromethION support is currently only available using the Mappy-rs plugin only. See [here](docs/toml.md#aligner) for more information.
+## Supported OS's
+ The following OSs are supported:
+
+ - **Linux** yay
+ - **MacOS** boo
+
+
+> [!NOTE]  
+> Note - MacOS supports is on MinKNOW 5.7 and greater using Dorado basecaller only.
+
 
 <!-- begin-short -->
 
@@ -84,7 +102,7 @@ conda env create -f readfish_env.yml
 conda activate readfish
 ```
 
-#### Installing with development dependencies
+### Installing with development dependencies
 
 A conda `yaml` file is available for installing with dev dependencies - [development.yml](https://github.com/LooseLab/readfish/blob/e30f1fa8ac7a37bb39e9d8b49251426fe1674c98/docs/development.yml)
 
@@ -96,7 +114,7 @@ conda activate readfish_dev
 
 | <h2>‼️ Important! </h2> |
 |:---------------------------|
-|  The listed `ont-pyguppy-client-lib` version will probably not match the version installed on your system. To fix this, Please see this [FAQ question - connection error timed out.](docs/FAQ.md#connection-error-timed_out-timeout-waiting-for-reply-to-request-load_config)      |
+|  The listed `ont-pyguppy-client-lib` version will probably not match the version installed on your system. To fix this, Please see this [issue](https://github.com/LooseLab/readfish/issues/221#issuecomment-1381529409)     |
 
 
 [ONT's Guppy GPU](https://community.nanoporetech.com/downloads) should be installed and running as a server.
@@ -147,22 +165,49 @@ See '<command> --help' to read about a specific sub-command.
 TOML File
 ---------
 For information on the TOML files see [TOML.md](docs/toml.md).
-There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish_dev/tree/refactor/docs/_static/example_tomls.
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/refactor/docs/_static/example_tomls.
 
 <details style="margin-top: 10px; margin-bottom: 10px" open><summary id="testing"><h1 style="display: inline">Testing</h1></summary>
 <!-- begin-test -->
 To test readfish on your configuration we recommend first running a playback experiment to test unblock speed and then selection.
 
-<!-- #### Configuring bulk FAST5 file Playback -->
+<!-- begin-simulate -->
+<!-- Adding a simulated position -->
+The following steps should all happen with a configuration (test) flow cell inserted into the target device.
+A simulated device can also be created within MinKNOW, following these instructions. This assumes that you are runnning MinKNOW locally, using default ports. If this is not the case a developer API token is required on the commands as well, as well as setting the correct port.
 
-<details style="margin-top: 10px"><summary id="configuring-bulk-fast5-file"><h3 style="display: inline;">Configuring bulk FAST5 file Playback</h3></summary>
-1. Download an open access bulk FAST5 file from
-[here](http://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5).
-This file is 21Gb so make sure you have sufficient space.
+1. Linux
 
-The following should all happen with a configuration (test) flow cell inserted into the target device.
-A simulated device can also be created within MinKNOW, following these instructions
+    In the readfish virtual environment we created earlier:
+    - See help 
+    ```console
+    python -m minknow_api.examples.manage_simulated_devices --help
+    ```
+    - Add Minion position
+    ```console
+    python -m minknow_api.examples.manage_simulated_devices --add MS00000
+    ```
+    - Add PromethION position
+    ```console
+    python -m minknow_api.examples.manage_simulated_devices --prom --add S0
+    ```
+1. Mac
 
+    In the readfish virtual environment we created earlier:
+    - See help 
+    ```console
+    python -m minknow_api.examples.manage_simulated_devices --help
+    ```
+    - Add Minion position
+    ```console
+    python -m minknow_api.examples.manage_simulated_devices --add MS00000
+    ```
+    - Add PromethION position
+    ```console
+    python -m minknow_api.examples.manage_simulated_devices --prom --add S0
+    ```
+
+As a back up it is possible to restart MinKNOW with a simulated device. This is done as follows:
 1. Stop `minknow`
 
     On Linux:
@@ -179,10 +224,38 @@ A simulated device can also be created within MinKNOW, following these instructi
 
 You _may_ need to add the host `127.0.0.1` in the MinKNOW UI.
 
+<!-- end-simulate -->
+
+<!-- #### Configuring bulk FAST5 file Playback -->
+
+<details style="margin-top: 10px"><summary id="configuring-bulk-fast5-file"><h3 style="display: inline;">Configuring bulk FAST5 file Playback</h3></summary>
+
+[Download an open access bulk FAST5 file][bulk].
+This file is 21Gb so make sure you have sufficient space.
+
+<!-- begin-new-playback -->
+Previously to set up Playback using a pre-recorded bulk FAST5 file, it was necessary to edit the sequencing configuration file that MinKNOW uses. This is no longer the case. The following steps are left after this section for reference only.
+
+To start sequencing using playback, simply begin setting up the run in the MinKNOW UI as you would usually. 
+Under Run Options you can select Simulated Playback and browse to the downloaded Bulk Fast5 file.
+
+
+![Run Options Screenshot](./
+_static/images/simulated_playback_run_options.png)
+
+[bulk]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
+
+<!-- end-new-playback -->
+> [!NOTE]  
+> Note - The below instructions, whilst they will still work, are no longer required. They are left here for reference only. As of Minknow 5.7, it is possible to select a bulk FAST5 file for playback in the MinKNOW UI.
+<!-- begin-obsolete -->
+
+<details style="margin-top: 10px"><summary id="configuring-sequencing-toml"><h3 style="display: inline;">Old method Configuring bulk FAST5 file Playback</h3></summary>
 To setup a simulation the sequencing configuration file that MinKNOW uses must be edited.
 Steps:
+
 1. [Download an open access bulk FAST5 file][bulk]. This file is 21Gb so make sure you have plenty of space. This file is a record of a sequencing run using R9.4.1 pores, is non-barcoded and the library was produced using DNA extracted from the NA12878 cell line.
-1. Copy file to the `user_scripts` folder:
+1. Copy a sequencing TOML file to the `user_scripts` folder:
 
     On Mac if your MinKNOW output directory is the default:
 
@@ -199,21 +272,20 @@ Steps:
     ```
 
 1. Edit the copied file to add the following line under the line that reads "`[custom_settings]`":
-   ```text
+    ```text
     simulation = "/full/path/to/your_bulk.FAST5"
-   ```
-   Change the text between the quotes to point to your downloaded bulk FAST5 file.
-
-    [bulk]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
-    [ONT]: https://nanoporetech.com
-
+    ``` 
+    Change the text between the quotes to point to your downloaded bulk FAST5 file.
+    <!-- end-obsolete -->
 1. Optional, If running GUPPY in GPU mode, set the parameter `break_reads_after_seconds = 1.0`
 to `break_reads_after_seconds = 0.4`. This results in a smaller read chunk. For R10.4 this is not required but can be tried. For adaptive sampling on PromethION, this should be left at 1 second.
 1. In the MinKNOW GUI, right click on a sequencing position and select `Reload Scripts`.
 Your version of MinKNOW will now playback the bulkfile rather than live sequencing.
 1. Start a sequencing run as you would normally, selecting the corresponding flow
 cell type to the edited script (here FLO-MIN106) as the flow cell type.
-1. The run should start and immediately begin a mux scan. Let it run for around
+</details>
+
+Whichever instructions you followed, the run should start and immediately begin a mux scan. Let it run for around
 five minutes after which your read length histogram should look as below:
     ![alt text](/_static/images/control.png "Control Image")
 </details>
@@ -246,6 +318,10 @@ and configure a TOML file.
 1. First make a local copy of the example TOML file:
     ```console
     curl -O https://raw.githubusercontent.com/LooseLab/readfish/master/docs/_static/example_tomls/human_chr_selection.toml
+    ```
+1. If on PromethION, edit the `mapper_settings.mappy` section to read:
+    ```toml
+    [mapper_settings.mappy-rs]
     ```
 1. Modify the `fn_idx_in` field in the file to be the full path to a [minimap2](https://github.com/lh3/minimap2) index of the human genome.
 
@@ -415,3 +491,5 @@ Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, 
 And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com/tim_bassford) from [@TurbineCreative](https://twitter.com/TurbineCreative)!
 
 <!-- end-epilog -->
+[bulk]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
+[ONT]: https://nanoporetech.com
