@@ -115,5 +115,5 @@ jobs:
     - name: Build package
       run: python -m hatchling build
     - name: Publish package distributions to PyPI
-      if: 'startsWith(github.ref, "refs/tags/")'
+      if: startsWith(github.ref, 'refs/tags/')
       uses: pypa/gh-action-pypi-publish@release/v1
