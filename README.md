@@ -242,7 +242,8 @@ Under Run Options you can select Simulated Playback and browse to the downloaded
 
 ![Run Options Screenshot](https://github.com/LooseLab/readfish/blob/247185a1bdcbe1275c55a6b4b1e2c7273213af91/docs/_static/images/simulated_playback_run_options.png?raw=true "Run Options Screenshot")
 
-[bulk]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
+[bulk - R9.4.1]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
+[bulk - R10.4 5khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/GXB02001_20230509_1250_FAW79338_X3_sequencing_run_NA12878_B1_19382aa5_ef4362cd.fast5
 
 <!-- end-new-playback -->
 > [!NOTE]  
@@ -253,7 +254,7 @@ Under Run Options you can select Simulated Playback and browse to the downloaded
 To setup a simulation the sequencing configuration file that MinKNOW uses must be edited.
 Steps:
 
-1. [Download an open access bulk FAST5 file][bulk]. This file is 21Gb so make sure you have plenty of space. This file is a record of a sequencing run using R9.4.1 pores, is non-barcoded and the library was produced using DNA extracted from the NA12878 cell line.
+1. Download an open access bulkfile - either [R9.4.1][bulk - R9] or [R10 (5khz)][bulk - R10 5khz]. These files are aproximately 21Gb so make sure you have plenty of space. The files are from NA12878 sequencing data using either R9.4.1 or R10.4 pores. Data is not barcoded and the libraries were ligation preps from DNA extracted from cell lines.
 1. Copy a sequencing TOML file to the `user_scripts` folder:
 
     On Mac if your MinKNOW output directory is the default:
@@ -602,5 +603,6 @@ Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, 
 And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com/tim_bassford) from [@TurbineCreative](https://twitter.com/TurbineCreative)!
 
 <!-- end-epilog -->
-[bulk]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
+[bulk - R9]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
+[bulk - R10 5khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/GXB02001_20230509_1250_FAW79338_X3_sequencing_run_NA12878_B1_19382aa5_ef4362cd.fast5
 [ONT]: https://nanoporetech.com
