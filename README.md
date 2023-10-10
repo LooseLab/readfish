@@ -240,7 +240,7 @@ Previously to set up Playback using a pre-recorded bulk FAST5 file, it was neces
 To start sequencing using playback, simply begin setting up the run in the MinKNOW UI as you would usually. 
 Under Run Options you can select Simulated Playback and browse to the downloaded Bulk Fast5 file.
 
-![Run Options Screenshot](_static/images/simulated_playback_run_options.png)
+![Run Options Screenshot](docs/_static/images/simulated_playback_run_options.png)
 
 [bulk]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
 
