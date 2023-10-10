@@ -76,7 +76,7 @@ jobs:
         run: |
           python -m pip install coverage[toml]
           python -m coverage combine
-          python -m coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
+          python -m coverage report --skip-empty --fail-under=72 --format=markdown >> $GITHUB_STEP_SUMMARY
 
   build-package:
     name: Build python package
