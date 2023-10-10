@@ -301,9 +301,9 @@ every single read on the flow cell.
     ```
 1. Leave the run for a further 5 minutes and observe the read length histogram.
 If unblocks are happening correctly you will see something like the below:
-    ![Unblock All Screenshot](docs/_static/images/PlaybackUnblockAll30minutes.png "Unblock Image")
+    ![Unblock All Screenshot](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackUnblockAll30minutes.png?raw=true "Unblock Image")
 A closeup of the unblock peak shows reads being unblocked quickly:
-    ![alt text](docs/_static/images/PlaybackUnblockAllcloseup.png "Closeup Unblock Image")
+    ![Closeup Unblock Image](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackUnblockAllcloseup.png?raw=true "Closeup Unblock Image")
 
 If you are happy with the unblock response, move on to testing base-calling.
 
@@ -446,11 +446,11 @@ If you are happy with the speed of mapping, move on to testing a selection.
     ```
  3. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
  4. After 15 minutes it should look something like this:
-        ![alt text](docs/_static/images/PlaybackRunTargeted.png "Playback Unblock Image")
+        ![Playback Unblock Image](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackRunTargeted.png?raw=true "Playback Unblock Image")
 If one zooms in on the unblock peak:
-        ![alt text](docs/_static/images/PlaybackRunTargetedUnblockPeak.png "Closeup Playback Unblock Image")
+        ![Closeup Playback Unblock Image](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackRunTargetedUnblockPeak.png?raw=true "Closeup Playback Unblock Image")
 And if one zooms to exclude the unblock peak:
-        ![alt text](docs/_static/images/PlaybackRunTargetedPeak.png "Closeup Playback Unblock Image")
+        ![Closeup Playback On Target Image](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackRunTargetedPeak.png?raw=true "Closeup Playback On Target Image")
 NOTE: These simulations are also run on Apple Silicon - GPU platform performance may vary - please contact us via github issues for support.
 
 
