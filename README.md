@@ -286,7 +286,7 @@ cell type to the edited script (here FLO-MIN106) as the flow cell type.
 
 Whichever instructions you followed, the run should start and immediately begin a mux scan. Let it run for around
 five minutes after which your read length histogram should look as below:
-![Control Image Screenshot](docs/_static/images/PlaybackControlRun30Minutes.png "Control Image 30 Minutes")
+![Control Image Screenshot](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackControlRun30Minutes.png?raw=true "Control Image 30 Minutes")
 
 </details>
 
