@@ -235,12 +235,12 @@ You _may_ need to add the host `127.0.0.1` in the MinKNOW UI.
 This file is 21Gb so make sure you have sufficient space.
 
 <!-- begin-new-playback -->
-Previously to set up Playback using a pre-recorded bulk FAST5 file, it was necessary to edit the sequencing configuration file that MinKNOW uses. This is no longer the case. The following steps are left after this section for reference only.
+Previously to set up Playback using a pre-recorded bulk FAST5 file, it was necessary to edit the sequencing configuration file that MinKNOW uses. This is currently no longer the case. The "old method" steps are left after this section for reference only or if the direct playback from a bulk file option is removed in future.
 
 To start sequencing using playback, simply begin setting up the run in the MinKNOW UI as you would usually. 
 Under Run Options you can select Simulated Playback and browse to the downloaded Bulk Fast5 file.
 
-![Run Options Screenshot](https://github.com/LooseLab/readfish/blob/247185a1bdcbe1275c55a6b4b1e2c7273213af91/docs/_static/images/simulated_playback_run_options.png?raw=true)
+![Run Options Screenshot](https://github.com/LooseLab/readfish/blob/247185a1bdcbe1275c55a6b4b1e2c7273213af91/docs/_static/images/simulated_playback_run_options.png?raw=true "Run Options Screenshot")
 
 [bulk]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
 
@@ -286,7 +286,8 @@ cell type to the edited script (here FLO-MIN106) as the flow cell type.
 
 Whichever instructions you followed, the run should start and immediately begin a mux scan. Let it run for around
 five minutes after which your read length histogram should look as below:
-    ![alt text](/_static/images/control.png "Control Image")
+![Control Image Screenshot](docs/_static/images/PlaybackControlRun30Minutes.png "Control Image 30 Minutes")
+
 </details>
 
 <details style="margin-top: 10px">
@@ -300,11 +301,13 @@ every single read on the flow cell.
     ```
 1. Leave the run for a further 5 minutes and observe the read length histogram.
 If unblocks are happening correctly you will see something like the below:
-    ![alt text](/_static/images/Unblock.png "Unblock Image")
+    ![Unblock All Screenshot](docs/_static/images/PlaybackUnblockAll30minutes.png "Unblock Image")
 A closeup of the unblock peak shows reads being unblocked quickly:
-    ![alt text](/_static/images/Unblock_closeup.png "Closeup Unblock Image")
+    ![alt text](docs/_static/images/PlaybackUnblockAllcloseup.png "Closeup Unblock Image")
 
 If you are happy with the unblock response, move on to testing base-calling.
+
+Note: The plots here are generated from running readfish unblock-all on an Apple Silicon laptop. The unblock response may be faster on a GPU server.
 </details>
 
 <details style="margin-top: 10px">
@@ -312,7 +315,10 @@ If you are happy with the unblock response, move on to testing base-calling.
 
 To test selective sequencing you must have access to a
 [guppy basecall server](https://community.nanoporetech.com/downloads/guppy/release_notes) (>=6.0.0)
+
 and configure a TOML file.
+
+NOTE: guppy and dorado are used here interchangeably as the basecall server. Dorado is gradually replacing guppy. All readfish code is compatible with Guppy >=6.0.0 and dorado >=0.4.0
 
 1. First make a local copy of the example TOML file:
     ```console
@@ -440,9 +446,12 @@ If you are happy with the speed of mapping, move on to testing a selection.
     ```
  3. Allow the run to proceed for at least 15 minutes (making sure you are writing out read data!).
  4. After 15 minutes it should look something like this:
-        ![alt text](/_static/images/PlaybackRunUnblock.png "Playback Unblock Image")
-Zoomed in on the unblocks:
-        ![alt text](/_static/images/PlaybackRunUnblockCloseUp.png "Closeup Playback Unblock Image")
+        ![alt text](docs/_static/images/PlaybackRunTargeted.png "Playback Unblock Image")
+If one zooms in on the unblock peak:
+        ![alt text](docs/_static/images/PlaybackRunTargetedUnblockPeak.png "Closeup Playback Unblock Image")
+And if one zooms to exclude the unblock peak:
+        ![alt text](docs/_static/images/PlaybackRunTargetedPeak.png "Closeup Playback Unblock Image")
+NOTE: These simulations are also run on Apple Silicon - GPU platform performance may vary - please contact us via github issues for support.
 
 
  </details>
@@ -450,9 +459,18 @@ Zoomed in on the unblocks:
  </details>
 <details style="margin-top: 10px">
 <summary id="Analysing-results-with-readfish-stats"><h3 style="display: inline;">Analysing results with readfish stats</h3></summary>
+Once a run is complete, it can be analysed with the readfish stats command.
 
-``` 
-+--********---------+---------+-------------+------------------+---------+-----------------+--------------------+-----------+---------+-----------+------------+----------+-----------+----------------+-----------+
+```console
+readfish stats <path/to/toml/file.toml> <path/to/run/folder>
+```
+
+Readfish stats will use the initial experiment configuration to analyse the final sequence data and output a formatted table to the screen.
+
+The table is broken into two sections. For clarity these are shown individually below.
+
+```
++-----------+---------+-------------+------------------+---------+-----------------+--------------------+-----------+---------+-----------+------------+----------+-----------+----------------+-----------+
 | Condition | Reads   | Alignments                               | Yield                                                      | Median read                       | Number of | Percent target | Estimated |
 |           |         |                                          |                                                            | lengths                           | targets   |                | coverage  |
 +-----------+---------+-------------+------------------+---------+-----------------+--------------------+-----------+---------+-----------+------------+----------+-----------+----------------+-----------+
@@ -465,6 +483,14 @@ Zoomed in on the unblocks:
 | Condition | Reads   | Alignments                               | Yield                                                      | Median read                       | Number of | Percent target | Estimated |
 |           |         |                                          |                                                            | lengths                           | targets   |                | coverage  |
 +-----------+---------+-------------+------------------+---------+-----------------+--------------------+-----------+---------+-----------+------------+----------+-----------+----------------+-----------+
+```
+In the first table, the data is summarised by condition as defined in the TOML file. 
+In this example we use a single condition - "hum_test". 
+The total number of reads is shown, along with the number of alignments broken down into On-Target and Off-Target. 
+In addition, we show yield, median read length and a summary of the number of targets. 
+
+
+```
 Contigs:
 +----------------+----------+---------------+--------+----------+--------+---------------+-----------------+--------+--------------------+--------------------+-----------+------------+-----------+------------+----------+-----------+------------+----------+-----------+----------------+-----------+
 | Condition Name | hum_test                                                                                                                                                                                                                                                                             |
@@ -527,7 +553,12 @@ Contigs:
 | hum_test       | unmapped | 0             | 0      | 3,297    | 3,297  | 0 (0.00%)     | 3,297 (100.00%) | 3,297  | 0 b (0.00%)        | 9.10 Mb (100.00%)  | 9.10 Mb   | 0:0.00     | 0 b       | 508 b      | 508 b    | 0 b       | 16.81 Kb   | 16.81 Kb | 0         | 0.00%          | 0.00 X    |
 +----------------+----------+---------------+--------+----------+--------+---------------+-----------------+--------+--------------------+--------------------+-----------+------------+-----------+------------+----------+-----------+------------+----------+-----------+----------------+-----------+
 ```
+The lower portion of the table shows the data broken down by contig in the reference (and so can be very long if using a complex reference!). 
+Again data are broken down by On and Off target. Read counts, yield, median and N50 read lengths are presented. 
+Finally we estimate the proportion of reads on target and an estimate of coverage.
 
+In this experiment, we were targeting chromosomes 20 and 21. As this is a playback run there is no effect on yield but you can see a clear effect on read length.
+The read length N40 and Median is higher for chromosomes 20 and 21 as expected. If running on more performant systems, the anticipated difference would be higher.
 </details>
 
 <!-- end-test -->
