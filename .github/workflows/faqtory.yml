@@ -4,6 +4,8 @@ on:
     types: [opened]
 jobs:
   add-comment:
+    # https://docs.github.com/en/actions/learn-github-actions/expressions#example-matching-an-array-of-strings
+    if: ${{ !contains(fromJSON('["alexomics", "Adoni5", "mattloose"]'), github.actor) }}
     runs-on: ubuntu-latest
     permissions:
       issues: write

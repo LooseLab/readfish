@@ -2,14 +2,12 @@ name: CI
 
 on:
   push:
+    branches: [refactor, main]
+    tags: ["*"]
   schedule:
-    - cron:  '0 0 * * SUN'
+    - cron:  '0 8 * * MON'
   pull_request:
-    branches:
-      - refactor
-      - main
-    types:
-      - closed
+    branches: [refactor, main]
   workflow_dispatch:
 
 env:
@@ -19,17 +17,20 @@ jobs:
   pre_commit:
     name: "🅿️ pre-commit"
     runs-on: "ubuntu-latest"
+    timeout-minutes: 5
     steps:
       - uses: "actions/checkout@v4"
       - uses: "actions/setup-python@v4"
         with:
           python-version: ${{env.PYTHON_LATEST}}
+          cache: pip
       - uses: "pre-commit/action@v3.0.0"
 
   tests:
     name: "Test Python ${{ matrix.python-version }}"
     runs-on: "ubuntu-latest"
     needs: "pre_commit"
+    timeout-minutes: 5
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
@@ -38,56 +39,121 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "${{ matrix.python-version }}"
+          cache: pip
       - name: "Run tests"
         run: |
           set -xe
           python -VV
           python -m site
           python -m pip install -U pip setuptools wheel
-          python -m pip install -e ".[dev]"
-          python -m pytest -sv --doctest-modules
+          python -m pip install -e ".[tests]"
+          coverage run -pm pytest
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-data
+          path: .coverage*
+          if-no-files-found: ignore
 
+  coverage:
+    name: Combine coverage
+    runs-on: ubuntu-latest
+    needs: tests
 
-  deploy-docs:
-    runs-on: ubuntu-22.04
-    needs: "pre_commit"
-    permissions:
-      contents: write
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v3
+      - uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
+          python-version: ${{ env.PYTHON_LATEST }}
+          cache: pip
 
-      - name: Upgrade pip
+      - name: Download coverage data
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-data
+
+      - name: Combine coverage
         run: |
-          # install pip=>20.1 to use "pip cache dir"
-          python3 -m pip install --upgrade pip
+          python -m pip install coverage[toml]
+          python -m coverage combine
+          python -m coverage report --skip-empty --fail-under=72 --format=markdown >> $GITHUB_STEP_SUMMARY
 
-      - name: Get pip cache dir
-        id: pip-cache
-        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
+  build-package:
+    name: Build python package
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
         with:
-          path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          python-version: ${{ env.PYTHON_LATEST }}
+          cache: pip
+      - name: Build package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build
+          python -m build
+      - name: Upload built package
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-package
+          path: dist/
+          if-no-files-found: error
 
-      - name: Install dependencies
-        run: python3 -m pip install .[docs]
+  build-docs:
+    name: Build HTML docs
+    runs-on: ubuntu-latest
+    needs: "pre_commit"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_LATEST }}
+          cache: pip
 
-      - run: cd docs && make html
+      - name: Build docs
+        run: |
+          python -m pip install .[docs]
+          cd docs
+          make html
+      - name: Upload built HTML
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-docs
+          path: docs/_build/html/
+          if-no-files-found: error
 
-      - name: Deploy
+
+  deploy:
+    name: Deploy docs and package
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
+    needs:
+      - build-docs
+      - build-package
+    environment:
+      name: PyPI
+      url: https://pypi.org/p/readfish
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Download HTML docs
+        uses: actions/download-artifact@v3
+        with:
+          name: html-docs
+          path: _build/html
+      - name: Download python package
+        uses: actions/download-artifact@v3
+        with:
+          name: built-package
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+      - name: Deploy docs to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
-        if: github.event.pull_request.merged == true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/_build/html/
+          publish_dir: _build/html/
