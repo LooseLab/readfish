@@ -47,7 +47,7 @@ jobs:
           python -m site
           python -m pip install -U pip setuptools wheel
           python -m pip install -e ".[tests]"
-          coverage -m pytest
+          coverage run -m pytest
       - name: Upload coverage data
         uses: actions/upload-artifact@v3
         with:
