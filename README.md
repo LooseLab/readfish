@@ -303,7 +303,7 @@ every single read on the flow cell.
 If unblocks are happening correctly you will see something like the below:
     ![Unblock All Screenshot](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackUnblockAll30minutes.png?raw=true "Unblock Image")
 A closeup of the unblock peak shows reads being unblocked quickly:
-    ![Closeup Unblock Image](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackUnblockAllcloseup.png?raw=true "Closeup Unblock Image")
+    ![Closeup Unblock Image](https://github.com/LooseLab/readfish/raw/feature/readme_image_update/docs/_static/images/PlaybackUnblockAllCloseUp.png?raw=true "Closeup Unblock Image")
 
 If you are happy with the unblock response, move on to testing base-calling.
 
