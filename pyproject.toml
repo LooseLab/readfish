@@ -47,7 +47,7 @@ readfish = "readfish._cli_base:main"
 [project.optional-dependencies]
 # Development dependencies
 docs = ["sphinx-copybutton", "furo", "myst-parser", "faqtory"]
-tests = ["pytest"]
+tests = ["pytest", "coverage[toml]"]
 tests-mappy = ["readfish[tests,mappy,guppy]"]
 dev = ["readfish[all,docs,tests]"]
 # Running dependencies, this is a little bit clunky but works for now
@@ -82,3 +82,4 @@ testpaths = [
 markers = [
     "alignment: marks tests which rely on loading or using Mappy or Mappy-rs aligners, used to test with both. (deselect with '-m \"not slow\", select with '-k alignment')",
 ]
+addopts = ["-ra", "--doctest-modules"]
