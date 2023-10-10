@@ -558,7 +558,7 @@ Again data are broken down by On and Off target. Read counts, yield, median and 
 Finally we estimate the proportion of reads on target and an estimate of coverage.
 
 In this experiment, we were targeting chromosomes 20 and 21. As this is a playback run there is no effect on yield but you can see a clear effect on read length.
-The read length N40 and Median is higher for chromosomes 20 and 21 as expected. If running on more performant systems, the anticipated difference would be higher.
+The read length N50 and Median is higher for chromosomes 20 and 21 as expected. If running on more performant systems, the anticipated difference would be higher.
 </details>
 
 <!-- end-test -->
