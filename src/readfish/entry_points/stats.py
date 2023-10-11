@@ -84,12 +84,13 @@ from readfish_summarise.summarise import _fastq
 
 _help = "Readfish experiment summary stats"
 _cli = BASE_ARGS + (
-    ("toml", dict(help="TOML file used in the readfish experiment.")),
+    ("--toml", dict(help="TOML file used in the readfish experiment.", required=True)),
     (
-        "fastq_dir",
+        "--fastq_dir",
         dict(
             help="Path to the directory containing the FASTQ files produced by the readfish experiment",
             type=Path,
+            required=True,
         ),
     ),
     (
@@ -116,7 +117,14 @@ _cli = BASE_ARGS + (
     (
         "--prom",
         dict(
-            help="Use this flag if the target platform was a PromethION",
+            help="Use this flag if the target platform was a PromethION. Disabled by default.",
+            action="store_true",
+        ),
+    ),
+    (
+        "--html",
+        dict(
+            help="Output a HTML file of the summary. Disabled by default.",
             action="store_true",
         ),
     ),
