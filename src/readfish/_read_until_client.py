@@ -9,7 +9,7 @@ from pathlib import Path
 
 from minknow_api.acquisition_pb2 import AcquisitionState
 from minknow_api import protocol_service, acquisition_service
-from read_until import ReadUntilClient
+from readfish.read_until.base import ReadUntilClient
 from readfish._loggers import setup_logger
 from grpc import RpcError
 

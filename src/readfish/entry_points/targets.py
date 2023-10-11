@@ -76,8 +76,8 @@ from pathlib import Path
 from typing import Any
 
 # Third party imports
-from read_until.read_cache import AccumulatingCache
-from read_until import ReadUntilClient
+from readfish.read_until.read_cache import AccumulatingCache
+from readfish.read_until import ReadUntilClient
 from minknow_api import protocol_service
 
 # Library

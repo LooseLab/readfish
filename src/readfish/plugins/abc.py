@@ -20,7 +20,7 @@ from readfish._config import Region, Barcode
 from readfish.plugins.utils import Result
 
 import numpy as np
-from read_until.base import CALIBRATION
+from readfish.read_until.base import CALIBRATION
 
 if TYPE_CHECKING:
     import minknow_api
