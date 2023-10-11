@@ -412,13 +412,19 @@ class Analysis:
                     decision=action.name,
                     condition=condition.name,
                     barcode=result.barcode,
-                    previous_action=previous_action.name
-                    if previous_action is not None
-                    else previous_action,
+                    previous_action=(
+                        previous_action.name
+                        if previous_action is not None
+                        else previous_action
+                    ),
                     action_overridden=action_overridden,
                     timestamp=time.time(),
                     # Anything below here is not included in the Debug log
-                    region_name=self.conf.get_region(result.channel).name,
+                    region_name=(
+                        _region.name
+                        if (_region := self.conf.get_region(result.channel))
+                        else "flowcell"
+                    ),
                 )
 
             #######################################################################
