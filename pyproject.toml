@@ -35,7 +35,6 @@ dependencies = [
     "rtoml",
     "more_itertools",
     'exceptiongroup ; python_version<"3.11"',
-    "read_until @ git+https://github.com/nanoporetech/read_until_api@v3.4.1",
     "readfish_summarise >= 0.2.5",
     "readfish[all]",
 ]
@@ -82,4 +81,4 @@ testpaths = [
 markers = [
     "alignment: marks tests which rely on loading or using Mappy or Mappy-rs aligners, used to test with both. (deselect with '-m \"not slow\", select with '-k alignment')",
 ]
-addopts = ["-ra", "--doctest-modules"]
+addopts = ["-ra", "--doctest-modules", "--ignore=src/readfish/read_until/base.py"]
