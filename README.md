@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/LooseLab/readfish/raw/dev_staging/examples/images/readfish_logo.jpg">
+  <img src="https://github.com/LooseLab/readfish/blob/main/docs/_static/readfish_logo.jpg?raw=true">
 </p>
 
 If you are anything like us (Matt), reading a README is the last thing you do when running code.
