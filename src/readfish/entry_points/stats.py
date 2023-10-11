@@ -66,6 +66,12 @@ To run and output PAF alignments and demutiplexed FASTQ
 
     readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/
 
+To run and output PAF alignments and demutiplexed FASTQ, and output a HTML summary file at summary_adaptive.html
+
+.. code-block:: bash
+
+    readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/ --html summary_adaptive
+
 """
 from __future__ import annotations
 import argparse
@@ -84,12 +90,13 @@ from readfish_summarise.summarise import _fastq
 
 _help = "Readfish experiment summary stats"
 _cli = BASE_ARGS + (
-    ("toml", dict(help="TOML file used in the readfish experiment.")),
+    ("--toml", dict(help="TOML file used in the readfish experiment.", required=True)),
     (
-        "fastq_dir",
+        "--fastq-directory",
         dict(
             help="Path to the directory containing the FASTQ files produced by the readfish experiment",
             type=Path,
+            required=True,
         ),
     ),
     (
@@ -116,8 +123,16 @@ _cli = BASE_ARGS + (
     (
         "--prom",
         dict(
-            help="Use this flag if the target platform was a PromethION",
+            help="Use this flag if the target platform was a PromethION. Disabled by default.",
             action="store_true",
+        ),
+    ),
+    (
+        "--html",
+        dict(
+            help="Filepath to output a HTML file of the summary. Will append .html to given filename/path. Disabled by default.",
+            type=Path,
+            default=None,
         ),
     ),
 )
@@ -152,11 +167,12 @@ def run(_parser, args: argparse.NameSpace, _extras):
     try:
         _fastq(
             args.toml,
-            args.fastq_dir,
+            args.fastq_directory,
             demultiplex=args.no_demultiplex,
             paf_out=args.no_paf_out,
             prom=args.prom,
             csv=args.no_csv,
+            html=args.html,
         )
     except Exception as exc:
         logger.error("Fastq data couldn't be summarised, see below for details:")
