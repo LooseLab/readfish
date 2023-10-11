@@ -24,6 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
@@ -48,7 +49,7 @@ readfish = "readfish._cli_base:main"
 docs = ["sphinx-copybutton", "furo", "myst-parser", "faqtory"]
 tests = ["pytest", "coverage[toml]"]
 tests-mappy = ["readfish[tests,mappy,guppy]"]
-dev = ["readfish[all,docs,tests]"]
+dev = ["readfish[all,docs,tests]", "pre-commit"]
 # Running dependencies, this is a little bit clunky but works for now
 mappy = ["mappy"]
 mappy-rs = ["mappy-rs >= 0.0.6"]
@@ -56,7 +57,7 @@ guppy = ["ont_pyguppy_client_lib"]
 all = ["readfish[mappy,mappy-rs,guppy]"]
 
 [project.urls]
-# Documentation = "https://looselab.github.io/readfish"
+Documentation = "https://looselab.github.io/readfish"
 "Bug Tracker" = "https://github.com/LooseLab/readfish/issues"
 "Source Code" = "https://github.com/LooseLab/readfish"
 
