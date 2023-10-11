@@ -166,7 +166,7 @@ See '<command> --help' to read about a specific sub-command.
 TOML File
 ---------
 For information on the TOML files see [TOML.md](docs/toml.md).
-There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/refactor/docs/_static/example_tomls.
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the [TOML file here](https://github.com//LooseLab/readfish/tree/refactor/docs/_static/example_tomls) .
 
 <details style="margin-top: 10px; margin-bottom: 10px" open><summary id="testing"><h1 style="display: inline">Testing</h1></summary>
 <!-- begin-test -->
@@ -237,7 +237,7 @@ You _may_ need to add the host `127.0.0.1` in the MinKNOW UI.
 
 <details style="margin-top: 10px"><summary id="configuring-bulk-fast5-file"><h3 style="display: inline;">Configuring bulk FAST5 file Playback</h3></summary>
 
-[Download an open access bulk FAST5 file][bulk].
+Download an open access bulk FAST5 file, either [R9.4.1][bulk - R9] or [R10 (5khz)][bulk - R10 5khz]..
 This file is 21Gb so make sure you have sufficient space.
 
 <!-- begin-new-playback -->
@@ -248,6 +248,7 @@ Under Run Options you can select Simulated Playback and browse to the downloaded
 
 ![Run Options Screenshot](https://github.com/LooseLab/readfish/blob/247185a1bdcbe1275c55a6b4b1e2c7273213af91/docs/_static/images/simulated_playback_run_options.png?raw=true "Run Options Screenshot")
 
+<!-- Included so these work in the github pages docs as well  -->
 [bulk - R9.4.1]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
 [bulk - R10.4 5khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/GXB02001_20230509_1250_FAW79338_X3_sequencing_run_NA12878_B1_19382aa5_ef4362cd.fast5
 
@@ -323,7 +324,7 @@ Note: The plots here are generated from running readfish unblock-all on an Apple
 To test selective sequencing you must have access to a
 [guppy basecall server](https://community.nanoporetech.com/downloads/guppy/release_notes) (>=6.0.0)
 
-and configure a TOML file.
+and a readfish TOML configuration file.
 
 NOTE: guppy and dorado are used here interchangeably as the basecall server. Dorado is gradually replacing guppy. All readfish code is compatible with Guppy >=6.0.0 and dorado >=0.4.0
 
