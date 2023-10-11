@@ -97,7 +97,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: built-package
-          path: dist/
+          path: dist
           if-no-files-found: error
 
   build-docs:
@@ -148,6 +148,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: built-package
+          path: dist
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
