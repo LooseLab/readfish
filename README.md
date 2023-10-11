@@ -237,7 +237,7 @@ You _may_ need to add the host `127.0.0.1` in the MinKNOW UI.
 
 <details style="margin-top: 10px"><summary id="configuring-bulk-fast5-file"><h3 style="display: inline;">Configuring bulk FAST5 file Playback</h3></summary>
 
-Download an open access bulk FAST5 file, either [R9.4.1][bulk - R9] or [R10 (5khz)][bulk - R10 5khz]..
+Download an open access bulk FAST5 file, either [R9.4.1][bulk - R9] or [R10 (5khz)][bulk - R10 5khz].
 This file is 21Gb so make sure you have sufficient space.
 
 <!-- begin-new-playback -->
