@@ -47,7 +47,7 @@ jobs:
           python -m site
           python -m pip install -U pip setuptools wheel
           python -m pip install -e ".[tests]"
-          coverage run -pm pytest
+          coverage run --omit "src/readfish/read_until/*.py" -pm pytest
       - name: Upload coverage data
         uses: actions/upload-artifact@v3
         with:
@@ -97,7 +97,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: built-package
-          path: dist
+          path: dist/
           if-no-files-found: error
 
   build-docs:
@@ -148,7 +148,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: built-package
-          path: dist
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
