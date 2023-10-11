@@ -66,6 +66,12 @@ To run and output PAF alignments and demutiplexed FASTQ
 
     readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/
 
+To run and output PAF alignments and demutiplexed FASTQ, and output a HTML summary file at summary_adaptive.html
+
+.. code-block:: bash
+
+    readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/ --html summary_adaptive
+
 """
 from __future__ import annotations
 import argparse
@@ -124,8 +130,9 @@ _cli = BASE_ARGS + (
     (
         "--html",
         dict(
-            help="Output a HTML file of the summary. Disabled by default.",
-            action="store_true",
+            help="Filepath to output a HTML file of the summary. Will append .html to given filename/path. Disabled by default.",
+            type=Path,
+            default=None,
         ),
     ),
 )
@@ -165,6 +172,7 @@ def run(_parser, args: argparse.NameSpace, _extras):
             paf_out=args.no_paf_out,
             prom=args.prom,
             csv=args.no_csv,
+            html=args.html,
         )
     except Exception as exc:
         logger.error("Fastq data couldn't be summarised, see below for details:")
