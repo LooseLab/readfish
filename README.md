@@ -462,8 +462,10 @@ NOTE: These simulations are also run on Apple Silicon - GPU platform performance
 <summary id="Analysing-results-with-readfish-stats"><h3 style="display: inline;">Analysing results with readfish stats</h3></summary>
 Once a run is complete, it can be analysed with the readfish stats command.
 
+html file output is optional.
+
 ```console
-readfish stats <path/to/toml/file.toml> <path/to/run/folder>
+readfish stats --toml <path/to/toml/file.toml> --fastq  <path/to/run/folder> --html <filename>
 ```
 
 Readfish stats will use the initial experiment configuration to analyse the final sequence data and output a formatted table to the screen.
