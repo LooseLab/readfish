@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="readfish console scripts" href="readfish.console.html" /><link rel="prev" title="Getting Started" href="getting-started.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>TOML files - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -217,13 +217,13 @@
         </div>
         <article role="main">
           <section id="toml-files">
-<h1>TOML files<a class="headerlink" href="#toml-files" title="Permalink to this heading">#</a></h1>
+<h1>TOML files<a class="headerlink" href="#toml-files" title="Link to this heading">#</a></h1>
 <p>Readfish experiments are configured using <a class="reference external" href="https://toml.io">TOML</a> files, which are minimal and easy-to-read markup files.
 Our configuration only uses <a class="reference external" href="https://toml.io/en/v1.0.0#table">tables</a> and <a class="reference external" href="https://toml.io/en/v1.0.0#array-of-tables">arrays of tables</a> populated with <a class="reference external" href="https://toml.io/en/v1.0.0#keyvalue-pair">key-value pairs</a>.
 The TOML file contains almost all the information required for running readfish, such as information on barcodes, control/analysis regions, what basecaller or aligner to use.
-There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/refactor/docs/_static/example_tomls.</p>
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/main/docs/_static/example_tomls.</p>
 <section id="data-model">
-<h2>Data model<a class="headerlink" href="#data-model" title="Permalink to this heading">#</a></h2>
+<h2>Data model<a class="headerlink" href="#data-model" title="Link to this heading">#</a></h2>
 <p>To understand each section of the TOML file it helps to understand the work that readfish does:</p>
 <ol class="arabic simple">
 <li><p>Initialise a connection to the MinKNOW API via the Read Until API</p></li>
@@ -242,7 +242,7 @@ There are several example TOMLS, with comments explaining what each field does, 
 <figure class="align-center" id="id1">
 <img alt="Flow diagram showing a MinION, computer, and box labelled 'readfish'. The flow show 'raw data' going from the minion, through the computer, into readfish. Where it passes through a basecaller and an Aligner. The return arrow then passes from readfish, to the computer, to the MinION; this line is labelled unblock commands." src="_images/data_model.png" />
 <figcaption>
-<p><span class="caption-text">Flow diagram of data flow from the sequencer to readfish and back.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Flow diagram of data flow from the sequencer to readfish and back.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>As readfish is designed around the need to both basecall and align data we have two TOML sections for configuring these tools.
@@ -253,7 +253,7 @@ These allow for arbitrary configuration schemas that match your experimental nee
 These are expanded on in the <a class="reference internal" href="#barcodes-config"><span class="std std-ref">barcode configuration</span></a> and <a class="reference internal" href="#analysis-regions"><span class="std std-ref">analysis regions</span></a> sections.</p>
 </section>
 <section id="plugin-configuration">
-<span id="plugins-config"></span><h2>Plugin configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this heading">#</a></h2>
+<span id="plugins-config"></span><h2>Plugin configuration<a class="headerlink" href="#plugin-configuration" title="Link to this heading">#</a></h2>
 <p>Readfish uses “plugins” to configure basecalling and alignment.
 We provide some default plugins using Guppy (via <a class="reference external" href="https://pypi.org/p/ont-pyguppy-client-lib"><code class="docutils literal notranslate"><span class="pre">ont-pyguppy-client-lib</span></code></a>) and mappy (via <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python"><code class="docutils literal notranslate"><span class="pre">mappy</span></code></a>), for basecalling and alignment respectively.
 The way that you tell readfish what plugin to load is by specifying it after the table name, for example:</p>
@@ -264,9 +264,9 @@ The way that you tell readfish what plugin to load is by specifying it after the
 </div>
 <p>This indicates that readfish should use Guppy for basecalling.</p>
 <section id="basecaller">
-<h3>Basecaller<a class="headerlink" href="#basecaller" title="Permalink to this heading">#</a></h3>
+<h3>Basecaller<a class="headerlink" href="#basecaller" title="Link to this heading">#</a></h3>
 <section id="guppy">
-<h4>Guppy<a class="headerlink" href="#guppy" title="Permalink to this heading">#</a></h4>
+<h4>Guppy<a class="headerlink" href="#guppy" title="Link to this heading">#</a></h4>
 <p>This section is specific to the Guppy plugin for basecalling.
 The <code class="docutils literal notranslate"><span class="pre">caller_settings.guppy</span></code> [table] specifies the basecalling parameters used by the basecaller.
 An example table is given below:</p>
@@ -425,7 +425,7 @@ will be non-blocking.</p>
 </div>
 </section>
 <section id="basecaller-no-operation-no-op">
-<h4>Basecaller no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#basecaller-no-operation-no-op" title="Permalink to this heading">#</a></h4>
+<h4>Basecaller no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#basecaller-no-operation-no-op" title="Link to this heading">#</a></h4>
 <p>In addition to the Guppy basecaller we provide a “no operation” basecaller.
 This plugin does nothing.
 It will only iterate the live chunks of data and pass through the minimal amount of data that is needed for the next steps.
@@ -436,9 +436,9 @@ This is added using:</p>
 </section>
 </section>
 <section id="aligner">
-<h3>Aligner<a class="headerlink" href="#aligner" title="Permalink to this heading">#</a></h3>
+<h3>Aligner<a class="headerlink" href="#aligner" title="Link to this heading">#</a></h3>
 <section id="minimap2">
-<h4>minimap2<a class="headerlink" href="#minimap2" title="Permalink to this heading">#</a></h4>
+<h4>minimap2<a class="headerlink" href="#minimap2" title="Link to this heading">#</a></h4>
 <p>Currently we provide two mapping plugins, <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python"><code class="docutils literal notranslate"><span class="pre">mappy</span></code></a>, and <a class="reference external" href="https://github.com/Adoni5/mappy-rs"><code class="docutils literal notranslate"><span class="pre">mappy-rs</span></code></a>.
 Happily these both take the same fields in the TOML file, so you can switch between them without changing your TOML file parameters.</p>
 <p>Currently, these plugins take the same TOML file plugins section, and which Aligner is used is chosen based on the TOML mapper_settings section name.
@@ -504,7 +504,7 @@ The <code class="docutils literal notranslate"><span class="pre">debug_log</span
 <p>All available keyword arguments can be seen on the <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python#class-mappyaligner"><code class="docutils literal notranslate"><span class="pre">mappy</span></code> documentation</a></p>
 </section>
 <section id="aligner-no-operation-no-op">
-<h4>Aligner no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#aligner-no-operation-no-op" title="Permalink to this heading">#</a></h4>
+<h4>Aligner no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#aligner-no-operation-no-op" title="Link to this heading">#</a></h4>
 <p>In addition to the minimap2 based aligners we provide a “no operation” aligner.
 This plugin does nothing.
 It will only iterate the <code class="docutils literal notranslate"><span class="pre">Result</span></code>s from the basecaller and pass them through to the next steps.
@@ -516,7 +516,7 @@ This is added using:</p>
 </section>
 </section>
 <section id="analysis-regions">
-<span id="id2"></span><h2>Analysis regions<a class="headerlink" href="#analysis-regions" title="Permalink to this heading">#</a></h2>
+<span id="id2"></span><h2>Analysis regions<a class="headerlink" href="#analysis-regions" title="Link to this heading">#</a></h2>
 <p>Analysis regions are the <a class="reference external" href="https://toml.io/en/v1.0.0#array-of-tables">arrays of tables</a> that define different experimental conditions over the surface of the flow cell.
 For experiments that do not use barcodes you must have at least one analysis region.</p>
 <p>The physical layout of each flow cell constrains how many experimental conditions can be used as the number of channels in each region must be equal.
@@ -532,7 +532,7 @@ The number of conditions must be a factor of the number for the selected combina
 </pre></div>
 </div>
 <section id="experiments-with-one-region">
-<h3>Experiments with one region<a class="headerlink" href="#experiments-with-one-region" title="Permalink to this heading">#</a></h3>
+<h3>Experiments with one region<a class="headerlink" href="#experiments-with-one-region" title="Link to this heading">#</a></h3>
 <p>When wanting to apply a single targeting strategy over the flow cell a single region can be provided.
 This can be specified like so:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[regions]]</span>
@@ -551,7 +551,7 @@ This can be specified like so:</p>
 <p>A full table of keys that can be given can be found in <a class="reference internal" href="#regions-sub-tables">region sub-table</a>.</p>
 </section>
 <section id="experiments-with-more-than-region">
-<h3>Experiments with more than region<a class="headerlink" href="#experiments-with-more-than-region" title="Permalink to this heading">#</a></h3>
+<h3>Experiments with more than region<a class="headerlink" href="#experiments-with-more-than-region" title="Link to this heading">#</a></h3>
 <p>Experiments with multiple regions (for example those with an analysis and control condition) regions can be specified for each condition.
 For example:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[regions]]</span>
@@ -567,7 +567,7 @@ For example:</p>
 </div>
 </section>
 <section id="regions-sub-tables">
-<span id="id3"></span><h3>Regions sub-tables<a class="headerlink" href="#regions-sub-tables" title="Permalink to this heading">#</a></h3>
+<span id="id3"></span><h3>Regions sub-tables<a class="headerlink" href="#regions-sub-tables" title="Link to this heading">#</a></h3>
 <p>Each Regions sub-table must contain all of the required keys, these are the same between barcoded and non-barcoded toml files.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -669,13 +669,13 @@ For example:</p>
 </ol>
 </section>
 <section id="target-formats">
-<span id="id4"></span><h3>Target Formats<a class="headerlink" href="#target-formats" title="Permalink to this heading">#</a></h3>
+<span id="id4"></span><h3>Target Formats<a class="headerlink" href="#target-formats" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">targets</span></code> field on a region can accept either a string or an array of strings.
 If a string is provided this should be a fully qualified path to a text file that consists of genomic targets in either as CSV or BED entries.
 When an array is given all the elements in the array must conform with the non-BED formats.
 Targets will be collapsed where they overlap.</p>
 <section id="bed-or-csv-targets">
-<h4>BED or CSV targets<a class="headerlink" href="#bed-or-csv-targets" title="Permalink to this heading">#</a></h4>
+<h4>BED or CSV targets<a class="headerlink" href="#bed-or-csv-targets" title="Link to this heading">#</a></h4>
 <p>If the <code class="docutils literal notranslate"><span class="pre">targets</span></code> entry is a path to a file it must either be a <a class="reference external" href="https://en.wikipedia.org/wiki/BED_(file_format)">six-column-BED formatted file</a> or a CSV.
 If a CSV file there should be no header and the coordinates should be given as</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>contig,start,stop,strand
@@ -689,7 +689,7 @@ chr2,3000,4000,-
 <p>Targets given in this format will only select (for or against) reads where the alignment start position is within the region on the given strand.</p>
 </section>
 <section id="toml-array-targets">
-<h4>TOML array targets<a class="headerlink" href="#toml-array-targets" title="Permalink to this heading">#</a></h4>
+<h4>TOML array targets<a class="headerlink" href="#toml-array-targets" title="Link to this heading">#</a></h4>
 <p>If specifying targets in a <a class="reference external" href="https://toml.io/en/v1.0.0#array">TOML array</a> they can be any of <code class="docutils literal notranslate"><span class="pre">contigs</span></code> or <code class="docutils literal notranslate"><span class="pre">coordinates</span></code>:</p>
 <p>For example <code class="docutils literal notranslate"><span class="pre">contigs</span></code>:</p>
 <ul class="simple">
@@ -700,7 +700,7 @@ chr2,3000,4000,-
 </section>
 </section>
 <section id="barcode-specific-configuration">
-<span id="barcodes-config"></span><h2>Barcode specific configuration<a class="headerlink" href="#barcode-specific-configuration" title="Permalink to this heading">#</a></h2>
+<span id="barcodes-config"></span><h2>Barcode specific configuration<a class="headerlink" href="#barcode-specific-configuration" title="Link to this heading">#</a></h2>
 <p>If you are using Guppy for basecalling then the additional <code class="docutils literal notranslate"><span class="pre">barcode_kits</span></code> parameter is required on the <code class="docutils literal notranslate"><span class="pre">caller_settings</span></code> table.</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.guppy]</span>
 <span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dna_r10.4.1_e8.2_400bps_fast&quot;</span>
@@ -759,7 +759,7 @@ For specific barcodes a <a class="reference internal" href="#regions-sub-tables"
 </div>
 </section>
 <section id="validating-a-toml">
-<h2>Validating a TOML<a class="headerlink" href="#validating-a-toml" title="Permalink to this heading">#</a></h2>
+<h2>Validating a TOML<a class="headerlink" href="#validating-a-toml" title="Link to this heading">#</a></h2>
 <p>We provide an entry point to validate TOML files - <code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">validate</span></code></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">readfish validate experiment_conf.toml</span>
 </pre></div>
@@ -883,9 +883,9 @@ This can be disabled by passing the <code class="docutils literal notranslate"><
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="_static/documentation_options.js?v=07445e93"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

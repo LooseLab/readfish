@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="readfish.html" /><link rel="prev" title="Readfish analysis" href="post-analysis.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Developer’s guide - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -217,13 +217,13 @@
         </div>
         <article role="main">
           <section id="developers-guide">
-<h1>Developer’s guide<a class="headerlink" href="#developers-guide" title="Permalink to this heading">#</a></h1>
+<h1>Developer’s guide<a class="headerlink" href="#developers-guide" title="Link to this heading">#</a></h1>
 <p>If you want to contribute some code to readfish, please check out the <a class="reference external" href="https://github.com/LooseLab/readfish/blob/main/.github/CONTRIBUTING.md">contributors guide</a> on GitHub.</p>
 <section id="pre-commit">
-<h2>Pre-commit<a class="headerlink" href="#pre-commit" title="Permalink to this heading">#</a></h2>
+<h2>Pre-commit<a class="headerlink" href="#pre-commit" title="Link to this heading">#</a></h2>
 <p>In order to enforce coding style, we use <a class="reference external" href="https://pre-commit.com/">pre-commit</a>.</p>
 <section id="installation">
-<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h3>
+<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install pre-commit</span>
 <span class="go">cd readfish</span>
 <span class="go">pre-commit install</span>
@@ -237,7 +237,7 @@
 </section>
 </section>
 <section id="readfish-installation">
-<h2>Readfish Installation<a class="headerlink" href="#readfish-installation" title="Permalink to this heading">#</a></h2>
+<h2>Readfish Installation<a class="headerlink" href="#readfish-installation" title="Link to this heading">#</a></h2>
 <p>We use <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> to handle building, packaging and installation, along with <a class="reference external" href="https://hatch.pypa.io/latest/"><code class="docutils literal notranslate"><span class="pre">hatch</span></code></a>.</p>
 <p>Installation candidates are listed in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> like so</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.optional-dependencies]</span>
@@ -277,15 +277,18 @@
 </div>
 </section>
 <section id="readfish-versioning">
-<h2>Readfish versioning<a class="headerlink" href="#readfish-versioning" title="Permalink to this heading">#</a></h2>
+<h2>Readfish versioning<a class="headerlink" href="#readfish-versioning" title="Link to this heading">#</a></h2>
 <p>Readfish uses <a class="reference external" href="https://calver.org/">calver</a> for versioning. Specifically the format should be
 <code class="docutils literal notranslate"><span class="pre">YYYY.MINOR.MICRO.Modifier</span></code>, where <code class="docutils literal notranslate"><span class="pre">MINOR</span></code> is the feature addiiton, <code class="docutils literal notranslate"><span class="pre">MICRO</span></code> is any hotfix/bugfix, and <code class="docutils literal notranslate"><span class="pre">Modifier</span></code> is the modifier (e.g. <code class="docutils literal notranslate"><span class="pre">rc</span></code> for release candidate, <code class="docutils literal notranslate"><span class="pre">dev</span></code> for development, empty for stable).</p>
 </section>
 <section id="adding-a-simulated-position-for-testing">
-<h2>Adding a simulated position for testing<a class="headerlink" href="#adding-a-simulated-position-for-testing" title="Permalink to this heading">#</a></h2>
+<h2>Adding a simulated position for testing<a class="headerlink" href="#adding-a-simulated-position-for-testing" title="Link to this heading">#</a></h2>
 <!-- Adding a simulated position -->
 <p>The following steps should all happen with a configuration (test) flow cell inserted into the target device.
 A simulated device can also be created within MinKNOW, following these instructions. This assumes that you are runnning MinKNOW locally, using default ports. If this is not the case a developer API token is required on the commands as well, as well as setting the correct port.</p>
+<p>If no test flow cell is available, a simulated device can be created within MinKNOW, following the below instructions.</p>
+<!-- begin-simulate -->
+<details style="margin-top: 10px; margin-bottom: 10px"><summary id="testing"><h3 style="display: inline">Adding a simulated position for testing</h3></summary>
 <ol class="arabic">
 <li><p>Linux</p>
 <p>In the readfish virtual environment we created earlier:</p>
@@ -347,18 +350,19 @@ A simulated device can also be created within MinKNOW, following these instructi
 </li>
 </ol>
 <p>You <em>may</em> need to add the host <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> in the MinKNOW UI.</p>
+</details>
 </section>
 <section id="setting-up-a-test-playback-experiment">
-<h2>Setting up a test playback experiment<a class="headerlink" href="#setting-up-a-test-playback-experiment" title="Permalink to this heading">#</a></h2>
-<p>Previously to set up Playback using a pre-recorded bulk FAST5 file, it was necessary to edit the sequencing configuration file that MinKNOW uses. This is no longer the case. The following steps are left after this section for reference only.</p>
+<h2>Setting up a test playback experiment<a class="headerlink" href="#setting-up-a-test-playback-experiment" title="Link to this heading">#</a></h2>
+<p>Previously to set up Playback using a pre-recorded bulk FAST5 file, it was necessary to edit the sequencing configuration file that MinKNOW uses. This is currently no longer the case. The “old method” steps are left after this section for reference only or if the direct playback from a bulk file option is removed in future.</p>
 <p>To start sequencing using playback, simply begin setting up the run in the MinKNOW UI as you would usually.
 Under Run Options you can select Simulated Playback and browse to the downloaded Bulk Fast5 file.</p>
-<p>![Run Options Screenshot](./
-_static/images/simulated_playback_run_options.png)</p>
+<p><img alt="Run Options Screenshot" src="https://github.com/LooseLab/readfish/blob/247185a1bdcbe1275c55a6b4b1e2c7273213af91/docs/_static/images/simulated_playback_run_options.png?raw=true" /></p>
+<!-- Included so these work in the github pages docs as well  -->
 </section>
 <section id="viewing-documentation">
-<h2>Viewing Documentation<a class="headerlink" href="#viewing-documentation" title="Permalink to this heading">#</a></h2>
-<p>Aside from a traditional <a class="reference external" href="https://github.com/LooseLab/readfish/blob/refactor/README.md"><code class="docutils literal notranslate"><span class="pre">README.md</span></code></a>, <code class="docutils literal notranslate"><span class="pre">readfish</span></code> uses <a class="reference external" href="https://www.sphinx-doc.org/en/master/"><code class="docutils literal notranslate"><span class="pre">sphinx</span></code></a> to create documentation.
+<h2>Viewing Documentation<a class="headerlink" href="#viewing-documentation" title="Link to this heading">#</a></h2>
+<p>Aside from a traditional <a class="reference external" href="https://github.com/LooseLab/readfish/blob/main/README.md"><code class="docutils literal notranslate"><span class="pre">README.md</span></code></a>, <code class="docutils literal notranslate"><span class="pre">readfish</span></code> uses <a class="reference external" href="https://www.sphinx-doc.org/en/master/"><code class="docutils literal notranslate"><span class="pre">sphinx</span></code></a> to create documentation.
 All documentation is kept in the <code class="docutils literal notranslate"><span class="pre">readfish/docs</span></code> directory.</p>
 <p>A live version is available at https://looselab.github.io/readfish/.</p>
 <p>With an activated development readfish environment (includes <code class="docutils literal notranslate"><span class="pre">docs</span></code> dependencies), run the following to view the documentation:</p>
@@ -371,7 +375,7 @@ All documentation is kept in the <code class="docutils literal notranslate"><spa
 <p>The documentation HTML should now be available at http://0.0.0.0:8080/.</p>
 </section>
 <section id="adding-to-documentation">
-<h2>Adding to Documentation<a class="headerlink" href="#adding-to-documentation" title="Permalink to this heading">#</a></h2>
+<h2>Adding to Documentation<a class="headerlink" href="#adding-to-documentation" title="Link to this heading">#</a></h2>
 <p>The main file for configuring <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> is <a class="reference download internal" download="" href="_downloads/fb0d0d7ff27f33697ba3b787ec894677/conf.py"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">conf.py</span></code></span></a>.
 This file should not need altering, it sets things up for activated <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> extensions, auto generated API documentation, building etc.</p>
 <p><code class="docutils literal notranslate"><span class="pre">sphinx</span></code> builds from <code class="docutils literal notranslate"><span class="pre">markdown</span></code> files (amongst others), with <a class="reference internal" href="index.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">index.md</span></code></span></a> as the <code class="docutils literal notranslate"><span class="pre">master_doc</span></code> page that other pages are included into.</p>
@@ -382,7 +386,7 @@ However, the entry points to be documented must be added by a deVeLoPEr.</p>
 <!-- We can attempt to address this later -->
 </section>
 <section id="entry-points">
-<h2>Entry points<a class="headerlink" href="#entry-points" title="Permalink to this heading">#</a></h2>
+<h2>Entry points<a class="headerlink" href="#entry-points" title="Link to this heading">#</a></h2>
 <p>Entry points are the subcommands that <code class="docutils literal notranslate"><span class="pre">readfish</span></code> runs.
 These are found in <code class="docutils literal notranslate"><span class="pre">src/readfish/entry_points</span></code>.
 Excepting <code class="docutils literal notranslate"><span class="pre">validate.py</span></code>, ideally these wrap <code class="docutils literal notranslate"><span class="pre">targets.py</span></code>, which performs the bare minimum <code class="docutils literal notranslate"><span class="pre">read_until</span></code> loop, calling the Aligner and Caller plugins.</p>
@@ -405,7 +409,7 @@ Excepting <code class="docutils literal notranslate"><span class="pre">validate.
 </div>
 </section>
 <section id="plugin-modules">
-<h2>Plugin modules<a class="headerlink" href="#plugin-modules" title="Permalink to this heading">#</a></h2>
+<h2>Plugin modules<a class="headerlink" href="#plugin-modules" title="Link to this heading">#</a></h2>
 <p>Plugin modules are designed to make <code class="docutils literal notranslate"><span class="pre">readfish</span></code> more modular.
 Each Plugin module should inherit an Abstract Base Class (ABC), which define methods which <strong>MUST</strong> be present on the plugin.
 Currently, two types of plugins can be written</p>
@@ -413,7 +417,7 @@ Currently, two types of plugins can be written</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Caller</span></code> plugins (must inherit <code class="docutils literal notranslate"><span class="pre">CallerABC</span></code>), which wrap a base caller for calling chunks</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Aligner</span></code> plugins (must inherit <code class="docutils literal notranslate"><span class="pre">AlignerABC</span></code>), which wrap an aligner for making decisions on base called chunks.</p></li>
 </ul>
-<p>These ABCs are defined in <a class="reference external" href="https://github.com/LooseLab/readfish/blob/refactor/src/readfish/plugins/abc.py"><code class="docutils literal notranslate"><span class="pre">abc.py</span></code></a>.
+<p>These ABCs are defined in <a class="reference external" href="https://github.com/LooseLab/readfish/blob/main/src/readfish/plugins/abc.py"><code class="docutils literal notranslate"><span class="pre">abc.py</span></code></a>.
 This means that the methods which are used in <code class="docutils literal notranslate"><span class="pre">targets.py</span></code> are present, so plugins can be swapped out at run time, and function as standardised self-contained interfaces to different external tools.</p>
 <p>If a plugin module is written and not included in <code class="docutils literal notranslate"><span class="pre">readfish</span></code> package, but another, it is possible to include it by passing the path in the <code class="docutils literal notranslate"><span class="pre">toml</span></code>.
 For example:</p>
@@ -505,7 +509,7 @@ We inherit the <code class="docutils literal notranslate"><span class="pre">Alig
 </pre></div>
 </div>
 <section id="init">
-<h3><strong>init</strong>()<a class="headerlink" href="#init" title="Permalink to this heading">#</a></h3>
+<h3><strong>init</strong>()<a class="headerlink" href="#init" title="Link to this heading">#</a></h3>
 <p>Firstly, as with most python classes, we initialise the class.
 We do not need to call <code class="docutils literal notranslate"><span class="pre">super().init()</span></code> as we aren’t actually using the initialised <code class="docutils literal notranslate"><span class="pre">AlignerABC</span></code> just the inherited methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
@@ -534,7 +538,7 @@ We do not need to call <code class="docutils literal notranslate"><span class="p
 </div>
 </section>
 <section id="validate">
-<h3>validate()<a class="headerlink" href="#validate" title="Permalink to this heading">#</a></h3>
+<h3>validate()<a class="headerlink" href="#validate" title="Link to this heading">#</a></h3>
 <p>This next method is important. <code class="docutils literal notranslate"><span class="pre">validate()</span></code></p>
 <p>The validate function is intended to be called in the <strong>init</strong> method, before the actual <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> or <code class="docutils literal notranslate"><span class="pre">Caller</span></code> is initialised. The contents of this method are left up to the author, however we suggest that people check for the things listed above.</p>
 <p>The purpose of <code class="docutils literal notranslate"><span class="pre">validate</span></code> is to check that the given parameters will create a valid <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> or <code class="docutils literal notranslate"><span class="pre">Caller</span></code>. For example, in the <code class="docutils literal notranslate"><span class="pre">guppy.py</span></code> <code class="docutils literal notranslate"><span class="pre">Caller</span></code> plugin, we check the permissions of the provided <code class="docutils literal notranslate"><span class="pre">Guppy</span></code> socket. If these are insufficient, Guppy only errors out after a 10 minute timeout. However of this is caught in <code class="docutils literal notranslate"><span class="pre">validate</span></code>, everyone ends up being left a lot happier.</p>
@@ -564,7 +568,7 @@ We do not need to call <code class="docutils literal notranslate"><span class="p
 </div>
 </section>
 <section id="disconnect">
-<h3>disconnect()<a class="headerlink" href="#disconnect" title="Permalink to this heading">#</a></h3>
+<h3>disconnect()<a class="headerlink" href="#disconnect" title="Link to this heading">#</a></h3>
 <p>Required disconnect method - we don’t have any clean up to do so we just return.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
@@ -572,7 +576,7 @@ We do not need to call <code class="docutils literal notranslate"><span class="p
 </div>
 </section>
 <section id="initialised">
-<h3>initialised()<a class="headerlink" href="#initialised" title="Permalink to this heading">#</a></h3>
+<h3>initialised()<a class="headerlink" href="#initialised" title="Link to this heading">#</a></h3>
 <p>Required <code class="docutils literal notranslate"><span class="pre">initialised``</span> <span class="pre">method.</span> <span class="pre">In</span> <span class="pre">this</span> <span class="pre">case,</span> <span class="pre">we</span> <span class="pre">are</span> <span class="pre">initialised</span> <span class="pre">if</span> <span class="pre">the</span> <span class="pre">Aligner</span> <span class="pre">has</span> <span class="pre">an</span> <span class="pre">index</span> <span class="pre">loaded</span> <span class="pre">-</span> <span class="pre">which</span> <span class="pre">is</span> <span class="pre">when</span> <span class="pre">a</span> </code>mappy.Aligner<code class="docutils literal notranslate"><span class="pre">or</span></code>mappy_rs.Aligner<code class="docutils literal notranslate"><span class="pre">evaluates</span> <span class="pre">to</span></code>true`</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">initialised</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -585,7 +589,7 @@ We do not need to call <code class="docutils literal notranslate"><span class="p
 </div>
 </section>
 <section id="map-reads">
-<h3>map_reads()<a class="headerlink" href="#map-reads" title="Permalink to this heading">#</a></h3>
+<h3>map_reads()<a class="headerlink" href="#map-reads" title="Link to this heading">#</a></h3>
 <p>Required function - map_reads.
 This is required, and takes in an iterable of the <code class="docutils literal notranslate"><span class="pre">Results</span></code> from the <code class="docutils literal notranslate"><span class="pre">Caller</span></code> plugin.
 The basecalled data present on the on the result is aligned through one of the two aligner wrapper functions
@@ -632,7 +636,7 @@ as long as the <code class="docutils literal notranslate"><span class="pre">Resu
 </div>
 </section>
 <section id="describe">
-<h3>describe()<a class="headerlink" href="#describe" title="Permalink to this heading">#</a></h3>
+<h3>describe()<a class="headerlink" href="#describe" title="Link to this heading">#</a></h3>
 <p>Our final required function <code class="docutils literal notranslate"><span class="pre">describe</span></code>. The contents of the description string is left to the developer of any plugins - all that need be returned is a string
 describing what the aligner is seeing before it starts. This will be logged in the readfish log file and MinKNOW logs,
 so things to bear in mind are things that will be useful when retrospectively analysing the run.
@@ -716,7 +720,7 @@ This is a more complicated function, so I’ve commented details more thoroughly
 </div>
 </section>
 <section id="c-mappy-wrapper">
-<h3>_c_mappy_wrapper()<a class="headerlink" href="#c-mappy-wrapper" title="Permalink to this heading">#</a></h3>
+<h3>_c_mappy_wrapper()<a class="headerlink" href="#c-mappy-wrapper" title="Link to this heading">#</a></h3>
 <p>Just a look at the <code class="docutils literal notranslate"><span class="pre">_c_mappy_wrapper</span></code> - a simple <strong>None required</strong> function that maps using <code class="docutils literal notranslate"><span class="pre">mappy</span></code> and returns <code class="docutils literal notranslate"><span class="pre">mappy.Alignments</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">_c_mappy_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basecalls</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -822,9 +826,9 @@ This is a more complicated function, so I’ve commented details more thoroughly
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="_static/documentation_options.js?v=07445e93"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

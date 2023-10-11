@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="readfish plugins API" href="readfish.plugins.html" /><link rel="prev" title="Developer’s guide" href="developers-guide.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>API Reference - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -217,7 +217,7 @@
         </div>
         <article role="main">
           <section id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">#</a></h1>
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
@@ -232,10 +232,10 @@
 </ul>
 </div>
 <section id="module-readfish._config">
-<span id="readfish-config-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._config</span></code> module<a class="headerlink" href="#module-readfish._config" title="Permalink to this heading">#</a></h2>
+<span id="readfish-config-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._config</span></code> module<a class="headerlink" href="#module-readfish._config" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._config.Conf">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">Conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapper_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">Conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapper_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf" title="Link to this definition">#</a></dt>
 <dd><p>Overall configuration for readfish experiments</p>
 <p>The Conf class is the mother if the adaptive sampling experiment.
 It is constructed from the provided <code class="docutils literal notranslate"><span class="pre">TOML</span></code> file, via a call to <cite>from_file</cite>.</p>
@@ -253,7 +253,7 @@ It is constructed from the provided <code class="docutils literal notranslate"><
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.describe_experiment">
-<span class="sig-name descname"><span class="pre">describe_experiment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.describe_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.describe_experiment" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">describe_experiment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.describe_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.describe_experiment" title="Link to this definition">#</a></dt>
 <dd><p>Describe the experiment from the given Conf class.
 For Barcodes we describe the targets and the conditions, but not the region.</p>
 <dl class="field-list simple">
@@ -268,7 +268,7 @@ For Barcodes we describe the targets and the conditions, but not the region.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.from_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.from_dict" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.from_dict" title="Link to this definition">#</a></dt>
 <dd><p>Create the Conf class from a Dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -291,29 +291,29 @@ For Barcodes we describe the targets and the conditions, but not the region.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.from_file">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.from_file" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.from_file" title="Link to this definition">#</a></dt>
 <dd><p>Create a Conf from a TOML file.</p>
 <p>Loads the toml using rtoml then calls <cite>from_dict</cite> to create the class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>Path</em>) – Path to the toml file</p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><em>Path</em></a>) – Path to the toml file</p></li>
 <li><p><strong>channels</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Number of channels on the flow cell</p></li>
-<li><p><strong>logger</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.12)"><em>logging.Logger</em></a><em>]</em>) – Logger to write out a base64 encoded compressed toml, defaults to None</p></li>
+<li><p><strong>logger</strong> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.12)"><em>Logger</em></a><em> | </em><em>None</em>) – Logger to write out a base64 encoded compressed toml, defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Conf as constructed from this toml</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#readfish._config.Conf" title="readfish._config.Conf">Conf</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#readfish._config.Conf" title="readfish._config.Conf"><em>Conf</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.get_barcode">
-<span class="sig-name descname"><span class="pre">get_barcode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">barcode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.get_barcode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.get_barcode" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_barcode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">barcode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.get_barcode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.get_barcode" title="Link to this definition">#</a></dt>
 <dd><p>Get a barcode for a given barcode name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -330,7 +330,7 @@ For Barcodes we describe the targets and the conditions, but not the region.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.get_conditions">
-<span class="sig-name descname"><span class="pre">get_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.get_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.get_conditions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.get_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.get_conditions" title="Link to this definition">#</a></dt>
 <dd><p>Get the condition for this channel or barcode from the Conf TOML</p>
 <p>The barcoder should return the barcode name e.g. <code class="docutils literal notranslate"><span class="pre">barcode01</span></code> or
 <code class="docutils literal notranslate"><span class="pre">unclassified</span></code> if a barcode could not be assigned. If barcoding
@@ -340,7 +340,7 @@ will be used instead.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>channel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Channel number for this result</p></li>
-<li><p><strong>barcode</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – Barcode classification from basecalling</p></li>
+<li><p><strong>barcode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – Barcode classification from basecalling</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns control<span class="colon">:</span></dt>
@@ -353,14 +353,14 @@ will be used instead.</p>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – In the event that the channel/barcode combination does not find a <a class="reference internal" href="#readfish._config.Region" title="readfish._config.Region"><code class="xref py py-class docutils literal notranslate"><span class="pre">Region</span></code></a> or a <a class="reference internal" href="#readfish._config.Barcode" title="readfish._config.Barcode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Barcode</span></code></a></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a>, <a class="reference internal" href="#readfish._config.Barcode" title="readfish._config.Barcode">Barcode</a> | <a class="reference internal" href="#readfish._config.Region" title="readfish._config.Region">Region</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><em>Tuple</em></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a>, <a class="reference internal" href="#readfish._config.Barcode" title="readfish._config.Barcode"><em>Barcode</em></a> | <a class="reference internal" href="#readfish._config.Region" title="readfish._config.Region"><em>Region</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.get_region">
-<span class="sig-name descname"><span class="pre">get_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.get_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.get_region" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.get_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.get_region" title="Link to this definition">#</a></dt>
 <dd><p>Get the region for a given channel</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -377,7 +377,7 @@ will be used instead.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.get_targets">
-<span class="sig-name descname"><span class="pre">get_targets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.get_targets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.get_targets" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_targets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.get_targets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.get_targets" title="Link to this definition">#</a></dt>
 <dd><p>Get the targets for a given channel or barcode, via its condition</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -397,18 +397,18 @@ will be used instead.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.to_file">
-<span class="sig-name descname"><span class="pre">to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.to_file" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.to_file" title="Link to this definition">#</a></dt>
 <dd><p>Write a conf to a TOML file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>Path</em>) – File path to create the TOML file for</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><em>Path</em></a>) – File path to create the TOML file for</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config.Conf.write_channels_toml">
-<span class="sig-name descname"><span class="pre">write_channels_toml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.write_channels_toml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.write_channels_toml" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">write_channels_toml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Conf.write_channels_toml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Conf.write_channels_toml" title="Link to this definition">#</a></dt>
 <dd><p>Write out a channels toml file to the given directory.
 This file is a map of each channel number to the corresponding region name.</p>
 <dl class="field-list simple">
@@ -422,7 +422,7 @@ This file is a map of each channel number to the corresponding region name.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._config._Condition">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">_Condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_on</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multi_on</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multi_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">below_min_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Action.proceed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">above_max_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Action.unblock</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_Condition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._Condition" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">_Condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_on</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multi_on</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multi_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">below_min_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Action.proceed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">above_max_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Action.unblock</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_Condition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._Condition" title="Link to this definition">#</a></dt>
 <dd><p>Representation of an experimental condition.
 This can either be a <a class="reference internal" href="#readfish._config.Barcode" title="readfish._config.Barcode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Barcode</span></code></a> or an experimental <a class="reference internal" href="#readfish._config.Region" title="readfish._config.Region"><code class="xref py py-class docutils literal notranslate"><span class="pre">Region</span></code></a> of the flow cell.</p>
 <dl class="field-list simple">
@@ -446,7 +446,7 @@ This can either be a <a class="reference internal" href="#readfish._config.Barco
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config._Condition.get_action">
-<span class="sig-name descname"><span class="pre">get_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decision</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_Condition.get_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._Condition.get_action" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decision</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_Condition.get_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._Condition.get_action" title="Link to this definition">#</a></dt>
 <dd><p>Get the <code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code> that corresponds to <code class="docutils literal notranslate"><span class="pre">decision</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -457,7 +457,7 @@ This can either be a <a class="reference internal" href="#readfish._config.Barco
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config._Condition.pretty_print">
-<span class="sig-name descname"><span class="pre">pretty_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_Condition.pretty_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._Condition.pretty_print" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">pretty_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_Condition.pretty_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._Condition.pretty_print" title="Link to this definition">#</a></dt>
 <dd><p>Pretty print how the conditions match up to the resulting Actions. Used in the describe function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -473,7 +473,7 @@ This can either be a <a class="reference internal" href="#readfish._config.Barco
 
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._config.Barcode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">Barcode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Barcode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Barcode" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">Barcode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Barcode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Barcode" title="Link to this definition">#</a></dt>
 <dd><p>See <a class="reference internal" href="#readfish._config._Condition" title="readfish._config._Condition"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Condition</span></code></a> for details</p>
 <dl class="field-list simple">
 </dl>
@@ -481,7 +481,7 @@ This can either be a <a class="reference internal" href="#readfish._config.Barco
 
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._config.Region">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Region" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#Region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.Region" title="Link to this definition">#</a></dt>
 <dd><p>See <a class="reference internal" href="#readfish._config._Condition" title="readfish._config._Condition"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Condition</span></code></a> for details</p>
 <dl class="field-list simple">
 </dl>
@@ -489,7 +489,7 @@ This can either be a <a class="reference internal" href="#readfish._config.Barco
 
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._config._PluginModule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">_PluginModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._PluginModule" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">_PluginModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._PluginModule" title="Link to this definition">#</a></dt>
 <dd><p>A plugin module</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -501,7 +501,7 @@ This can either be a <a class="reference internal" href="#readfish._config.Barco
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config._PluginModule.from_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._PluginModule.from_dict" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._PluginModule.from_dict" title="Link to this definition">#</a></dt>
 <dd><p>Creates an instance of the _PluginModule class from a dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -523,7 +523,7 @@ parameters to be passed to the plugin module.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config._PluginModule.load_module">
-<span class="sig-name descname"><span class="pre">load_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule.load_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._PluginModule.load_module" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule.load_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._PluginModule.load_module" title="Link to this definition">#</a></dt>
 <dd><p>Load a plugin module with the given name.</p>
 <p>If the module is a built-in plugin (as specified in the builtins dictionary), it is loaded from the readfish.plugins package.
 Otherwise, it is loaded using the importlib library.</p>
@@ -547,7 +547,7 @@ override=True, the builtin module names are ignored.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._config._PluginModule.load_object">
-<span class="sig-name descname"><span class="pre">load_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule.load_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._PluginModule.load_object" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule.load_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config._PluginModule.load_object" title="Link to this definition">#</a></dt>
 <dd><p>Load a specified object from a plugin module.</p>
 <p>First <a class="reference internal" href="#readfish._config._PluginModule.load_module" title="readfish._config._PluginModule.load_module"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_module</span></code></a> is called to load the plugin module, then the
 specified object is retreived from the module.</p>
@@ -577,7 +577,7 @@ specified object is retreived from the module.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._config.CallerSettings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">CallerSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#CallerSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.CallerSettings" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">CallerSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#CallerSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.CallerSettings" title="Link to this definition">#</a></dt>
 <dd><p>See <a class="reference internal" href="#readfish._config._PluginModule" title="readfish._config._PluginModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">_PluginModule</span></code></a> for details</p>
 <dl class="field-list simple">
 </dl>
@@ -585,7 +585,7 @@ specified object is retreived from the module.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._config.MapperSettings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">MapperSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#MapperSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.MapperSettings" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">MapperSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#MapperSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._config.MapperSettings" title="Link to this definition">#</a></dt>
 <dd><p>See <a class="reference internal" href="#readfish._config._PluginModule" title="readfish._config._PluginModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">_PluginModule</span></code></a> for details</p>
 <dl class="field-list simple">
 </dl>
@@ -594,10 +594,10 @@ specified object is retreived from the module.</p>
 </section>
 <hr class="docutils" />
 <section id="module-readfish._loggers">
-<span id="readfish-loggers-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._loggers</span></code> module<a class="headerlink" href="#module-readfish._loggers" title="Permalink to this heading">#</a></h2>
+<span id="readfish-loggers-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._loggers</span></code> module<a class="headerlink" href="#module-readfish._loggers" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._loggers.setup_logger">
-<span class="sig-prename descclassname"><span class="pre">readfish._loggers.</span></span><span class="sig-name descname"><span class="pre">setup_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%(message)s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_console</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propagate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_loggers.html#setup_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._loggers.setup_logger" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._loggers.</span></span><span class="sig-name descname"><span class="pre">setup_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%(message)s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_console</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propagate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_loggers.html#setup_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._loggers.setup_logger" title="Link to this definition">#</a></dt>
 <dd><p>Configures and returns a <cite>logging.Logger</cite> object with handlers specified by the values
 set in <code class="docutils literal notranslate"><span class="pre">log_file</span></code> and <code class="docutils literal notranslate"><span class="pre">log_format</span></code>, specified format, and level.</p>
 <p>A custom header can be included if logging to a file.
@@ -651,22 +651,22 @@ Log messages will be formatted using the provided format string.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.12)">logging.Logger</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.12)"><em>Logger</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._loggers.print_args">
-<span class="sig-prename descclassname"><span class="pre">readfish._loggers.</span></span><span class="sig-name descname"><span class="pre">print_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_loggers.html#print_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._loggers.print_args" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._loggers.</span></span><span class="sig-name descname"><span class="pre">print_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_loggers.html#print_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._loggers.print_args" title="Link to this definition">#</a></dt>
 <dd><p>Prints and formats all arguments from the command line. Takes all entirely lowercase
 attributes of <code class="docutils literal notranslate"><span class="pre">args</span></code> and prints them using the provided printer function (expected to be <a class="reference external" href="https://docs.python.org/3/library/functions.html#print" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">print</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger.info" title="(in Python v3.12)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">logging.Logger.info</span></code></a>). The exclude
 parameter can be used to exclude certain attributes from being printed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><em>argparse.Namespace</em></a>) – The command line arguments object to print.</p></li>
-<li><p><strong>printer</strong> (<em>Callable</em>) – A function to print the arguments. This function should take a single string argument.</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><em>Namespace</em></a>) – The command line arguments object to print.</p></li>
+<li><p><strong>printer</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a>) – A function to print the arguments. This function should take a single string argument.</p></li>
 <li><p><strong>exclude</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> | </em><em>None</em>) – A list of attribute names to exclude from the output.</p></li>
 </ul>
 </dd>
@@ -676,23 +676,23 @@ parameter can be used to exclude certain attributes from being printed.</p>
 </section>
 <hr class="docutils" />
 <section id="module-readfish._utils">
-<span id="readfish-utils-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._utils</span></code> module<a class="headerlink" href="#module-readfish._utils" title="Permalink to this heading">#</a></h2>
+<span id="readfish-utils-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._utils</span></code> module<a class="headerlink" href="#module-readfish._utils" title="Link to this heading">#</a></h2>
 <p>utils.py
 functions and utilities used internally.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._utils.ChunkTracker">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">ChunkTracker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#ChunkTracker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.ChunkTracker" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">ChunkTracker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#ChunkTracker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.ChunkTracker" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._utils.ChunkTracker.seen">
-<span class="sig-name descname"><span class="pre">seen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#ChunkTracker.seen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.ChunkTracker.seen" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">seen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#ChunkTracker.seen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.ChunkTracker.seen" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._utils.Severity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">Severity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#Severity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.Severity" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">Severity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#Severity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.Severity" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.IntEnum" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></a></p>
 <p>Severity states for messaging to MinKNOW</p>
 <dl class="field-list simple">
@@ -706,24 +706,24 @@ functions and utilities used internally.</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._utils.Severity.ERROR">
-<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#readfish._utils.Severity.ERROR" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#readfish._utils.Severity.ERROR" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._utils.Severity.INFO">
-<span class="sig-name descname"><span class="pre">INFO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#readfish._utils.Severity.INFO" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">INFO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#readfish._utils.Severity.INFO" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._utils.Severity.WARN">
-<span class="sig-name descname"><span class="pre">WARN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#readfish._utils.Severity.WARN" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">WARN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#readfish._utils.Severity.WARN" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.compress_and_encode_string">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">compress_and_encode_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#compress_and_encode_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.compress_and_encode_string" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">compress_and_encode_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#compress_and_encode_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.compress_and_encode_string" title="Link to this definition">#</a></dt>
 <dd><p>Compresses a string, encodes it in base-64, and returns an ASCII string representation of the compressed blob.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -740,7 +740,7 @@ functions and utilities used internally.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.decode_and_decompress_string">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">decode_and_decompress_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#decode_and_decompress_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.decode_and_decompress_string" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">decode_and_decompress_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#decode_and_decompress_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.decode_and_decompress_string" title="Link to this definition">#</a></dt>
 <dd><p>Decodes an ASCII string representation of a compressed blob, decompresses it, and returns the original string.
 This is the reverse of <cite>compress_and_encode_string</cite>.</p>
 <dl class="field-list simple">
@@ -758,7 +758,7 @@ This is the reverse of <cite>compress_and_encode_string</cite>.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.draw_flowcell_split">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">draw_flowcell_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowcell_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#draw_flowcell_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.draw_flowcell_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">draw_flowcell_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowcell_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#draw_flowcell_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.draw_flowcell_split" title="Link to this definition">#</a></dt>
 <dd><p>Draw unicode representation of the flowcell. If the flowcell is split more than once, and index is passed, the region of the
 flowcell represented by the index is highlighted solid, whilst the rest is filled with Xs</p>
 <p>Rather than representing all the possible channels, we draw a 32 column wide flowcell for gridion and 120 for promethion and divide
@@ -792,7 +792,7 @@ XX00</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.escape_message_to_minknow">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">escape_message_to_minknow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chars</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#escape_message_to_minknow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.escape_message_to_minknow" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">escape_message_to_minknow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chars</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#escape_message_to_minknow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.escape_message_to_minknow" title="Link to this definition">#</a></dt>
 <dd><p>Escape characters in the chars list if they are in message</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">escape_message_to_minknow</span><span class="p">(</span><span class="s2">&quot;20%&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;%&quot;</span><span class="p">])</span>
 <span class="go">&#39;20\\%&#39;</span>
@@ -820,7 +820,7 @@ XX00</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.format_bases">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">format_bases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#format_bases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.format_bases" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">format_bases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#format_bases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.format_bases" title="Link to this definition">#</a></dt>
 <dd><p>Return a human readable string of a large number using SI unit prefixes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Pararm num<span class="colon">:</span></dt>
@@ -855,7 +855,7 @@ XX00</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.generate_flowcell">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">generate_flowcell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowcell_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">odd_even</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#generate_flowcell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.generate_flowcell" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">generate_flowcell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowcell_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">odd_even</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#generate_flowcell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.generate_flowcell" title="Link to this definition">#</a></dt>
 <dd><p>Return an list of lists with channels to use in conditions</p>
 <p>Representations generated by this method are evenly split based on the physical layout of the flowcell.
 Each sub-list is the same size. Axis determines whether the flowcell divisions will go left-right (0) or top-bottom (1).
@@ -904,7 +904,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.get_coords">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">get_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flowcell_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#get_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.get_coords" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">get_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flowcell_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#get_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.get_coords" title="Link to this definition">#</a></dt>
 <dd><p>Return a channel’s coordinates given a flowcell size</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -930,14 +930,14 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.get_device">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#get_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.get_device" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#get_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.get_device" title="Link to this definition">#</a></dt>
 <dd><p>Get a position for a specific device over the minknow API</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The device name - example X1 or MS00000</p></li>
 <li><p><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The host the RPC is listening on, defaults to “127.0.0.1”</p></li>
-<li><p><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><em>None</em>) – The port the RPC is listening on, defaults to None</p></li>
+<li><p><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The port the RPC is listening on, defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -954,7 +954,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.get_flowcell_array">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">get_flowcell_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowcell_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#get_flowcell_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.get_flowcell_array" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">get_flowcell_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowcell_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#get_flowcell_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.get_flowcell_array" title="Link to this definition">#</a></dt>
 <dd><p>Return a numpy.ndarray in the shape of a flowcell</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -964,7 +964,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 <dd class="field-even"><p>An N-dimensional array representation of the flowcell</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>_SupportsArray</em>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><em>dtype</em></a>] | <em>_NestedSequence</em>[<em>_SupportsArray</em>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><em>dtype</em></a>]] | <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.12)">complex</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)">bytes</a> | <em>_NestedSequence</em>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.12)">complex</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)">bytes</a>]</p>
+<dd class="field-odd"><p><em>_SupportsArray</em>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><em>dtype</em></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>]] | <em>_NestedSequence</em>[<em>_SupportsArray</em>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><em>dtype</em></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>]]] | <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.12)">complex</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)">bytes</a> | <em>_NestedSequence</em>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.12)">complex</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)">bytes</a>]</p>
 </dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_flowcell_array</span><span class="p">(</span><span class="mi">126</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
@@ -987,12 +987,12 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.iter_exception_group">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">iter_exception_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#iter_exception_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.iter_exception_group" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">iter_exception_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#iter_exception_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.iter_exception_group" title="Link to this definition">#</a></dt>
 <dd><p>Traverses an exception tree, yielding formatted strings for each exception encountered</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>exc</strong> (<em>BaseExceptionGroup</em>) – The exception group to traverse</p></li>
+<li><p><strong>exc</strong> (<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#BaseExceptionGroup" title="(in Python v3.12)"><em>BaseExceptionGroup</em></a>) – The exception group to traverse</p></li>
 <li><p><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The current indentation level, defaults to 0, defaults to 0</p></li>
 </ul>
 </dd>
@@ -1035,7 +1035,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.nested_get">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">nested_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#nested_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.nested_get" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">nested_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#nested_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.nested_get" title="Link to this definition">#</a></dt>
 <dd><p>Get a value from a nested structure</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1062,7 +1062,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.12)"><em>Mapping</em></a>) – Any with a __get_item__ method</p></li>
 <li><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>) – The key to get from the Mapping</p></li>
-<li><p><strong>default</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em> | </em><em>None</em>) – The default value to return if the key is not present, defaults to None</p></li>
+<li><p><strong>default</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>) – The default value to return if the key is not present, defaults to None</p></li>
 <li><p><strong>delim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Split a string by given the delimiter, to access the Mapping using each key in turn, defaults to “.”</p></li>
 </ul>
 </dd>
@@ -1071,7 +1071,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.nice_join">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">nice_join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">',</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conjunction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'or'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#nice_join"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.nice_join" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">nice_join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">',</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conjunction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'or'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#nice_join"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.nice_join" title="Link to this definition">#</a></dt>
 <dd><p>Join lists nicely</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1092,7 +1092,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.send_message">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">send_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rpc_connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">severity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#send_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.send_message" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">send_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rpc_connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">severity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#send_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.send_message" title="Link to this definition">#</a></dt>
 <dd><p>Send a message to MinKNOW</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1107,7 +1107,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._utils.stringify_grid">
-<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">stringify_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#stringify_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.stringify_grid" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._utils.</span></span><span class="sig-name descname"><span class="pre">stringify_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_utils.html#stringify_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._utils.stringify_grid" title="Link to this definition">#</a></dt>
 <dd><p>Convert a nested list of characters into a 2d grid.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1125,7 +1125,7 @@ As flongle has a shape of (10, 13) the top-bottom axis cannot be split evenly.</
 </section>
 <hr class="docutils" />
 <section id="module-readfish._cli_args">
-<span id="readfish-cli-args-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._cli_args</span></code> module<a class="headerlink" href="#module-readfish._cli_args" title="Permalink to this heading">#</a></h2>
+<span id="readfish-cli-args-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._cli_args</span></code> module<a class="headerlink" href="#module-readfish._cli_args" title="Link to this heading">#</a></h2>
 <p>Store for command line arguments and defaults, these are used by readfish entry points.</p>
 <p>These are held here in an agnostic format and the actual CLI is generated by <code class="docutils literal notranslate"><span class="pre">readfish._cli_base</span></code>.
 The two primary items that are exported are <code class="docutils literal notranslate"><span class="pre">BASE_ARGS</span></code> and <code class="docutils literal notranslate"><span class="pre">DEVICE_BASE_ARGS</span></code> which define different sets of command line arguments for different purposes.
@@ -1134,7 +1134,7 @@ The two primary items that are exported are <code class="docutils literal notran
 </section>
 <hr class="docutils" />
 <section id="module-readfish._statistics">
-<span id="readfish-statistics-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._statistics</span></code> module<a class="headerlink" href="#module-readfish._statistics" title="Permalink to this heading">#</a></h2>
+<span id="readfish-statistics-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._statistics</span></code> module<a class="headerlink" href="#module-readfish._statistics" title="Link to this heading">#</a></h2>
 <p>This module contains the ReadfishStatistics class, which is designed to
 track and manage statistics pertaining to a single Readfish run. The ReadfishStatistics
 class is able to update and query various statistics and counters regarding the
@@ -1160,7 +1160,7 @@ new performance and read records to the existing statistics.</p>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._statistics.</span></span><span class="sig-name descname"><span class="pre">ReadfishStatistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_reads_seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions_conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decisions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_read_overrides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_statistics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._statistics.</span></span><span class="sig-name descname"><span class="pre">ReadfishStatistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_reads_seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions_conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decisions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_read_overrides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_statistics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A class for tracking and managing statistics for individual Readfish runs.</p>
 <p>The ReadfishStatistics class is designed to manage and present
@@ -1222,57 +1222,57 @@ decisions, actions, and conditions encountered during the runs.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.log_file">
-<span class="sig-name descname"><span class="pre">log_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.log_file" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">log_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.log_file" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.break_reads_seconds">
-<span class="sig-name descname"><span class="pre">break_reads_seconds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.break_reads_seconds" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">break_reads_seconds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.break_reads_seconds" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.total_chunks">
-<span class="sig-name descname"><span class="pre">total_chunks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.total_chunks" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">total_chunks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.total_chunks" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.actions">
-<span class="sig-name descname"><span class="pre">actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Counter</span></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.Counter" title="(in Python v3.12)"><span class="pre">Counter</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.actions" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.conditions">
-<span class="sig-name descname"><span class="pre">conditions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Counter</span></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.conditions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">conditions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.Counter" title="(in Python v3.12)"><span class="pre">Counter</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.conditions" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.actions_conditions">
-<span class="sig-name descname"><span class="pre">actions_conditions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Counter</span></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.actions_conditions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">actions_conditions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.Counter" title="(in Python v3.12)"><span class="pre">Counter</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.actions_conditions" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.decisions">
-<span class="sig-name descname"><span class="pre">decisions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Counter</span></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.decisions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">decisions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.Counter" title="(in Python v3.12)"><span class="pre">Counter</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.decisions" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.first_read_overrides">
-<span class="sig-name descname"><span class="pre">first_read_overrides</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Counter</span></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.first_read_overrides" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">first_read_overrides</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.Counter" title="(in Python v3.12)"><span class="pre">Counter</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.first_read_overrides" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.batch_statistics">
-<span class="sig-name descname"><span class="pre">batch_statistics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Counter</span></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.batch_statistics" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">batch_statistics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.Counter" title="(in Python v3.12)"><span class="pre">Counter</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.batch_statistics" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.debug_logger">
-<span class="sig-name descname"><span class="pre">debug_logger</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.12)"><span class="pre">logging.Logger</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.debug_logger" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">debug_logger</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.12)"><span class="pre">Logger</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.debug_logger" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.average_chunks_per_second">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">average_chunks_per_second</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.average_chunks_per_second" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">average_chunks_per_second</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.average_chunks_per_second" title="Link to this definition">#</a></dt>
 <dd><p>Calculate and return the average number of chunks processed per second.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1306,7 +1306,7 @@ batch_statistics = {“batch_count”: 2, “batch_size”: 100, “batch_time�
 
 <dl class="py property">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.average_batch_time">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">average_batch_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.average_batch_time" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">average_batch_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.average_batch_time" title="Link to this definition">#</a></dt>
 <dd><p>Calculate and return the average time taken per batch.</p>
 <p>Examples:</p>
 <p>Given:
@@ -1327,7 +1327,7 @@ batch_statistics = {“batch_count”: 3, “cumulative_batch_size”: 150, “c
 
 <dl class="py property">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.average_batch_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">average_batch_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.average_batch_size" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">average_batch_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.average_batch_size" title="Link to this definition">#</a></dt>
 <dd><p>Calculate and return the average size of processed batches.</p>
 <p>The method computes the average batch size by dividing the total number
 of chunks processed by the number of batches seen. If no batches have been
@@ -1351,7 +1351,7 @@ processed, the method returns 0.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.get_batch_performance">
-<span class="sig-name descname"><span class="pre">get_batch_performance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics.get_batch_performance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.get_batch_performance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_batch_performance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics.get_batch_performance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.get_batch_performance" title="Link to this definition">#</a></dt>
 <dd><p>Generate and return a formatted string representing batch performance.</p>
 <p>If no batches have been processed, a placeholder message is returned.</p>
 <dl class="field-list simple">
@@ -1395,7 +1395,7 @@ processed, the method returns 0.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.add_batch_performance">
-<span class="sig-name descname"><span class="pre">add_batch_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_reads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics.add_batch_performance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.add_batch_performance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_batch_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_reads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics.add_batch_performance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.add_batch_performance" title="Link to this definition">#</a></dt>
 <dd><p>Update the collected statistics with new batch performance data.</p>
 <p>This method integrates a new set of chunk batch performance metrics into
 the class’s statistics, specifically updating the batch size, batch time,
@@ -1422,7 +1422,7 @@ and batch count based on the provided number of reads and the time taken.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.log_read">
-<span class="sig-name descname"><span class="pre">log_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics.log_read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.log_read" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">log_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics.log_read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.log_read" title="Link to this definition">#</a></dt>
 <dd><p>Add a new read chunk record into the collected statistics,
 and log it to the debug logger.</p>
 <dl class="field-list simple">
@@ -1434,12 +1434,12 @@ and log it to the debug logger.</p>
 </section>
 <hr class="docutils" />
 <section id="module-readfish._cli_base">
-<span id="readfish-cli-base-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._cli_base</span></code> module<a class="headerlink" href="#module-readfish._cli_base" title="Permalink to this heading">#</a></h2>
+<span id="readfish-cli-base-module"></span><h2><code class="docutils literal notranslate"><span class="pre">readfish._cli_base</span></code> module<a class="headerlink" href="#module-readfish._cli_base" title="Link to this heading">#</a></h2>
 <p>Main entry point for command line read until scripts.</p>
 <p>Set as entrypoint in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="readfish._cli_base.main">
-<span class="sig-prename descclassname"><span class="pre">readfish._cli_base.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_cli_base.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._cli_base.main" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">readfish._cli_base.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_cli_base.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._cli_base.main" title="Link to this definition">#</a></dt>
 <dd><p>Main function for entry point of the read until scripts.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1610,9 +1610,9 @@ and log it to the debug logger.</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="_static/documentation_options.js?v=07445e93"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

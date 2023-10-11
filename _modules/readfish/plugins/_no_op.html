@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>readfish.plugins._no_op - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -248,13 +248,17 @@
     <span class="kn">import</span> <span class="nn">minknow_api</span>
 
 
-<div class="viewcode-block" id="Aligner"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner">[docs]</a><span class="k">class</span> <span class="nc">Aligner</span><span class="p">(</span><span class="n">AlignerABC</span><span class="p">):</span>
+<div class="viewcode-block" id="Aligner">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner">[docs]</a>
+<span class="k">class</span> <span class="nc">Aligner</span><span class="p">(</span><span class="n">AlignerABC</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;No state is created, anything can be passed at initialisation</span>
 <span class="sd">        it will all be ignored.&quot;&quot;&quot;</span>
         <span class="k">return</span>
 
-<div class="viewcode-block" id="Aligner.validate"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Aligner.validate">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.validate">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validate the &quot;Aligner&quot; - will always return None, as there is no Aligner</span>
 
@@ -262,15 +266,24 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Aligner.initialised"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.initialised">[docs]</a>    <span class="k">def</span> <span class="nf">initialised</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Aligner.initialised">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.initialised">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialised</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Will always return ``True``&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Aligner.map_reads"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.map_reads">[docs]</a>    <span class="k">def</span> <span class="nf">map_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basecall_results</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="Aligner.map_reads">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.map_reads">[docs]</a>
+    <span class="k">def</span> <span class="nf">map_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basecall_results</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pass through the ``basecall_results`` iterable that is supplied.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">basecall_results</span></div>
 
-<div class="viewcode-block" id="Aligner.describe"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Aligner.describe">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.describe">[docs]</a>
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Describe the no_op Aligner instance</span>
 
@@ -278,18 +291,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;Using the `no_op` Aligner. No alignments will be performed, and all Results will be passed through.&quot;</span></div>
 
-<div class="viewcode-block" id="Aligner.disconnect"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Aligner.disconnect">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.disconnect">[docs]</a>
+    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Will always return ``None``, does nothing.&quot;&quot;&quot;</span>
-        <span class="k">return</span></div></div>
+        <span class="k">return</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Caller"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller">[docs]</a><span class="k">class</span> <span class="nc">Caller</span><span class="p">(</span><span class="n">CallerABC</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Caller">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller">[docs]</a>
+<span class="k">class</span> <span class="nc">Caller</span><span class="p">(</span><span class="n">CallerABC</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;No state is created, anything can be passed at initialisation</span>
 <span class="sd">        it will all be ignored.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="Caller.validate"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Caller.validate">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.validate">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validate the &quot;Caller&quot; - will always return None, as there is no Caller</span>
 
@@ -297,7 +319,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Caller.basecall"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.basecall">[docs]</a>    <span class="k">def</span> <span class="nf">basecall</span><span class="p">(</span>
+
+<div class="viewcode-block" id="Caller.basecall">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.basecall">[docs]</a>
+    <span class="k">def</span> <span class="nf">basecall</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">chunks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">minknow_api</span><span class="o">.</span><span class="n">data_pb2</span><span class="o">.</span><span class="n">GetLiveReadsResponse</span><span class="o">.</span><span class="n">ReadData</span><span class="p">]],</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
@@ -320,7 +345,10 @@
                 <span class="n">seq</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Caller.describe"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Caller.describe">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.describe">[docs]</a>
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Describe the `no_op` Caller.</span>
 
@@ -328,9 +356,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;Using the `no_op` Caller. No base-calling will be performed, and minimum viable results will be yielded back for each read provided.&quot;</span></div>
 
-<div class="viewcode-block" id="Caller.disconnect"><a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Caller.disconnect">
+<a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.disconnect">[docs]</a>
+    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Will always return ``None``, does nothing.&quot;&quot;&quot;</span>
-        <span class="k">return</span></div></div>
+        <span class="k">return</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -363,9 +396,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="../../../_static/documentation_options.js?v=07445e93"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>

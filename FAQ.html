@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Readfish analysis" href="post-analysis.html" /><link rel="prev" title="Base-calling server parameters" href="guppy-params.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Frequently Asked Questions - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -217,10 +217,10 @@
         </div>
         <article role="main">
           <section id="frequently-asked-questions">
-<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this heading">#</a></h1>
+<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Link to this heading">#</a></h1>
 <p><a name="connection-error-\[bad_reply\]-could-not-interpret-message-from-server-for-request:-load_config-reply:-invalid_protocol"></a></p>
 <section id="connection-error-bad-reply-could-not-interpret-message-from-server-for-request-load-config-reply-invalid-protocol">
-<h2>Connection error. [bad_reply] Could not interpret message from server for request: LOAD_CONFIG. Reply: INVALID_PROTOCOL<a class="headerlink" href="#connection-error-bad-reply-could-not-interpret-message-from-server-for-request-load-config-reply-invalid-protocol" title="Permalink to this heading">#</a></h2>
+<h2>Connection error. [bad_reply] Could not interpret message from server for request: LOAD_CONFIG. Reply: INVALID_PROTOCOL<a class="headerlink" href="#connection-error-bad-reply-could-not-interpret-message-from-server-for-request-load-config-reply-invalid-protocol" title="Link to this heading">#</a></h2>
 <p>This is most likely a version mismatch between <code class="docutils literal notranslate"><span class="pre">ont-pyguppy-client-lib</span></code>, the python library that enables readfish to talk to Guppy and the installed version of Guppy.</p>
 <p>If you open a terminal and run</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">guppy_basecall_server --version</span>
@@ -260,7 +260,7 @@
 <p><a name="connection-error-\[timed_out\]-timeout-waiting-for-reply-to-request:-load_config"></a></p>
 </section>
 <section id="connection-error-timed-out-timeout-waiting-for-reply-to-request-load-config">
-<h2>Connection error. [timed_out] Timeout waiting for reply to request: LOAD_CONFIG<a class="headerlink" href="#connection-error-timed-out-timeout-waiting-for-reply-to-request-load-config" title="Permalink to this heading">#</a></h2>
+<h2>Connection error. [timed_out] Timeout waiting for reply to request: LOAD_CONFIG<a class="headerlink" href="#connection-error-timed-out-timeout-waiting-for-reply-to-request-load-config" title="Link to this heading">#</a></h2>
 <p>This error often stems from a couple of sources. To test your Guppy Connection you can run</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -c &#39;from pyguppy_client_lib.pyclient import PyGuppyClient as PGC; \</span>
 <span class="go">           c = PGC(&quot;ipc:///tmp/.guppy/5555&quot;, &quot;dna_r9.4.1_450bps_fast.cfg&quot;); \</span>
@@ -290,7 +290,7 @@
 <p><a name="how-do-i-create-a-readfish-python-environment"></a></p>
 </section>
 <section id="how-do-i-create-a-readfish-python-environment">
-<h2>How do I create a readfish python environment?<a class="headerlink" href="#how-do-i-create-a-readfish-python-environment" title="Permalink to this heading">#</a></h2>
+<h2>How do I create a readfish python environment?<a class="headerlink" href="#how-do-i-create-a-readfish-python-environment" title="Link to this heading">#</a></h2>
 <p>We recommend using conda to manage your readfish environments, especially on ONT machines!
 To install conda instructions can be found <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation">here</a>.
 An explanation is found in an answer to this <a class="reference external" href="https://github.com/LooseLab/readfish/issues/124#issuecomment-759599319">issue</a> as well.</p>
@@ -320,7 +320,7 @@ An explanation is found in an answer to this <a class="reference external" href=
 <p><a name="what-should-my-batch-times-look-like"></a></p>
 </section>
 <section id="what-should-my-batch-times-look-like">
-<h2>What should my batch times look like.<a class="headerlink" href="#what-should-my-batch-times-look-like" title="Permalink to this heading">#</a></h2>
+<h2>What should my batch times look like.<a class="headerlink" href="#what-should-my-batch-times-look-like" title="Link to this heading">#</a></h2>
 <p>When running readfish, you will see output scrolling down your terminal pane to the effect of</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">2023-01-17 19:18:57,355 ru.ru_gen 15R/0.50858s</span>
 <span class="go">2023-01-17 19:18:57,834 ru.ru_gen 17R/0.47959s</span>
@@ -336,7 +336,7 @@ See <a class="reference external" href="https://github.com/LooseLab/readfish/iss
 <p><a name="which-branch-of-readfish-should-i-use"></a></p>
 </section>
 <section id="which-branch-of-readfish-should-i-use">
-<h2>Which branch of readfish should I use?<a class="headerlink" href="#which-branch-of-readfish-should-i-use" title="Permalink to this heading">#</a></h2>
+<h2>Which branch of readfish should I use?<a class="headerlink" href="#which-branch-of-readfish-should-i-use" title="Link to this heading">#</a></h2>
 <p>We are aware that readfish is a bit messy in terms of code branches right now (18/05/2023). Whilst we are working to bring this in to line, currently the most tried and tested version in <code class="docutils literal notranslate"><span class="pre">dev_staging</span></code>.
 Watch this space for any updates!
 See elsewhere in this file for installtion FAQs. 🕵️‍♂️</p>
@@ -417,9 +417,9 @@ See elsewhere in this file for installtion FAQs. 🕵️‍♂️</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="_static/documentation_options.js?v=07445e93"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

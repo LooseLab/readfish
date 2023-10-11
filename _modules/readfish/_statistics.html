@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>readfish._statistics - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -266,7 +266,9 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="ReadfishStatistics"><a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<div class="viewcode-block" id="ReadfishStatistics">
+<a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics">[docs]</a>
+<span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
 <span class="k">class</span> <span class="nc">ReadfishStatistics</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class for tracking and managing statistics for individual Readfish runs.</span>
@@ -446,7 +448,9 @@
                 <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;batch_count&quot;</span><span class="p">]</span>
             <span class="p">)</span>
 
-<div class="viewcode-block" id="ReadfishStatistics.get_batch_performance"><a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.get_batch_performance">[docs]</a>    <span class="k">def</span> <span class="nf">get_batch_performance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="ReadfishStatistics.get_batch_performance">
+<a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.get_batch_performance">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_batch_performance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate and return a formatted string representing batch performance.</span>
 
@@ -505,7 +509,10 @@
                 <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s1">&#39;batch_count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ReadfishStatistics.add_batch_performance"><a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.add_batch_performance">[docs]</a>    <span class="k">def</span> <span class="nf">add_batch_performance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_reads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">batch_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ReadfishStatistics.add_batch_performance">
+<a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.add_batch_performance">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_batch_performance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_reads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">batch_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the collected statistics with new batch performance data.</span>
 
@@ -543,7 +550,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_statistics</span><span class="p">[</span><span class="s2">&quot;consecutive_lagging_batches&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="ReadfishStatistics.log_read"><a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.log_read">[docs]</a>    <span class="k">def</span> <span class="nf">log_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ReadfishStatistics.log_read">
+<a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.log_read">[docs]</a>
+    <span class="k">def</span> <span class="nf">log_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a new read chunk record into the collected statistics,</span>
 <span class="sd">        and log it to the debug logger.&quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
@@ -571,6 +581,7 @@
             <span class="c1"># Log the read to the debug logger</span>
             <span class="n">debug_log_record</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">debug_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">debug_log_record</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_update_condition_counter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -602,6 +613,7 @@
             <span class="k">if</span> <span class="n">condition_name</span> <span class="o">!=</span> <span class="n">region_name</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">region_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">actions_conditions</span><span class="p">[(</span><span class="n">region_name</span><span class="p">,</span> <span class="n">decision_name</span><span class="p">,</span> <span class="n">action_name</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -634,9 +646,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="../../_static/documentation_options.js?v=07445e93"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>

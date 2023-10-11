@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Base-calling server parameters" href="guppy-params.html" /><link rel="prev" title="TOML files" href="toml.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>readfish console scripts - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -217,13 +217,13 @@
         </div>
         <article role="main">
           <section id="readfish-console-scripts">
-<h1>readfish console scripts<a class="headerlink" href="#readfish-console-scripts" title="Permalink to this heading">#</a></h1>
+<h1>readfish console scripts<a class="headerlink" href="#readfish-console-scripts" title="Link to this heading">#</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">readfish</span></code> is a set of scripts that are accessed as sub-commands.
 These scripts are primarily aimed at implementing Adaptive Sampling (also known as Read Until or selective sequencing) for Oxford Nanopore Sequencers.</p>
 <section id="commands">
-<h2>Commands<a class="headerlink" href="#commands" title="Permalink to this heading">#</a></h2>
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">#</a></h2>
 <section id="module-readfish.entry_points.targets">
-<span id="readfish-targets"></span><h3><code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">targets</span></code><a class="headerlink" href="#module-readfish.entry_points.targets" title="Permalink to this heading">#</a></h3>
+<span id="readfish-targets"></span><h3><code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">targets</span></code><a class="headerlink" href="#module-readfish.entry_points.targets" title="Link to this heading">#</a></h3>
 <p>Run a targeted sequencing experiment on a device.</p>
 <dl class="simple">
 <dt>When given a <a class="reference internal" href="toml.html"><span class="doc">TOML</span></a> experiment configuration <code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">targets</span></code> will:</dt><dd><ol class="arabic simple">
@@ -324,7 +324,7 @@ decision  action  condition  barcode  previous_action  timestamp  action_overrid
 This prevents trying to unblock reads of unknown length.</p>
 </section>
 <section id="module-readfish.entry_points.unblock_all">
-<span id="readfish-unblock-all"></span><h3><code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">unblock-all</span></code><a class="headerlink" href="#module-readfish.entry_points.unblock_all" title="Permalink to this heading">#</a></h3>
+<span id="readfish-unblock-all"></span><h3><code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">unblock-all</span></code><a class="headerlink" href="#module-readfish.entry_points.unblock_all" title="Link to this heading">#</a></h3>
 <p>An unblock all script.
 This will attempt to unblock all reads on all channels.
 This should result in a read length histogram that has very short peaks (&lt;1kb) as these are the smallest chunks that we can acquire.
@@ -337,7 +337,7 @@ It is only recommended to use this script when running a simulated (playback) se
 </div>
 </section>
 <section id="module-readfish.entry_points.validate">
-<span id="readfish-validate"></span><h3><code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">validate</span></code><a class="headerlink" href="#module-readfish.entry_points.validate" title="Permalink to this heading">#</a></h3>
+<span id="readfish-validate"></span><h3><code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">validate</span></code><a class="headerlink" href="#module-readfish.entry_points.validate" title="Link to this heading">#</a></h3>
 <p>Validate experiment configuration <a class="reference internal" href="toml.html"><span class="doc">TOML</span></a> files.</p>
 <p>This script is used to check that an experiment configuration file can be loaded.
 By default, this will attempt to load the <code class="docutils literal notranslate"><span class="pre">Caller</span></code> and <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> plugins as specified in the
@@ -352,7 +352,7 @@ If you require help understanding or resolving an error you can check the <a cla
 </div>
 </section>
 <section id="module-readfish.entry_points.stats">
-<span id="readfish-stats"></span><h3><code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">stats</span></code><a class="headerlink" href="#module-readfish.entry_points.stats" title="Permalink to this heading">#</a></h3>
+<span id="readfish-stats"></span><h3><code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">stats</span></code><a class="headerlink" href="#module-readfish.entry_points.stats" title="Link to this heading">#</a></h3>
 <p>This module is the stats entry point into the Readfish package, focussed specifically
 on calculating summary information about a Readfish experiment. It parses base-called
 FASTQ files produced after a Readfish experiment and, by using the same aligner
@@ -378,7 +378,7 @@ directory containing the FASTQ files, and options to control the output format.<
 </dd>
 </dl>
 <section id="command-line-arguments">
-<h4>Command-Line Arguments<a class="headerlink" href="#command-line-arguments" title="Permalink to this heading">#</a></h4>
+<h4>Command-Line Arguments<a class="headerlink" href="#command-line-arguments" title="Link to this heading">#</a></h4>
 <p>The module accepts the following command-line arguments:</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -410,7 +410,7 @@ experiment.</p>
 </ul>
 </section>
 <section id="usage">
-<h4>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h4>
+<h4>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h4>
 <p>An example of how to use this module without outputting demultiplexed FASTQ and PAF alignments is shown below:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>readfish<span class="w"> </span>stats<span class="w"> </span>--toml<span class="w"> </span>tests/static/stats_test/yeast_summary_test.toml<span class="w"> </span>--fastq-directory<span class="w"> </span>tests/static/stats_test/<span class="w"> </span>--no-paf-out<span class="w"> </span>--no-demultiplex
 </pre></div>
@@ -421,6 +421,10 @@ experiment.</p>
 </div>
 <p>To run and output PAF alignments and demutiplexed FASTQ</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>readfish<span class="w"> </span>stats<span class="w"> </span>--toml<span class="w"> </span>tests/static/stats_test/yeast_summary_test.toml<span class="w"> </span>--fastq-directory<span class="w"> </span>tests/static/stats_test/
+</pre></div>
+</div>
+<p>To run and output PAF alignments and demutiplexed FASTQ, and output a HTML summary file at summary_adaptive.html</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>readfish<span class="w"> </span>stats<span class="w"> </span>--toml<span class="w"> </span>tests/static/stats_test/yeast_summary_test.toml<span class="w"> </span>--fastq-directory<span class="w"> </span>tests/static/stats_test/<span class="w"> </span>--html<span class="w"> </span>summary_adaptive
 </pre></div>
 </div>
 </section>
@@ -506,9 +510,9 @@ experiment.</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="_static/documentation_options.js?v=07445e93"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

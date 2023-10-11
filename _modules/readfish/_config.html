@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>readfish._config - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -275,7 +275,9 @@
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="_Condition"><a class="viewcode-back" href="../../readfish.html#readfish._config._Condition">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<div class="viewcode-block" id="_Condition">
+<a class="viewcode-back" href="../../readfish.html#readfish._config._Condition">[docs]</a>
+<span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
 <span class="k">class</span> <span class="nc">_Condition</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation of an experimental condition.</span>
 <span class="sd">    This can either be a :class:`Barcode` or an experimental :class:`Region` of the flow cell.</span>
@@ -309,14 +311,19 @@
     <span class="n">below_min_chunks</span><span class="p">:</span> <span class="n">Action</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Action</span><span class="o">.</span><span class="n">proceed</span><span class="p">)</span>
     <span class="n">above_max_chunks</span><span class="p">:</span> <span class="n">Action</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Action</span><span class="o">.</span><span class="n">unblock</span><span class="p">)</span>
 
-<div class="viewcode-block" id="_Condition.get_action"><a class="viewcode-back" href="../../readfish.html#readfish._config._Condition.get_action">[docs]</a>    <span class="k">def</span> <span class="nf">get_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decision</span><span class="p">:</span> <span class="n">Decision</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Action</span><span class="p">:</span>
+<div class="viewcode-block" id="_Condition.get_action">
+<a class="viewcode-back" href="../../readfish.html#readfish._config._Condition.get_action">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decision</span><span class="p">:</span> <span class="n">Decision</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Action</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the :class:`Action` that corresponds to ``decision``.</span>
 
 <span class="sd">        :param decision: :class:`Decision` for a read</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decision</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="_Condition.pretty_print"><a class="viewcode-back" href="../../readfish.html#readfish._config._Condition.pretty_print">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="_Condition.pretty_print">
+<a class="viewcode-back" href="../../readfish.html#readfish._config._Condition.pretty_print">[docs]</a>
+    <span class="k">def</span> <span class="nf">pretty_print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Pretty print how the conditions match up to the resulting Actions. Used in the describe function.</span>
 
@@ -338,10 +345,14 @@
             <span class="sa">f</span><span class="s2">&quot;Read will be sent </span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> when classed as:</span><span class="se">\n\t</span><span class="si">{</span><span class="n">nice_join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">]</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="_PluginModule"><a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+
+<div class="viewcode-block" id="_PluginModule">
+<a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule">[docs]</a>
+<span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
 <span class="k">class</span> <span class="nc">_PluginModule</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A plugin module</span>
 
@@ -352,7 +363,9 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span>
 
-<div class="viewcode-block" id="_PluginModule.from_dict"><a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="_PluginModule.from_dict">
+<a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_PluginModule</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates an instance of the _PluginModule class from a dictionary.</span>
 
@@ -368,7 +381,10 @@
         <span class="n">k</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="n">k</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="_PluginModule.load_module"><a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.load_module">[docs]</a>    <span class="k">def</span> <span class="nf">load_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="_PluginModule.load_module">
+<a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.load_module">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a plugin module with the given name.</span>
 
 <span class="sd">        If the module is a built-in plugin (as specified in the builtins dictionary), it is loaded from the readfish.plugins package.</span>
@@ -396,7 +412,10 @@
             <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;readfish.plugins.</span><span class="si">{</span><span class="n">builtins</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="_PluginModule.load_object"><a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.load_object">[docs]</a>    <span class="k">def</span> <span class="nf">load_object</span><span class="p">(</span>
+
+<div class="viewcode-block" id="_PluginModule.load_object">
+<a class="viewcode-back" href="../../readfish.html#readfish._config._PluginModule.load_object">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_object</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">init</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">override</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a specified object from a plugin module.</span>
@@ -424,23 +443,39 @@
                     <span class="sa">f</span><span class="s2">&quot;Attempting to initalise `</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">` with conflicting keys: </span><span class="si">{</span><span class="n">overlap</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="n">obj_</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_</span></div></div>
+        <span class="k">return</span> <span class="n">obj_</span></div>
+</div>
+
 
 
 <span class="c1"># fmt: off</span>
 <span class="c1"># Aliases to defined classes, make for nicer printing</span>
-<div class="viewcode-block" id="CallerSettings"><a class="viewcode-back" href="../../readfish.html#readfish._config.CallerSettings">[docs]</a><span class="k">class</span> <span class="nc">CallerSettings</span><span class="p">(</span><span class="n">_PluginModule</span><span class="p">):</span>
+<div class="viewcode-block" id="CallerSettings">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.CallerSettings">[docs]</a>
+<span class="k">class</span> <span class="nc">CallerSettings</span><span class="p">(</span><span class="n">_PluginModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`_PluginModule` for details&quot;&quot;&quot;</span></div>
-<div class="viewcode-block" id="MapperSettings"><a class="viewcode-back" href="../../readfish.html#readfish._config.MapperSettings">[docs]</a><span class="k">class</span> <span class="nc">MapperSettings</span><span class="p">(</span><span class="n">_PluginModule</span><span class="p">):</span>
+
+<div class="viewcode-block" id="MapperSettings">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.MapperSettings">[docs]</a>
+<span class="k">class</span> <span class="nc">MapperSettings</span><span class="p">(</span><span class="n">_PluginModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`_PluginModule` for details&quot;&quot;&quot;</span></div>
-<div class="viewcode-block" id="Region"><a class="viewcode-back" href="../../readfish.html#readfish._config.Region">[docs]</a><span class="k">class</span> <span class="nc">Region</span><span class="p">(</span><span class="n">_Condition</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Region">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Region">[docs]</a>
+<span class="k">class</span> <span class="nc">Region</span><span class="p">(</span><span class="n">_Condition</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`_Condition` for details&quot;&quot;&quot;</span></div>
-<div class="viewcode-block" id="Barcode"><a class="viewcode-back" href="../../readfish.html#readfish._config.Barcode">[docs]</a><span class="k">class</span> <span class="nc">Barcode</span><span class="p">(</span><span class="n">_Condition</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Barcode">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Barcode">[docs]</a>
+<span class="k">class</span> <span class="nc">Barcode</span><span class="p">(</span><span class="n">_Condition</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`_Condition` for details&quot;&quot;&quot;</span></div>
+
 <span class="c1"># fmt: on</span>
 
 
-<div class="viewcode-block" id="Conf"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf">[docs]</a><span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
+<div class="viewcode-block" id="Conf">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf">[docs]</a>
+<span class="nd">@attrs</span><span class="o">.</span><span class="n">define</span>
 <span class="k">class</span> <span class="nc">Conf</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overall configuration for readfish experiments</span>
 
@@ -504,7 +539,9 @@
             <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">channels</span>
         <span class="p">}</span>
 
-<div class="viewcode-block" id="Conf.get_conditions"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_conditions">[docs]</a>    <span class="k">def</span> <span class="nf">get_conditions</span><span class="p">(</span>
+<div class="viewcode-block" id="Conf.get_conditions">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_conditions">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_conditions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Barcode</span> <span class="o">|</span> <span class="n">Region</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the condition for this channel or barcode from the Conf TOML</span>
@@ -540,7 +577,10 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">control</span><span class="p">,</span> <span class="n">condition</span></div>
 
-<div class="viewcode-block" id="Conf.get_region"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_region">[docs]</a>    <span class="k">def</span> <span class="nf">get_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Region</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="Conf.get_region">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_region">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Region</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the region for a given channel</span>
 
 <span class="sd">        :param channel: The channel number</span>
@@ -549,7 +589,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel_map</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel_map</span><span class="p">[</span><span class="n">channel</span><span class="p">]]</span></div>
 
-<div class="viewcode-block" id="Conf.get_barcode"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_barcode">[docs]</a>    <span class="k">def</span> <span class="nf">get_barcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Barcode</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="Conf.get_barcode">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_barcode">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_barcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Barcode</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a barcode for a given barcode name</span>
 
 <span class="sd">        :param barcode: The name of the barcode, example &quot;barcode01&quot;</span>
@@ -558,7 +601,10 @@
         <span class="k">if</span> <span class="n">barcode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">barcode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">barcodes</span><span class="p">[</span><span class="s2">&quot;classified&quot;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Conf.get_targets"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_targets">[docs]</a>    <span class="k">def</span> <span class="nf">get_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Targets</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Conf.get_targets">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.get_targets">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">barcode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Targets</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the targets for a given channel or barcode, via its condition</span>
 
 <span class="sd">        :param channel: The channel number</span>
@@ -568,7 +614,10 @@
         <span class="n">_</span><span class="p">,</span> <span class="n">condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">barcode</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">condition</span><span class="o">.</span><span class="n">targets</span></div>
 
-<div class="viewcode-block" id="Conf.from_file"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+
+<div class="viewcode-block" id="Conf.from_file">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.from_file">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
@@ -591,7 +640,10 @@
         <span class="n">dict_</span> <span class="o">=</span> <span class="n">rtoml</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">channels</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Conf.from_dict"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+
+<div class="viewcode-block" id="Conf.from_dict">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dict_</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Conf</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create the Conf class from a Dictionary</span>
@@ -609,7 +661,10 @@
         <span class="n">conv</span><span class="o">.</span><span class="n">register_structure_hook</span><span class="p">(</span><span class="n">_PluginModule</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">conv</span><span class="o">.</span><span class="n">structure</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Conf.to_file"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Conf.to_file">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.to_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a conf to a TOML file</span>
 
 <span class="sd">        :param path: File path to create the TOML file for</span>
@@ -628,7 +683,10 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
             <span class="n">rtoml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Conf.write_channels_toml"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.write_channels_toml">[docs]</a>    <span class="k">def</span> <span class="nf">write_channels_toml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Conf.write_channels_toml">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.write_channels_toml">[docs]</a>
+    <span class="k">def</span> <span class="nf">write_channels_toml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write out a channels toml file to the given directory.</span>
 <span class="sd">        This file is a map of each channel number to the corresponding region name.</span>
@@ -650,7 +708,10 @@
             <span class="p">)</span>
             <span class="n">rtoml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Conf.describe_experiment"><a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.describe_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">describe_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Conf.describe_experiment">
+<a class="viewcode-back" href="../../readfish.html#readfish._config.Conf.describe_experiment">[docs]</a>
+    <span class="k">def</span> <span class="nf">describe_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Describe the experiment from the given Conf class.</span>
 <span class="sd">        For Barcodes we describe the targets and the conditions, but not the region.</span>
@@ -683,7 +744,9 @@
 <span class="s2">Region applies to section of flow cell (# = applied, . = not applied):</span>
 <span class="si">{</span><span class="n">draw_flowcell_split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span><span class="w"> </span><span class="n">split</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span></div>
+</div>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -726,9 +789,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="../../_static/documentation_options.js?v=07445e93"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>

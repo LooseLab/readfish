@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>readfish._utils - readfish 2023.1.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -244,20 +244,28 @@
 <span class="n">MODULE_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ChunkTracker"><a class="viewcode-back" href="../../readfish.html#readfish._utils.ChunkTracker">[docs]</a><span class="k">class</span> <span class="nc">ChunkTracker</span><span class="p">:</span>
+<div class="viewcode-block" id="ChunkTracker">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.ChunkTracker">[docs]</a>
+<span class="k">class</span> <span class="nc">ChunkTracker</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channels</span><span class="p">):</span>
         <span class="c1"># https://wiki.python.org/moin/TimeComplexity</span>
         <span class="c1"># self.tracker = defaultdict(Counter)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="p">[</span><span class="n">Counter</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">channels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
 
-<div class="viewcode-block" id="ChunkTracker.seen"><a class="viewcode-back" href="../../readfish.html#readfish._utils.ChunkTracker.seen">[docs]</a>    <span class="k">def</span> <span class="nf">seen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">read_number</span><span class="p">):</span>
+<div class="viewcode-block" id="ChunkTracker.seen">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.ChunkTracker.seen">[docs]</a>
+    <span class="k">def</span> <span class="nf">seen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">read_number</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">read_number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">][</span><span class="n">read_number</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">][</span><span class="n">read_number</span><span class="p">]</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="p">[</span><span class="n">channel</span><span class="p">][</span><span class="n">read_number</span><span class="p">]</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Severity"><a class="viewcode-back" href="../../readfish.html#readfish._utils.Severity">[docs]</a><span class="k">class</span> <span class="nc">Severity</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Severity">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.Severity">[docs]</a>
+<span class="k">class</span> <span class="nc">Severity</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Severity states for messaging to MinKNOW</span>
 
 <span class="sd">    :param INFO: Info level</span>
@@ -270,7 +278,10 @@
     <span class="n">ERROR</span> <span class="o">=</span> <span class="mi">3</span></div>
 
 
-<div class="viewcode-block" id="format_bases"><a class="viewcode-back" href="../../readfish.html#readfish._utils.format_bases">[docs]</a><span class="k">def</span> <span class="nf">format_bases</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="format_bases">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.format_bases">[docs]</a>
+<span class="k">def</span> <span class="nf">format_bases</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a human readable string of a large number using SI unit prefixes</span>
 
 <span class="sd">    :pararm num: A number to convert to decimal form</span>
@@ -296,7 +307,10 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">:</span><span class="s2">3.2f</span><span class="si">}</span><span class="s2"> Y</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="nested_get"><a class="viewcode-back" href="../../readfish.html#readfish._utils.nested_get">[docs]</a><span class="k">def</span> <span class="nf">nested_get</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">delim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+
+<div class="viewcode-block" id="nested_get">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.nested_get">[docs]</a>
+<span class="k">def</span> <span class="nf">nested_get</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">delim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a value from a nested structure</span>
 
 <span class="sd">    &gt;&gt;&gt; class C:</span>
@@ -333,7 +347,10 @@
     <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">_get</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delim</span><span class="p">),</span> <span class="n">obj</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="compress_and_encode_string"><a class="viewcode-back" href="../../readfish.html#readfish._utils.compress_and_encode_string">[docs]</a><span class="k">def</span> <span class="nf">compress_and_encode_string</span><span class="p">(</span><span class="n">original_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="compress_and_encode_string">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.compress_and_encode_string">[docs]</a>
+<span class="k">def</span> <span class="nf">compress_and_encode_string</span><span class="p">(</span><span class="n">original_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compresses a string, encodes it in base-64, and returns an ASCII string representation of the compressed blob.</span>
 
 <span class="sd">    :param original_str: The string to be compressed and encoded.</span>
@@ -350,7 +367,10 @@
     <span class="k">return</span> <span class="n">ascii_str</span></div>
 
 
-<div class="viewcode-block" id="decode_and_decompress_string"><a class="viewcode-back" href="../../readfish.html#readfish._utils.decode_and_decompress_string">[docs]</a><span class="k">def</span> <span class="nf">decode_and_decompress_string</span><span class="p">(</span><span class="n">encoded_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="decode_and_decompress_string">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.decode_and_decompress_string">[docs]</a>
+<span class="k">def</span> <span class="nf">decode_and_decompress_string</span><span class="p">(</span><span class="n">encoded_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Decodes an ASCII string representation of a compressed blob, decompresses it, and returns the original string.</span>
 <span class="sd">    This is the reverse of `compress_and_encode_string`.</span>
 
@@ -368,7 +388,10 @@
     <span class="k">return</span> <span class="n">original_str</span></div>
 
 
-<div class="viewcode-block" id="escape_message_to_minknow"><a class="viewcode-back" href="../../readfish.html#readfish._utils.escape_message_to_minknow">[docs]</a><span class="k">def</span> <span class="nf">escape_message_to_minknow</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chars</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="escape_message_to_minknow">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.escape_message_to_minknow">[docs]</a>
+<span class="k">def</span> <span class="nf">escape_message_to_minknow</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chars</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Escape characters in the chars list if they are in message</span>
 
 <span class="sd">    &gt;&gt;&gt; escape_message_to_minknow(&quot;20%&quot;, [&quot;%&quot;])</span>
@@ -387,7 +410,10 @@
     <span class="k">return</span> <span class="n">message</span></div>
 
 
-<div class="viewcode-block" id="send_message"><a class="viewcode-back" href="../../readfish.html#readfish._utils.send_message">[docs]</a><span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="n">rpc_connection</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">severity</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="send_message">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.send_message">[docs]</a>
+<span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="n">rpc_connection</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">severity</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Send a message to MinKNOW</span>
 
 <span class="sd">    :param rpc_connection: An instance of the rpc.Connection</span>
@@ -398,7 +424,10 @@
     <span class="n">rpc_connection</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">send_user_message</span><span class="p">(</span><span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">user_message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="nice_join"><a class="viewcode-back" href="../../readfish.html#readfish._utils.nice_join">[docs]</a><span class="k">def</span> <span class="nf">nice_join</span><span class="p">(</span><span class="n">seq</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="p">,</span> <span class="n">conjunction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;or&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="nice_join">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.nice_join">[docs]</a>
+<span class="k">def</span> <span class="nf">nice_join</span><span class="p">(</span><span class="n">seq</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="p">,</span> <span class="n">conjunction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;or&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Join lists nicely</span>
 
 <span class="sd">    :param seq: A sequence of objects that have a __str__ method.</span>
@@ -414,7 +443,10 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">conjunction</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="get_coords"><a class="viewcode-back" href="../../readfish.html#readfish._utils.get_coords">[docs]</a><span class="k">def</span> <span class="nf">get_coords</span><span class="p">(</span><span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="get_coords">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.get_coords">[docs]</a>
+<span class="k">def</span> <span class="nf">get_coords</span><span class="p">(</span><span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a channel&#39;s coordinates given a flowcell size</span>
 
 <span class="sd">    :param channel: The channel to retrieve the coordinates for</span>
@@ -441,7 +473,10 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;flowcell_size is not recognised&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_flowcell_array"><a class="viewcode-back" href="../../readfish.html#readfish._utils.get_flowcell_array">[docs]</a><span class="k">def</span> <span class="nf">get_flowcell_array</span><span class="p">(</span><span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
+
+<div class="viewcode-block" id="get_flowcell_array">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.get_flowcell_array">[docs]</a>
+<span class="k">def</span> <span class="nf">get_flowcell_array</span><span class="p">(</span><span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a numpy.ndarray in the shape of a flowcell</span>
 
 <span class="sd">    :param flowcell_size: The total number of channels on the flowcell; 126 for Flongle, 512 for MinION, and 3000 for PromethION</span>
@@ -483,7 +518,10 @@
     <span class="k">return</span> <span class="n">b</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="stringify_grid"><a class="viewcode-back" href="../../readfish.html#readfish._utils.stringify_grid">[docs]</a><span class="k">def</span> <span class="nf">stringify_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="stringify_grid">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.stringify_grid">[docs]</a>
+<span class="k">def</span> <span class="nf">stringify_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a nested list of characters into a 2d grid.</span>
 
@@ -496,7 +534,10 @@
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="draw_flowcell_split"><a class="viewcode-back" href="../../readfish.html#readfish._utils.draw_flowcell_split">[docs]</a><span class="k">def</span> <span class="nf">draw_flowcell_split</span><span class="p">(</span>
+
+<div class="viewcode-block" id="draw_flowcell_split">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.draw_flowcell_split">[docs]</a>
+<span class="k">def</span> <span class="nf">draw_flowcell_split</span><span class="p">(</span>
     <span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -544,7 +585,10 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">stringify_grid</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="generate_flowcell"><a class="viewcode-back" href="../../readfish.html#readfish._utils.generate_flowcell">[docs]</a><span class="k">def</span> <span class="nf">generate_flowcell</span><span class="p">(</span>
+
+<div class="viewcode-block" id="generate_flowcell">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.generate_flowcell">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_flowcell</span><span class="p">(</span>
     <span class="n">flowcell_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">odd_even</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an list of lists with channels to use in conditions</span>
@@ -603,7 +647,10 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">arr</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span></div>
 
 
-<div class="viewcode-block" id="iter_exception_group"><a class="viewcode-back" href="../../readfish.html#readfish._utils.iter_exception_group">[docs]</a><span class="k">def</span> <span class="nf">iter_exception_group</span><span class="p">(</span><span class="n">exc</span><span class="p">:</span> <span class="n">BaseExceptionGroup</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="iter_exception_group">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.iter_exception_group">[docs]</a>
+<span class="k">def</span> <span class="nf">iter_exception_group</span><span class="p">(</span><span class="n">exc</span><span class="p">:</span> <span class="n">BaseExceptionGroup</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Traverses an exception tree, yielding formatted strings for each exception encountered</span>
 
 <span class="sd">    :param exc: The exception group to traverse</span>
@@ -649,7 +696,10 @@
         <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">indent</span><span class="si">}</span><span class="s2">- </span><span class="si">{</span><span class="n">exc</span><span class="si">!r}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="get_device"><a class="viewcode-back" href="../../readfish.html#readfish._utils.get_device">[docs]</a><span class="k">def</span> <span class="nf">get_device</span><span class="p">(</span>
+
+<div class="viewcode-block" id="get_device">
+<a class="viewcode-back" href="../../readfish.html#readfish._utils.get_device">[docs]</a>
+<span class="k">def</span> <span class="nf">get_device</span><span class="p">(</span>
     <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FlowCellPosition</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a position for a specific device over the minknow API</span>
@@ -665,6 +715,7 @@
         <span class="k">if</span> <span class="n">position</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">device</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">position</span>
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find device </span><span class="si">{</span><span class="n">device</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -703,9 +754,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1e7f7872"></script>
+</div><script src="../../_static/documentation_options.js?v=07445e93"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
