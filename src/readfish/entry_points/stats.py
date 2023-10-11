@@ -86,7 +86,7 @@ _help = "Readfish experiment summary stats"
 _cli = BASE_ARGS + (
     ("--toml", dict(help="TOML file used in the readfish experiment.", required=True)),
     (
-        "--fastq_dir",
+        "--fastq-directory",
         dict(
             help="Path to the directory containing the FASTQ files produced by the readfish experiment",
             type=Path,
@@ -160,7 +160,7 @@ def run(_parser, args: argparse.NameSpace, _extras):
     try:
         _fastq(
             args.toml,
-            args.fastq_dir,
+            args.fastq_directory,
             demultiplex=args.no_demultiplex,
             paf_out=args.no_paf_out,
             prom=args.prom,

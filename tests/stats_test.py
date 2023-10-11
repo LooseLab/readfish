@@ -51,7 +51,9 @@ def test_fastq_stats(capfd, toml_file, fastq_directory, expected):
         readfish._cli_base.main(
             [
                 "stats",
+                "--toml",
                 str(toml_file),
+                "--fastq-directory",
                 str(fastq_directory),
                 "--no-paf-out",
                 "--no-demultiplex",
