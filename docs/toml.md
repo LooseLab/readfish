@@ -3,7 +3,7 @@
 Readfish experiments are configured using [TOML] files, which are minimal and easy-to-read markup files.
 Our configuration only uses [tables] and [arrays of tables] populated with [key-value pairs].
 The TOML file contains almost all the information required for running readfish, such as information on barcodes, control/analysis regions, what basecaller or aligner to use.
-There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/refactor/docs/_static/example_tomls.
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/main/docs/_static/example_tomls.
 ## Data model
 
 To understand each section of the TOML file it helps to understand the work that readfish does:
