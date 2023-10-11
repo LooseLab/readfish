@@ -83,7 +83,7 @@ Readfish uses [calver](https://calver.org/) for versioning. Specifically the for
 
 
 ## Viewing Documentation
-Aside from a traditional [`README.md`](https://github.com/LooseLab/readfish/blob/refactor/README.md), `readfish` uses [`sphinx`](https://www.sphinx-doc.org/en/master/) to create documentation.
+Aside from a traditional [`README.md`](https://github.com/LooseLab/readfish/blob/main/README.md), `readfish` uses [`sphinx`](https://www.sphinx-doc.org/en/master/) to create documentation.
 All documentation is kept in the `readfish/docs` directory.
 
 A live version is available at https://looselab.github.io/readfish/.
@@ -133,7 +133,7 @@ Currently, two types of plugins can be written
  - `Caller` plugins (must inherit `CallerABC`), which wrap a base caller for calling chunks
  - `Aligner` plugins (must inherit `AlignerABC`), which wrap an aligner for making decisions on base called chunks.
 
-These ABCs are defined in [`abc.py`](https://github.com/LooseLab/readfish/blob/refactor/src/readfish/plugins/abc.py).
+These ABCs are defined in [`abc.py`](https://github.com/LooseLab/readfish/blob/main/src/readfish/plugins/abc.py).
 This means that the methods which are used in `targets.py` are present, so plugins can be swapped out at run time, and function as standardised self-contained interfaces to different external tools.
 
 If a plugin module is written and not included in `readfish` package, but another, it is possible to include it by passing the path in the `toml`.

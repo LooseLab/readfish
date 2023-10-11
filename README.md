@@ -166,7 +166,7 @@ See '<command> --help' to read about a specific sub-command.
 TOML File
 ---------
 For information on the TOML files see [TOML.md](docs/toml.md).
-There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the [TOML file here](https://github.com//LooseLab/readfish/tree/refactor/docs/_static/example_tomls) .
+There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the [TOML file here](https://github.com//LooseLab/readfish/tree/main/docs/_static/example_tomls) .
 
 <details style="margin-top: 10px; margin-bottom: 10px" open><summary id="testing"><h1 style="display: inline">Testing</h1></summary>
 <!-- begin-test -->
