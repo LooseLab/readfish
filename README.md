@@ -128,8 +128,13 @@ conda activate readfish_dev
 
 [ONT's Guppy GPU](https://community.nanoporetech.com/downloads) should be installed and running as a server.
 
+
 <details style="margin-top: 10px">
-<summary><h3 style="display: inline;" id="py-ve">Alternatively, readfish can be installed into a python virtual-environment</h3></summary>
+<summary><h3 style="display: inline;" id="py-ve"><span>Alternatively, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa readfish can be installed into a python virtual-environment</span></h3></summary>Help</details>
+
+
+<details style="margin-top: 10px">
+<summary><span><h3 style="display: inline;" id="py-ve">Alternatively, readfish can be installed into a python virtual-environment</h3></span></summary>
 
 ```console
 # Make a virtual environment
