@@ -11,6 +11,7 @@ FAQ
 post-analysis
 developers-guide
 readfish
+changelog
 ```
 
 # Welcome to the readfish documentation!

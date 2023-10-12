@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>readfish._statistics - readfish 2023.1.0</title>
+        <title>readfish._statistics - readfish 2023.1.1</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -133,7 +133,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">readfish 2023.1.0</div></a>
+      <a href="../../index.html"><div class="brand">readfish 2023.1.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -160,7 +160,7 @@
     <img class="sidebar-logo only-dark" src="../../_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  <span class="sidebar-brand-text">readfish 2023.1.1</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -181,6 +181,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../readfish.plugins.html">readfish plugins API</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -234,7 +235,9 @@
 <span class="sd">    &gt;&gt;&gt; from readfish._statistics import ReadfishStatistics, DEBUG_STATS_LOG_FIELDS</span>
 <span class="sd">    &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
 <span class="sd">    &gt;&gt;&gt; stats.add_batch_performance(1,1)</span>
-<span class="sd">    &gt;&gt;&gt; stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, &quot;test_read_id&quot;, 7, 1, 100, 3, &quot;single_on&quot;, &quot;stop_receiving&quot;, &quot;exp_region&quot;, None, None, False, 0.0))), region_name=&quot;naff&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, &quot;test_read_id&quot;, 7, 1, 100, 3,\</span>
+<span class="sd"> &quot;single_on&quot;, &quot;stop_receiving&quot;, &quot;exp_region&quot;, None, None, False, 0.0))), region_name=&quot;naff&quot;,\</span>
+<span class="sd"> overridden_action_name=None)</span>
 <span class="sd">    &gt;&gt;&gt; print(stats.get_batch_performance())</span>
 <span class="sd">    0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (&gt;1.00s): 0/1</span>
 <span class="sd">    &gt;&gt;&gt; print(stats.decisions)</span>
@@ -293,7 +296,7 @@
 <span class="sd">    &gt;&gt;&gt; stats.add_batch_performance(1, 1)</span>
 <span class="sd">    &gt;&gt;&gt; stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, &quot;test_read_id&quot;,\</span>
 <span class="sd">7, 1, 100, 3, &quot;single_on&quot;, &quot;stop_receiving&quot;, &quot;exp_region&quot;, None, None,\</span>
-<span class="sd">False, 0.0))), region_name=&quot;naff&quot;)</span>
+<span class="sd">False, 0.0))), region_name=&quot;naff&quot;, overridden_action_name=None)</span>
 <span class="sd">    &gt;&gt;&gt; print(stats.get_batch_performance())</span>
 <span class="sd">    0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (&gt;1.00s): 0/1</span>
 <span class="sd">    &gt;&gt;&gt; print(stats.decisions)</span>
@@ -316,7 +319,7 @@
 <span class="sd">    ...     # Use the log_read method to log a sample read</span>
 <span class="sd">    ...     stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS,\</span>
 <span class="sd">(1, 2, &quot;test_read_id&quot;, 7, 1, 100, 3, &quot;single_on&quot;, &quot;stop_receiving&quot;, &quot;exp_region&quot;,\</span>
-<span class="sd">None, None, False, 0.0))), region_name=&quot;naff&quot;)</span>
+<span class="sd">None, None, False, 0.0))), region_name=&quot;naff&quot;, overridden_action_name=None)</span>
 <span class="sd">    ...     # in this test, we need a small amount of time to allow the logger to write the file</span>
 <span class="sd">    ...     time.sleep(0.1)</span>
 <span class="sd">    ...     # Read the content of the file</span>
@@ -553,31 +556,49 @@
 
 <div class="viewcode-block" id="ReadfishStatistics.log_read">
 <a class="viewcode-back" href="../../readfish.html#readfish._statistics.ReadfishStatistics.log_read">[docs]</a>
-    <span class="k">def</span> <span class="nf">log_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a new read chunk record into the collected statistics,</span>
-<span class="sd">        and log it to the debug logger.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">log_read</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overridden_action_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new read chunk record into the collected statistics,</span>
+<span class="sd">        and log it to the debug logger.</span>
+
+<span class="sd">        The following terms are used in this function:</span>
+<span class="sd">        decision is expected to be one of Unblock, stop_receiving etc.</span>
+<span class="sd">        mode is expected to be one of single_on, single_off, multi_on etc.</span>
+
+<span class="sd">        The term &quot;action&quot; is used to describe what the sequencer actually did.</span>
+<span class="sd">        #ToDo: see and address issue #298</span>
+<span class="sd">        :param region_name: The name of the region on the flow cell.</span>
+<span class="sd">        :param overridden_action_name: Optional, if the originally determined action</span>
+<span class="sd">        was overridden, the name of the NEW action.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">total_chunks</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">decision</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decision&quot;</span><span class="p">)</span>
             <span class="n">action_overridden</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_overridden&quot;</span><span class="p">)</span>
+            <span class="c1"># Use the overridden action name for readfish stats counters</span>
+            <span class="n">decision_name</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decision&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">action_overridden</span>
+                <span class="k">else</span> <span class="n">overridden_action_name</span>
+            <span class="p">)</span>
 
             <span class="c1"># Increment total actions count, Unblock, stop_receiving etc.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">decision</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="c1"># Increment total hits for this condition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">decision_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Increment total hits for this condition and condition.action.mode</span>
             <span class="n">condition_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;condition&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_update_condition_counter</span><span class="p">(</span>
-                <span class="n">condition_name</span><span class="p">,</span> <span class="n">region_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decision&quot;</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span>
+                <span class="n">condition_name</span><span class="p">,</span>
+                <span class="n">region_name</span><span class="p">,</span>
+                <span class="n">decision_name</span><span class="p">,</span>
+                <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="c1"># increment count for this decision - single_off, single_on etc.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">decisions</span><span class="p">[</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="c1"># Count if read was skipped because it was mid translocation</span>
             <span class="n">first_read_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;first_read_skipped&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;previous_action&#39;</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">action_overridden</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;read_analysed&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">first_read_overrides</span><span class="p">[</span><span class="n">first_read_key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="c1"># Count the actions for each condition</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">action_overridden</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">actions_conditions</span><span class="p">[</span>
-                    <span class="p">(</span><span class="n">condition_name</span><span class="p">,</span> <span class="n">decision</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">))</span>
-                <span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="c1"># Log the read to the debug logger</span>
             <span class="n">debug_log_record</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">debug_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">debug_log_record</span><span class="p">)</span></div>
@@ -588,7 +609,7 @@
         <span class="n">condition_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">decision_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">action_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">mode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the condition and action condition counters with the provided parameters.</span>
@@ -601,18 +622,45 @@
 
 <span class="sd">        :param condition_name: The name of the condition being updated.</span>
 <span class="sd">        :param region_name: The name of the region related to the condition.</span>
-<span class="sd">        :param decision_name: The name of the decision made in relation to the condition.</span>
-<span class="sd">        :param action_name: The name of the action taken in relation to the condition.</span>
+<span class="sd">        :param decision_name: The name of the decision made in relation to the condition. unblock, proceed, etc..</span>
+<span class="sd">        :param mode_name: The name of the action taken in relation to the condition. single_off, single on, etc...</span>
 
-<span class="sd">        Usage:</span>
-<span class="sd">        Called internally when there&#39;s a need to update the condition counters based</span>
-<span class="sd">        on the received parameters, usually after processing a read or a batch of reads.</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">        Condition and region being different i.e a barcoded experiment:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats = ReadfishStatistics(None)</span>
+<span class="sd">        &gt;&gt;&gt; stats._update_condition_counter(&quot;barcode_a&quot;, &quot;region_a&quot;, &quot;unblock&quot;, &quot;action_a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; stats.conditions</span>
+<span class="sd">        Counter({&#39;barcode_a&#39;: 1, &#39;region_a&#39;: 1})</span>
+<span class="sd">        &gt;&gt;&gt; stats.actions_conditions</span>
+<span class="sd">        Counter({(&#39;region_a&#39;, &#39;unblock&#39;, &#39;action_a&#39;): 1, (&#39;barcode_a&#39;, &#39;unblock&#39;, &#39;action_a&#39;): 1})</span>
+
+<span class="sd">        Condition and region being the same i.e not a barcoded experiment:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats._update_condition_counter(&quot;barcode_a&quot;, &quot;barcode_a&quot;, &quot;decision_b&quot;, &quot;action_b&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; stats.conditions</span>
+<span class="sd">        Counter({&#39;barcode_a&#39;: 2, &#39;region_a&#39;: 1})</span>
+<span class="sd">        &gt;&gt;&gt; stats.actions_conditions</span>
+<span class="sd">        Counter({(&#39;region_a&#39;, &#39;unblock&#39;, &#39;action_a&#39;): 1, (&#39;barcode_a&#39;, &#39;unblock&#39;, &#39;action_a&#39;): 1, (&#39;barcode_a&#39;, &#39;decision_b&#39;, &#39;action_b&#39;): 1})</span>
+
+<span class="sd">        With action overridden:</span>
+
+<span class="sd">        &gt;&gt;&gt; stats._update_condition_counter(&quot;barcode_b&quot;, &quot;region_b&quot;, &quot;decision_c&quot;, &quot;action_c&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; stats.conditions</span>
+<span class="sd">        Counter({&#39;barcode_a&#39;: 2, &#39;region_a&#39;: 1, &#39;barcode_b&#39;: 1, &#39;region_b&#39;: 1})</span>
+<span class="sd">        &gt;&gt;&gt; stats.actions_conditions</span>
+<span class="sd">        Counter({(&#39;region_a&#39;, &#39;unblock&#39;, &#39;action_a&#39;): 1, (&#39;barcode_a&#39;, &#39;unblock&#39;, &#39;action_a&#39;): 1,\</span>
+<span class="sd"> (&#39;barcode_a&#39;, &#39;decision_b&#39;, &#39;action_b&#39;): 1, (&#39;region_b&#39;, &#39;decision_c&#39;, &#39;action_c&#39;): 1, (&#39;barcode_b&#39;,\</span>
+<span class="sd"> &#39;decision_c&#39;, &#39;action_c&#39;): 1})</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">condition_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># We have a region for this barcoded read, increment the count for the region</span>
             <span class="k">if</span> <span class="n">condition_name</span> <span class="o">!=</span> <span class="n">region_name</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">region_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">actions_conditions</span><span class="p">[(</span><span class="n">region_name</span><span class="p">,</span> <span class="n">decision_name</span><span class="p">,</span> <span class="n">action_name</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">actions_conditions</span><span class="p">[(</span><span class="n">region_name</span><span class="p">,</span> <span class="n">decision_name</span><span class="p">,</span> <span class="n">mode_name</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">actions_conditions</span><span class="p">[(</span><span class="n">condition_name</span><span class="p">,</span> <span class="n">decision_name</span><span class="p">,</span> <span class="n">mode_name</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
 </pre></div>
         </article>
@@ -646,7 +694,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=07445e93"></script>
+</div><script src="../../_static/documentation_options.js?v=a33cda8a"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>

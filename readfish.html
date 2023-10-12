@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="readfish plugins API" href="readfish.plugins.html" /><link rel="prev" title="Developer’s guide" href="developers-guide.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>API Reference - readfish 2023.1.0</title>
+        <title>API Reference - readfish 2023.1.1</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -134,7 +134,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">readfish 2023.1.0</div></a>
+      <a href="index.html"><div class="brand">readfish 2023.1.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  <span class="sidebar-brand-text">readfish 2023.1.1</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -182,6 +182,7 @@
 <li class="toctree-l2"><a class="reference internal" href="readfish.plugins.html">readfish plugins API</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -1149,7 +1150,7 @@ new performance and read records to the existing statistics.</p>
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">readfish._statistics</span> <span class="kn">import</span> <span class="n">ReadfishStatistics</span><span class="p">,</span> <span class="n">DEBUG_STATS_LOG_FIELDS</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span> <span class="o">=</span> <span class="n">ReadfishStatistics</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">add_batch_performance</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">log_read</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">DEBUG_STATS_LOG_FIELDS</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;test_read_id&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;single_on&quot;</span><span class="p">,</span> <span class="s2">&quot;stop_receiving&quot;</span><span class="p">,</span> <span class="s2">&quot;exp_region&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))),</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;naff&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">log_read</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">DEBUG_STATS_LOG_FIELDS</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;test_read_id&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;single_on&quot;</span><span class="p">,</span> <span class="s2">&quot;stop_receiving&quot;</span><span class="p">,</span> <span class="s2">&quot;exp_region&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))),</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;naff&quot;</span><span class="p">,</span> <span class="n">overridden_action_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">get_batch_performance</span><span class="p">())</span>
 <span class="go">0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (&gt;1.00s): 0/1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">decisions</span><span class="p">)</span>
@@ -1184,7 +1185,7 @@ decisions, actions, and conditions encountered during the runs.</p>
 <p>Example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span> <span class="o">=</span> <span class="n">ReadfishStatistics</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">add_batch_performance</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">log_read</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">DEBUG_STATS_LOG_FIELDS</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;test_read_id&quot;</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;single_on&quot;</span><span class="p">,</span> <span class="s2">&quot;stop_receiving&quot;</span><span class="p">,</span> <span class="s2">&quot;exp_region&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))),</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;naff&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">log_read</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">DEBUG_STATS_LOG_FIELDS</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;test_read_id&quot;</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;single_on&quot;</span><span class="p">,</span> <span class="s2">&quot;stop_receiving&quot;</span><span class="p">,</span> <span class="s2">&quot;exp_region&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))),</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;naff&quot;</span><span class="p">,</span> <span class="n">overridden_action_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">get_batch_performance</span><span class="p">())</span>
 <span class="go">0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (&gt;1.00s): 0/1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">decisions</span><span class="p">)</span>
@@ -1205,7 +1206,7 @@ decisions, actions, and conditions encountered during the runs.</p>
 <span class="gp">... </span>    <span class="c1"># Create an instance of ReadfishStatistics with the log file in the temporary directory</span>
 <span class="gp">... </span>    <span class="n">stats</span> <span class="o">=</span> <span class="n">ReadfishStatistics</span><span class="p">(</span><span class="n">log_file</span><span class="o">=</span><span class="n">log_file_name</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="c1"># Use the log_read method to log a sample read</span>
-<span class="gp">... </span>    <span class="n">stats</span><span class="o">.</span><span class="n">log_read</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">DEBUG_STATS_LOG_FIELDS</span><span class="p">,(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;test_read_id&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;single_on&quot;</span><span class="p">,</span> <span class="s2">&quot;stop_receiving&quot;</span><span class="p">,</span> <span class="s2">&quot;exp_region&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))),</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;naff&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">stats</span><span class="o">.</span><span class="n">log_read</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">DEBUG_STATS_LOG_FIELDS</span><span class="p">,(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;test_read_id&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;single_on&quot;</span><span class="p">,</span> <span class="s2">&quot;stop_receiving&quot;</span><span class="p">,</span> <span class="s2">&quot;exp_region&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))),</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;naff&quot;</span><span class="p">,</span> <span class="n">overridden_action_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="c1"># in this test, we need a small amount of time to allow the logger to write the file</span>
 <span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="c1"># Read the content of the file</span>
@@ -1422,9 +1423,17 @@ and batch count based on the provided number of reads and the time taken.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="readfish._statistics.ReadfishStatistics.log_read">
-<span class="sig-name descname"><span class="pre">log_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics.log_read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.log_read" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">log_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overridden_action_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_statistics.html#ReadfishStatistics.log_read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readfish._statistics.ReadfishStatistics.log_read" title="Link to this definition">#</a></dt>
 <dd><p>Add a new read chunk record into the collected statistics,
 and log it to the debug logger.</p>
+<p>The following terms are used in this function:
+decision is expected to be one of Unblock, stop_receiving etc.
+mode is expected to be one of single_on, single_off, multi_on etc.</p>
+<p>The term “action” is used to describe what the sequencer actually did.
+#ToDo: see and address issue #298
+:param region_name: The name of the region on the flow cell.
+:param overridden_action_name: Optional, if the originally determined action
+was overridden, the name of the NEW action.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -1610,7 +1619,7 @@ and log it to the debug logger.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=07445e93"></script>
+</div><script src="_static/documentation_options.js?v=a33cda8a"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>

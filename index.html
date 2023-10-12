@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Getting Started" href="getting-started.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>readfish 2023.1.0</title>
+        <title>readfish 2023.1.1</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -134,7 +134,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">readfish 2023.1.0</div></a>
+      <a href="#"><div class="brand">readfish 2023.1.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2023.1.0</span>
+  <span class="sidebar-brand-text">readfish 2023.1.1</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -182,6 +182,7 @@
 <li class="toctree-l2"><a class="reference internal" href="readfish.plugins.html">readfish plugins API</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -261,6 +262,14 @@ bioRxiv (2021); doi: https://doi.org/10.1101/2021.12.01.470722</p>
 <span class="go">conda activate readfish</span>
 </pre></div>
 </div>
+<section id="apple-silicon">
+<h3>Apple Silicon<a class="headerlink" href="#apple-silicon" title="Link to this heading">#</a></h3>
+<p>Some users may encounter an issue with grpcio on apple silicon. This can be fixed by reinstalling grpcio as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip uninstall grpcio</span>
+<span class="go">GRPC_PYTHON_LDFLAGS=&quot; -framework CoreFoundation&quot; pip install grpcio --no-binary :all:</span>
+</pre></div>
+</div>
+</section>
 <section id="installing-with-development-dependencies">
 <h3>Installing with development dependencies<a class="headerlink" href="#installing-with-development-dependencies" title="Link to this heading">#</a></h3>
 <p>A conda <code class="docutils literal notranslate"><span class="pre">yaml</span></code> file is available for installing with dev dependencies - <a class="reference external" href="https://github.com/LooseLab/readfish/blob/e30f1fa8ac7a37bb39e9d8b49251426fe1674c98/docs/development.yml">development.yml</a></p>
@@ -283,7 +292,7 @@ conda<span class="w"> </span>activate<span class="w"> </span>readfish_dev
 </div>
 <p><a class="reference external" href="https://community.nanoporetech.com/downloads">ONT’s Guppy GPU</a> should be installed and running as a server.</p>
 <details style="margin-top: 10px">
-<summary><h3 style="display: inline;" id="py-ve">Alternatively, readfish can be installed into a python virtual-environment</h3></summary>
+<summary><span id="py-ve">Alternatively, install readfish into a python virtual-environment</span></summary>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Make<span class="w"> </span>a<span class="w"> </span>virtual<span class="w"> </span>environment
 <span class="go">python3 -m venv readfish</span>
 <span class="go">. ./readfish/bin/activate</span>
@@ -375,7 +384,7 @@ Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, 
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=07445e93"></script>
+</div><script src="_static/documentation_options.js?v=a33cda8a"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
