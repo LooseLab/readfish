@@ -103,6 +103,14 @@ conda env create -f readfish_env.yml
 conda activate readfish
 ```
 
+### Apple Silicon
+
+Some users may encounter an issue with grpcio on apple silicon. This can be fixed by reinstalling grpcio as follows:
+```console
+pip uninstall grpcio
+GRPC_PYTHON_LDFLAGS=" -framework CoreFoundation" pip install grpcio --no-binary :all:
+```
+
 ### Installing with development dependencies
 
 A conda `yaml` file is available for installing with dev dependencies - [development.yml](https://github.com/LooseLab/readfish/blob/e30f1fa8ac7a37bb39e9d8b49251426fe1674c98/docs/development.yml)
