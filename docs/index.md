@@ -28,3 +28,11 @@ For information on the readfish TOML files see {doc}`toml`
 :start-after: <!-- begin-epilog -->
 :end-before: <!-- end-epilog -->
 ```
+
+
+Change Log
+----------
+```{include} ../README.md
+:start-after: <!-- start-changelog -->
+:end-before: <!-- end-changelog -->
+```
