@@ -334,12 +334,12 @@ None, None, False, 0.0))), region_name="naff", overridden_action_name=None)
         """
         Add a new read chunk record into the collected statistics,
         and log it to the debug logger.
-    The following terms are used in this function:
-    decision is expected to be one of Unblock, stop_receiving etc.
-    mode is expected to be one of single_on, single_off, multi_on etc.
-    
-    The term "action" is used to describe what the sequener actually did.
-    #ToDo: see and address issue #298
+        The following terms are used in this function:
+        decision is expected to be one of Unblock, stop_receiving etc.
+        mode is expected to be one of single_on, single_off, multi_on etc.
+        
+        The term "action" is used to describe what the sequener actually did.
+        #ToDo: see and address issue #298
         :param region_name: The name of the region on the flow cell.
         :param overridden_action_name: Optional, if the originally determined action
         was overridden, the name of the NEW action.
