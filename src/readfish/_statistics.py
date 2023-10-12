@@ -17,7 +17,9 @@ new performance and read records to the existing statistics.
     >>> from readfish._statistics import ReadfishStatistics, DEBUG_STATS_LOG_FIELDS
     >>> stats = ReadfishStatistics(None)
     >>> stats.add_batch_performance(1,1)
-    >>> stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, "test_read_id", 7, 1, 100, 3, "single_on", "stop_receiving", "exp_region", None, None, False, 0.0))), region_name="naff")
+    >>> stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, "test_read_id", 7, 1, 100, 3,\
+ "single_on", "stop_receiving", "exp_region", None, None, False, 0.0))), region_name="naff",\
+ overridden_action_name=None)
     >>> print(stats.get_batch_performance())
     0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (>1.00s): 0/1
     >>> print(stats.decisions)
@@ -74,7 +76,7 @@ class ReadfishStatistics:
     >>> stats.add_batch_performance(1, 1)
     >>> stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, "test_read_id",\
 7, 1, 100, 3, "single_on", "stop_receiving", "exp_region", None, None,\
-False, 0.0))), region_name="naff")
+False, 0.0))), region_name="naff", overridden_action_name=None)
     >>> print(stats.get_batch_performance())
     0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (>1.00s): 0/1
     >>> print(stats.decisions)
@@ -97,7 +99,7 @@ False, 0.0))), region_name="naff")
     ...     # Use the log_read method to log a sample read
     ...     stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS,\
 (1, 2, "test_read_id", 7, 1, 100, 3, "single_on", "stop_receiving", "exp_region",\
-None, None, False, 0.0))), region_name="naff")
+None, None, False, 0.0))), region_name="naff", overridden_action_name=None)
     ...     # in this test, we need a small amount of time to allow the logger to write the file
     ...     time.sleep(0.1)
     ...     # Read the content of the file
@@ -326,31 +328,48 @@ None, None, False, 0.0))), region_name="naff")
             else:
                 self.batch_statistics["consecutive_lagging_batches"] = 0
 
-    def log_read(self, region_name, **kwargs) -> None:
-        """Add a new read chunk record into the collected statistics,
-        and log it to the debug logger."""
+    def log_read(
+        self, region_name: str, overridden_action_name: str | None, **kwargs
+    ) -> None:
+        """
+        Add a new read chunk record into the collected statistics,
+        and log it to the debug logger.
+    The following terms are used in this function:
+    decision is expected to be one of Unblock, stop_receiving etc.
+    mode is expected to be one of single_on, single_off, multi_on etc.
+    
+    The term "action" is used to describe what the sequener actually did.
+    #ToDo: see and address issue #298
+        :param region_name: The name of the region on the flow cell.
+        :param overridden_action_name: Optional, if the originally determined action
+        was overridden, the name of the NEW action.
+        """
+
         with self._lock:
             self.total_chunks += 1
-            decision = kwargs.get("decision")
             action_overridden = kwargs.get("action_overridden")
+            # Use the overridden action name for readfish stats counters
+            decision_name = (
+                kwargs.get("decision")
+                if not action_overridden
+                else overridden_action_name
+            )
 
             # Increment total actions count, Unblock, stop_receiving etc.
-            self.actions[decision] += 1
-            # Increment total hits for this condition
+            self.actions[decision_name] += 1
+            # Increment total hits for this condition and condition.action.mode
             condition_name = kwargs.get("condition")
             self._update_condition_counter(
-                condition_name, region_name, kwargs.get("decision"), kwargs.get("mode")
+                condition_name,
+                region_name,
+                decision_name,
+                kwargs.get("mode"),
             )
             # increment count for this decision - single_off, single_on etc.
             self.decisions[kwargs.get("mode")] += 1
             # Count if read was skipped because it was mid translocation
             first_read_key = f"{'first_read_skipped' if not kwargs.get('previous_action') and action_overridden else 'read_analysed'}"
             self.first_read_overrides[first_read_key] += 1
-            # Count the actions for each condition
-            if not action_overridden:
-                self.actions_conditions[
-                    (condition_name, decision, kwargs.get("mode"))
-                ] += 1
             # Log the read to the debug logger
             debug_log_record = "\t".join(map(str, kwargs.values()))
             self.debug_logger.debug(debug_log_record)
@@ -360,7 +379,7 @@ None, None, False, 0.0))), region_name="naff")
         condition_name: str,
         region_name: str,
         decision_name: str,
-        action_name: str,
+        mode_name: str,
     ) -> None:
         """
         Update the condition and action condition counters with the provided parameters.
@@ -373,15 +392,42 @@ None, None, False, 0.0))), region_name="naff")
 
         :param condition_name: The name of the condition being updated.
         :param region_name: The name of the region related to the condition.
-        :param decision_name: The name of the decision made in relation to the condition.
-        :param action_name: The name of the action taken in relation to the condition.
+        :param decision_name: The name of the decision made in relation to the condition. unblock, proceed, etc..
+        :param mode_name: The name of the action taken in relation to the condition. single_off, single on, etc...
 
-        Usage:
-        Called internally when there's a need to update the condition counters based
-        on the received parameters, usually after processing a read or a batch of reads.
+        Examples:
+
+        Condition and region being different i.e a barcoded experiment:
+
+        >>> stats = ReadfishStatistics(None)
+        >>> stats._update_condition_counter("barcode_a", "region_a", "unblock", "action_a")
+        >>> stats.conditions
+        Counter({'barcode_a': 1, 'region_a': 1})
+        >>> stats.actions_conditions
+        Counter({('region_a', 'unblock', 'action_a'): 1, ('barcode_a', 'unblock', 'action_a'): 1})
+
+        Condition and region being the same i.e not a barcoded experiment:
+
+        >>> stats._update_condition_counter("barcode_a", "barcode_a", "decision_b", "action_b")
+        >>> stats.conditions
+        Counter({'barcode_a': 2, 'region_a': 1})
+        >>> stats.actions_conditions
+        Counter({('region_a', 'unblock', 'action_a'): 1, ('barcode_a', 'unblock', 'action_a'): 1, ('barcode_a', 'decision_b', 'action_b'): 1})
+
+        With action overridden:
+
+        >>> stats._update_condition_counter("barcode_b", "region_b", "decision_c", "action_c")
+        >>> stats.conditions
+        Counter({'barcode_a': 2, 'region_a': 1, 'barcode_b': 1, 'region_b': 1})
+        >>> stats.actions_conditions
+        Counter({('region_a', 'unblock', 'action_a'): 1, ('barcode_a', 'unblock', 'action_a'): 1,\
+ ('barcode_a', 'decision_b', 'action_b'): 1, ('region_b', 'decision_c', 'action_c'): 1, ('barcode_b',\
+ 'decision_c', 'action_c'): 1})
         """
         with self._lock:
             self.conditions[condition_name] += 1
+            # We have a region for this barcoded read, increment the count for the region
             if condition_name != region_name:
                 self.conditions[region_name] += 1
-                self.actions_conditions[(region_name, decision_name, action_name)] += 1
+                self.actions_conditions[(region_name, decision_name, mode_name)] += 1
+            self.actions_conditions[(condition_name, decision_name, mode_name)] += 1

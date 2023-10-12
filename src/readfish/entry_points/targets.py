@@ -434,7 +434,7 @@ class Analysis:
                         if (_region := self.conf.get_region(result.channel))
                         else "flowcell"
                     ),
-                    overridden_action=overridden_action_name,
+                    overridden_action_name=overridden_action_name,
                 )
 
             #######################################################################
