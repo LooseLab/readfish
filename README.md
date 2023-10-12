@@ -549,10 +549,12 @@ And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com
 [bulk - R10 5khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/GXB02001_20230509_1250_FAW79338_X3_sequencing_run_NA12878_B1_19382aa5_ef4362cd.fast5
 [ONT]: https://nanoporetech.com
 
-
+<!-- start-changelog -->
 # Changelog
-
+## Unreleased changes
+None currently.
 ## 2023.1.1
-1. Fix Readme Logo link 🥳 
-1. Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to @jamesemery for catching this.
-1. Correctly handle overriding a decision in internal statistics tracking.
+1. Fix Readme Logo link 🥳 (#296)
+1. Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to @jamesemery for catching this. (#299)
+1. Correctly handle overriding a decision in internal statistics tracking. (#299)
+<!-- end-changelog -->
