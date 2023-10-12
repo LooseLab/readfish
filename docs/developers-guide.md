@@ -71,7 +71,7 @@ Readfish uses [calver](https://calver.org/) for versioning. Specifically the for
 
 ## Changelog
 
-We are generally trying to follow the guidance lain out here. https://keepachangelog.com/en/1.0.0/
+We are generally trying to follow the guidance here. https://keepachangelog.com/en/1.0.0/
 
 Notably we should correctly update the Unreleased section for things added in the PRs that are inbetween releases.
 
