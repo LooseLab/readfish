@@ -255,7 +255,7 @@ class Analysis:
         condition: _Condition,
         stop_receiving_action_list: list[tuple[int, int]],
         unblock_batch_action_list: list[tuple[int, int]],
-    ) -> tuple[Action, bool]:
+    ) -> tuple[Action, bool, str | None]:
         """
         Check the chosen Action and amend it based on conditional checks.
         The action lists are appended to in place, so no return is required.
@@ -275,7 +275,8 @@ class Analysis:
         :param stop_receiving_action_list: List to append channels and read numbers for which 'stop receiving' action is decided.
         :param unblock_batch_action_list: List to append channels, read numbers, and read IDs for which 'unblock' action is decided.
 
-        :return: A tuple containing the previous action taken for this read, and a boolean indicating if the action was overridden.
+        :return: A tuple containing the previous action taken for this read,
+          boolean indicating if the action was overridden, and the name of the action overridden too.
 
         """
 
@@ -328,7 +329,11 @@ class Analysis:
                 )
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
-        return previous_action, action_overridden
+        return (
+            previous_action,
+            action_overridden,
+            action.name if action_overridden else None,
+        )
 
     def run(self):
         """Run the read until loop, in one continuous while loop."""
@@ -391,7 +396,11 @@ class Analysis:
                 action = condition.get_action(result.decision)
                 seen_count = self.chunk_tracker.seen(result.channel, result.read_number)
                 #  Check if there any conditions that override the action chose, exceed_max_chunks etc...
-                previous_action, action_overridden = self.check_override_action(
+                (
+                    previous_action,
+                    action_overridden,
+                    overridden_action_name,
+                ) = self.check_override_action(
                     control,
                     action,
                     result,
@@ -425,6 +434,7 @@ class Analysis:
                         if (_region := self.conf.get_region(result.channel))
                         else "flowcell"
                     ),
+                    overridden_action=overridden_action_name,
                 )
 
             #######################################################################
