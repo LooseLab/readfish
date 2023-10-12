@@ -11,6 +11,7 @@ FAQ
 post-analysis
 developers-guide
 readfish
+changelog
 ```
 
 # Welcome to the readfish documentation!
@@ -27,10 +28,4 @@ For information on the readfish TOML files see {doc}`toml`
 ```{include} ../README.md
 :start-after: <!-- begin-epilog -->
 :end-before: <!-- end-epilog -->
-```
-
-
-```{include} ../README.md
-:start-after: <!-- start-changelog -->
-:end-before: <!-- end-changelog -->
 ```
