@@ -30,8 +30,6 @@ For information on the readfish TOML files see {doc}`toml`
 ```
 
 
-Change Log
-----------
 ```{include} ../README.md
 :start-after: <!-- start-changelog -->
 :end-before: <!-- end-changelog -->
