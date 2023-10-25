@@ -247,6 +247,8 @@ You _may_ need to add the host `127.0.0.1` in the MinKNOW UI.
 
 Download an open access bulk FAST5 file, either [R9.4.1][bulk - R9.4.1] or [R10 (5khz)][bulk - R10.4 5khz].
 This file is 21Gb so make sure you have sufficient space.
+A promethION bulkfile is also available but please note this is [R10.4 4khz][bulk - promethION - R10.4 4khz] and so will give slightly unexpected results on MinKNOW which assumes 5khz.
+This file is approx 35Gb in size.
 
 <!-- begin-new-playback -->
 Previously to set up Playback using a pre-recorded bulk FAST5 file, it was necessary to edit the sequencing configuration file that MinKNOW uses. This is currently no longer the case. The "old method" steps are left after this section for reference only or if the direct playback from a bulk file option is removed in future.
