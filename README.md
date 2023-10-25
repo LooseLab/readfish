@@ -549,9 +549,6 @@ Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, 
 And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com/tim_bassford) from [@TurbineCreative](https://twitter.com/TurbineCreative)!
 
 <!-- end-epilog -->
-[bulk - R9.4.1]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
-[bulk - R10.4 5khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/GXB02001_20230509_1250_FAW79338_X3_sequencing_run_NA12878_B1_19382aa5_ef4362cd.fast5
-[bulk - promethION - R10.4 4khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PC24B243_20220512_1516_PAK21362_3H_sequencing_run_NA12878_sheared20kb_3d5147fc.fast5
 [ONT]: https://nanoporetech.com
 
 <!-- start-changelog -->
