@@ -272,7 +272,7 @@ To setup a simulation the sequencing configuration file that MinKNOW uses must b
 Steps:
 
 1. Download an open access bulkfile - either [R9.4.1][bulk - R9.4.1] or [R10 (5khz)][bulk - R10.4 5khz]. These files are approximately 21Gb so make sure you have plenty of space. The files are from NA12878 sequencing data using either R9.4.1 or R10.4 pores. Data is not barcoded and the libraries were ligation preps from DNA extracted from cell lines. A promethION bulkfile is also available but please note this is [R10.4 4khz][bulk - promethION - R10.4 4khz] and so will give slightly unexpected results on MinKNOW which assumes 5khz.
-2. Copy a sequencing TOML file to the `user_scripts` folder:
+1. Copy a sequencing TOML file to the `user_scripts` folder:
 
     On Mac if your MinKNOW output directory is the default:
 
@@ -288,17 +288,17 @@ Steps:
     cp /opt/ont/minknow/conf/package/sequencing/sequencing_MIN106_DNA.toml /opt/ont/minknow/conf/package/sequencing/simulations/sequencing_MIN106_DNA_sim.toml
     ```
 
-3. Edit the copied file to add the following line under the line that reads "`[custom_settings]`":
+1. Edit the copied file to add the following line under the line that reads "`[custom_settings]`":
     ```text
     simulation = "/full/path/to/your_bulk.FAST5"
     ``` 
     Change the text between the quotes to point to your downloaded bulk FAST5 file.
     <!-- end-obsolete -->
-4. Optional, If running GUPPY in GPU mode, set the parameter `break_reads_after_seconds = 1.0`
+1. Optional, If running GUPPY in GPU mode, set the parameter `break_reads_after_seconds = 1.0`
 to `break_reads_after_seconds = 0.4`. This results in a smaller read chunk. For R10.4 this is not required but can be tried. For adaptive sampling on PromethION, this should be left at 1 second.
-5. In the MinKNOW GUI, right click on a sequencing position and select `Reload Scripts`.
+1. In the MinKNOW GUI, right click on a sequencing position and select `Reload Scripts`.
 Your version of MinKNOW will now playback the bulkfile rather than live sequencing.
-6. Start a sequencing run as you would normally, selecting the corresponding flow
+1. Start a sequencing run as you would normally, selecting the corresponding flow
 cell type to the edited script (here FLO-MIN106) as the flow cell type.
 </details>
 
