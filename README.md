@@ -271,7 +271,9 @@ Under Run Options you can select Simulated Playback and browse to the downloaded
 To setup a simulation the sequencing configuration file that MinKNOW uses must be edited.
 Steps:
 
-1. Download an open access bulkfile - either [R9.4.1][bulk - R9.4.1] or [R10 (5khz)][bulk - R10.4 5khz]. These files are approximately 21Gb so make sure you have plenty of space. The files are from NA12878 sequencing data using either R9.4.1 or R10.4 pores. Data is not barcoded and the libraries were ligation preps from DNA extracted from cell lines. A promethION bulkfile is also available but please note this is [R10.4 4khz][bulk - promethION - R10.4 4khz] and so will give slightly unexpected results on MinKNOW which assumes 5khz.
+1. Download an open access bulkfile - either [R9.4.1][bulk - R9.4.1] or [R10 (5khz)][bulk - R10.4 5khz]. These files are approximately 21Gb so make sure you have plenty of space. The files are from NA12878 sequencing data using either R9.4.1 or R10.4 pores. Data is not barcoded and the libraries were ligation preps from DNA extracted from cell lines. 
+
+1. A promethION bulkfile is also available but please note this is [R10.4, 4khz][bulk - promethION - R10.4 4khz], and so will give slightly unexpected results on MinKNOW which assumes 5khz.
 1. Copy a sequencing TOML file to the `user_scripts` folder:
 
     On Mac if your MinKNOW output directory is the default:
