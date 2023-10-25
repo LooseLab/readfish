@@ -245,8 +245,10 @@ You _may_ need to add the host `127.0.0.1` in the MinKNOW UI.
 
 <details style="margin-top: 10px"><summary id="configuring-bulk-fast5-file"><h3 style="display: inline;">Configuring bulk FAST5 file Playback</h3></summary>
 
-Download an open access bulk FAST5 file, either [R9.4.1][bulk - R9] or [R10 (5khz)][bulk - R10 5khz].
+Download an open access bulk FAST5 file, either [R9.4.1 4khz][bulk - R9.4.1] or [R10 (5khz)][bulk - R10.4 5khz].
 This file is 21Gb so make sure you have sufficient space.
+A promethION bulkfile is also available but please note this is [R10.4 4khz][bulk - promethION - R10.4 4khz] and so will give slightly unexpected results on MinKNOW which assumes 5khz.
+This file is approx 35Gb in size.
 
 <!-- begin-new-playback -->
 Previously to set up Playback using a pre-recorded bulk FAST5 file, it was necessary to edit the sequencing configuration file that MinKNOW uses. This is currently no longer the case. The "old method" steps are left after this section for reference only or if the direct playback from a bulk file option is removed in future.
@@ -259,7 +261,7 @@ Under Run Options you can select Simulated Playback and browse to the downloaded
 <!-- Included so these work in the github pages docs as well  -->
 [bulk - R9.4.1]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
 [bulk - R10.4 5khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/GXB02001_20230509_1250_FAW79338_X3_sequencing_run_NA12878_B1_19382aa5_ef4362cd.fast5
-
+[bulk - promethION - R10.4 4khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PC24B243_20220512_1516_PAK21362_3H_sequencing_run_NA12878_sheared20kb_3d5147fc.fast5
 <!-- end-new-playback -->
 > [!NOTE]  
 > Note - The below instructions, whilst they will still work, are no longer required. They are left here for reference only. As of Minknow 5.7, it is possible to select a bulk FAST5 file for playback in the MinKNOW UI.
@@ -269,7 +271,9 @@ Under Run Options you can select Simulated Playback and browse to the downloaded
 To setup a simulation the sequencing configuration file that MinKNOW uses must be edited.
 Steps:
 
-1. Download an open access bulkfile - either [R9.4.1][bulk - R9] or [R10 (5khz)][bulk - R10 5khz]. These files are aproximately 21Gb so make sure you have plenty of space. The files are from NA12878 sequencing data using either R9.4.1 or R10.4 pores. Data is not barcoded and the libraries were ligation preps from DNA extracted from cell lines.
+1. Download an open access bulkfile - either [R9.4.1][bulk - R9.4.1] or [R10 (5khz)][bulk - R10.4 5khz]. These files are approximately 21Gb so make sure you have plenty of space. The files are from NA12878 sequencing data using either R9.4.1 or R10.4 pores. Data is not barcoded and the libraries were ligation preps from DNA extracted from cell lines. 
+
+1. A promethION bulkfile is also available but please note this is [R10.4, 4khz][bulk - promethION - R10.4 4khz], and so will give slightly unexpected results on MinKNOW which assumes 5khz.
 1. Copy a sequencing TOML file to the `user_scripts` folder:
 
     On Mac if your MinKNOW output directory is the default:
@@ -545,8 +549,6 @@ Nick Loman, Josh Quick, John Tyson, Jared Simpson, Ewan Birney, Alexander Senf, 
 And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com/tim_bassford) from [@TurbineCreative](https://twitter.com/TurbineCreative)!
 
 <!-- end-epilog -->
-[bulk - R9]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/PLSP57501_20170308_FNFAF14035_MN16458_sequencing_run_NOTT_Hum_wh1rs2_60428.fast5
-[bulk - R10 5khz]: https://s3.amazonaws.com/nanopore-human-wgs/bulkfile/GXB02001_20230509_1250_FAW79338_X3_sequencing_run_NA12878_B1_19382aa5_ef4362cd.fast5
 [ONT]: https://nanoporetech.com
 
 <!-- start-changelog -->
