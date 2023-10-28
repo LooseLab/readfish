@@ -89,7 +89,7 @@ DEVICE_BASE_ARGS = (
         "--unblock-duration",
         dict(
             metavar="UNBLOCK-DURATION",
-            type=int,
+            type=float,
             help="Time, in seconds, to apply unblock voltage (default: {})".format(
                 DEFAULT_UNBLOCK
             ),
