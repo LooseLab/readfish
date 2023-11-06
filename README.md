@@ -554,7 +554,7 @@ And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com
 <!-- start-changelog -->
 # Changelog
 ## Unreleased changes
-None currently.
+1. Change the default `unblock_duration` on the `Analysis` class to use `DEFAULT_UNBLOCK` value defined in `_cli_args.py`. Change type on the Argparser for `--unblock-duration` to float. (#313)
 ## 2023.1.1
 1. Fix Readme Logo link 🥳 (#296)
 1. Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to @jamesemery for catching this. (#299)
