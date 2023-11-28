@@ -14,6 +14,9 @@ wrong, let us know so we can add you to the GOTCHA hall of fame!
 > [!NOTE]  
 > Now also see our cool [FAQ](docs/FAQ.md).
 
+> [!NOTE]
+> Looking for a previous (pre-refactor) version of readfish? See [here](https://github.com/LooseLab/readfish/releases/) for archived release, including BOSS_RUNS and the nature biotech paper code.
+
 readfish is a Python package that integrates with the
 [Read Until API](https://github.com/nanoporetech/read_until_api).
 
@@ -515,7 +518,7 @@ The read length N50 and Median is higher for chromosomes 20 and 21 as expected. 
 Common Gotcha's
 ----
 These may or may not (!) be mistakes we have made already...
-1. If the previous run has not fully completed - i.e is still base-calling or processing raw data,you may connect to the wrong instance and see nothing happening. Always check the previous run has finished completely.
+1. If the previous run has not fully completed - i.e is still base-calling or processing raw data, you may connect to the wrong instance and see nothing happening. Always check the previous run has finished completely.
 1. If you have forgotten to remove your simulation line from your sequencing toml you will forever be trapped in an inception like resequencing of old data... Don't do this!
 1. If base-calling doesn't seem to be working check:
    - Check your base-calling server is running.
@@ -525,8 +528,7 @@ These may or may not (!) be mistakes we have made already...
 1. Oh no - every single read is being unblocked - I have nothing on target!
    - Double check your reference file is in the correct location.
    - Double check your targets exist in that reference file.
-   - Double check your targets are correctly formatted with contig name matching the record names in your reference (Exclude description - i.e the contig name up to the first whitespace).
-1. **Where has my reference gone?** If you are using a _live TOML file - e.g running iter_align or iter_cent, the previous reference MMI file is deleted when a new one is added. This obviously saves on disk space use(!) but can lead to unfortunate side effects - i.e you delete your MMI file. These can of course be recreated but user **beware**.
+   - Double check your targets are correctly formatted with contig name matching the record names in your reference (Exclude description - i.e check the contig name up to the first whitespace).
 
 Happy readfish-ing!
 
