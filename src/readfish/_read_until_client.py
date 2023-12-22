@@ -34,7 +34,7 @@ LOOPABLE_PROTOCOL_PHASES = {
     protocol_service.PHASE_PAUSED,
 }
 #  Timeout in seconds for the run folder to appear
-TIMEOUT = 60
+TIMEOUT = 120
 
 
 class RUClient(ReadUntilClient):
