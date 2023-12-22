@@ -34,7 +34,7 @@ LOOPABLE_PROTOCOL_PHASES = {
     protocol_service.PHASE_PAUSED,
 }
 #  Timeout in seconds for the run folder to appear
-TIMEOUT = 60
+TIMEOUT = 120
 
 
 class RUClient(ReadUntilClient):
@@ -77,9 +77,9 @@ class RUClient(ReadUntilClient):
         try:
             ids_log = self.mk_run_dir.joinpath("unblocked_read_ids.txt")
             ids_log.touch(exist_ok=True)
-        except PermissionError:
+        except (PermissionError, FileNotFoundError):
             # TODO: log message here that fallback output is in use
-            self.mk_run_dir = "."
+            self.mk_run_dir = Path(".")
             ids_log = self.mk_run_dir.joinpath("unblocked_read_ids.txt")
             ids_log.touch(exist_ok=True)
         self.unblock_logger = setup_logger(
