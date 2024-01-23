@@ -133,4 +133,12 @@ DEVICE_BASE_ARGS = (
             type=int,
         ),
     ),
+    (
+        "--duplex",
+        dict(
+            help="**EXPERIMENTAL** Enable duplex targets mode. Accepts reads that align to the opposite strand and same contig as the previous read on channel.",
+            required=False,
+            action="store_true",
+        ),
+    ),
 ) + BASE_ARGS
