@@ -5,7 +5,17 @@ The two primary items that are exported are ``BASE_ARGS`` and ``DEVICE_BASE_ARGS
 ``BASE_ARGS`` are the minimal required arguments for _all_ entry points as they used for initialising loggers.
 ``DEVICE_BASE_ARGS`` are the set of arguments that are used for connecting to a sequencer (device) and some other related settings for selective sequencing scripts.
 """
+
+from enum import Enum, unique
 from readfish._utils import nice_join
+
+
+@unique
+class Chemistry(Enum):
+    DUPLEX = "duplex"
+    SIMPLEX = "simplex"
+    DUPLEX_SIMPLE = "duplex_simple"
+
 
 DEFAULT_SERVER_HOST = "127.0.0.1"
 DEFAULT_SERVER_PORT = None
@@ -134,11 +144,14 @@ DEVICE_BASE_ARGS = (
         ),
     ),
     (
-        "--duplex",
+        "--chemistry",
         dict(
-            help="**EXPERIMENTAL** Enable duplex targets mode. Accepts reads that align to the opposite strand and same contig as the previous read on channel.",
+            help="**EXPERIMENTAL** Choose between duplex and simplex chemistry mode. duplex_simple accept a read if the previous channels read was stop receiving,"
+            "duplex checks that the previous reads alignment was on the same contig and opposite strand. default: SIMPLEX",
             required=False,
-            action="store_true",
+            type=str,
+            default=Chemistry.SIMPLEX,
+            choices=[chemistry.name for chemistry in Chemistry],
         ),
     ),
 ) + BASE_ARGS
