@@ -81,7 +81,7 @@ from readfish.read_until import ReadUntilClient
 from minknow_api import protocol_service
 
 # Library
-from readfish._cli_args import DEVICE_BASE_ARGS
+from readfish._cli_args import DEVICE_BASE_ARGS, Chemistry
 from readfish._read_until_client import RUClient
 from readfish._config import Action, Conf, make_decision, _Condition
 from readfish._statistics import ReadfishStatistics
@@ -92,7 +92,12 @@ from readfish._utils import (
     Severity,
 )
 from readfish.plugins.abc import AlignerABC, CallerABC
-from readfish.plugins.utils import Decision, PreviouslySentActionTracker, Result
+from readfish.plugins.utils import (
+    Decision,
+    PreviouslySentActionTracker,
+    Result,
+    DuplexTracker,
+)
 
 
 _help = "Run targeted sequencing"
@@ -151,6 +156,7 @@ class Analysis:
         unblock_duration: float,
         dry_run: bool,
         toml: str,
+        chemistry: Chemistry,
     ):
         self.client = client
         self.conf = conf
@@ -194,6 +200,8 @@ class Analysis:
 
         # This is an object to keep track of the last action sent to the client for each channel
         self.previous_action_tracker = PreviouslySentActionTracker()
+        # Keep track of previous alignments
+        self.duplex_tracker = DuplexTracker()
 
         # We assume that sequencing is already running.
         # If the run is not in sequencing phase when the read until loop starts will
@@ -306,18 +314,53 @@ class Analysis:
         # previous_action will be None if the read has not been seen before.
         previous_action = self.previous_action_tracker.get_action(result.channel)
         action_overridden = False
+        # If --duplex flag override decisions made based on the strand and contig alignment of the previous read.
+        if (
+            self.chemistry == Chemistry.DUPLEX
+            and any(
+                self.previous_alignment_tracker.possible_duplex(
+                    result.channel, result.read_id, al.ctg, al.strand
+                )
+                for al in result.alignment_data
+            )
+            # Previous action was to sequence
+            and previous_action == Action.stop_receiving
+            # And we aren't already sequencing it
+            and action != Action.stop_receiving
+            and self.duplex_tracker.get_previous_decision() != Decision.duplex_override
+        ):
+            self.logger.debug(
+                f"Overriding read {result.read_id} as it is possibly second half of a duplex"
+            )
+            action_overridden = True
+            result.decision = Decision.duplex_on
+            action = Action.stop_receiving
+        # Duplex
+        elif (
+            self.chemistry == Chemistry.DUPLEX_SIMPLE
+            and previous_action == Action.stop_receiving
+            and action != Action.stop_receiving
+            and self.duplex_tracker.get_previous_decision() != Decision.duplex_override
+        ):
+            action = Action.stop_receiving
+            action_overridden = True
+            result.decision = Decision.duplex_override
 
+        # Override to stop receiving if this is the first read ona channel and we started mid sequencing
         if previous_action is None and self.readfish_started_during_sequencing:
             self.logger.debug(
                 f"This is the first suitable read chunk from channel {result.channel}. Translocated read length unknown, sequencing."
             )
             action_overridden = True
+            result.decision = Decision.first_read_override
             action = Action.stop_receiving
 
         if action is Action.stop_receiving:
             stop_receiving_action_list.append((result.channel, result.read_number))
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
+            # Add final decision - used to check if it is a duplex override
+            self.duplex_tracker.set_previous_decision(result.decision)
         elif action is Action.unblock:
             if self.dry_run:
                 # Log an 'unblock' action to previous action, but send a 'stop receiving' to prevent further read processing.
@@ -329,6 +372,8 @@ class Analysis:
                 )
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
+            self.duplex_tracker.set_previous_decision(result.decision)
+
         return (
             previous_action,
             action_overridden,
@@ -436,6 +481,9 @@ class Analysis:
                     ),
                     overridden_action_name=overridden_action_name,
                 )
+                self.previous_alignment_tracker.add_alignment(
+                    result.channel,
+                )
 
             #######################################################################
             # Compile actions to be sent
@@ -530,6 +578,7 @@ def run(
         throttle=args.throttle,
         dry_run=args.dry_run,
         toml=args.toml,
+        chemistry=Chemistry(args.chemistry),
     )
 
     # begin readfish function
