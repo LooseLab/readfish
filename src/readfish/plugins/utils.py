@@ -820,8 +820,14 @@ class DuplexTracker:
 
         :param channel: The channel number.
         :return: Previously seen decision
+        >>> dt = DuplexTracker()
+        >>> dt.get_previous_decision(1) is None
+        True
+        >>> dt.set_previous_decision(1, Decision.duplex_override)
+        >>> dt.get_previous_decision(1)
+        <Decision.duplex_override: 'duplex_override'>
         """
-        self.previous_decision.get(channel, None)
+        return self.previous_decision.get(channel, None)
 
     def set_previous_decision(self, channel: int, decision: Decision) -> None:
         """
@@ -830,6 +836,10 @@ class DuplexTracker:
         :param channel: The channel number.
         :param decision: The decision taken. Should be the final decision,
         i.e we won't see the read again.
+        >>> dt = DuplexTracker()
+        >>> dt.set_previous_decision(1, Decision.no_map)
+        >>> dt.previous_decision[1]
+        <Decision.no_map: 'no_map'>
         """
         self.previous_decision[channel] = decision
 
@@ -840,6 +850,13 @@ class DuplexTracker:
         :param channel: The channel number to lookup the previous action for
         :param read_id: Read of ID of the current alignment
         :return: Returns a tuple of (contig_name, strand), for the last alignment seen on this channel
+
+        >>> dt = DuplexTracker()
+        >>> dt.get_previous_alignment(1) is None
+        True
+        >>> dt.add_alignments(1, [("contig1", Strand.forward), ("contig2", Strand.reverse)])
+        >>> dt.get_previous_alignment(1)
+        [('contig1', <Strand.forward: '+'>), ('contig2', <Strand.reverse: '-'>)]
         """
         return self.previous_alignments.get(channel, None)
 
@@ -852,6 +869,11 @@ class DuplexTracker:
         :param channel: The channel number to set the alignment for.
         :param target_name: The name of the target contig aligned to
         :param strand: The strand we have aligned to.
+
+        >>> dt = DuplexTracker()
+        >>> dt.add_alignments(1, [("contig3", Strand.forward), ("contig4", Strand.reverse)])
+        >>> dt.previous_alignments[1]
+        [('contig3', <Strand.forward: '+'>), ('contig4', <Strand.reverse: '-'>)]
         """
         self.previous_alignments[channel] = alignments
 
@@ -865,6 +887,13 @@ class DuplexTracker:
         :param target_name: The name of the target contig for the current alignment
         :param strand: The strand of the current alignment
         :return: True if the strand is opposite and target contig the same
+
+        >>> dt = DuplexTracker()
+        >>> dt.add_alignments(1, [("contig5", Strand.forward)])
+        >>> dt.possible_duplex(1, "contig5", Strand.reverse)
+        True
+        >>> dt.possible_duplex(1, "contig6", Strand.reverse)
+        False
         """
         return any(
             prev_alignment
