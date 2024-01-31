@@ -346,7 +346,7 @@ class Analysis:
             and self.duplex_tracker.get_previous_decision(result.channel)
             not in DISALLOWED_DUPLEX_DECISIONS
         ):  # TODO R
-            self.logger.info(
+            self.logger.debug(
                 f"Overriding to duplex - previous read action {previous_action}, current_action: {action},"
                 f" previous_decision: {self.duplex_tracker.get_previous_decision(result.channel)}"
             )
