@@ -343,7 +343,11 @@ class Analysis:
             and action != Action.stop_receiving
             and self.duplex_tracker.get_previous_decision(result.channel)
             != Decision.duplex_override
-        ):
+        ):  # TODO REMOVE
+            self.logger.info(
+                f"Overriding to duplex - previous read action {previous_action}, current_action: {action},"
+                f" previous_decision: {self.duplex_tracker.get_previous_decision(result.channel)}"
+            )
             action = Action.stop_receiving
             action_overridden = True
             result.decision = Decision.duplex_override
