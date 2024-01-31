@@ -167,7 +167,7 @@ class Analysis:
         self.dry_run = dry_run
         self.live_toml = Path(f"{toml}_live").resolve()
         self.run_information = self.client.connection.protocol.get_run_info()
-
+        self.chemistry = chemistry
         # Generate a run specific read log
         read_log_name = (
             f"{self.run_information.run_id}_readfish.tsv" if debug_log else None
