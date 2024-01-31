@@ -151,7 +151,7 @@ DEVICE_BASE_ARGS = (
             required=False,
             type=str,
             default=Chemistry.SIMPLEX,
-            choices=[chemistry.name for chemistry in Chemistry],
+            choices=[chemistry.value for chemistry in Chemistry],
         ),
     ),
 ) + BASE_ARGS
