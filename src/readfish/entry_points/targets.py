@@ -128,6 +128,7 @@ _cli = DEVICE_BASE_ARGS + (
         ),
     ),
 )
+DISALLOWED_DUPLEX_DECISIONS = {Decision.first_read_override, Decision.duplex_override}
 
 
 class Analysis:
@@ -315,6 +316,7 @@ class Analysis:
         previous_action = self.previous_action_tracker.get_action(result.channel)
         action_overridden = False
         # If --duplex flag override decisions made based on the strand and contig alignment of the previous read.
+        # Unfinished bruv
         if (
             self.chemistry == Chemistry.DUPLEX
             and any(
@@ -340,10 +342,10 @@ class Analysis:
         elif (
             self.chemistry == Chemistry.DUPLEX_SIMPLE
             and previous_action == Action.stop_receiving
-            and action != Action.stop_receiving
+            and action == Action.unblock
             and self.duplex_tracker.get_previous_decision(result.channel)
-            != Decision.duplex_override
-        ):  # TODO REMOVE
+            not in DISALLOWED_DUPLEX_DECISIONS
+        ):  # TODO R
             self.logger.info(
                 f"Overriding to duplex - previous read action {previous_action}, current_action: {action},"
                 f" previous_decision: {self.duplex_tracker.get_previous_decision(result.channel)}"
