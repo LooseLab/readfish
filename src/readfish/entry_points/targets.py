@@ -360,7 +360,7 @@ class Analysis:
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
             # Add final decision - used to check if it is a duplex override
-            self.duplex_tracker.set_previous_decision(result.decision)
+            self.duplex_tracker.set_previous_decision(result.channel, result.decision)
         elif action is Action.unblock:
             if self.dry_run:
                 # Log an 'unblock' action to previous action, but send a 'stop receiving' to prevent further read processing.
@@ -372,7 +372,7 @@ class Analysis:
                 )
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
-            self.duplex_tracker.set_previous_decision(result.decision)
+            self.duplex_tracker.set_previous_decision(result.channel, result.decision)
 
         return (
             previous_action,
