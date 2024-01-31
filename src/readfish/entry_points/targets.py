@@ -481,9 +481,9 @@ class Analysis:
                     ),
                     overridden_action_name=overridden_action_name,
                 )
-                self.previous_alignment_tracker.add_alignment(
-                    result.channel,
-                )
+                # self.duplex_tracker.add_alignments(
+                #     result.channel,
+                # )
 
             #######################################################################
             # Compile actions to be sent
