@@ -110,4 +110,4 @@ def print_args(
     for attr in dir(args):
         if attr[0] != "_" and attr not in exclude and attr.lower() == attr:
             printer(f"{attr}={getattr(args, attr)!r}")
-        printer(f"Version={__version__}")
+    printer(f"Version={__version__}")
