@@ -327,7 +327,8 @@ class Analysis:
             and previous_action == Action.stop_receiving
             # And we aren't already sequencing it
             and action != Action.stop_receiving
-            and self.duplex_tracker.get_previous_decision() != Decision.duplex_override
+            and self.duplex_tracker.get_previous_decision(result.channel)
+            != Decision.duplex_override
         ):
             self.logger.debug(
                 f"Overriding read {result.read_id} as it is possibly second half of a duplex"
@@ -340,7 +341,8 @@ class Analysis:
             self.chemistry == Chemistry.DUPLEX_SIMPLE
             and previous_action == Action.stop_receiving
             and action != Action.stop_receiving
-            and self.duplex_tracker.get_previous_decision() != Decision.duplex_override
+            and self.duplex_tracker.get_previous_decision(result.channel)
+            != Decision.duplex_override
         ):
             action = Action.stop_receiving
             action_overridden = True
@@ -481,9 +483,10 @@ class Analysis:
                     ),
                     overridden_action_name=overridden_action_name,
                 )
-                # self.duplex_tracker.add_alignments(
-                #     result.channel,
-                # )
+            # if self.chemistry == Chemistry.DUPLEX:
+            #     self.duplex_tracker.add_alignments(
+            #         result.channel, [()]
+            #     )
 
             #######################################################################
             # Compile actions to be sent
