@@ -12,8 +12,11 @@ from readfish._utils import nice_join
 
 @unique
 class Chemistry(Enum):
+    #: For the "smarter" version of duplex - does this read map to the previous reads opposite strand on the same contig. Won't work for no map based decisions
     DUPLEX = "duplex"
+    #: Normal simplex chemistry - no duplex override shenanigans
     SIMPLEX = "simplex"
+    #: Simple duplex - if we are going to unblock a read given the previous read on the same channel was stop receiving, sequence the current read instead.
     DUPLEX_SIMPLE = "duplex_simple"
 
 

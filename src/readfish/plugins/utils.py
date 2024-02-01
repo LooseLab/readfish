@@ -787,7 +787,6 @@ class PreviouslySentActionTracker:
     """
 
     last_actions: Dict[int, Action] = attrs.Factory(dict)
-    last_decision: Dict[int, Decision] = attrs.Factory(dict)
 
     def add_action(self, channel: int, action: Action) -> None:
         """
@@ -833,13 +832,13 @@ class DuplexTracker:
         >>> dt = DuplexTracker()
         >>> dt.get_previous_decision(1) is None
         True
-        >>> dt.set_previous_decision(1, Decision.duplex_override)
+        >>> dt.set_decision(1, Decision.duplex_override)
         >>> dt.get_previous_decision(1)
         <Decision.duplex_override: 'duplex_override'>
         """
         return self.previous_decision.get(channel, None)
 
-    def set_previous_decision(self, channel: int, decision: Decision) -> None:
+    def set_decision(self, channel: int, decision: Decision) -> None:
         """
         Set the previous decision for a given channel number.
 
@@ -847,30 +846,30 @@ class DuplexTracker:
         :param decision: The decision taken. Should be the final decision,
         i.e we won't see the read again.
         >>> dt = DuplexTracker()
-        >>> dt.set_previous_decision(1, Decision.no_map)
+        >>> dt.set_decision(1, Decision.no_map)
         >>> dt.previous_decision[1]
         <Decision.no_map: 'no_map'>
         """
         self.previous_decision[channel] = decision
 
-    def get_previous_alignment(self, channel: int) -> list[tuple[str, Strand]]:
+    def get_previous_alignments(self, channel: int) -> list[tuple[str, Strand]]:
         """
-        Retrieves last alignment, including no maps seen on the given channel.
+        Retrieves last alignments, including no maps seen on the given channel.
 
         :param channel: The channel number to lookup the previous action for
         :param read_id: Read of ID of the current alignment
         :return: Returns a tuple of (contig_name, strand), for the last alignment seen on this channel
 
         >>> dt = DuplexTracker()
-        >>> dt.get_previous_alignment(1) is None
+        >>> dt.get_previous_alignments(1) is None
         True
-        >>> dt.add_alignments(1, [("contig1", Strand.forward), ("contig2", Strand.reverse)])
-        >>> dt.get_previous_alignment(1)
+        >>> dt.set_alignments(1, [("contig1", Strand.forward), ("contig2", Strand.reverse)])
+        >>> dt.get_previous_alignments(1)
         [('contig1', <Strand.forward: '+'>), ('contig2', <Strand.reverse: '-'>)]
         """
         return self.previous_alignments.get(channel, None)
 
-    def add_alignments(
+    def set_alignments(
         self, channel: int, alignments: list[tuple[str, Strand]]
     ) -> None:
         """
@@ -881,13 +880,15 @@ class DuplexTracker:
         :param strand: The strand we have aligned to.
 
         >>> dt = DuplexTracker()
-        >>> dt.add_alignments(1, [("contig3", Strand.forward), ("contig4", Strand.reverse)])
+        >>> dt.set_alignments(1, [("contig3", Strand.forward), ("contig4", Strand.reverse)])
         >>> dt.previous_alignments[1]
         [('contig3', <Strand.forward: '+'>), ('contig4', <Strand.reverse: '-'>)]
         """
         self.previous_alignments[channel] = alignments
 
-    def possible_duplex(self, channel: int, target_name: str, strand: Strand) -> bool:
+    def possible_duplex(
+        self, channel: int, target_name: str, strand: Strand | str | int
+    ) -> bool:
         """
         Compare the current alignment target_name and strand for a given channel
         with the previous alignment target_name and strand.
@@ -899,17 +900,14 @@ class DuplexTracker:
         :return: True if the strand is opposite and target contig the same
 
         >>> dt = DuplexTracker()
-        >>> dt.add_alignments(1, [("contig5", Strand.forward)])
+        >>> dt.set_alignments(1, [("contig5", Strand.forward)])
         >>> dt.possible_duplex(1, "contig5", Strand.reverse)
         True
         >>> dt.possible_duplex(1, "contig6", Strand.reverse)
         False
         """
+        strand = Strand(strand)
         return any(
-            prev_alignment
-            == (
-                target_name,
-                Strand.forward if strand == Strand.reverse else Strand.reverse,
-            )
+            prev_alignment == (target_name, ~strand)
             for prev_alignment in self.get_previous_alignment(channel)
         )
