@@ -820,6 +820,9 @@ class DuplexTracker:
     No maps are specified as (*, *)
     """
 
+    # Note - `readfish.src.plugins.utils.Alignment` could be used here, instead of tuple[str, Strand]
+    # We could then use the results of the ALignment directly, if we ever wanted to do something more complex
+    # for duplex
     previous_alignments: Dict[int, list[tuple[str, Strand]]] = attrs.Factory(dict)
     previous_decision: Dict[int, Decision] = attrs.Factory(dict)
 
