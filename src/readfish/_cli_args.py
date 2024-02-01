@@ -127,9 +127,10 @@ DEVICE_BASE_ARGS = (
     (
         "--wait-for-ready",
         dict(
-            help="Timeout for the MinKNOW data folder to appear, and the device to report it is ready to start sequencing. Default 60 seconds.",
+            help="Timeout for the MinKNOW data folder to appear, and the device to report it is ready to start sequencing in seconds. (default: 60s).",
             required=False,
             default=60,
+            type=int,
         ),
     ),
 ) + BASE_ARGS
