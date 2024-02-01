@@ -30,6 +30,16 @@ class Strand(Enum):
     #: Reverse strand
     reverse = "-"
 
+    def __invert__(self):
+        """Flip the strand, using bitwise NOT (~)
+
+        >>> ~Strand.forward
+        <Strand.reverse: '-'>
+        >>> ~Strand.reverse
+        <Strand.forward: '+'>
+        """
+        return Strand.forward if self is Strand.reverse else Strand.reverse
+
 
 STRANDS = {
     1: Strand.forward,
