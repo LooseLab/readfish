@@ -97,6 +97,7 @@ from readfish.plugins.utils import (
     PreviouslySentActionTracker,
     Result,
     DuplexTracker,
+    Strand,
 )
 
 
@@ -128,6 +129,8 @@ _cli = DEVICE_BASE_ARGS + (
         ),
     ),
 )
+# Whe sequencing in duplex mode, overriding a decided `Action` on a currently sequenced molecule
+# is not allowed if the previous molecules decision was one of these.
 DISALLOWED_DUPLEX_DECISIONS = {Decision.first_read_override, Decision.duplex_override}
 
 
@@ -137,14 +140,16 @@ class Analysis:
     function that is run threaded in the run function at the base of this file.
     Arguments listed in the __init__ docs.
 
-    :param client: An instance of the ReadUntilClient object
-    :param conf: An instance of the Conf object
-    :param logger: The command level logger for this module
-    :param debug_log: Whether to output the Debug Log. log Name is generated. Defaults to False.
-    :param throttle: The number of seconds interval between requests to the ReadUntilClient, defaults to 0.1
-    :param unblock_duration: Time, in seconds, to apply unblock voltage, defaults to 0.5
-    :param dry_run: If True unblocks are replaced with `stop_receiving` commands, defaults to False
-    :param toml: The path to the toml file containing experiment conf. Used for reloading, defaults to "a.toml"
+    :param client: An instance of the ReadUntilClient object.
+    :param conf: An instance of the Conf object.
+    :param logger: The command level logger for this module.
+    :param debug_log: Whether to output the Debug Log. log Name is generated.
+    :param throttle: The time interval (seconds) between requests to the ReadUntilClient.
+    :param unblock_duration: Time, in seconds, to apply unblock voltage.
+    :param dry_run: If True unblocks are replaced with `stop_receiving` commands.
+    :param toml: The path to the toml file containing experiment conf. Used as the path for checking if the TOML needs reloading.
+    :param chemistry: Instance of Chemistry Enum, representing the chemistry of the run (Simplex/Duplex). Used for
+        decision making on strands that may be part of a duplex pair.
     """
 
     def __init__(
@@ -272,9 +277,11 @@ class Analysis:
         Checks include:
             1. If the read is in a control region, the action is always stop_receiving.
             1. If the read is below the minimum chunks, use value in toml or default to proceed
-            1. If the read is above the maximum chunks, use value in toml or default unblock
+            1. If the read is above the maximum chunks, use value in toml or default unblock--throttle
             1. First read seen for channel and readfish started during sequencing, override to stop_receiving
             1. If action is unblock and we are dry-running, override to stop_receiving
+            1. If we are running in duplex chemistry, check the previous reads final decision and Action, and potentially sequence
+                the current read, instead of unblocking it.
 
         :param control: Indicates read from a channel in a control region
         :param action: What action was decided for this read before any meddling
@@ -318,10 +325,10 @@ class Analysis:
         # If --duplex flag override decisions made based on the strand and contig alignment of the previous read.
         # Unfinished bruv
         if (
-            self.chemistry == Chemistry.DUPLEX
+            self.chemistry is Chemistry.DUPLEX
             and any(
                 self.previous_alignment_tracker.possible_duplex(
-                    result.channel, result.read_id, al.ctg, al.strand
+                    result.channel, result.read_id, al.ctg, Strand(al.strand)
                 )
                 for al in result.alignment_data
             )
@@ -340,7 +347,7 @@ class Analysis:
             action = Action.stop_receiving
         # Duplex
         elif (
-            self.chemistry == Chemistry.DUPLEX_SIMPLE
+            self.chemistry is Chemistry.DUPLEX_SIMPLE
             and previous_action == Action.stop_receiving
             and action == Action.unblock
             and self.duplex_tracker.get_previous_decision(result.channel)
@@ -368,7 +375,7 @@ class Analysis:
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
             # Add final decision - used to check if it is a duplex override
-            self.duplex_tracker.set_previous_decision(result.channel, result.decision)
+            self.duplex_tracker.set_decision(result.channel, result.decision)
         elif action is Action.unblock:
             if self.dry_run:
                 # Log an 'unblock' action to previous action, but send a 'stop receiving' to prevent further read processing.
@@ -380,7 +387,7 @@ class Analysis:
                 )
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
-            self.duplex_tracker.set_previous_decision(result.channel, result.decision)
+            self.duplex_tracker.set_decision(result.channel, result.decision)
 
         return (
             previous_action,
@@ -489,10 +496,6 @@ class Analysis:
                     ),
                     overridden_action_name=overridden_action_name,
                 )
-            # if self.chemistry == Chemistry.DUPLEX:
-            #     self.duplex_tracker.add_alignments(
-            #         result.channel, [()]
-            #     )
 
             #######################################################################
             # Compile actions to be sent
