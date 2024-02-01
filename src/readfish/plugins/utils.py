@@ -912,5 +912,5 @@ class DuplexTracker:
         strand = Strand(strand)
         return any(
             prev_alignment == (target_name, ~strand)
-            for prev_alignment in self.get_previous_alignment(channel)
+            for prev_alignment in self.get_previous_alignments(channel)
         )

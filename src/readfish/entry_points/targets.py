@@ -332,7 +332,7 @@ class Analysis:
         ):
             # Check if we think this read is possibly duplex
             possible_duplex = any(
-                self.previous_alignment_tracker.possible_duplex(
+                self.duplex_tracker.possible_duplex(
                     result.channel, result.read_id, al.ctg, Strand(al.strand)
                 )
                 for al in result.alignment_data
