@@ -326,40 +326,47 @@ class Analysis:
         # Unfinished bruv
         if (
             self.chemistry is Chemistry.DUPLEX
-            and any(
+            # Easy checks first, so wdon't do more complex processing unless we have to
+            and action == Action.unblock
+            and previous_action is Action.stop_receiving
+        ):
+            # Check if we think this read is possibly duplex
+            possible_duplex = any(
                 self.previous_alignment_tracker.possible_duplex(
                     result.channel, result.read_id, al.ctg, Strand(al.strand)
                 )
                 for al in result.alignment_data
             )
-            # Previous action was to sequence
-            and previous_action == Action.stop_receiving
-            # And we aren't already sequencing it
-            and action != Action.stop_receiving
-            and self.duplex_tracker.get_previous_decision(result.channel)
-            != Decision.duplex_override
-        ):
-            self.logger.debug(
-                f"Overriding read {result.read_id} as it is possibly second half of a duplex"
+            # Check the previous decision for this channel was not already an override
+            previous_decision_allowed = (
+                self.duplex_tracker.get_previous_decision(result.channel)
+                not in DISALLOWED_DUPLEX_DECISIONS
             )
-            action_overridden = True
-            result.decision = Decision.duplex_on
-            action = Action.stop_receiving
+            if possible_duplex and previous_decision_allowed:
+                self.logger.debug(
+                    f"Overriding read {result.read_id} as it is possibly second half of a duplex"
+                )
+                action_overridden = True
+                result.decision = Decision.duplex_on
+                action = Action.stop_receiving
         # Duplex
         elif (
             self.chemistry is Chemistry.DUPLEX_SIMPLE
-            and previous_action == Action.stop_receiving
-            and action == Action.unblock
-            and self.duplex_tracker.get_previous_decision(result.channel)
-            not in DISALLOWED_DUPLEX_DECISIONS
-        ):  # TODO R
-            self.logger.debug(
-                f"Overriding to duplex - previous read action {previous_action}, current_action: {action},"
-                f" previous_decision: {self.duplex_tracker.get_previous_decision(result.channel)}"
+            and previous_action is Action.stop_receiving
+            and action is Action.unblock
+        ):
+            previous_decision_allowed = (
+                self.duplex_tracker.get_previous_decision(result.channel)
+                not in DISALLOWED_DUPLEX_DECISIONS
             )
-            action = Action.stop_receiving
-            action_overridden = True
-            result.decision = Decision.duplex_override
+            if previous_decision_allowed:
+                self.logger.debug(
+                    f"Overriding to duplex - previous read action {previous_action}, current_action: {action},"
+                    f" previous_decision: {self.duplex_tracker.get_previous_decision(result.channel)}"
+                )
+                action = Action.stop_receiving
+                action_overridden = True
+                result.decision = Decision.duplex_override
 
         # Override to stop receiving if this is the first read ona channel and we started mid sequencing
         if previous_action is None and self.readfish_started_during_sequencing:
