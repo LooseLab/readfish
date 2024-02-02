@@ -1,6 +1,7 @@
 """Mapping interface for readfish, using Minimap2 mappy, or mappy-rs as dictated by the experiment TOML
 `mapper_settings.<PLUGIN>` section. See {ref}`plugin configuration <plugins-config>` section.
 """
+
 from __future__ import annotations
 from enum import Enum
 from itertools import chain, repeat
@@ -82,9 +83,21 @@ class _Aligner(AlignerABC):
         :return: None, if the Aligner is setup with valid paths and permissions
         """
         index: str = self.aligner_params["fn_idx_in"]
-        file_extensions = ['.fasta', '.fna', '.fsa', '.fa', '.fastq',
-                           '.fq', '.fasta.gz', '.fna.gz', '.fsa.gz',
-                           '.fa.gz', '.fastq.gz', '.fq.gz', '.mmi']
+        file_extensions = [
+            ".fasta",
+            ".fna",
+            ".fsa",
+            ".fa",
+            ".fastq",
+            ".fq",
+            ".fasta.gz",
+            ".fna.gz",
+            ".fsa.gz",
+            ".fa.gz",
+            ".fastq.gz",
+            ".fq.gz",
+            ".mmi",
+        ]
         if all((not Path(index).is_file(), index)):
             raise FileNotFoundError(f"{index} does not exist")
         if not any(index.lower().endswith(suffix) for suffix in file_extensions):
