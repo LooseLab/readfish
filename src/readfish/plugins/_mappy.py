@@ -83,21 +83,9 @@ class _Aligner(AlignerABC):
         :return: None, if the Aligner is setup with valid paths and permissions
         """
         index: str = self.aligner_params["fn_idx_in"]
-        file_extensions = [
-            ".fasta",
-            ".fna",
-            ".fsa",
-            ".fa",
-            ".fastq",
-            ".fq",
-            ".fasta.gz",
-            ".fna.gz",
-            ".fsa.gz",
-            ".fa.gz",
-            ".fastq.gz",
-            ".fq.gz",
-            ".mmi",
-        ]
+        file_extensions = [".fasta", ".fna", ".fsa", ".fa", ".fastq", ".fq"]
+        file_extensions.extend([f"{f}.gz" for f in file_extensions])
+        file_extensions.append(".mmi")
         if all((not Path(index).is_file(), index)):
             raise FileNotFoundError(f"{index} does not exist")
         if not any(index.lower().endswith(suffix) for suffix in file_extensions):
