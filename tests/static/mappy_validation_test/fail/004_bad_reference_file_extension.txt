@@ -1,0 +1,1 @@
+Provided index file appears to be of an incorrect type - should be one of ['.fasta', '.fna', '.fsa', '.fa', '.fastq', '.fq', '.fasta.gz', '.fna.gz', '.fsa.gz', '.fa.gz', '.fastq.gz', '.fq.gz', '.mmi']

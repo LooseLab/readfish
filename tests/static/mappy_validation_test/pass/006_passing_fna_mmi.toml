@@ -1,7 +1,7 @@
 [caller_settings.no_op]
 
 [mapper_settings.mappy]
-fn_idx_in = "test.mmi.cabbage"
+fn_idx_in = "tests/static/mappy_validation_test/pass/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.mmi"
 
 [[regions]]
 name = "abc"
