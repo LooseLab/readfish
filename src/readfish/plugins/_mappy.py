@@ -1,6 +1,7 @@
 """Mapping interface for readfish, using Minimap2 mappy, or mappy-rs as dictated by the experiment TOML
 `mapper_settings.<PLUGIN>` section. See {ref}`plugin configuration <plugins-config>` section.
 """
+
 from __future__ import annotations
 from enum import Enum
 from itertools import chain, repeat
@@ -87,10 +88,7 @@ class _Aligner(AlignerABC):
         file_extensions.append(".mmi")
         if all((not Path(index).is_file(), index)):
             raise FileNotFoundError(f"{index} does not exist")
-        if (
-            "".join(map(str.lower, Path(index).suffixes)) not in set(file_extensions)
-            and index
-        ):
+        if not any(index.lower().endswith(suffix) for suffix in file_extensions):
             raise RuntimeError(
                 f"Provided index file appears to be of an incorrect type - should be one of {file_extensions}"
             )
