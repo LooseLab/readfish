@@ -41,6 +41,8 @@ class RUClient(ReadUntilClient):
     """Subclasses ONTs read_until_api ReadUntilClient adding extra function that logs unblocks read_ids."""
 
     def __init__(self, *args, **kwargs):
+        #  Default to TIMEOUT in the event we are not starting from the CLI.
+        # If started from CLI args.wait-for-ready is used - also defaults to 120s
         self.timeout = kwargs.pop("timeout", TIMEOUT)
         super().__init__(*args, **kwargs)
         # disable the read until client logger
@@ -170,10 +172,10 @@ class RUClient(ReadUntilClient):
             else:
                 raise SystemExit(1)
 
-    def wait_for_minknow_folder(self, timeout: int = TIMEOUT):
+    def wait_for_minknow_folder(self, timeout: int):
         """
         Rather than messing about with permissions wait for MinKNOW to create the run
-        folder. If the folder doesn't appear after TIMEOUT seconds then write to the
+        folder. If the folder doesn't appear after timeout seconds then write to the
         current working directory instead.
         """
         seconds_waited = 0
