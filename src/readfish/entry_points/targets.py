@@ -130,7 +130,7 @@ _cli = DEVICE_BASE_ARGS + (
         ),
     ),
 )
-# Whe sequencing in duplex mode, overriding a decided `Action` on a currently sequenced molecule
+# When sequencing in duplex mode, overriding a decided `Action` on a currently sequenced molecule
 # is not allowed if the previous molecules decision was one of these.
 DISALLOWED_DUPLEX_DECISIONS = {Decision.first_read_override, Decision.duplex_override}
 
