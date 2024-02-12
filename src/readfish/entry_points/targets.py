@@ -66,6 +66,7 @@ This prevents trying to unblock reads of unknown length.
 
 
 """
+
 # Core imports
 from __future__ import annotations
 import argparse
@@ -333,7 +334,7 @@ class Analysis:
             # Check if we think this read is possibly duplex
             possible_duplex = any(
                 self.duplex_tracker.possible_duplex(
-                    result.channel, result.read_id, al.ctg, Strand(al.strand)
+                    result.channel, result.read_id, al.ctg, al.strand
                 )
                 for al in result.alignment_data
             )
@@ -345,9 +346,11 @@ class Analysis:
             if possible_duplex and previous_decision_allowed:
                 self.logger.debug(
                     f"Overriding read {result.read_id} as it is possibly second half of a duplex"
+                    f"- previous read action {previous_action}, current_action: {action},"
+                    f" previous_decision: {self.duplex_tracker.get_previous_decision(result.channel)}"
                 )
                 action_overridden = True
-                result.decision = Decision.duplex_on
+                result.decision = Decision.duplex_override
                 action = Action.stop_receiving
         # Duplex
         elif (
@@ -379,10 +382,7 @@ class Analysis:
 
         if action is Action.stop_receiving:
             stop_receiving_action_list.append((result.channel, result.read_number))
-            # Add decided Action
-            self.previous_action_tracker.add_action(result.channel, action)
-            # Add final decision - used to check if it is a duplex override
-            self.duplex_tracker.set_decision(result.channel, result.decision)
+
         elif action is Action.unblock:
             if self.dry_run:
                 # Log an 'unblock' action to previous action, but send a 'stop receiving' to prevent further read processing.
@@ -392,9 +392,20 @@ class Analysis:
                 unblock_batch_action_list.append(
                     (result.channel, result.read_number, result.read_id)
                 )
+
+        # If we have made a final decision for this read and we shouldn't see it again!
+        if action is Action.unblock or Action is Action.stop_receiving:
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
-            self.duplex_tracker.set_decision(result.channel, result.decision)
+            # Add duplex based tracking if we are in duplex mode
+            if self.chemistry is Chemistry.DUPLEX_SIMPLE:
+                self.duplex_tracker.set_decision(result.channel, result.decision)
+            elif self.chemistry is Chemistry.DUPLEX:
+                self.duplex_tracker.set_decision(result.channel, result.decision)
+                self.duplex_tracker.set_alignments(
+                    result.channel,
+                    [(al.ctg, Strand(al.strand)) for al in result.alignment_data],
+                )
 
         return (
             previous_action,
