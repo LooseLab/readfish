@@ -170,11 +170,16 @@ def count_dict_elements(d: dict[Any]) -> int:
     """
     return sum(
         (
-            count_dict_elements(v) if isinstance(v, dict)
-            # If v is a list, tuple, sequence, dict etc., return the length of the container filtering out any empty sun elements,
-            else len(list(filterfalse(partial(is_empty), v)))
-            if isinstance(v, Container)
-            else 1
+            (
+                count_dict_elements(v)
+                if isinstance(v, dict)
+                # If v is a list, tuple, sequence, dict etc., return the length of the container filtering out any empty sun elements,
+                else (
+                    len(list(filterfalse(partial(is_empty), v)))
+                    if isinstance(v, Container)
+                    else 1
+                )
+            )
             for v in d.values()
         )
     )
