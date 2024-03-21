@@ -394,7 +394,7 @@ class Analysis:
                 )
 
         # If we have made a final decision for this read and we shouldn't see it again!
-        if action is Action.unblock or Action is Action.stop_receiving:
+        if action is Action.unblock or action is Action.stop_receiving:
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
             # Add duplex based tracking if we are in duplex mode
