@@ -30,6 +30,16 @@ class Strand(Enum):
     #: Reverse strand
     reverse = "-"
 
+    def __invert__(self):
+        """Flip the strand, using bitwise NOT (~)
+
+        >>> ~Strand.forward
+        <Strand.reverse: '-'>
+        >>> ~Strand.reverse
+        <Strand.forward: '+'>
+        """
+        return Strand.forward if self is Strand.reverse else Strand.reverse
+
 
 STRANDS = {
     1: Strand.forward,
@@ -160,11 +170,16 @@ def count_dict_elements(d: dict[Any]) -> int:
     """
     return sum(
         (
-            count_dict_elements(v) if isinstance(v, dict)
-            # If v is a list, tuple, sequence, dict etc., return the length of the container filtering out any empty sun elements,
-            else len(list(filterfalse(partial(is_empty), v)))
-            if isinstance(v, Container)
-            else 1
+            (
+                count_dict_elements(v)
+                if isinstance(v, dict)
+                # If v is a list, tuple, sequence, dict etc., return the length of the container filtering out any empty sun elements,
+                else (
+                    len(list(filterfalse(partial(is_empty), v)))
+                    if isinstance(v, Container)
+                    else 1
+                )
+            )
             for v in d.values()
         )
     )
@@ -420,6 +435,10 @@ class Decision(Enum):
     above_max_chunks = "above_max_chunks"
     #: Fewer signal chunks for this read collected than required
     below_min_chunks = "below_min_chunks"
+    #: Potential second half of a duplex read
+    duplex_override = "duplex_override"
+    #: Read sequenced as translocated portion was of unknown length at start of readfish
+    first_read_override = "first_read_override"
 
 
 @unique
@@ -792,3 +811,111 @@ class PreviouslySentActionTracker:
         :return: The last action sent for the channel, or None if no action has been sent.
         """
         return self.last_actions.get(channel, None)
+
+
+@attrs.define
+class DuplexTracker:
+    """
+    Wrapper class to keep track the alignment location of the latest read seen on a channel,
+    and previous decision made, tracking whether we made a duplex override on the last read
+    Specifically, we store a list of tuples of any target contig names and strands that were aligned to,
+    keyed to channel number and the previous decision for a read made on that channel.
+    The decision should only be updated when a read has been finalised and should not be seen again,
+    i.e a Stop receiving or Unblock has been sent to MinKNOW
+    No maps are specified as (*, *)
+    """
+
+    # Note - `readfish.src.plugins.utils.Alignment` could be used here, instead of tuple[str, Strand]
+    # We could then use the results of the ALignment directly, if we ever wanted to do something more complex
+    # for duplex
+    previous_alignments: Dict[int, list[tuple[str, Strand]]] = attrs.Factory(dict)
+    previous_decision: Dict[int, Decision] = attrs.Factory(dict)
+
+    def get_previous_decision(self, channel: int) -> Decision:
+        """
+        Get the previous decision seen on this channel.
+
+        :param channel: The channel number.
+        :return: Previously seen decision
+        >>> dt = DuplexTracker()
+        >>> dt.get_previous_decision(1) is None
+        True
+        >>> dt.set_decision(1, Decision.duplex_override)
+        >>> dt.get_previous_decision(1)
+        <Decision.duplex_override: 'duplex_override'>
+        """
+        return self.previous_decision.get(channel, None)
+
+    def set_decision(self, channel: int, decision: Decision) -> None:
+        """
+        Set the previous decision for a given channel number.
+
+        :param channel: The channel number.
+        :param decision: The decision taken. Should be the final decision,
+        i.e we won't see the read again.
+        >>> dt = DuplexTracker()
+        >>> dt.set_decision(1, Decision.no_map)
+        >>> dt.previous_decision[1]
+        <Decision.no_map: 'no_map'>
+        """
+        self.previous_decision[channel] = decision
+
+    def get_previous_alignments(self, channel: int) -> list[tuple[str, Strand]]:
+        """
+        Retrieves last alignments, including no maps seen on the given channel.
+
+        :param channel: The channel number to lookup the previous action for
+        :param read_id: Read of ID of the current alignment
+        :return: Returns a tuple of (contig_name, strand), for the last alignment seen on this channel
+
+        >>> dt = DuplexTracker()
+        >>> dt.get_previous_alignments(1) is None
+        True
+        >>> dt.set_alignments(1, [("contig1", Strand.forward), ("contig2", Strand.reverse)])
+        >>> dt.get_previous_alignments(1)
+        [('contig1', <Strand.forward: '+'>), ('contig2', <Strand.reverse: '-'>)]
+        """
+        return self.previous_alignments.get(channel, None)
+
+    def set_alignments(
+        self, channel: int, alignments: list[tuple[str, Strand]]
+    ) -> None:
+        """
+        Add an alignment that has been seen for a channel.
+
+        :param channel: The channel number to set the alignment for.
+        :param target_name: The name of the target contig aligned to
+        :param strand: The strand we have aligned to.
+
+        >>> dt = DuplexTracker()
+        >>> dt.set_alignments(1, [("contig3", Strand.forward), ("contig4", Strand.reverse)])
+        >>> dt.previous_alignments[1]
+        [('contig3', <Strand.forward: '+'>), ('contig4', <Strand.reverse: '-'>)]
+        """
+        self.previous_alignments[channel] = alignments
+
+    def possible_duplex(
+        self, channel: int, target_name: str, strand: Strand | str | int
+    ) -> bool:
+        """
+        Compare the current alignment target_name and strand for a given channel
+        with the previous alignment target_name and strand.
+
+        If the strand is opposite and the target is the same, return True, else False.
+        :param channel: Channel number to fetch alignment for
+        :param target_name: The name of the target contig for the current alignment
+        :param strand: The strand of the current alignment
+        :return: True if the strand is opposite and target contig the same
+
+        >>> dt = DuplexTracker()
+        >>> dt.set_alignments(1, [("contig5", Strand.forward)])
+        >>> dt.possible_duplex(1, "contig5", Strand.reverse)
+        True
+        >>> dt.possible_duplex(1, "contig6", Strand.reverse)
+        False
+        """
+        strand = Strand(strand)
+        return any(
+            prev_alignment == (target_name, ~strand)
+            for prev_alignment in self.get_previous_alignments(channel)
+        )
