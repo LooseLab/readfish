@@ -66,7 +66,6 @@ class Caller(CallerABC):
         self.caller = PyBasecallClient(**self.dorado_params)
         self.caller.connect()
 
-
     def validate(self) -> None:
         """Validate the parameters passed to Dorado to ensure they will initialise py Basecall Client correctly
 
