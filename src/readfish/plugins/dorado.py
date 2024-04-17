@@ -2,6 +2,7 @@
 
 Extension of pyBaseCaller that maintains a connection to the basecaller
 """
+
 from __future__ import annotations
 import logging
 import os
@@ -13,8 +14,12 @@ from typing import Iterable, TYPE_CHECKING
 import numpy as np
 import numpy.typing as npt
 from minknow_api.protocol_pb2 import ProtocolRunInfo
-from pybasecall_client_lib.helper_functions import package_read
-from pybasecall_client_lib.pyclient import PyBasecallClient
+
+try:
+    from pybasecall_client_lib.helper_functions import package_read
+    from pybasecall_client_lib.pyclient import PyBasecallClient
+except ImportError:
+    pass
 
 from readfish._loggers import setup_logger
 from readfish.plugins.abc import CallerABC
