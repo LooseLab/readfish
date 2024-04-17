@@ -11,6 +11,10 @@ Then, during sequencing the start of each read is sampled.
 These chunks of raw data are processed by the basecaller to produce FASTA, which is then aligned against the chosen reference genome.
 The result of the alignment is used, along with the targets provided in the :doc:`TOML <toml>` file, to make a decision on each read.
 
+In the new **experimental** Duplex mode, it is possible to override a decision for a read based on the action taken for a previous read.
+This is done by passing `--chemistry` and setting either duplex, or duplex simple.
+`duplex_simple` accepts a read if the previous channels read was stop receiving, `duplex` checks that the previous reads alignment was on the same contig and opposite strand.
+The default chemistry is simplex.
 
 Running this should result in a very short (<1kb, ideally 400-600 bases) unblock peak at the start of a read length histogram and longer sequenced reads.
 
@@ -21,6 +25,15 @@ Example run command::
            --toml my_exp.toml \\
            --log-file rf.log \\
            --debug-log chunks.tsv
+
+Example experimental duplex command::
+
+    readfish targets --device X3 \\
+           --experiment-name "test" \\
+           --toml my_exp.toml \\
+           --log-file rf.log \\
+           --debug-log chunks.tsv
+           --chemistry duplex
 
 In the debug_log chunks.tsv file, if this argument is passed, each line represents detailed information about a batch of
 read signal that has been processed in an iteration.
