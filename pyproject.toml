@@ -54,7 +54,8 @@ dev = ["readfish[all,docs,tests]", "pre-commit"]
 mappy = ["mappy"]
 mappy-rs = ["mappy-rs >= 0.0.6"]
 guppy = ["ont_pyguppy_client_lib"]
-all = ["readfish[mappy,mappy-rs,guppy]"]
+dorado = ["ont-pybasecall-client-lib"]
+all = ["readfish[mappy,mappy-rs,guppy,dorado]"]
 
 [project.urls]
 Documentation = "https://looselab.github.io/readfish"
