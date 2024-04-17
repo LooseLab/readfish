@@ -149,7 +149,7 @@ DEVICE_BASE_ARGS = (
     (
         "--chemistry",
         dict(
-            help="**EXPERIMENTAL** Choose between duplex and simplex chemistry mode. duplex_simple accept a read if the previous channels read was stop receiving,"
+            help="**EXPERIMENTAL** Choose between duplex and simplex chemistry mode. duplex_simple accepts a read if the previous channels read was stop receiving,"
             "duplex checks that the previous reads alignment was on the same contig and opposite strand. default: SIMPLEX",
             required=False,
             type=str,
