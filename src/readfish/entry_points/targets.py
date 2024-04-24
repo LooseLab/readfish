@@ -88,6 +88,7 @@ from readfish._config import Action, Conf, make_decision, _Condition
 from readfish._statistics import ReadfishStatistics
 from readfish._utils import (
     get_device,
+    get_version,
     send_message,
     ChunkTracker,
     Severity,
@@ -484,6 +485,10 @@ def run(
     """
     # Setup logger used in this entry point, this one should be passed through
     logger = logging.getLogger(f"readfish.{args.command}")
+
+    # Check MinKNOW version
+
+    minKNOW_version = get_version(host=args.host, port=args.port, logger=logger)
 
     # Fetch sequencing device
     position = get_device(args.device, host=args.host, port=args.port)

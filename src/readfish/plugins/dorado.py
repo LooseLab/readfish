@@ -10,6 +10,7 @@ import time
 from collections import namedtuple
 from pathlib import Path
 from typing import Iterable, TYPE_CHECKING
+from packaging.version import parse as parse_version
 
 import numpy as np
 import numpy.typing as npt
@@ -66,6 +67,18 @@ class Caller(CallerABC):
         self.supported_barcode_kits = None
         self.supported_basecall_models = None
         self.run_information = run_information
+        if self.run_information:
+            self.guppy_version = self.run_information.software_versions.guppy_connected_version
+
+            if parse_version(self.guppy_version) >= parse_version("7.3.9"):
+                logging.info(
+                    f"Connected to caller version {self.guppy_version}."
+                )
+            else:
+                raise RuntimeError(
+                    f"Connected to caller version {self.guppy_version}. This plugin requires a version of Dorado >= 7.3.9."
+                )
+
         if sample_rate:
             self.sample_rate = float(sample_rate)
         else:
