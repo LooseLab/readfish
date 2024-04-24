@@ -11,6 +11,10 @@ Then, during sequencing the start of each read is sampled.
 These chunks of raw data are processed by the basecaller to produce FASTA, which is then aligned against the chosen reference genome.
 The result of the alignment is used, along with the targets provided in the :doc:`TOML <toml>` file, to make a decision on each read.
 
+In the new **experimental** Duplex mode, it is possible to override a decision for a read based on the action taken for a previous read.
+This is done by passing `--chemistry` and setting either duplex, or duplex simple.
+`duplex_simple` accepts a read if the previous channels read was stop receiving, `duplex` checks that the previous reads alignment was on the same contig and opposite strand.
+The default chemistry is simplex.
 
 Running this should result in a very short (<1kb, ideally 400-600 bases) unblock peak at the start of a read length histogram and longer sequenced reads.
 
@@ -21,6 +25,15 @@ Example run command::
            --toml my_exp.toml \\
            --log-file rf.log \\
            --debug-log chunks.tsv
+
+Example experimental duplex command::
+
+    readfish targets --device X3 \\
+           --experiment-name "test" \\
+           --toml my_exp.toml \\
+           --log-file rf.log \\
+           --debug-log chunks.tsv
+           --chemistry duplex
 
 In the debug_log chunks.tsv file, if this argument is passed, each line represents detailed information about a batch of
 read signal that has been processed in an iteration.
@@ -66,6 +79,7 @@ This prevents trying to unblock reads of unknown length.
 
 
 """
+
 # Core imports
 from __future__ import annotations
 import argparse
@@ -81,7 +95,7 @@ from readfish.read_until import ReadUntilClient
 from minknow_api import protocol_service
 
 # Library
-from readfish._cli_args import DEVICE_BASE_ARGS, DEFAULT_UNBLOCK
+from readfish._cli_args import DEVICE_BASE_ARGS, Chemistry
 from readfish._read_until_client import RUClient
 from readfish._config import Action, Conf, make_decision, _Condition
 from readfish._statistics import ReadfishStatistics
@@ -92,7 +106,13 @@ from readfish._utils import (
     Severity,
 )
 from readfish.plugins.abc import AlignerABC, CallerABC
-from readfish.plugins.utils import Decision, PreviouslySentActionTracker, Result
+from readfish.plugins.utils import (
+    Decision,
+    PreviouslySentActionTracker,
+    Result,
+    DuplexTracker,
+    Strand,
+)
 
 
 _help = "Run targeted sequencing"
@@ -123,6 +143,9 @@ _cli = DEVICE_BASE_ARGS + (
         ),
     ),
 )
+# When sequencing in duplex mode, overriding a decided `Action` on a currently sequenced molecule
+# is not allowed if the previous molecules decision was one of these.
+DISALLOWED_DUPLEX_DECISIONS = {Decision.first_read_override, Decision.duplex_override}
 
 
 class Analysis:
@@ -131,14 +154,16 @@ class Analysis:
     function that is run threaded in the run function at the base of this file.
     Arguments listed in the __init__ docs.
 
-    :param client: An instance of the ReadUntilClient object
-    :param conf: An instance of the Conf object
-    :param logger: The command level logger for this module
-    :param debug_log: Whether to output the Debug Log. log Name is generated. Defaults to False.
-    :param throttle: The number of seconds interval between requests to the ReadUntilClient, defaults to 0.1
-    :param unblock_duration: Time, in seconds, to apply unblock voltage, defaults to 0.5
-    :param dry_run: If True unblocks are replaced with `stop_receiving` commands, defaults to False
-    :param toml: The path to the toml file containing experiment conf. Used for reloading, defaults to "a.toml"
+    :param client: An instance of the ReadUntilClient object.
+    :param conf: An instance of the Conf object.
+    :param logger: The command level logger for this module.
+    :param debug_log: Whether to output the Debug Log. log Name is generated.
+    :param throttle: The time interval (seconds) between requests to the ReadUntilClient.
+    :param unblock_duration: Time, in seconds, to apply unblock voltage.
+    :param dry_run: If True unblocks are replaced with `stop_receiving` commands.
+    :param toml: The path to the toml file containing experiment conf. Used as the path for checking if the TOML needs reloading.
+    :param chemistry: Instance of Chemistry Enum, representing the chemistry of the run (Simplex/Duplex). Used for
+        decision making on strands that may be part of a duplex pair.
     """
 
     def __init__(
@@ -147,10 +172,11 @@ class Analysis:
         conf: Conf,
         logger: logging.Logger,
         debug_log: bool,
-        throttle: float = 0.1,
-        unblock_duration: float = DEFAULT_UNBLOCK,
-        dry_run: bool = False,
-        toml: str = "a.toml",
+        throttle: float,
+        unblock_duration: float,
+        dry_run: bool,
+        toml: str,
+        chemistry: Chemistry,
     ):
         self.client = client
         self.conf = conf
@@ -161,7 +187,7 @@ class Analysis:
         self.dry_run = dry_run
         self.live_toml = Path(f"{toml}_live").resolve()
         self.run_information = self.client.connection.protocol.get_run_info()
-
+        self.chemistry = chemistry
         # Generate a run specific read log
         read_log_name = (
             f"{self.run_information.run_id}_readfish.tsv" if debug_log else None
@@ -194,6 +220,8 @@ class Analysis:
 
         # This is an object to keep track of the last action sent to the client for each channel
         self.previous_action_tracker = PreviouslySentActionTracker()
+        # Keep track of previous alignments
+        self.duplex_tracker = DuplexTracker()
 
         # We assume that sequencing is already running.
         # If the run is not in sequencing phase when the read until loop starts will
@@ -263,9 +291,11 @@ class Analysis:
         Checks include:
             1. If the read is in a control region, the action is always stop_receiving.
             1. If the read is below the minimum chunks, use value in toml or default to proceed
-            1. If the read is above the maximum chunks, use value in toml or default unblock
+            1. If the read is above the maximum chunks, use value in toml or default unblock--throttle
             1. First read seen for channel and readfish started during sequencing, override to stop_receiving
             1. If action is unblock and we are dry-running, override to stop_receiving
+            1. If we are running in duplex chemistry, check the previous reads final decision and Action, and potentially sequence
+                the current read, instead of unblocking it.
 
         :param control: Indicates read from a channel in a control region
         :param action: What action was decided for this read before any meddling
@@ -306,18 +336,66 @@ class Analysis:
         # previous_action will be None if the read has not been seen before.
         previous_action = self.previous_action_tracker.get_action(result.channel)
         action_overridden = False
+        # If --duplex flag override decisions made based on the strand and contig alignment of the previous read.
+        # Unfinished bruv
+        if (
+            self.chemistry is Chemistry.DUPLEX
+            # Easy checks first, so wdon't do more complex processing unless we have to
+            and action == Action.unblock
+            and previous_action is Action.stop_receiving
+        ):
+            # Check if we think this read is possibly duplex
+            possible_duplex = any(
+                self.duplex_tracker.possible_duplex(
+                    result.channel, result.read_id, al.ctg, al.strand
+                )
+                for al in result.alignment_data
+            )
+            # Check the previous decision for this channel was not already an override
+            previous_decision_allowed = (
+                self.duplex_tracker.get_previous_decision(result.channel)
+                not in DISALLOWED_DUPLEX_DECISIONS
+            )
+            if possible_duplex and previous_decision_allowed:
+                self.logger.debug(
+                    f"Overriding read {result.read_id} as it is possibly second half of a duplex"
+                    f"- previous read action {previous_action}, current_action: {action},"
+                    f" previous_decision: {self.duplex_tracker.get_previous_decision(result.channel)}"
+                )
+                action_overridden = True
+                result.decision = Decision.duplex_override
+                action = Action.stop_receiving
+        # Duplex
+        elif (
+            self.chemistry is Chemistry.DUPLEX_SIMPLE
+            and previous_action is Action.stop_receiving
+            and action is Action.unblock
+        ):
+            previous_decision_allowed = (
+                self.duplex_tracker.get_previous_decision(result.channel)
+                not in DISALLOWED_DUPLEX_DECISIONS
+            )
+            if previous_decision_allowed:
+                self.logger.debug(
+                    f"Overriding to duplex - previous read action {previous_action}, current_action: {action},"
+                    f" previous_decision: {self.duplex_tracker.get_previous_decision(result.channel)}"
+                )
+                action = Action.stop_receiving
+                action_overridden = True
+                result.decision = Decision.duplex_override
 
+        # Override to stop receiving if this is the first read ona channel and we started mid sequencing
         if previous_action is None and self.readfish_started_during_sequencing:
             self.logger.debug(
                 f"This is the first suitable read chunk from channel {result.channel}. Translocated read length unknown, sequencing."
             )
             action_overridden = True
+            result.decision = Decision.first_read_override
             action = Action.stop_receiving
 
         if action is Action.stop_receiving:
             stop_receiving_action_list.append((result.channel, result.read_number))
-            # Add decided Action
-            self.previous_action_tracker.add_action(result.channel, action)
+
         elif action is Action.unblock:
             if self.dry_run:
                 # Log an 'unblock' action to previous action, but send a 'stop receiving' to prevent further read processing.
@@ -327,8 +405,21 @@ class Analysis:
                 unblock_batch_action_list.append(
                     (result.channel, result.read_number, result.read_id)
                 )
+
+        # If we have made a final decision for this read and we shouldn't see it again!
+        if action is Action.unblock or action is Action.stop_receiving:
             # Add decided Action
             self.previous_action_tracker.add_action(result.channel, action)
+            # Add duplex based tracking if we are in duplex mode
+            if self.chemistry is Chemistry.DUPLEX_SIMPLE:
+                self.duplex_tracker.set_decision(result.channel, result.decision)
+            elif self.chemistry is Chemistry.DUPLEX:
+                self.duplex_tracker.set_decision(result.channel, result.decision)
+                self.duplex_tracker.set_alignments(
+                    result.channel,
+                    [(al.ctg, Strand(al.strand)) for al in result.alignment_data],
+                )
+
         return (
             previous_action,
             action_overridden,
@@ -530,6 +621,7 @@ def run(
         throttle=args.throttle,
         dry_run=args.dry_run,
         toml=args.toml,
+        chemistry=Chemistry(args.chemistry),
     )
 
     # begin readfish function

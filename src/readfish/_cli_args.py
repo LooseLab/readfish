@@ -5,7 +5,20 @@ The two primary items that are exported are ``BASE_ARGS`` and ``DEVICE_BASE_ARGS
 ``BASE_ARGS`` are the minimal required arguments for _all_ entry points as they used for initialising loggers.
 ``DEVICE_BASE_ARGS`` are the set of arguments that are used for connecting to a sequencer (device) and some other related settings for selective sequencing scripts.
 """
+
+from enum import Enum, unique
 from readfish._utils import nice_join
+
+
+@unique
+class Chemistry(Enum):
+    #: For the "smarter" version of duplex - does this read map to the previous reads opposite strand on the same contig. Won't work for no map based decisions
+    DUPLEX = "duplex"
+    #: Normal simplex chemistry - no duplex override shenanigans
+    SIMPLEX = "simplex"
+    #: Simple duplex - if we are going to unblock a read given the previous read on the same channel was stop receiving, sequence the current read instead.
+    DUPLEX_SIMPLE = "duplex_simple"
+
 
 DEFAULT_SERVER_HOST = "127.0.0.1"
 DEFAULT_SERVER_PORT = None
@@ -131,6 +144,17 @@ DEVICE_BASE_ARGS = (
             required=False,
             default=120,
             type=int,
+        ),
+    ),
+    (
+        "--chemistry",
+        dict(
+            help="**EXPERIMENTAL** Choose between duplex and simplex chemistry mode. duplex_simple accepts a read if the previous channels read was stop receiving,"
+            "duplex checks that the previous reads alignment was on the same contig and opposite strand. default: SIMPLEX",
+            required=False,
+            type=str,
+            default=Chemistry.SIMPLEX,
+            choices=[chemistry.value for chemistry in Chemistry],
         ),
     ),
 ) + BASE_ARGS

@@ -555,6 +555,7 @@ And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com
 # Changelog
 ## Unreleased changes
 1. Change the default `unblock_duration` on the `Analysis` class to use `DEFAULT_UNBLOCK` value defined in `_cli_args.py`. Change type on the Argparser for `--unblock-duration` to float. (#313)
+1. Big dog Duplex feature - adds ability to select duplex reads that cover a target region. See pull request for details [(#324)](https://github.com/LooseLab/readfish/pull/324)
 ## 2023.1.1
 1. Fix Readme Logo link 🥳 (#296)
 1. Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to @jamesemery for catching this. (#299)
