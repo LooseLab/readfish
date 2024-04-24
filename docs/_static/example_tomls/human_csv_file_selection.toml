@@ -17,9 +17,13 @@
 # - https://looselab.github.io/readfish/toml.html.
 
 [caller_settings.guppy]
-# Caller Configuration for Guppy Basecaller
-config = "dna_r9.4.1_450bps_fast"  # Specify the basecaller configuration
-address = "ipc:///tmp/.guppy/5555"  # Address of the guppy basecaller - The default address for guppy is ipc:///tmp/.guppy/5555.
+#               ^^^^^^ - ".guppy" specifies our chosen basecaller
+#               If using dorado >7.3.9, this should be ".dorado".
+#               All other parameters are shared between the two basecallers.
+# Guppy/Dorado base-calling configuration file name
+config = "dna_r9.4.1_450bps_fast"
+# Address of the guppy/dorado basecaller - The default address for guppy is ipc:///tmp/.guppy/5555.
+address = "ipc:///tmp/.guppy/5555"
 debug_log = "live_reads.fq"  # Fastq output for individual reads (Optional, delete line to disable)
 
 [mapper_settings.mappy]
