@@ -86,9 +86,14 @@ from readfish._cli_args import DEVICE_BASE_ARGS, DEFAULT_UNBLOCK
 from readfish._read_until_client import RUClient
 from readfish._config import Action, Conf, make_decision, _Condition
 from readfish._statistics import ReadfishStatistics
+from readfish.__about__ import __version__
+from readfish.compatibility import (
+    _get_minknow_version,
+    check_compatibility,
+    MINKNOW_COMPATIBILITY_RANGE,
+)
 from readfish._utils import (
     get_device,
-    get_version,
     send_message,
     ChunkTracker,
     Severity,
@@ -488,7 +493,14 @@ def run(
 
     # Check MinKNOW version
 
-    minKNOW_version = get_version(host=args.host, port=args.port, logger=logger)
+    minknow_version = _get_minknow_version(host=args.host, port=args.port)
+    if not (
+        action := check_compatibility(minknow_version, MINKNOW_COMPATIBILITY_RANGE)
+    )[0]:
+        lower_bound, upper_bound = MINKNOW_COMPATIBILITY_RANGE
+        raise SystemExit(
+            f"This readfish version ({__version__}) is compatible with MinKNOW v{lower_bound} to v{upper_bound}. Please {action[1].value} readfish."
+        )
 
     # Fetch sequencing device
     position = get_device(args.device, host=args.host, port=args.port)
@@ -521,9 +533,6 @@ def run(
 
     # start the client running
     read_until_client.run(
-        # TODO: Set correct channel range
-        # first_channel=186,
-        # last_channel=187,
         first_channel=1,
         last_channel=read_until_client.channel_count,
         max_unblock_read_length_seconds=args.max_unblock_read_length_seconds,
