@@ -7,10 +7,11 @@ from __future__ import annotations
 import logging
 import os
 import time
+from operator import lt
 from collections import namedtuple
 from pathlib import Path
 from typing import Iterable, TYPE_CHECKING
-from packaging.version import parse as parse_version
+from readfish.compatibility import check_basecaller_compatibility
 
 import numpy as np
 import numpy.typing as npt
@@ -56,30 +57,24 @@ _DefaultDAQValues = DefaultDAQValues()
 
 class Caller(CallerABC):
     def __init__(
-        self, run_information: ProtocolRunInfo = None, debug_log=None, **kwargs
+        self,
+        run_information: ProtocolRunInfo = None,
+        debug_log=None,
+        sample_rate: int | None = None,
+        **kwargs,
     ):
-        self.logger = setup_logger("readfish_guppy_logger", log_file=debug_log)
         self.supported_barcode_kits = None
         self.supported_basecall_models = None
         self.run_information = run_information
 
         if self.run_information:
-            self.guppy_version = self.run_information.software_versions.guppy_connected_version
-
-            if parse_version(self.guppy_version) < parse_version("7.3.9"):
-                logging.info(
-                    f"Connected to caller version {self.guppy_version}."
-                )
-            else:
-                raise RuntimeError(
-                    f"Connected to caller version {self.guppy_version}. This plugin requires a version of Dorado or Guppy < 7.3.9. Try changing [caller_settings.guppy] to [caller_settings.dorado]."
-                )
-
+            check_basecaller_compatibility(self.run_information, lt, "7.3.9")
         # Set our own priority
         self.guppy_params = kwargs
         self.guppy_params["priority"] = PyGuppyClient.high_priority
         # Set our own client name to appear in the guppy server logs
         self.guppy_params["client_name"] = "Readfish_connection"
+        self.logger = setup_logger("readfish_guppy_logger", log_file=debug_log)
         self.validate()
         self.caller = PyGuppyClient(**self.guppy_params)
         self.caller.connect()

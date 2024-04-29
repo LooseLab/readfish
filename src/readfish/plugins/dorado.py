@@ -10,12 +10,14 @@ import time
 from collections import namedtuple
 from pathlib import Path
 from typing import Iterable, TYPE_CHECKING
-from packaging.version import parse as parse_version
 
 import numpy as np
 import numpy.typing as npt
 from minknow_api.protocol_pb2 import ProtocolRunInfo
 from minknow_api.device_pb2 import GetSampleRateResponse
+from operator import ge
+
+from readfish.compatibility import check_basecaller_compatibility
 
 try:
     from pybasecall_client_lib.helper_functions import package_read
@@ -68,22 +70,17 @@ class Caller(CallerABC):
         self.supported_basecall_models = None
         self.run_information = run_information
         if self.run_information:
-            self.guppy_version = self.run_information.software_versions.guppy_connected_version
+            check_basecaller_compatibility(
+                self.run_information,
+                ge,
+                "7.3.9",
+                (
+                    "For Dorado >= 7.3.9, Try changing [caller_settings.guppy]"
+                    " to [caller_settings.dorado]."
+                ),
+            )
 
-            if parse_version(self.guppy_version) >= parse_version("7.3.9"):
-                logging.info(
-                    f"Connected to caller version {self.guppy_version}."
-                )
-            else:
-                raise RuntimeError(
-                    f"Connected to caller version {self.guppy_version}. This plugin requires a version of Dorado >= 7.3.9."
-                )
-
-        if sample_rate:
-            self.sample_rate = float(sample_rate)
-        else:
-            self.sample_rate = float(5000)
-
+        self.sample_rate = float(sample_rate) if sample_rate else float(5000)
         # Set our own priority
         self.dorado_params = kwargs
         self.dorado_params["priority"] = PyBasecallClient.high_priority
