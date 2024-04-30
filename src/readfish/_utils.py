@@ -25,8 +25,8 @@ if sys.version_info < (3, 11):
 
 from readfish._channels import FLONGLE_CHANNELS, MINION_CHANNELS
 from readfish.__about__ import __version__ as readfish_version
-from readfish.__compatability__ import __compatability__ as compatible_version
-from readfish.__compatability__ import __warning__ as warning_version
+from readfish._compatability import compatible_version
+from readfish._compatability import warning_version
 
 MODULE_LOGGER = logging.getLogger(__name__)
 

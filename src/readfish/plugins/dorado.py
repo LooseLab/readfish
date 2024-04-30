@@ -76,7 +76,7 @@ class Caller(CallerABC):
                 )
             else:
                 raise RuntimeError(
-                    f"Connected to caller version {self.guppy_version}. This plugin requires a version of Dorado >= 7.3.9."
+                    f"Trying to use caller version {self.guppy_version}. This plugin requires a version of Dorado >= 7.3.9."
                 )
 
         if sample_rate:

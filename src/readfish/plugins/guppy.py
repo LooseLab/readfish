@@ -72,7 +72,7 @@ class Caller(CallerABC):
                 )
             else:
                 raise RuntimeError(
-                    f"Connected to caller version {self.guppy_version}. This plugin requires a version of Dorado or Guppy < 7.3.9. Try changing [caller_settings.guppy] to [caller_settings.dorado]."
+                    f"Trying to connect to caller version {self.guppy_version}. This plugin requires a version of Dorado or Guppy < 7.3.9. Try changing [caller_settings.guppy] to [caller_settings.dorado]."
                 )
 
         # Set our own priority
