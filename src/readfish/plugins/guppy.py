@@ -56,7 +56,10 @@ _DefaultDAQValues = DefaultDAQValues()
 
 class Caller(CallerABC):
     def __init__(
-        self, run_information: ProtocolRunInfo = None, debug_log=None, **kwargs
+        self,
+        run_information: ProtocolRunInfo = None,
+        debug_log=None,
+        **kwargs
     ):
         self.logger = setup_logger("readfish_guppy_logger", log_file=debug_log)
         self.supported_barcode_kits = None
@@ -71,12 +74,15 @@ class Caller(CallerABC):
                     f"Connected to caller version {self.guppy_version}."
                 )
             else:
-                raise RuntimeError(
-                    f"Trying to connect to caller version {self.guppy_version}. This plugin requires a version of Dorado or Guppy < 7.3.9. Try changing [caller_settings.guppy] to [caller_settings.dorado]."
+                logging.info(
+                    f"Trying to connect to minKNOW with caller version {self.guppy_version}. This plugin requires a version of Dorado or Guppy < 7.3.9. If this is stopping readfish from running try changing [caller_settings.guppy] to [caller_settings.dorado]. You should also check for any updates available to readfish."
                 )
 
         # Set our own priority
         self.guppy_params = kwargs
+
+        # Remove the sample rate from the guppy params as it isn't required for the PyGuppyClient
+        self.guppy_params.pop("sample_rate")
         self.guppy_params["priority"] = PyGuppyClient.high_priority
         # Set our own client name to appear in the guppy server logs
         self.guppy_params["client_name"] = "Readfish_connection"
