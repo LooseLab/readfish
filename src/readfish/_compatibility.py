@@ -8,7 +8,6 @@ Checks ranges of `readfish` against the `MinKNOW` version
 
 """
 
-from readfish.__about__ import __version__
 from minknow_api.manager import Manager
 from packaging.version import parse as parse_version
 from packaging.version import Version
@@ -78,7 +77,9 @@ def check_compatibility(
     )
 
 
-def check_basecaller_compatibility(run_information: ProtocolRunInfo, op, version: str, extra_error: str = None):
+def check_basecaller_compatibility(
+    run_information: ProtocolRunInfo, op, version: str, extra_error: str = None
+):
     symbol = {
         operator.lt: "<",
         operator.gt: ">",

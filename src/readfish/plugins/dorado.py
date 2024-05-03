@@ -68,12 +68,12 @@ class Caller(CallerABC):
         self.supported_basecall_models = None
         self.run_information = run_information
         if self.run_information:
-            self.guppy_version = self.run_information.software_versions.guppy_connected_version
+            self.guppy_version = (
+                self.run_information.software_versions.guppy_connected_version
+            )
 
             if parse_version(self.guppy_version) >= parse_version("7.3.9"):
-                logging.info(
-                    f"Connected to caller version {self.guppy_version}."
-                )
+                logging.info(f"Connected to caller version {self.guppy_version}.")
             else:
                 logging.info(
                     f"Trying to use minKNOW with a caller version {self.guppy_version}. If this is causing readfish to crash, try using a version of Dorado >= 7.3.9. You should also check for any updates available to readfish."

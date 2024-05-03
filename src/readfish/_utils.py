@@ -10,7 +10,6 @@ from operator import itemgetter
 from enum import IntEnum
 import re
 import base64
-from packaging.version import parse as parse_version
 from typing import Any, Mapping, Sequence
 import zlib
 
@@ -24,7 +23,7 @@ if sys.version_info < (3, 11):
     from exceptiongroup import BaseExceptionGroup
 
 from readfish._channels import FLONGLE_CHANNELS, MINION_CHANNELS
-from readfish.__about__ import __version__ as readfish_version
+
 
 MODULE_LOGGER = logging.getLogger(__name__)
 
@@ -451,48 +450,6 @@ def get_device(
             return position
     raise ValueError(f"Could not find device {device!r}")
 
-def get_version(
-        host: str = "127.0.0.1", port: int = None, logger: logging.Logger = None
-) -> str:
-    """Get the version of MinKNOW
-
-    :param host: The host the RPC is listening on, defaults to "127.0.0.1"
-    :param port: The port the RPC is listening on, defaults to None
-    :raises ValueError: If the version of Readfish is incompatible with the version of MinKNOW.
-    :raises Warning: If the version of Readfish may need to be updated soon.
-    :return: The version of MinKNOW
-    """
-    manager = Manager(host=host, port=port)
-    minknow_version = parse_version(manager.core_version)
-    # Check compatability
-    for cv, direction in compatible_version:
-        ver_cv = parse_version(cv)
-        if direction == "gte":
-            if minknow_version <= ver_cv:
-                raise ValueError(
-                    f"Compatability check failed. Readfish version {readfish_version} is not compatible with MinKNOW version {minknow_version}. You need to update readfish."
-                )
-        elif direction == "lte":
-            if minknow_version >= ver_cv:
-                raise ValueError(
-                    f"Compatability check failed. Readfish version {readfish_version} is not compatible with MinKNOW version {minknow_version}. You need to downgrade readfish."
-                )
-    for wv, message in warning_version:
-        warn = False
-        ver_wv = parse_version(wv)
-        if ver_wv.major == minknow_version.major:
-            if ver_wv.minor == minknow_version.minor:
-                if ver_wv.micro == minknow_version.micro:
-                    warn=True
-                else:
-                    warn=True
-            else:
-                warn=True
-        if warn:
-            logger.info(
-                f"Warning: {message}"
-            )
-    return None
 
 if __name__ == "__main__":
     import doctest
