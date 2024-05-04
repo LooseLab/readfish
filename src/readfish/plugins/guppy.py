@@ -20,6 +20,7 @@ from readfish._loggers import setup_logger
 from readfish.plugins.abc import CallerABC
 from readfish.plugins.utils import Result
 from readfish._utils import nice_join
+from readfish.plugins.stingray import call_poly_a
 
 
 if TYPE_CHECKING:
@@ -59,6 +60,9 @@ class Caller(CallerABC):
 
         # Set our own priority
         self.guppy_params = kwargs
+        self.poly_a_params = {}
+        self.poly_a_params['live_poly_a'] = self.guppy_params.pop('live_poly_a', None)
+        self.poly_a_params['skip_poly_a'] = self.guppy_params.pop('skip_poly_a', None)
         self.guppy_params["priority"] = PyGuppyClient.high_priority
         # Set our own client name to appear in the guppy server logs
         self.guppy_params["client_name"] = "Readfish_connection"
@@ -190,7 +194,7 @@ class Caller(CallerABC):
         """
         # FIXME: Occasionally guppy can report a read as not sent when it is
         #        successfully sent. Therefore we capture not sent reads
-        cache, skipped = {}, {}
+        cache, skipped, poly_a = {}, {}, {}
         reads_received, reads_sent = 0, 0
         daq_values = _DefaultDAQValues if daq_values is None else daq_values
 
@@ -199,10 +203,27 @@ class Caller(CallerABC):
             read_id = f"RF-{read.id}"
             t0 = time.time()
             cache[read_id] = (channel, read.number, t0)
+            
+            signal = np.frombuffer(read.raw_data, signal_dtype)
+            poly_a[read_id] = None
+            
+            if self.poly_a_params['live_poly_a']:
+                if 1000 < len(signal):                                      # 1000 or 30 bp, minimum input for signal normalization
+                    poly_a_start, poly_a_end = call_poly_a(signal)
+                    if self.poly_a_params['skip_poly_a']:
+                        if poly_a_end and (len(signal) - poly_a_end) < 1000:  # if poly a sequence detected, skip basecall until poly a completes
+                            skipped[read_id] = cache.pop(read_id)
+                            continue
+                        if poly_a_start is not None and len(signal) < 7000:  # if no poly a detected and signal chunck bellow 7000 or 200 bp, skip basecall
+                            skipped[read_id] = cache.pop(read_id)
+                            continue
+                    if poly_a_start and poly_a_end:
+                        poly_a[read_id] = int((poly_a_end-poly_a_start)/31)
+            
             success = self.caller.pass_read(
                 package_read(
                     read_id=read_id,
-                    raw_data=np.frombuffer(read.raw_data, signal_dtype),
+                    raw_data=signal,
                     daq_offset=daq_values[channel].offset,
                     daq_scaling=daq_values[channel].scaling,
                 )
@@ -233,9 +254,11 @@ class Caller(CallerABC):
                     read_id = res["metadata"]["read_id"]
                     try:
                         channel, read_number, time_sent = cache.pop(read_id)
+                        poly_a_len = poly_a.pop(read_id)
                     except KeyError:
                         # FIXME: This is resolved in later versions of guppy.
                         channel, read_number, time_sent = skipped.pop(read_id)
+                        poly_a_len = poly_a.pop(read_id)
                         reads_sent += 1
                     res["metadata"]["read_id"] = read_id[3:]
                     self.logger.debug(
@@ -254,6 +277,7 @@ class Caller(CallerABC):
                         seq=res["datasets"]["sequence"],
                         barcode=barcode if barcode else None,
                         basecall_data=res,
+                        poly_a=poly_a_len
                     )
                     reads_received += 1
 

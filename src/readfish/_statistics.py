@@ -48,6 +48,7 @@ DEBUG_STATS_LOG_FIELDS = (
     "previous_action",
     "action_override",
     "timestamp",
+    "poly_a"
 )
 
 

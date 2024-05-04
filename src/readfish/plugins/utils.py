@@ -479,6 +479,7 @@ class Result:
     barcode: Optional[str] = attrs.field(default=None)
     basecall_data: Optional[Any] = attrs.field(default=None)
     alignment_data: Optional[list[Alignment]] = attrs.field(default=None)
+    poly_a: Optional[Any] = attrs.field(default=None)
 
 
 @attrs.define

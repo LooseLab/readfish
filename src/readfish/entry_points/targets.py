@@ -428,6 +428,7 @@ class Analysis:
                     ),
                     action_overridden=action_overridden,
                     timestamp=time.time(),
+                    poly_a=result.poly_a,
                     # Anything below here is not included in the Debug log
                     region_name=(
                         _region.name
