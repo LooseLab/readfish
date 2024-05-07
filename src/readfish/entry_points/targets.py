@@ -503,9 +503,11 @@ def run(
     ):
         lower_bound, upper_bound = MINKNOW_COMPATIBILITY_RANGE
         logger.warning(
-            f"This readfish version ({__version__}) is tested for compatibility with MinKNOW v{lower_bound} to v{upper_bound}. "
-            f"This version of minknow is {minknow_version}. "
-            f"If readfish fails please try to {action.value} readfish."
+            f"""This readfish version ({__version__}) is tested for compatibility with MinKNOW v{lower_bound} to v{upper_bound}.
+This version of minknow is {minknow_version}.
+If readfish fails please try to {action.value} readfish.
+If there isn't a newer version of readfish and readfish is failing, please open an issue:
+    https://github.com/LooseLab/readfish/issues"""
         )
 
     # Fetch sequencing device
