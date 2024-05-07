@@ -91,6 +91,7 @@ from readfish._compatibility import (
     _get_minknow_version,
     check_compatibility,
     MINKNOW_COMPATIBILITY_RANGE,
+    DIRECTION,
 )
 from readfish._utils import (
     get_device,
@@ -494,12 +495,17 @@ def run(
     # Check MinKNOW version
 
     minknow_version = _get_minknow_version(host=args.host, port=args.port)
-    if not (
+    if (
         action := check_compatibility(minknow_version, MINKNOW_COMPATIBILITY_RANGE)
-    )[0]:
+    ) in (
+        DIRECTION.UPGRADE,
+        DIRECTION.DOWNGRADE,
+    ):
         lower_bound, upper_bound = MINKNOW_COMPATIBILITY_RANGE
         logger.warning(
-            f"This readfish version ({__version__}) is tested for compatibility with MinKNOW v{lower_bound} to v{upper_bound}. This version of minknow is {minknow_version}. If readfish fails please try to {action[1].value} readfish."
+            f"This readfish version ({__version__}) is tested for compatibility with MinKNOW v{lower_bound} to v{upper_bound}. "
+            f"This version of minknow is {minknow_version}. "
+            f"If readfish fails please try to {action.value} readfish."
         )
 
     # Fetch sequencing device

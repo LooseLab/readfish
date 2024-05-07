@@ -28,8 +28,14 @@ MINKNOW_COMPATIBILITY_RANGE = (
 
 class DIRECTION(Enum):
     """
-    Upgrade, downgrade or just right
+    Represents the direction in which the version of the readfish software should be changed
+    to be compatible with the tested version of an external tool (likely MinKNOW).
 
+    Attributes:
+        UPGRADE: Indicates that the readfish software version should be upgraded.
+        DOWNGRADE: Indicates that the readfish software version should be downgraded.
+        JUST_RIGHT: Indicates that the readfish software version is already compatible
+                     with the tested version of the external tool.
     """
 
     UPGRADE = "upgrade"
@@ -54,7 +60,7 @@ def _get_minknow_version(host: str = "127.0.0.1", port: int = None) -> Version:
 def check_compatibility(
     comparator: Version,
     version_range: tuple[Version, Version] = MINKNOW_COMPATIBILITY_RANGE,
-) -> tuple[bool, DIRECTION]:
+) -> DIRECTION:
     """
     Check the compatibility of a given software version, between a given range,
     inclusive of the right edge.
@@ -62,28 +68,33 @@ def check_compatibility(
     :param comparator: Version of the provided software, for example MinKNOW 5.9.7
     :param version_ranges: A tuple of lowest supported version, highest supported version
 
-    :return: A tuple containing a boolean indicating compatibility and a upgrade direction enum.
+    :return: A direction variant indicating if this version of readfish needs to be changed.
 
     Examples:
     >>> from packaging.version import Version
     >>> check_compatibility(Version("5.9.5"), (Version("5.0.0"), Version("5.9.7")))
-    (True, <DIRECTION.JUST_RIGHT: 'do nothing'>)
+    <DIRECTION.JUST_RIGHT: 'do nothing'>
+    >>> check_compatibility(Version("5.9.7"), (Version("5.0.0"), Version("5.9.7")))
+    <DIRECTION.JUST_RIGHT: 'do nothing'>
     >>> check_compatibility(Version("5.9.8"), (Version("5.0.0"), Version("5.9.7")))
-    (False, <DIRECTION.UPGRADE: 'upgrade'>)
+    <DIRECTION.UPGRADE: 'upgrade'>
     >>> check_compatibility(Version("4.9.0"), (Version("5.0.0"), Version("5.9.7")))
-    (False, <DIRECTION.DOWNGRADE: 'downgrade'>)
+    <DIRECTION.DOWNGRADE: 'downgrade'>
+    >>> if (action := check_compatibility(Version("6.0.0"), MINKNOW_COMPATIBILITY_RANGE)) in (
+    ...     DIRECTION.UPGRADE,
+    ...     DIRECTION.DOWNGRADE,
+    ... ):
+    ...     action
+    <DIRECTION.UPGRADE: 'upgrade'>
     """
     (
         lowest_supported_version,
         highest_supported_version,
     ) = version_range
     if comparator < lowest_supported_version:
-        return (
-            False,
-            DIRECTION.DOWNGRADE,
-        )
+        return DIRECTION.DOWNGRADE
     return (
-        (True, DIRECTION.JUST_RIGHT)
+        DIRECTION.JUST_RIGHT
         if comparator <= highest_supported_version
-        else (False, DIRECTION.UPGRADE)
+        else DIRECTION.UPGRADE
     )
