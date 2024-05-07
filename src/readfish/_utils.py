@@ -18,6 +18,7 @@ import numpy.typing as npt
 from minknow_api.manager import Manager, FlowCellPosition
 from minknow_api import Connection
 
+
 if sys.version_info < (3, 11):
     from exceptiongroup import BaseExceptionGroup
 
