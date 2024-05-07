@@ -79,7 +79,7 @@ class Caller(CallerABC):
         self.guppy_params = kwargs
 
         # Remove the sample rate from the guppy params as it isn't required for the PyGuppyClient
-        self.guppy_params.pop("sample_rate")
+        self.guppy_params.pop("sample_rate", None)
         self.guppy_params["priority"] = PyGuppyClient.high_priority
         # Set our own client name to appear in the guppy server logs
         self.guppy_params["client_name"] = "Readfish_connection"
