@@ -11,10 +11,7 @@ Checks ranges of `readfish` against the `MinKNOW` version
 from minknow_api.manager import Manager
 from packaging.version import parse as parse_version
 from packaging.version import Version
-from minknow_api.protocol_pb2 import ProtocolRunInfo
 from enum import Enum
-import operator
-
 
 LATEST_TESTED = "5.9.7"
 
@@ -75,22 +72,3 @@ def check_compatibility(
         if comparator <= highest_supported_version
         else (False, DIRECTION.UPGRADE)
     )
-
-
-def check_basecaller_compatibility(
-    run_information: ProtocolRunInfo, op, version: str, extra_error: str = None
-):
-    symbol = {
-        operator.lt: "<",
-        operator.gt: ">",
-        operator.le: "<=",
-        operator.ge: ">=",
-        operator.eq: "==",
-        operator.ne: "!=",
-    }
-    guppy_version = run_information.software_versions.guppy_connected_version
-    if not op(parse_version(guppy_version), parse_version(version)):
-        extra_error = extra_error if extra_error is not None else ""
-        raise RuntimeError(
-            f"Cannot connect to base-caller {guppy_version}. This plugin requires a version of Dorado or Guppy {symbol[op]} {version}. {extra_error}"
-        )
