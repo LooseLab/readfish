@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="readfish console scripts" href="readfish.console.html" /><link rel="prev" title="Getting Started" href="getting-started.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>TOML files - readfish 2023.1.1</title>
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+        <title>TOML files - readfish 2024.1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
@@ -79,7 +79,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -94,7 +94,7 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
@@ -102,7 +102,7 @@
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
       <path d="M13 12h5" />
@@ -110,6 +110,60 @@
       <path d="M13 18h1" />
       <path d="M13 9h4" />
       <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -123,6 +177,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -134,13 +190,14 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">readfish 2023.1.1</div></a>
+      <a href="index.html"><div class="brand">readfish 2024.1.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -161,7 +218,7 @@
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2023.1.1</span>
+  <span class="sidebar-brand-text">readfish 2024.1.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -202,11 +259,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/toml.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -216,15 +279,15 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="toml-files">
-<h1>TOML files<a class="headerlink" href="#toml-files" title="Link to this heading">#</a></h1>
+<h1>TOML files<a class="headerlink" href="#toml-files" title="Link to this heading">¶</a></h1>
 <p>Readfish experiments are configured using <a class="reference external" href="https://toml.io">TOML</a> files, which are minimal and easy-to-read markup files.
 Our configuration only uses <a class="reference external" href="https://toml.io/en/v1.0.0#table">tables</a> and <a class="reference external" href="https://toml.io/en/v1.0.0#array-of-tables">arrays of tables</a> populated with <a class="reference external" href="https://toml.io/en/v1.0.0#keyvalue-pair">key-value pairs</a>.
 The TOML file contains almost all the information required for running readfish, such as information on barcodes, control/analysis regions, what basecaller or aligner to use.
 There are several example TOMLS, with comments explaining what each field does, as well as the overall purpose of the TOML file here - https://github.com//LooseLab/readfish/tree/main/docs/_static/example_tomls.</p>
 <section id="data-model">
-<h2>Data model<a class="headerlink" href="#data-model" title="Link to this heading">#</a></h2>
+<h2>Data model<a class="headerlink" href="#data-model" title="Link to this heading">¶</a></h2>
 <p>To understand each section of the TOML file it helps to understand the work that readfish does:</p>
 <ol class="arabic simple">
 <li><p>Initialise a connection to the MinKNOW API via the Read Until API</p></li>
@@ -243,7 +306,7 @@ There are several example TOMLS, with comments explaining what each field does, 
 <figure class="align-center" id="id1">
 <img alt="Flow diagram showing a MinION, computer, and box labelled 'readfish'. The flow show 'raw data' going from the minion, through the computer, into readfish. Where it passes through a basecaller and an Aligner. The return arrow then passes from readfish, to the computer, to the MinION; this line is labelled unblock commands." src="_images/data_model.png" />
 <figcaption>
-<p><span class="caption-text">Flow diagram of data flow from the sequencer to readfish and back.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-text">Flow diagram of data flow from the sequencer to readfish and back.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>As readfish is designed around the need to both basecall and align data we have two TOML sections for configuring these tools.
@@ -254,7 +317,7 @@ These allow for arbitrary configuration schemas that match your experimental nee
 These are expanded on in the <a class="reference internal" href="#barcodes-config"><span class="std std-ref">barcode configuration</span></a> and <a class="reference internal" href="#analysis-regions"><span class="std std-ref">analysis regions</span></a> sections.</p>
 </section>
 <section id="plugin-configuration">
-<span id="plugins-config"></span><h2>Plugin configuration<a class="headerlink" href="#plugin-configuration" title="Link to this heading">#</a></h2>
+<span id="plugins-config"></span><h2>Plugin configuration<a class="headerlink" href="#plugin-configuration" title="Link to this heading">¶</a></h2>
 <p>Readfish uses “plugins” to configure basecalling and alignment.
 We provide some default plugins using Guppy (via <a class="reference external" href="https://pypi.org/p/ont-pyguppy-client-lib"><code class="docutils literal notranslate"><span class="pre">ont-pyguppy-client-lib</span></code></a>) and mappy (via <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python"><code class="docutils literal notranslate"><span class="pre">mappy</span></code></a>), for basecalling and alignment respectively.
 The way that you tell readfish what plugin to load is by specifying it after the table name, for example:</p>
@@ -265,16 +328,16 @@ The way that you tell readfish what plugin to load is by specifying it after the
 </div>
 <p>This indicates that readfish should use Guppy for basecalling.</p>
 <section id="basecaller">
-<h3>Basecaller<a class="headerlink" href="#basecaller" title="Link to this heading">#</a></h3>
+<h3>Basecaller<a class="headerlink" href="#basecaller" title="Link to this heading">¶</a></h3>
 <section id="guppy">
-<h4>Guppy<a class="headerlink" href="#guppy" title="Link to this heading">#</a></h4>
+<h4>Guppy<a class="headerlink" href="#guppy" title="Link to this heading">¶</a></h4>
 <p>This section is specific to the Guppy plugin for basecalling.
 The <code class="docutils literal notranslate"><span class="pre">caller_settings.guppy</span></code> [table] specifies the basecalling parameters used by the basecaller.
 An example table is given below:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.guppy]</span>
-<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dna_r10.4.1_e8.2_400bps_hac&quot;</span>
-<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ipc:///tmp/.guppy/5555&quot;</span>
-<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;basecalled_chunks.fq&quot;</span><span class="w"> </span><span class="c1">#optional</span>
+<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dna_r10.4.1_e8.2_400bps_hac&quot;</span>
+<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ipc:///tmp/.guppy/5555&quot;</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;basecalled_chunks.fq&quot;</span><span class="w"> </span><span class="c1">#optional</span>
 </pre></div>
 </div>
 <p>The only required keys are <code class="docutils literal notranslate"><span class="pre">address</span></code> and <code class="docutils literal notranslate"><span class="pre">config</span></code> these indicate to Guppy what server to connect to and what basecalling model to load.
@@ -357,16 +420,6 @@ will be non-blocking.</p>
 <li><p>priority (ReadPriority):              Priority of the client (low, medium, or high). Default is medium.</p></li>
 <li><p>move_and_trace_enabled (bool):        Flag indicating whether to return trace and move data. Default is True.</p></li>
 <li><p>post_out (bool):                      Flag indicating whether to return full posterior state data. Default is False.</p></li>
-<li><dl class="simple">
-<dt>gpu_runners_per_device (int):         For GPU basecalling only. Specifies how many batches of read-chunks should be</dt><dd><p>submitted to the GPU as a single job.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>chunks_per_runner (int):              For GPU basecalling only. Determines how many chunks should be included in a</dt><dd><p>single job submitted to the GPU.</p>
-</dd>
-</dl>
-</li>
 <li><p>barcode_kits (list):                  Strings naming each barcode kit to use. Default is to not do barcoding.</p></li>
 <li><p>lamp_kit (str):                       String naming LAMP barcode kit to use. Default is to not do LAMP barcoding.</p></li>
 <li><p>require_barcodes_both_ends (bool):    Flag indicating that barcodes must be at both ends. Default is False.</p></li>
@@ -410,6 +463,7 @@ will be non-blocking.</p>
 </dl>
 </li>
 <li><p>barcode_list (list):                  An optional list of barcodes to filter against. Default is no restriction.</p></li>
+<li><p>pair_by_channel (bool):               An optional flag to enable caching by channel for duplex pairing. Default is False (caching by time).</p></li>
 </ul>
 <p>Possible return values are:</p>
 <ul class="simple">
@@ -426,7 +480,7 @@ will be non-blocking.</p>
 </div>
 </section>
 <section id="basecaller-no-operation-no-op">
-<h4>Basecaller no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#basecaller-no-operation-no-op" title="Link to this heading">#</a></h4>
+<h4>Basecaller no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#basecaller-no-operation-no-op" title="Link to this heading">¶</a></h4>
 <p>In addition to the Guppy basecaller we provide a “no operation” basecaller.
 This plugin does nothing.
 It will only iterate the live chunks of data and pass through the minimal amount of data that is needed for the next steps.
@@ -437,9 +491,9 @@ This is added using:</p>
 </section>
 </section>
 <section id="aligner">
-<h3>Aligner<a class="headerlink" href="#aligner" title="Link to this heading">#</a></h3>
+<h3>Aligner<a class="headerlink" href="#aligner" title="Link to this heading">¶</a></h3>
 <section id="minimap2">
-<h4>minimap2<a class="headerlink" href="#minimap2" title="Link to this heading">#</a></h4>
+<h4>minimap2<a class="headerlink" href="#minimap2" title="Link to this heading">¶</a></h4>
 <p>Currently we provide two mapping plugins, <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python"><code class="docutils literal notranslate"><span class="pre">mappy</span></code></a>, and <a class="reference external" href="https://github.com/Adoni5/mappy-rs"><code class="docutils literal notranslate"><span class="pre">mappy-rs</span></code></a>.
 Happily these both take the same fields in the TOML file, so you can switch between them without changing your TOML file parameters.</p>
 <p>Currently, these plugins take the same TOML file plugins section, and which Aligner is used is chosen based on the TOML mapper_settings section name.
@@ -463,9 +517,9 @@ The <code class="docutils literal notranslate"><span class="pre">debug_log</span
 <p><code class="docutils literal notranslate"><span class="pre">mappy-rs</span></code> also takes an optional <code class="docutils literal notranslate"><span class="pre">n_threads</span></code> field, which determines the number of threads which are used for alignment.
 <code class="docutils literal notranslate"><span class="pre">n_threads</span></code> defaults to 1, so if you need more you must set it!</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[mapper_settings.mappy_rs]</span>
-<span class="n">fn_idx_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/Path/To/Reference.mmi&quot;</span>
+<span class="n">fn_idx_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/Path/To/Reference.mmi&quot;</span>
 <span class="n">n_threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
-<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;mapped_chunks.paf&quot;</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mapped_chunks.paf&quot;</span>
 </pre></div>
 </div>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -505,7 +559,7 @@ The <code class="docutils literal notranslate"><span class="pre">debug_log</span
 <p>All available keyword arguments can be seen on the <a class="reference external" href="https://github.com/lh3/minimap2/tree/master/python#class-mappyaligner"><code class="docutils literal notranslate"><span class="pre">mappy</span></code> documentation</a></p>
 </section>
 <section id="aligner-no-operation-no-op">
-<h4>Aligner no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#aligner-no-operation-no-op" title="Link to this heading">#</a></h4>
+<h4>Aligner no operation (<code class="docutils literal notranslate"><span class="pre">no_op</span></code>)<a class="headerlink" href="#aligner-no-operation-no-op" title="Link to this heading">¶</a></h4>
 <p>In addition to the minimap2 based aligners we provide a “no operation” aligner.
 This plugin does nothing.
 It will only iterate the <code class="docutils literal notranslate"><span class="pre">Result</span></code>s from the basecaller and pass them through to the next steps.
@@ -517,7 +571,7 @@ This is added using:</p>
 </section>
 </section>
 <section id="analysis-regions">
-<span id="id2"></span><h2>Analysis regions<a class="headerlink" href="#analysis-regions" title="Link to this heading">#</a></h2>
+<span id="id2"></span><h2>Analysis regions<a class="headerlink" href="#analysis-regions" title="Link to this heading">¶</a></h2>
 <p>Analysis regions are the <a class="reference external" href="https://toml.io/en/v1.0.0#array-of-tables">arrays of tables</a> that define different experimental conditions over the surface of the flow cell.
 For experiments that do not use barcodes you must have at least one analysis region.</p>
 <p>The physical layout of each flow cell constrains how many experimental conditions can be used as the number of channels in each region must be equal.
@@ -533,42 +587,42 @@ The number of conditions must be a factor of the number for the selected combina
 </pre></div>
 </div>
 <section id="experiments-with-one-region">
-<h3>Experiments with one region<a class="headerlink" href="#experiments-with-one-region" title="Link to this heading">#</a></h3>
+<h3>Experiments with one region<a class="headerlink" href="#experiments-with-one-region" title="Link to this heading">¶</a></h3>
 <p>When wanting to apply a single targeting strategy over the flow cell a single region can be provided.
 This can be specified like so:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[regions]]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;condition name&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;condition name&quot;</span>
 <span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
-<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path/to/targets.bed&quot;</span>
-<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;stop_receiving&quot;</span>
-<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="s">&quot;stop_receiving&quot;</span>
-<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
-<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path/to/targets.bed&quot;</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;stop_receiving&quot;</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="s2">&quot;stop_receiving&quot;</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
 </pre></div>
 </div>
 <p>A full table of keys that can be given can be found in <a class="reference internal" href="#regions-sub-tables">region sub-table</a>.</p>
 </section>
 <section id="experiments-with-more-than-region">
-<h3>Experiments with more than region<a class="headerlink" href="#experiments-with-more-than-region" title="Link to this heading">#</a></h3>
+<h3>Experiments with more than region<a class="headerlink" href="#experiments-with-more-than-region" title="Link to this heading">¶</a></h3>
 <p>Experiments with multiple regions (for example those with an analysis and control condition) regions can be specified for each condition.
 For example:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[regions]]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;analysis&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;analysis&quot;</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="p">...</span>
 
 <span class="k">[[regions]]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;control&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;control&quot;</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">...</span>
 </pre></div>
 </div>
 </section>
 <section id="regions-sub-tables">
-<span id="id3"></span><h3>Regions sub-tables<a class="headerlink" href="#regions-sub-tables" title="Link to this heading">#</a></h3>
+<span id="id3"></span><h3>Regions sub-tables<a class="headerlink" href="#regions-sub-tables" title="Link to this heading">¶</a></h3>
 <p>Each Regions sub-table must contain all of the required keys, these are the same between barcoded and non-barcoded toml files.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -670,13 +724,13 @@ For example:</p>
 </ol>
 </section>
 <section id="target-formats">
-<span id="id4"></span><h3>Target Formats<a class="headerlink" href="#target-formats" title="Link to this heading">#</a></h3>
+<span id="id4"></span><h3>Target Formats<a class="headerlink" href="#target-formats" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">targets</span></code> field on a region can accept either a string or an array of strings.
 If a string is provided this should be a fully qualified path to a text file that consists of genomic targets in either as CSV or BED entries.
 When an array is given all the elements in the array must conform with the non-BED formats.
 Targets will be collapsed where they overlap.</p>
 <section id="bed-or-csv-targets">
-<h4>BED or CSV targets<a class="headerlink" href="#bed-or-csv-targets" title="Link to this heading">#</a></h4>
+<h4>BED or CSV targets<a class="headerlink" href="#bed-or-csv-targets" title="Link to this heading">¶</a></h4>
 <p>If the <code class="docutils literal notranslate"><span class="pre">targets</span></code> entry is a path to a file it must either be a <a class="reference external" href="https://en.wikipedia.org/wiki/BED_(file_format)">six-column-BED formatted file</a> or a CSV.
 If a CSV file there should be no header and the coordinates should be given as</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>contig,start,stop,strand
@@ -690,7 +744,7 @@ chr2,3000,4000,-
 <p>Targets given in this format will only select (for or against) reads where the alignment start position is within the region on the given strand.</p>
 </section>
 <section id="toml-array-targets">
-<h4>TOML array targets<a class="headerlink" href="#toml-array-targets" title="Link to this heading">#</a></h4>
+<h4>TOML array targets<a class="headerlink" href="#toml-array-targets" title="Link to this heading">¶</a></h4>
 <p>If specifying targets in a <a class="reference external" href="https://toml.io/en/v1.0.0#array">TOML array</a> they can be any of <code class="docutils literal notranslate"><span class="pre">contigs</span></code> or <code class="docutils literal notranslate"><span class="pre">coordinates</span></code>:</p>
 <p>For example <code class="docutils literal notranslate"><span class="pre">contigs</span></code>:</p>
 <ul class="simple">
@@ -701,13 +755,13 @@ chr2,3000,4000,-
 </section>
 </section>
 <section id="barcode-specific-configuration">
-<span id="barcodes-config"></span><h2>Barcode specific configuration<a class="headerlink" href="#barcode-specific-configuration" title="Link to this heading">#</a></h2>
+<span id="barcodes-config"></span><h2>Barcode specific configuration<a class="headerlink" href="#barcode-specific-configuration" title="Link to this heading">¶</a></h2>
 <p>If you are using Guppy for basecalling then the additional <code class="docutils literal notranslate"><span class="pre">barcode_kits</span></code> parameter is required on the <code class="docutils literal notranslate"><span class="pre">caller_settings</span></code> table.</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.guppy]</span>
-<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dna_r10.4.1_e8.2_400bps_fast&quot;</span>
-<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ipc:///tmp/.guppy/5555&quot;</span>
-<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;basecalled_chunks.fq&quot;</span>
-<span class="n">barcode_kits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EXP-NBD196&quot;</span>
+<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dna_r10.4.1_e8.2_400bps_fast&quot;</span>
+<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ipc:///tmp/.guppy/5555&quot;</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;basecalled_chunks.fq&quot;</span>
+<span class="n">barcode_kits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;EXP-NBD196&quot;</span>
 </pre></div>
 </div>
 <p>Note, to specify multiple barcode kits, the format to use is a space separated string, not an array. For example, <code class="docutils literal notranslate"><span class="pre">&quot;KIT1</span> <span class="pre">KIT2&quot;</span></code>.</p>
@@ -719,48 +773,48 @@ This table has two required sub-tables <code class="docutils literal notranslate
 These are the fallback configurations for unspecified barcodes.
 For specific barcodes a <a class="reference internal" href="#regions-sub-tables">full configuration table</a> should be specified using the barcode name, e.g. <code class="docutils literal notranslate"><span class="pre">barcodes.barcode01</span></code> for “barcode01”.</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[barcodes.classified]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;classified_reads&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;classified_reads&quot;</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
 <span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
-<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
-<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
 
 <span class="k">[barcodes.unclassified]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unclassified_reads&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unclassified_reads&quot;</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
 <span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
-<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
-<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
 
 <span class="k">[barcodes.barcode01]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;barcode01_targets&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;barcode01_targets&quot;</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
-<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;chr1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chr2&quot;</span><span class="p">]</span>
-<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;stop_receiving&quot;</span>
-<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;stop_receiving&quot;</span>
-<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;unblock&quot;</span>
-<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
-<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proceed&quot;</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;chr1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;chr2&quot;</span><span class="p">]</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;stop_receiving&quot;</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;stop_receiving&quot;</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="validating-a-toml">
-<h2>Validating a TOML<a class="headerlink" href="#validating-a-toml" title="Link to this heading">#</a></h2>
+<h2>Validating a TOML<a class="headerlink" href="#validating-a-toml" title="Link to this heading">¶</a></h2>
 <p>We provide an entry point to validate TOML files - <code class="docutils literal notranslate"><span class="pre">readfish</span> <span class="pre">validate</span></code></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">readfish validate experiment_conf.toml</span>
 </pre></div>
@@ -884,10 +938,10 @@ This can be disabled by passing the <code class="docutils literal notranslate"><
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=a33cda8a"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+</div><script src="_static/documentation_options.js?v=9887e882"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     </body>
