@@ -11,10 +11,13 @@ Attributes:
 
 """
 
+from __future__ import annotations
+
+from enum import Enum
+
 from minknow_api.manager import Manager
 from packaging.version import parse as parse_version
 from packaging.version import Version
-from enum import Enum
 
 LATEST_TESTED = "5.9.7"
 
