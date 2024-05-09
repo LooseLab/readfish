@@ -21,9 +21,11 @@
 # Basecaller configuration
 [caller_settings.guppy]
 #               ^^^^^^ - ".guppy" specifies our chosen basecaller
-# Guppy base-calling configuration file name
+#               If using dorado >7.3.9, this should be ".dorado".
+#               All other parameters are shared between the two basecallers.
+# Guppy/Dorado base-calling configuration file name
 config = "dna_r9.4.1_450bps_fast"
-# Address of the guppy basecaller - The default address for guppy is ipc:///tmp/.guppy/5555.
+# Address of the guppy/dorado basecaller - The default address for guppy is ipc:///tmp/.guppy/5555.
 address = "ipc:///tmp/.guppy/5555"
 # Fastq output for individual reads. This is OPTIONAL - as these files can become quite large.
 # Remove line to disable.

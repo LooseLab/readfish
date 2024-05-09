@@ -2,6 +2,7 @@
 
 Extension of pyguppy Caller that maintains a connection to the basecaller
 """
+
 from __future__ import annotations
 import logging
 import os
@@ -9,12 +10,17 @@ import time
 from collections import namedtuple
 from pathlib import Path
 from typing import Iterable, TYPE_CHECKING
+from packaging.version import parse as parse_version
 
 import numpy as np
 import numpy.typing as npt
 from minknow_api.protocol_pb2 import ProtocolRunInfo
-from pyguppy_client_lib.helper_functions import package_read
-from pyguppy_client_lib.pyclient import PyGuppyClient
+
+try:
+    from pyguppy_client_lib.helper_functions import package_read
+    from pyguppy_client_lib.pyclient import PyGuppyClient
+except ImportError:
+    pass
 
 from readfish._loggers import setup_logger
 from readfish.plugins.abc import CallerABC
@@ -56,9 +62,26 @@ class Caller(CallerABC):
         self.supported_barcode_kits = None
         self.supported_basecall_models = None
         self.run_information = run_information
+        logging.warn(
+            "Deprecation warning - As ONT has moved fully to dorado, this plugin is no longer maintained, and will be deprecated in a future release of readfish."
+        )
+        if self.run_information:
+            self.guppy_version = (
+                self.run_information.software_versions.guppy_connected_version
+            )
+
+            if parse_version(self.guppy_version) < parse_version("7.3.9"):
+                logging.info(f"Connected to caller version {self.guppy_version}.")
+            else:
+                logging.info(
+                    f"Trying to connect to minKNOW with caller version {self.guppy_version}. This plugin requires a version of Dorado or Guppy < 7.3.9. If this is stopping readfish from running try changing [caller_settings.guppy] to [caller_settings.dorado]. You should also check for any updates available to readfish."
+                )
 
         # Set our own priority
         self.guppy_params = kwargs
+
+        # Remove the sample rate from the guppy params as it isn't required for the PyGuppyClient
+        self.guppy_params.pop("sample_rate", None)
         self.guppy_params["priority"] = PyGuppyClient.high_priority
         # Set our own client name to appear in the guppy server logs
         self.guppy_params["client_name"] = "Readfish_connection"

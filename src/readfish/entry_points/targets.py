@@ -99,6 +99,13 @@ from readfish._cli_args import DEVICE_BASE_ARGS, Chemistry
 from readfish._read_until_client import RUClient
 from readfish._config import Action, Conf, make_decision, _Condition
 from readfish._statistics import ReadfishStatistics
+from readfish.__about__ import __version__
+from readfish._compatibility import (
+    _get_minknow_version,
+    check_compatibility,
+    MINKNOW_COMPATIBILITY_RANGE,
+    DIRECTION,
+)
 from readfish._utils import (
     get_device,
     send_message,
@@ -197,16 +204,18 @@ class Analysis:
         self.break_reads_after_seconds = (
             self.client.connection.analysis_configuration.get_analysis_configuration().read_detection.break_reads_after_seconds.value
         )
+        self.sample_rate = self.client.connection.device.get_sample_rate().sample_rate
         self.logger.info("Run Configuration Received")
         self.logger.info(f"run_id={self.run_information.run_id}")
         self.logger.info(f"break_reads_after_seconds={self.break_reads_after_seconds}")
+        self.logger.info(f"sample_rate={self.sample_rate}")
         # Create our statistics tracker
         self.loop_statistics = ReadfishStatistics(
             read_log_name, self.break_reads_after_seconds
         )
         logger.info("Initialising Caller")
         self.caller: CallerABC = self.conf.caller_settings.load_object(
-            "Caller", run_information=self.run_information
+            "Caller", run_information=self.run_information, sample_rate=self.sample_rate
         )
         logger.info("Caller initialised")
         caller_description = self.caller.describe()
@@ -573,6 +582,24 @@ def run(
     # Setup logger used in this entry point, this one should be passed through
     logger = logging.getLogger(f"readfish.{args.command}")
 
+    # Check MinKNOW version
+
+    minknow_version = _get_minknow_version(host=args.host, port=args.port)
+    if (
+        action := check_compatibility(minknow_version, MINKNOW_COMPATIBILITY_RANGE)
+    ) in (
+        DIRECTION.UPGRADE,
+        DIRECTION.DOWNGRADE,
+    ):
+        lower_bound, upper_bound = MINKNOW_COMPATIBILITY_RANGE
+        logger.warning(
+            f"""This readfish version ({__version__}) is tested for compatibility with MinKNOW v{lower_bound} to v{upper_bound}.
+This version of minknow is {minknow_version}.
+If readfish fails please try to {action.value} readfish.
+If there isn't a newer version of readfish and readfish is failing, please open an issue:
+    https://github.com/LooseLab/readfish/issues"""
+        )
+
     # Fetch sequencing device
     position = get_device(args.device, host=args.host, port=args.port)
 
@@ -604,9 +631,6 @@ def run(
 
     # start the client running
     read_until_client.run(
-        # TODO: Set correct channel range
-        # first_channel=186,
-        # last_channel=187,
         first_channel=1,
         last_channel=read_until_client.channel_count,
         max_unblock_read_length_seconds=args.max_unblock_read_length_seconds,

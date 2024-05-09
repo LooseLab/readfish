@@ -171,6 +171,7 @@ class _PluginModule:
         """
         builtins = {
             "guppy": "guppy",
+            "dorado": "dorado",
             "mappy": "mappy",
             "mappy_rs": "mappy_rs",
             "no_op": "_no_op",

@@ -12,6 +12,7 @@ The unblock all command only requires the target device and a small description 
 
    readfish unblock-all --device X3 --experiment-name "test unblock all"
 """
+
 from tempfile import NamedTemporaryFile
 
 from readfish._cli_args import DEVICE_BASE_ARGS

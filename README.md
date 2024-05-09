@@ -25,6 +25,8 @@ the read in progress and so direct sequencing capacity towards reads of interest
 
 **This implementation of readfish requires Guppy version >= 6.0.0 and MinKNOW version core >= 5.0.0 . It will not work on earlier versions.**
 
+**Since MinKNOW version core >=5.9.0 and Dorado server version >=7.3.9, Dorado requires an alternate library, `ont-pybasecall-client-lib`. We have introduced a new`dorado` module to handle this.**
+
 
 The code here has been tested with Guppy in GPU mode using GridION Mk1 and
 NVIDIA RTX2080 on live sequencing runs and an NVIDIA GTX1080 using playback
@@ -121,9 +123,9 @@ conda env create -f development.yml
 conda activate readfish_dev
 ```
 
-| <h2>‼️ Important! </h2> |
-|:---------------------------|
-|  The listed `ont-pyguppy-client-lib` version will probably not match the version installed on your system. To fix this, Please see this [issue](https://github.com/LooseLab/readfish/issues/221#issuecomment-1381529409)     |
+| <h2>‼️ Important !! </h2>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MinKNOW is transitioning from Guppy to Dorado. Until MinKNOW version 5.9 both Guppy and Dorado used ont-pyguppy-client-lib.<br/>As of MinKNOW version 5.9 and Dorado server version 7.3.9 and greater Dorado requires an alternate library, `ont-pybasecall-client-lib`.<br/>The listed `ont-pyguppy-client-lib` or `ont-pybasecaller-client-lib` version may not match the version installed on your system. To fix this, Please see this [issue](https://github.com/LooseLab/readfish/issues/221#issuecomment-1381529409), using the appropriate library. |
 
 
 [ONT's Guppy GPU](https://community.nanoporetech.com/downloads) should be installed and running as a server.
@@ -333,8 +335,8 @@ Note: The plots here are generated from running readfish unblock-all on an Apple
 <details style="margin-top: 10px">
 <summary id="testing-basecalling-and-mapping"><h3 style="display: inline;">Testing base-calling and mapping</h3></summary>
 
-To test selective sequencing you must have access to a
-[guppy basecall server](https://community.nanoporetech.com/downloads/guppy/release_notes) (>=6.0.0)
+To test selective sequencing you must have access to either a
+[guppy basecall server](https://community.nanoporetech.com/downloads/guppy/release_notes) (>=6.0.0) or a [dorado basecall server](https://community.nanoporetech.com/downloads/dorado/release_notes). 
 
 and a readfish TOML configuration file.
 
@@ -347,6 +349,10 @@ NOTE: guppy and dorado are used here interchangeably as the basecall server. Dor
 1. If on PromethION, edit the `mapper_settings.mappy` section to read:
     ```toml
     [mapper_settings.mappy-rs]
+    ```
+1. If on MinKNOW core>=5.9.0 and Dorado server version >=7.3.9, edit the `basecaller` section to read:
+    ```toml
+    [caller_settings.dorado]
     ```
 1. Modify the `fn_idx_in` field in the file to be the full path to a [minimap2](https://github.com/lh3/minimap2) index of the human genome.
 
@@ -553,13 +559,19 @@ And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com
 
 <!-- start-changelog -->
 # Changelog
+## 2024.2.0
+1. Add a dorado base-caller which addressed issue [#347](https://github.com/LooseLab/readfish/issues/347) - chiefly in Dorado 7.3.9 ONT have moved to `ont-pybasecall-client-lib`, 
+  and connections from `ont_pyguppy_client_lib` raise `Connection error. ...  LOAD_CONFIG. Reply: INVALID_PROTOCOL` [(#344)](https://github.com/LooseLab/readfish/pull/344)
+1. Adds version checking for MinKNOW and Guppy/Dorado, logs if not compatibile [(#351)](https://github.com/LooseLab/readfish/pull/351)
+
 ## 2024.1.0
 1. bug fix type for `--wait-on-ready` type and actual function [(#327)](https://github.com/LooseLab/readfish/pull/327), [(#323)](https://github.com/LooseLab/readfish/pull/323)
 1. mutiple suffix `.mmi` support [(#330)](https://github.com/LooseLab/readfish/pull/330)
 1. Change the default `unblock_duration` on the `Analysis` class to use `DEFAULT_UNBLOCK` value defined in `_cli_args.py`. Change type on the Argparser for `--unblock-duration` to float. [(#313)](https://github.com/LooseLab/readfish/pull/313)
 1. Big dog Duplex feature - adds ability to select duplex reads that cover a target region. See pull request for details [(#324)](https://github.com/LooseLab/readfish/pull/324)
+
 ## 2023.1.1
 1. Fix Readme Logo link 🥳 (#296)
-1. Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to @jamesemery for catching this. (#299)
-1. Correctly handle overriding a decision in internal statistics tracking. (#299)
+2. Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to @jamesemery for catching this. (#299)
+3. Correctly handle overriding a decision in internal statistics tracking. (#299)
 <!-- end-changelog -->

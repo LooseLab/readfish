@@ -73,6 +73,7 @@ To run and output PAF alignments and demutiplexed FASTQ, and output a HTML summa
     readfish stats --toml tests/static/stats_test/yeast_summary_test.toml --fastq-directory tests/static/stats_test/ --html summary_adaptive
 
 """
+
 from __future__ import annotations
 import argparse
 from pathlib import Path
