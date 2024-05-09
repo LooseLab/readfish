@@ -62,7 +62,9 @@ class Caller(CallerABC):
         self.supported_barcode_kits = None
         self.supported_basecall_models = None
         self.run_information = run_information
-
+        logging.warn(
+            "Deprecation warning - As ONT has moved fully to dorado, this plugin is no longer maintained, and will be deprecated in a future release of readfish."
+        )
         if self.run_information:
             self.guppy_version = (
                 self.run_information.software_versions.guppy_connected_version
