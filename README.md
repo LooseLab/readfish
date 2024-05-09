@@ -560,10 +560,16 @@ And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com
 <!-- start-changelog -->
 # Changelog
 ## 2024.2.0
+1. Add a dorado base-caller which addressed issue [#347](https://github.com/LooseLab/readfish/issues/347) - chiefly in Dorado 7.3.9 ONT have moved to `ont-pybasecall-client-lib`, 
+  and connections from `ont_pyguppy_client_lib` raise `Connection error. ...  LOAD_CONFIG. Reply: INVALID_PROTOCOL` [(#344)](https://github.com/LooseLab/readfish/pull/344)
+1. Adds version checking for MinKNOW and Guppy/Dorado, logs if not compatibile [(#351)](https://github.com/LooseLab/readfish/pull/351)
+
+## 2024.1.0
+1. bug fix type for `--wait-on-ready` type and actual function [(#327)](https://github.com/LooseLab/readfish/pull/327), [(#323)](https://github.com/LooseLab/readfish/pull/323)
+1. mutiple suffix `.mmi` support [(#330)](https://github.com/LooseLab/readfish/pull/330)
 1. Change the default `unblock_duration` on the `Analysis` class to use `DEFAULT_UNBLOCK` value defined in `_cli_args.py`. Change type on the Argparser for `--unblock-duration` to float. [(#313)](https://github.com/LooseLab/readfish/pull/313)
-1. Fix to handling minimap2 indexes with multiple "." in the filename [(#330)](https://github.com/LooseLab/readfish/pull/330/)
-1. Add a dorado base-caller which addressed issue [#347](https://github.com/LooseLab/readfish/issues/347) - chiefly in Dorado 7.3.9 ONT have moved to `ont-pybasecall-client-lib`, and connections from `ont_pyguppy_client_lib` raise `Connection error. ...  LOAD_CONFIG. Reply: INVALID_PROTOCOL` [(#343)](https://github.com/LooseLab/readfish/pull/344)
 1. Big dog Duplex feature - adds ability to select duplex reads that cover a target region. See pull request for details [(#324)](https://github.com/LooseLab/readfish/pull/324)
+
 ## 2023.1.1
 1. Fix Readme Logo link 🥳 (#296)
 2. Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to @jamesemery for catching this. (#299)
