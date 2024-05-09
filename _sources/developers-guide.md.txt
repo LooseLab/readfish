@@ -67,7 +67,7 @@ conda env create -f docs/development.yml
 
 ## Readfish versioning
 Readfish uses [calver](https://calver.org/) for versioning. Specifically the format should be
-`YYYY.MINOR.MICRO.Modifier`, where `MINOR` is the feature addiiton, `MICRO` is any hotfix/bugfix, and `Modifier` is the modifier (e.g. `rc` for release candidate, `dev` for development, empty for stable).
+`YYYY.MINOR.MICRO.Modifier`, where `MINOR` is the feature addition, `MICRO` is any hotfix/bugfix, and `Modifier` is the modifier (e.g. `rc` for release candidate, `dev` for development, empty for stable).
 
 ## Changelog
 

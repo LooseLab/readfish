@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>readfish.plugins.guppy - readfish 2024.1.0</title>
+        <title>readfish.plugins.guppy - readfish 2024.2.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -189,7 +189,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">readfish 2024.1.0</div></a>
+      <a href="../../../index.html"><div class="brand">readfish 2024.2.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -217,7 +217,7 @@
     <img class="sidebar-logo only-dark" src="../../../_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.1.0</span>
+  <span class="sidebar-brand-text">readfish 2024.2.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -278,6 +278,7 @@
 
 <span class="sd">Extension of pyguppy Caller that maintains a connection to the basecaller</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -285,12 +286,17 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">packaging.version</span> <span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_version</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
 <span class="kn">from</span> <span class="nn">minknow_api.protocol_pb2</span> <span class="kn">import</span> <span class="n">ProtocolRunInfo</span>
-<span class="kn">from</span> <span class="nn">pyguppy_client_lib.helper_functions</span> <span class="kn">import</span> <span class="n">package_read</span>
-<span class="kn">from</span> <span class="nn">pyguppy_client_lib.pyclient</span> <span class="kn">import</span> <span class="n">PyGuppyClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pyguppy_client_lib.helper_functions</span> <span class="kn">import</span> <span class="n">package_read</span>
+    <span class="kn">from</span> <span class="nn">pyguppy_client_lib.pyclient</span> <span class="kn">import</span> <span class="n">PyGuppyClient</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
 
 <span class="kn">from</span> <span class="nn">readfish._loggers</span> <span class="kn">import</span> <span class="n">setup_logger</span>
 <span class="kn">from</span> <span class="nn">readfish.plugins.abc</span> <span class="kn">import</span> <span class="n">CallerABC</span>
@@ -334,9 +340,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_information</span> <span class="o">=</span> <span class="n">run_information</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Deprecation warning - As ONT has moved fully to dorado, this plugin is no longer maintained, and will be deprecated in a future release of readfish.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_information</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">guppy_version</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_information</span><span class="o">.</span><span class="n">software_versions</span><span class="o">.</span><span class="n">guppy_connected_version</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">parse_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guppy_version</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">parse_version</span><span class="p">(</span><span class="s2">&quot;7.3.9&quot;</span><span class="p">):</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connected to caller version </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">guppy_version</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Trying to connect to minKNOW with caller version </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">guppy_version</span><span class="si">}</span><span class="s2">. This plugin requires a version of Dorado or Guppy &lt; 7.3.9. If this is stopping readfish from running try changing [caller_settings.guppy] to [caller_settings.dorado]. You should also check for any updates available to readfish.&quot;</span>
+                <span class="p">)</span>
 
         <span class="c1"># Set our own priority</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guppy_params</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+        <span class="c1"># Remove the sample rate from the guppy params as it isn&#39;t required for the PyGuppyClient</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guppy_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;sample_rate&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guppy_params</span><span class="p">[</span><span class="s2">&quot;priority&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PyGuppyClient</span><span class="o">.</span><span class="n">high_priority</span>
         <span class="c1"># Set our own client name to appear in the guppy server logs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guppy_params</span><span class="p">[</span><span class="s2">&quot;client_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Readfish_connection&quot;</span>
@@ -590,7 +613,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=9887e882"></script>
+</div><script src="../../../_static/documentation_options.js?v=0af83669"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>

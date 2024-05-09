@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="TOML files" href="toml.html" /><link rel="prev" title="Welcome to the readfish documentation!" href="index.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Getting Started - readfish 2024.1.0</title>
+        <title>Getting Started - readfish 2024.2.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -190,7 +190,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">readfish 2024.1.0</div></a>
+      <a href="index.html"><div class="brand">readfish 2024.2.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -218,7 +218,7 @@
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.1.0</span>
+  <span class="sidebar-brand-text">readfish 2024.2.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -444,8 +444,8 @@ A closeup of the unblock peak shows reads being unblocked quickly:
 </details>
 <details style="margin-top: 10px">
 <summary id="testing-basecalling-and-mapping"><h3 style="display: inline;">Testing base-calling and mapping</h3></summary>
-<p>To test selective sequencing you must have access to a
-<a class="reference external" href="https://community.nanoporetech.com/downloads/guppy/release_notes">guppy basecall server</a> (&gt;=6.0.0)</p>
+<p>To test selective sequencing you must have access to either a
+<a class="reference external" href="https://community.nanoporetech.com/downloads/guppy/release_notes">guppy basecall server</a> (&gt;=6.0.0) or a <a class="reference external" href="https://community.nanoporetech.com/downloads/dorado/release_notes">dorado basecall server</a>.</p>
 <p>and a readfish TOML configuration file.</p>
 <p>NOTE: guppy and dorado are used here interchangeably as the basecall server. Dorado is gradually replacing guppy. All readfish code is compatible with Guppy &gt;=6.0.0 and dorado &gt;=0.4.0</p>
 <ol class="arabic">
@@ -456,6 +456,11 @@ A closeup of the unblock peak shows reads being unblocked quickly:
 </li>
 <li><p>If on PromethION, edit the <code class="docutils literal notranslate"><span class="pre">mapper_settings.mappy</span></code> section to read:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[mapper_settings.mappy-rs]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If on MinKNOW core&gt;=5.9.0 and Dorado server version &gt;=7.3.9, edit the <code class="docutils literal notranslate"><span class="pre">basecaller</span></code> section to read:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.dorado]</span>
 </pre></div>
 </div>
 </li>
@@ -680,7 +685,7 @@ The read length N50 and Median is higher for chromosomes 20 and 21 as expected. 
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=9887e882"></script>
+</div><script src="_static/documentation_options.js?v=0af83669"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="readfish plugins API" href="readfish.plugins.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Changelog - readfish 2024.1.0</title>
+        <title>Changelog - readfish 2024.2.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -190,7 +190,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">readfish 2024.1.0</div></a>
+      <a href="index.html"><div class="brand">readfish 2024.2.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -218,7 +218,7 @@
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.1.0</span>
+  <span class="sidebar-brand-text">readfish 2024.2.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -283,7 +283,15 @@
           <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
 <section id="id1">
-<h2>2024.1.0<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<h2>2024.2.0<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Add a dorado base-caller which addressed issue <a class="reference external" href="https://github.com/LooseLab/readfish/issues/347">#347</a> - chiefly in Dorado 7.3.9 ONT have moved to <code class="docutils literal notranslate"><span class="pre">ont-pybasecall-client-lib</span></code>,
+and connections from <code class="docutils literal notranslate"><span class="pre">ont_pyguppy_client_lib</span></code> raise <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">error.</span> <span class="pre">...</span>&#160; <span class="pre">LOAD_CONFIG.</span> <span class="pre">Reply:</span> <span class="pre">INVALID_PROTOCOL</span></code> <a class="reference external" href="https://github.com/LooseLab/readfish/pull/344">(#344)</a></p></li>
+<li><p>Adds version checking for MinKNOW and Guppy/Dorado, logs if not compatibile <a class="reference external" href="https://github.com/LooseLab/readfish/pull/351">(#351)</a></p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>2024.1.0<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>bug fix type for <code class="docutils literal notranslate"><span class="pre">--wait-on-ready</span></code> type and actual function <a class="reference external" href="https://github.com/LooseLab/readfish/pull/327">(#327)</a>, <a class="reference external" href="https://github.com/LooseLab/readfish/pull/323">(#323)</a></p></li>
 <li><p>mutiple suffix <code class="docutils literal notranslate"><span class="pre">.mmi</span></code> support <a class="reference external" href="https://github.com/LooseLab/readfish/pull/330">(#330)</a></p></li>
@@ -291,8 +299,8 @@
 <li><p>Big dog Duplex feature - adds ability to select duplex reads that cover a target region. See pull request for details <a class="reference external" href="https://github.com/LooseLab/readfish/pull/324">(#324)</a></p></li>
 </ol>
 </section>
-<section id="id2">
-<h2>2023.1.1<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<section id="id3">
+<h2>2023.1.1<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Fix Readme Logo link 🥳 (#296)</p></li>
 <li><p>Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to &#64;jamesemery for catching this. (#299)</p></li>
@@ -349,8 +357,9 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#id1">2024.1.0</a></li>
-<li><a class="reference internal" href="#id2">2023.1.1</a></li>
+<li><a class="reference internal" href="#id1">2024.2.0</a></li>
+<li><a class="reference internal" href="#id2">2024.1.0</a></li>
+<li><a class="reference internal" href="#id3">2023.1.1</a></li>
 </ul>
 </li>
 </ul>
@@ -362,7 +371,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=9887e882"></script>
+</div><script src="_static/documentation_options.js?v=0af83669"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
