@@ -123,7 +123,10 @@ class Caller(CallerABC):
                 raise RuntimeError(
                     f"The user account running readfish doesn't appear to have permissions to read the dorado base-caller socket. Please check permissions on {self.dorado_params['address']}. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."
                 )
-
+            if not os.access(socket_path, os.W_OK):
+                raise RuntimeError(
+                    f"The user account running readfish doesn't appear to have permissions to write to the dorado base-caller socket. Please check permissions on {self.dorado_params['address']}. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."
+                )
         # If we are connected to a live run, test if the base-caller model is acceptable.
         # Connected to a live run via the minknow_api - get supported basecall and barcoding kits from the run info.
         #  Check them against provided values
