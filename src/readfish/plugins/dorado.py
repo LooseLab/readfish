@@ -26,8 +26,28 @@ except ImportError:
 from readfish._loggers import setup_logger
 from readfish.plugins.abc import CallerABC
 from readfish.plugins.utils import Result
-from readfish._utils import nice_join
+from readfish._utils import nice_join, get_item, nested_get
+from readfish.plugins._mappy import FIELDS, _PAF
 
+_PAF_nt = namedtuple("PAF", FIELDS)
+PAF = type("PAF", (_PAF, _PAF_nt), dict())
+
+# The keys for fields which appear in a PAF Formatted record, taken from
+# the nanopore alignment_data array. Second value are defaults if the field
+# is somehow not present although it should always be if an alignment exists.
+PAF_KEYS = [
+    ("strand_start", 0),
+    ("strand_end", 0),
+    ("direction", "*"),
+    ("genome", "*"),
+    ("genome_length", 0),
+    ("genome_start", 0),
+    ("genome_end", 0),
+    ("num_aligned", 0),
+    ("alignment_block_length", "0"),
+    ("mapping_quality", 0),
+    ("tags", {}),
+]
 
 if TYPE_CHECKING:
     import minknow_api
@@ -81,6 +101,10 @@ class Caller(CallerABC):
 
         # Set our own priority
         self.dorado_params = kwargs
+        self.dorado_params["reconnect_timeout"] = 10
+        self.dorado_params["server_file_load_timeout"] = self.dorado_params.get(
+            "server_file_load_timeout", 10
+        )
         self.dorado_params["priority"] = PyBasecallClient.high_priority
         # Set our own client name to appear in the dorado server logs
         self.dorado_params["client_name"] = "Readfish_connection"
@@ -291,6 +315,29 @@ class Caller(CallerABC):
                     )
                     barcode = res["metadata"].get("barcode_arrangement", None)
                     # TODO: Add Filter here
+                    als = []
+                    # Call to list converts np array of no array to list of np arrays,
+                    # So we can assign the result of the .get via walrus if it's true (has alignments)
+                    # Cause "the truth value of an array is ambiguous" blah blah blah
+                    if alignments := list(res["datasets"].get("align_results", [])):
+                        for al in filter(
+                            lambda x: not x["secondary_alignment"],
+                            alignments,
+                        ):
+                            query_sequence_length = nested_get(
+                                res, "metadata.sequence_length", 0
+                            )
+                            x = [read_id, query_sequence_length] + [
+                                (
+                                    get_item(al, key, default).decode("utf-8")
+                                    if key in {"genome", "direction"}
+                                    else get_item(al, key, default)
+                                )
+                                for key, default in PAF_KEYS
+                            ]
+                            # If it's a *, it's unaligned
+                            if not x[4] == "*":
+                                als.append(PAF(*x))
                     yield Result(
                         channel=channel,
                         read_number=read_number,
@@ -298,6 +345,7 @@ class Caller(CallerABC):
                         seq=res["datasets"]["sequence"],
                         barcode=barcode if barcode else None,
                         basecall_data=res,
+                        alignment_data=als if als else None,
                     )
                     reads_received += 1
 

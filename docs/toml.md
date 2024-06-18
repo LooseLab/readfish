@@ -116,6 +116,40 @@ This is added using:
 
 ### Aligner
 
+#### Built-in dorado/guppy alignment
+
+It is possible to leverage the built in dorado/guppy alignment capabilities for readfish.
+This does limit some flexibility in readfish, such as updating the reference.
+
+In order to do this, specify two extra keys in caller settings: `align_ref` and `server_file_load_timeout`.
+
+`align_ref` should be the absolute path to the reference file for alignment. This can be either an `.mmi` or a `FASTA` file.
+
+`server_file_load_timeout` is the number of seconds to wait before the server throws a timeout error whilst loading the reference. The time required scales with the size of the reference, so a large value would make sense, such as 120.
+
+An example TOML for using built in alignment would be:
+```toml
+[caller_settings.dorado]
+               # ^^^^^^
+               # Chooses the dorado plugin
+config = "dna_r10.4.1_e8.2_400bps_5khz_fast_prom"
+address = "ipc:///tmp/.guppy/5555"
+debug_log = "live_reads.fq"
+align_ref = "/data/refs/hg38.p14.simple.mmi"
+server_file_load_timeout = 180
+```
+
+The aligner section of the TOML is required, and so this should be set to, which means the basecaller alignments are used.
+```toml
+[mapper_settings.no_op]
+               # ^^^^^^
+               # Chooses the mappy plugin
+```
+
+**One note** is that there is currently no easy way to change the number of basecaller alignment threads using readfish, and so when the basecaller server instance is started, the number of alignment_threads should be set to a sensible number using the `--num_alignment_threads`
+
+
+
 #### minimap2
 
 Currently we provide two mapping plugins, [`mappy`], and [`mappy-rs`].

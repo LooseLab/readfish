@@ -23,6 +23,36 @@ from readfish._utils import nice_join
 
 UNMAPPED_PAF = "0\t0\t*\t*\t0\t0\t0\t0\t0\t0"
 
+FIELDS = [
+    "query_name",
+    "query_length",
+    "query_start",
+    "query_end",
+    "strand",
+    "ctg",
+    "target_length",
+    "r_st",
+    "r_en",
+    "residue_matches",
+    "alignment_block_length",
+    "mapping_quality",
+    "tags",
+]
+
+
+class _PAF:
+    """Base PAF methods, can't guarantee field names here so use indices"""
+
+    def __str__(self):
+        """Formats a record as a PAF line for writing to a file"""
+        return "{}\t{}".format("\t".join(map(str, self[:-1])), self._fmt_tags())
+
+    def blast_identity(self):
+        """BLAST identity, see:
+        https://lh3.github.io/2018/11/25/on-the-definition-of-sequence-identity
+        """
+        return self[9] / self[10]
+
 
 class Aligners(Enum):
     C_MAPPY = "mappy"
