@@ -447,6 +447,7 @@ class Analysis:
 
         last_live_toml_mtime = 0
         self.logger.info("Starting main loop")
+        self.logger.info("Generating aligner description, if possible...")
         mapper_description = self.mapper.describe(self.conf.regions, self.conf.barcodes)
         self.logger.info(mapper_description)
         send_message(self.client.connection, mapper_description, Severity.INFO)
