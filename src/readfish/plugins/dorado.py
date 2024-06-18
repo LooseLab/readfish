@@ -220,14 +220,14 @@ class Caller(CallerABC):
         #        successfully sent. Therefore we capture not sent reads
         cache, skipped = {}, {}
         reads_received, reads_sent = 0, 0
-        reads = []
+        reads_to_send = []
         daq_values = _DefaultDAQValues if daq_values is None else daq_values
         for channel, read in reads:
             # Attach the "RF-" prefix
             read_id = f"RF-{read.id}"
             t0 = time.time()
             cache[read_id] = (channel, read.number, t0)
-            reads.append(
+            reads_to_send.append(
                 package_read(
                     read_id=read_id,
                     raw_data=np.frombuffer(read.raw_data, signal_dtype),
@@ -240,16 +240,16 @@ class Caller(CallerABC):
             reads_sent += 1
         success_pass = False
         for _attempt in range(3):
-            if not success_pass:
-                success_pass = self.caller.pass_reads(reads)
+            # Only attempt to pass reads if there are reads to be passed
+            if not success_pass and reads_to_send:
+                success_pass = self.caller.pass_reads(reads_to_send)
             else:
                 break
-            # time.sleep(0.05)
         else:
             logging.warning(
-                f"Could not send {len(reads)} reads to Dorado after 3 attempts, skipping!"
+                f"Could not send {len(reads_to_send)} reads to Dorado after 3 attempts, skipping!"
             )
-            for read in reads:
+            for read in reads_to_send:
                 skipped[read["read_id"]] = cache.pop(read["read_id"])
 
             # sleep_time = self.caller.throttle - t0
