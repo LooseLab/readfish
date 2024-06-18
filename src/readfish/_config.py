@@ -274,12 +274,12 @@ class Conf:
                     "or `barcodes` and cannot be used by readfish"
                 )
 
-        if self.mapper_settings.name == "mappy" and self.channels > 512:
-            raise RuntimeError(
-                "We do not allow the use of the 'mappy' aligner with PromethION devices. "
-                "Please use 'mapper_settings.mappy_rs' in your experiment TOML"
-                " with n_threads set to at least 4."
-            )
+        # if self.mapper_settings.name == "mappy" and self.channels > 512:
+        #     raise RuntimeError(
+        #         "We do not allow the use of the 'mappy' aligner with PromethION devices. "
+        #         "Please use 'mapper_settings.mappy_rs' in your experiment TOML"
+        #         " with n_threads set to at least 4."
+        #     )
 
         split_channels = generate_flowcell(self.channels, len(self.regions) or 1)
         self._channel_map = {

@@ -21,6 +21,7 @@ This is of little (essentially no) use outside of an unblock all or something co
 In addition the ``_no_op.Aligner`` will pass through the iterable from the caller module without modifying/adding anything.
 This behaviour can be useful if a plugin can complete it's entire decision in a single step.
 """
+
 from __future__ import annotations
 from typing import Iterable, TYPE_CHECKING
 
@@ -49,7 +50,7 @@ class Aligner(AlignerABC):
         """Will always return ``True``"""
         return True
 
-    def map_reads(self, basecall_results: Iterable[Result]) -> Iterable[Result]:
+    def map_reads(self, basecall_results: Iterable[Result], p) -> Iterable[Result]:
         """Pass through the ``basecall_results`` iterable that is supplied."""
         return basecall_results
 

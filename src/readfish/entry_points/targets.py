@@ -83,11 +83,19 @@ This prevents trying to unblock reads of unknown length.
 # Core imports
 from __future__ import annotations
 import argparse
+import io
 import logging
+from logging.handlers import RotatingFileHandler
+import os
+import pstats
+import re
 import time
 from timeit import default_timer as timer
 from pathlib import Path
 from typing import Any
+import cProfile
+import psutil
+from datetime import datetime
 
 # Third party imports
 from readfish.read_until.read_cache import AccumulatingCache
@@ -120,6 +128,7 @@ from readfish.plugins.utils import (
     DuplexTracker,
     Strand,
 )
+from readfish._loggers import setup_logger
 
 
 _help = "Run targeted sequencing"
@@ -153,6 +162,80 @@ _cli = DEVICE_BASE_ARGS + (
 # When sequencing in duplex mode, overriding a decided `Action` on a currently sequenced molecule
 # is not allowed if the previous molecules decision was one of these.
 DISALLOWED_DUPLEX_DECISIONS = {Decision.first_read_override, Decision.duplex_override}
+
+# Configure a specific logger for profiling
+perf_logger = setup_logger(
+    "perf_logger",
+    header="Loop\tTimeStamp\tStage\tCPU Usage (%)\tMemory Usage (MB)\tTime (s)\tCum. Time (s)\tNum. Chunks\tYield\tBase\tAlign",
+    log_file="profile_log.tsv",
+    mode="w",
+    level=logging.INFO,
+)
+
+# Create a file handler
+
+perf_logger.propagate = False
+
+process = psutil.Process(os.getpid())
+
+
+def profile_stage(
+    stage_name, profiler, previous_time, loop_counter, num_chunks="*", num_bases="*"
+):
+    """Profile a stage in the loop."""
+    memory_info = process.memory_info()
+    memory_usage = memory_info.rss / 1024**2  # Convert bytes to MB
+    current_time = time.time()
+    elapsed_time = current_time - previous_time
+
+    # Log profiling data
+    profiler.disable()
+    s = io.StringIO()
+    ps = pstats.Stats(profiler, stream=s).sort_stats(pstats.SortKey.CUMULATIVE)
+    ps.print_stats()
+    stats_output = s.getvalue()
+    # Extract total time using regex
+    match = re.search(r"in ([\d.]+) seconds", stats_output)
+    if match:
+        time_taken_sec = float(match.group(1))
+        time_stamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")
+
+        perf_logger.info(
+            f"{loop_counter}\t{time_stamp}\t{stage_name}\t*\t{memory_usage}\t{elapsed_time}\t{time_taken_sec}\t{num_chunks}\t{num_bases}\t*\t*"
+        )
+    profiler.enable()
+    return current_time
+
+
+def get_cpu_usage_percentage(start_times, end_times, interval):
+    total_time = (
+        end_times.user - start_times.user + end_times.system - start_times.system
+    )
+    return (total_time / interval) * 100
+
+
+class ProfilingTime:
+    """
+    Store the times
+    """
+
+    def __init__(self):
+        self.basecalling_start_time = time.time()
+        self.basecalling_time_taken = 0.0
+        self.alignment_start_time = None
+        self.alignment_time_taken = 0.0
+
+    def store_basecalling_time_taken(self):
+        self.basecalling_time_taken += time.time() - self.basecalling_start_time
+
+    def store_alignment_time_taken(self):
+        self.alignment_time_taken += time.time() - self.alignment_start_time
+
+    def reset_alignment_start_time(self):
+        self.alignment_start_time = time.time()
+
+    def reset_basecalling_start_time(self):
+        self.basecalling_start_time = time.time()
 
 
 class Analysis:
@@ -391,7 +474,7 @@ class Analysis:
                 )
                 action = Action.stop_receiving
                 action_overridden = True
-                result.decision = Decision.duplex_override
+                result.decision = Decision.duplex_overrideprevious_action
 
         # Override to stop receiving if this is the first read ona channel and we started mid sequencing
         if previous_action is None and self.readfish_started_during_sequencing:
@@ -447,12 +530,17 @@ class Analysis:
 
         last_live_toml_mtime = 0
         self.logger.info("Starting main loop")
+        self.logger.info("Generating aligner description if relevant....")
         mapper_description = self.mapper.describe(self.conf.regions, self.conf.barcodes)
         self.logger.info(mapper_description)
         send_message(self.client.connection, mapper_description, Severity.INFO)
-
+        profiler = cProfile.Profile()
+        profiler.enable()
         while self.client.is_sequencing:
             t0 = timer()
+            start_time = time.time()
+            start_cpu_times = process.cpu_times()
+            previous_time = t0
             # Check if we have started readfish before PHASE_SEQUENCING,
             if self.wait_for_sequencing:
                 time.sleep(self.throttle)
@@ -479,14 +567,65 @@ class Analysis:
             number_reads = 0
             unblock_batch_action_list = []
             stop_receiving_action_list = []
+            previous_time = profile_stage(
+                "Retreive Signal - Start", profiler, previous_time, loop_counter
+            )
 
             chunks = self.client.get_read_chunks(self.client.channel_count, last=True)
-            calls = self.caller.basecall(
-                chunks, self.client.signal_dtype, self.client.calibration_values
+            num_chunks = len(chunks)
+            previous_time = profile_stage(
+                "Retreive Signal - End",
+                profiler,
+                previous_time,
+                loop_counter,
+                num_chunks=num_chunks,
             )
-            aligns = self.mapper.map_reads(calls)
+            previous_time = profile_stage(
+                "Basecall Signal - Start",
+                profiler,
+                previous_time,
+                loop_counter,
+                num_chunks=num_chunks,
+            )
+            p = ProfilingTime()
+
+            calls = self.caller.basecall(
+                chunks, self.client.signal_dtype, self.client.calibration_values, p
+            )
+            previous_time = profile_stage(
+                "Basecall Signal - End",
+                profiler,
+                previous_time,
+                loop_counter,
+                num_chunks=num_chunks,
+            )
+            previous_time = profile_stage(
+                "Align Signal - Start",
+                profiler,
+                previous_time,
+                loop_counter,
+                num_chunks=num_chunks,
+            )
+            p.reset_alignment_start_time()
+            aligns = self.mapper.map_reads(calls, p)
+
+            previous_time = profile_stage(
+                "Align Signal - End",
+                profiler,
+                previous_time,
+                loop_counter,
+                num_chunks=num_chunks,
+            )
 
             #######################################################################
+            previous_time = profile_stage(
+                "Iterate Alignments - Start",
+                profiler,
+                previous_time,
+                loop_counter,
+                num_chunks=num_chunks,
+            )
+            num_bases = 0
             for result in aligns:
                 number_reads += 1
                 control, condition = self.conf.get_conditions(
@@ -495,6 +634,7 @@ class Analysis:
                 result.decision = make_decision(self.conf, result)
                 action = condition.get_action(result.decision)
                 seen_count = self.chunk_tracker.seen(result.channel, result.read_number)
+                num_bases += len(result.seq)
                 #  Check if there any conditions that override the action chose, exceed_max_chunks etc...
                 (
                     previous_action,
@@ -537,6 +677,15 @@ class Analysis:
                     overridden_action_name=overridden_action_name,
                 )
 
+            previous_time = profile_stage(
+                "Iterate Alignments - End",
+                profiler,
+                previous_time,
+                loop_counter,
+                num_chunks=num_chunks,
+                num_bases=num_bases,
+            )
+
             #######################################################################
             # Compile actions to be sent
             self.client.unblock_read_batch(
@@ -554,6 +703,17 @@ class Analysis:
             # limit the rate at which we make requests
             if t0 + self.throttle > t1:
                 time.sleep(self.throttle + t0 - t1)
+
+            end_cpu_times = process.cpu_times()
+            end_time = time.time()
+            loop_duration = end_time - start_time
+            cpu_usage = get_cpu_usage_percentage(
+                start_cpu_times, end_cpu_times, loop_duration
+            )
+            time_stamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")
+            perf_logger.info(
+                f"{loop_counter}\t{time_stamp}\tTotal loop\t{cpu_usage}\t*\t{loop_duration}\t*\t{num_chunks}\t{num_bases}\t{p.basecalling_time_taken}\t{p.alignment_time_taken}"
+            )
         else:
             send_message(
                 self.client.connection,

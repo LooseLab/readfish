@@ -26,9 +26,26 @@ except ImportError:
 from readfish._loggers import setup_logger
 from readfish.plugins.abc import CallerABC
 from readfish.plugins.utils import Result
-from readfish._utils import nice_join
+from readfish._utils import nice_join, nested_get, get_item
+from readfish.plugins._mappy import FIELDS, _PAF
+
+_PAF_nt = namedtuple("PAF", FIELDS)
+PAF = type("PAF", (_PAF, _PAF_nt), dict())
 
 
+PAF_KEYS = [
+    ("strand_start", 0),
+    ("strand_end", 0),
+    ("direction", b"*"),
+    ("genome", b"*"),
+    ("genome_length", 0),
+    ("genome_start", 0),
+    ("genome_end", 0),
+    ("num_aligned", 0),
+    ("alignment_block_length", b"0"),
+    ("mapping_quality", 0),
+    ("tags", {}),
+]
 if TYPE_CHECKING:
     import minknow_api
 
@@ -84,6 +101,8 @@ class Caller(CallerABC):
         self.dorado_params["priority"] = PyBasecallClient.high_priority
         # Set our own client name to appear in the dorado server logs
         self.dorado_params["client_name"] = "Readfish_connection"
+        self.dorado_params["reconnect_timeout"] = 10
+        self.dorado_params["server_file_load_timeout"] = 10
 
         if sample_rate:
             self.sample_rate = float(sample_rate)
@@ -206,6 +225,7 @@ class Caller(CallerABC):
         reads: Iterable[tuple[int, minknow_api.data_pb2.GetLiveReadsResponse.ReadData]],
         signal_dtype: npt.DTypeLike,
         daq_values: dict[int, namedtuple] = None,
+        basecalling_time=None,
     ):
         """Basecall live data from minknow RPC
 
@@ -221,6 +241,7 @@ class Caller(CallerABC):
         cache, skipped = {}, {}
         reads_received, reads_sent = 0, 0
         daq_values = _DefaultDAQValues if daq_values is None else daq_values
+        basecalling_time.reset_basecalling_start_time()
         for channel, read in reads:
             # Attach the "RF-" prefix
             read_id = f"RF-{read.id}"
@@ -291,6 +312,30 @@ class Caller(CallerABC):
                     )
                     barcode = res["metadata"].get("barcode_arrangement", None)
                     # TODO: Add Filter here
+                    als = []
+                    # Call to list converts np array of no array to list of np arrays,
+                    # So we can assign the result of the .get via walrus if it's true (has alignments)
+                    # Cause "the truth value of an array is ambiguous" blah blah blah
+                    if alignments := list(res["datasets"].get("align_results", [])):
+                        for al in filter(
+                            lambda x: not x["secondary_alignment"],
+                            alignments,
+                        ):
+                            print(al)
+                            query_sequence_length = nested_get(
+                                res, "metadata.sequence_length", 0
+                            )
+                            x = [read_id, query_sequence_length] + [
+                                (
+                                    get_item(al, key, default).decode("utf-8")
+                                    if key in {"genome", "direction"}
+                                    else get_item(al, key, default)
+                                )
+                                for key, default in PAF_KEYS
+                            ]
+                            # If it's a *, it's unaligned
+                            if not x[4] == "*":
+                                als.append(PAF(*x))
                     yield Result(
                         channel=channel,
                         read_number=read_number,
@@ -298,8 +343,11 @@ class Caller(CallerABC):
                         seq=res["datasets"]["sequence"],
                         barcode=barcode if barcode else None,
                         basecall_data=res,
+                        alignment_data=als if als else None,
                     )
                     reads_received += 1
+        basecalling_time.store_basecalling_time_taken()
+        basecalling_time.reset_basecalling_start_time()
 
     def describe(self) -> str:
         """

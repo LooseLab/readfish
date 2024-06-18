@@ -3,9 +3,11 @@
 """
 
 from __future__ import annotations
+from collections import namedtuple
 from enum import Enum
 from itertools import chain, repeat
 from pathlib import Path
+import time
 from typing import Optional, Iterable
 
 from readfish._loggers import setup_logger
@@ -22,6 +24,43 @@ from readfish._utils import nice_join
 
 
 UNMAPPED_PAF = "0\t0\t*\t*\t0\t0\t0\t0\t0\t0"
+
+SAM_TAG = namedtuple("tag", ["name", "type", "value"])
+FIELDS = [
+    "query_name",
+    "query_length",
+    "query_start",
+    "query_end",
+    "strand",
+    "ctg",
+    "target_length",
+    "r_st",
+    "r_en",
+    "residue_matches",
+    "alignment_block_length",
+    "mapping_quality",
+    "tags",
+]
+NA_VALUES = ["*"]
+SAM_TYPES = {"i": int, "A": str, "f": float, "Z": str}
+
+
+class _PAF:
+    """Base PAF methods, can't guarantee field names here so use indices"""
+
+    def __str__(self):
+        """Formats a record as a PAF line for writing to a file"""
+        return "{}\t{}".format("\t".join(map(str, self[:-1])), self._fmt_tags())
+
+    def _fmt_tags(self):
+        """Format tag dict as SAM style"""
+        return "\t".join("{}:{}:{}".format(*t) for t in self[-1].values())
+
+    def blast_identity(self):
+        """BLAST identity, see:
+        https://lh3.github.io/2018/11/25/on-the-definition-of-sequence-identity
+        """
+        return self[9] / self[10]
 
 
 class Aligners(Enum):
@@ -104,7 +143,7 @@ class _Aligner(AlignerABC):
         """
         return bool(self.aligner)
 
-    def map_reads(self, basecall_results: Iterable[Result]) -> Iterable[Result]:
+    def map_reads(self, basecall_results: Iterable[Result], p) -> Iterable[Result]:
         """
         Maps an iterable of base-called data using either the C `mappy` or `mappy-rs` Rust implementation,
         based on the `mappy_impl` provided during the instantiation of the class.
@@ -125,10 +164,10 @@ class _Aligner(AlignerABC):
         """
         # Map with MAPPY_RS
         if self.mappy_impl is Aligners.MAPPY_RS:
-            iter_ = self._rust_mappy_wrapper(basecall_results)
+            iter_ = self._rust_mappy_wrapper(basecall_results, p)
         # Map with MAPPY
         elif self.mappy_impl is Aligners.C_MAPPY:
-            iter_ = self._c_mappy_wrapper(basecall_results)
+            iter_ = self._c_mappy_wrapper(basecall_results, p)
         else:
             raise NotImplementedError("Aligner not configured")
         # Iterate over the results and log them, then yield, now with Alignment data
@@ -140,8 +179,9 @@ class _Aligner(AlignerABC):
             if not result.alignment_data:
                 self.logger.debug(f"{paf_info}\t{UNMAPPED_PAF}")
             yield result
+        p.store_alignment_time_taken()
 
-    def _c_mappy_wrapper(self, basecalls: Iterable[Result]) -> Result:
+    def _c_mappy_wrapper(self, basecalls: Iterable[Result], p) -> Result:
         """
         A private method to map an iterable of base-called data using the C minimap2 `mappy` implementation.
 
@@ -149,10 +189,12 @@ class _Aligner(AlignerABC):
         :return: A generator yielding mapped read results.
         """
         for result in basecalls:
+            if p.alignment_start_time is None:
+                p.alignment_start_time = time.time()
             result.alignment_data = list(self.aligner.map(result.seq))
             yield result
 
-    def _rust_mappy_wrapper(self, basecalls: Iterable[Result]) -> Result:
+    def _rust_mappy_wrapper(self, basecalls: Iterable[Result], p) -> Result:
         """
         A private method to map an iterable of base-called data using the `mappy-rs`
         multithreaded Rust implementation of mappy.
@@ -173,6 +215,8 @@ class _Aligner(AlignerABC):
         def _gen(_basecalls):
             """Create dictionaries of sequences and metadata for the Rust mappy aligner."""
             for result in _basecalls:
+                if p.alignment_start_time is None:
+                    p.alignment_start_time = time.time()
                 fa = result.seq
                 if not fa:
                     skipped.append(result)
