@@ -1,12 +1,13 @@
 """utils.py
 functions and utilities used internally.
 """
+
 from __future__ import annotations
 import sys
 import logging
 from collections import Counter
 from functools import reduce
-from operator import itemgetter
+from operator import itemgetter, getitem
 from enum import IntEnum
 import re
 import base64
@@ -78,6 +79,53 @@ def format_bases(num: int, factor: int = 1000, suffix: str = "B") -> str:
             return f"{num:3.2f} {unit}{suffix}"
         num /= factor
     return f"{num:3.2f} Y{suffix}"
+
+
+def get_item(obj: Sequence | Mapping, key: str | int, default: str = "*") -> Any:
+    """
+    Retrieve an item from a sequence or mapping, returning a default value if the item is not found.
+
+    Args:
+        :param obj: The sequence or mapping from which to retrieve the item.
+        :param key: The index or key of the item to retrieve.
+        :param default: The value to return if the item is not found. Defaults to "*".
+
+    Returns:
+        Any: The item from the sequence or mapping, or the default value if the item is not found.
+
+    Examples:
+        >>> get_item([1, 2, 3], 1)
+        2
+        >>> get_item([1, 2, 3], 5)
+        '*'
+        >>> get_item({'a': 1, 'b': 2}, 'b')
+        2
+        >>> get_item({'a': 1, 'b': 2}, 'c')
+        '*'
+        >>> get_item((1, 2, 3), 0)
+        1
+        >>> get_item((1, 2, 3), -1)
+        3
+        >>> get_item((1, 2, 3), 5)
+        '*'
+        >>> get_item((1, 2, 3), 'invalid')
+        '*'
+        >>> get_item(np.array([1, 2, 3]), 1)
+        2
+        >>> get_item(np.array([1, 2, 3]), 5)
+        '*'
+        >>> structured_array = np.array([(1, 'Alice'), (2, 'Bob')], dtype=[('id', 'i4'), ('name', 'U10')])
+        >>> get_item(structured_array, 1)
+        (2, 'Bob')
+        >>> get_item(structured_array, 'name')
+        array(['Alice', 'Bob'], dtype='<U10')
+        >>> get_item(structured_array, 'invalid')
+        '*'
+    """
+    try:
+        return getitem(obj, key)
+    except (IndexError, KeyError, TypeError, ValueError):
+        return default
 
 
 def nested_get(obj: Mapping, key: Any, default: Any = None, *, delim: str = ".") -> Any:
