@@ -26,6 +26,7 @@ new performance and read records to the existing statistics.
     Counter({'single_on': 1})
 
 """
+
 from __future__ import annotations
 from collections import Counter
 import logging
@@ -38,7 +39,6 @@ DEBUG_STATS_LOG_FIELDS = (
     "read_in_loop",
     "read_id",
     "channel",
-    "read_number",
     "seq_len",
     "counter",
     "mode",

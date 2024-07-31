@@ -226,7 +226,8 @@ class Caller(CallerABC):
             # Attach the "RF-" prefix
             read_id = f"RF-{read.id}"
             t0 = time.time()
-            cache[read_id] = (channel, read.number, t0)
+            # cache the read id without the RF tag
+            cache[read_id] = (channel, read.id, t0)
             reads_to_send.append(
                 package_read(
                     read_id=read_id,
@@ -285,9 +286,9 @@ class Caller(CallerABC):
                         continue
 
                     try:
-                        channel, read_number, time_sent = cache.pop(read_id)
+                        channel, read_id, _time_sent = cache.pop(read_id)
                     except KeyError:
-                        channel, read_number, time_sent = skipped.pop(read_id)
+                        channel, read_id, _time_sent = skipped.pop(read_id)
                         reads_sent += 1
                     res["metadata"]["read_id"] = read_id[3:]
                     self.logger.debug(
@@ -301,7 +302,6 @@ class Caller(CallerABC):
                     # TODO: Add Filter here
                     yield Result(
                         channel=channel,
-                        read_number=read_number,
                         read_id=res["metadata"]["read_id"],
                         seq=res["datasets"]["sequence"],
                         barcode=barcode if barcode else None,
