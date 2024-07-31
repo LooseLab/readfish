@@ -19,12 +19,12 @@ from minknow_api.manager import Manager
 from packaging.version import parse as parse_version
 from packaging.version import Version
 
-LATEST_TESTED = "5.9.7"
+LATEST_TESTED = "6.0.0"
 
 # The versions of MinKNOW which this version of readfish can connect to
 # Format - (lowest minknow version, highest version of minknow supported as an upper bound)
 MINKNOW_COMPATIBILITY_RANGE = (
-    Version("5.0.0"),
+    Version("6.0.0"),
     Version(LATEST_TESTED),
 )
 

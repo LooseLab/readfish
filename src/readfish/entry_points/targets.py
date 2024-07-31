@@ -83,6 +83,7 @@ This prevents trying to unblock reads of unknown length.
 # Core imports
 from __future__ import annotations
 import argparse
+from packaging.version import Version
 import logging
 import time
 from timeit import default_timer as timer
@@ -597,6 +598,13 @@ If readfish fails please try to {action.value} readfish.
 If there isn't a newer version of readfish and readfish is failing, please open an issue:
     https://github.com/LooseLab/readfish/issues"""
         )
+
+    if minknow_version < Version("6.0.0"):
+        logger.critical(
+            f"This version of readfish ({__version__}) is not compatible with less than MinKNOW 6.X.X."
+            f"This won't work, exiting..."
+        )
+        raise SystemExit(1)
 
     # Fetch sequencing device
     position = get_device(args.device, host=args.host, port=args.port)
