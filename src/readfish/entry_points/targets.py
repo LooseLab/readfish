@@ -403,17 +403,15 @@ class Analysis:
             action = Action.stop_receiving
 
         if action is Action.stop_receiving:
-            stop_receiving_action_list.append((result.channel, result.read_number))
+            stop_receiving_action_list.append((result.channel, result.read_id))
 
         elif action is Action.unblock:
             if self.dry_run:
                 # Log an 'unblock' action to previous action, but send a 'stop receiving' to prevent further read processing.
                 action_overridden = True
-                stop_receiving_action_list.append((result.channel, result.read_number))
+                stop_receiving_action_list.append((result.channel, result.read_id))
             else:
-                unblock_batch_action_list.append(
-                    (result.channel, result.read_number, result.read_id)
-                )
+                unblock_batch_action_list.append((result.channel, result.read_id))
 
         # If we have made a final decision for this read and we shouldn't see it again!
         if action is Action.unblock or action is Action.stop_receiving:
@@ -495,7 +493,7 @@ class Analysis:
                 )
                 result.decision = make_decision(self.conf, result)
                 action = condition.get_action(result.decision)
-                seen_count = self.chunk_tracker.seen(result.channel, result.read_number)
+                seen_count = self.chunk_tracker.seen(result.channel, result.read_id)
                 #  Check if there any conditions that override the action chose, exceed_max_chunks etc...
                 (
                     previous_action,
@@ -515,7 +513,6 @@ class Analysis:
                     read_in_loop=number_reads,
                     read_id=result.read_id,
                     channel=result.channel,
-                    read_number=result.read_number,
                     seq_len=len(result.seq),
                     counter=seen_count,
                     mode=result.decision.name,
@@ -611,6 +608,13 @@ If there isn't a newer version of readfish and readfish is failing, please open 
         filter_strands=True,
         cache_type=AccumulatingCache,
         timeout=args.wait_for_ready,
+        prefilter_classes={
+            "strand",
+            "strand2",
+            "short_strand",
+            "adapter",
+            "unknown_positive",
+        },
     )
 
     # Load TOML configuration
