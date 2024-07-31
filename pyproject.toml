@@ -54,7 +54,7 @@ dev = ["readfish[all,docs,tests]", "pre-commit"]
 mappy = ["mappy"]
 mappy-rs = ["mappy-rs >= 0.0.6"]
 guppy = ["ont_pyguppy_client_lib"]
-dorado = ["ont-pybasecall-client-lib"]
+dorado = ["ont-pybasecall-client-lib>=7.4.12"]
 all = ["readfish[mappy,mappy-rs,guppy,dorado]"]
 
 [project.urls]
