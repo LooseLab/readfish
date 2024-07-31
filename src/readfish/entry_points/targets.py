@@ -647,6 +647,7 @@ If there isn't a newer version of readfish and readfish is failing, please open 
         first_channel=1,
         last_channel=read_until_client.channel_count,
         max_unblock_read_length_seconds=args.max_unblock_read_length_seconds,
+        accepted_first_chunk_classifications=["strand", "strand2", "short_strand", "adapter", "unknown_positive"],
     )
 
     worker = Analysis(
