@@ -102,7 +102,7 @@ class RUClient(ReadUntilClient):
         :param reads: List of (channel, read_id)
         :param duration: time in seconds to apply unblock voltage.
         """
-        actions = list()
+        actions = []
         for channel, read_id in reads:
             actions.append(
                 self._generate_action(channel, read_id, "unblock", duration=duration)
