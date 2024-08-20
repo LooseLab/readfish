@@ -16,6 +16,7 @@ wrong, let us know so we can add you to the GOTCHA hall of fame!
 
 > [!WARNING]
 Breaking for any version of `MinKNOW <= 6.0.0`
+As of `readfish >=2024.3.0` we no longer support guppy.
 
 readfish is a Python package that integrates with the
 [Read Until API](https://github.com/nanoporetech/read_until_api).
@@ -28,7 +29,7 @@ the read in progress and so direct sequencing capacity towards reads of interest
 
 **This implementation of readfish requires Dorado server version >= 7.3.9 and MinKNOW version core >= 6.0.0 . It will not work on earlier versions.**
 
-**To run with earlier versions of MinKNOW please use an earlier version of ReadFish.**
+**To run with earlier versions of MinKNOW please use an earlier version of readfish.**
 
 
 The code here has been tested with Dorado in GPU mode using GridION Mk1 and
@@ -132,7 +133,7 @@ conda activate readfish_dev
 | MinKNOW is transitioning from Guppy to Dorado. Until MinKNOW version 5.9 both Guppy and Dorado used ont-pyguppy-client-lib.<br/>As of MinKNOW version 5.9 and Dorado server version 7.3.9 and greater Dorado requires an alternate library, `ont-pybasecall-client-lib`.<br/>The listed `ont-pyguppy-client-lib` or `ont-pybasecaller-client-lib` version may not match the version installed on your system. To fix this, Please see this [issue](https://github.com/LooseLab/readfish/issues/221#issuecomment-1381529409), using the appropriate library. |
 
 
-[ONT's Guppy GPU](https://community.nanoporetech.com/downloads) should be installed and running as a server.
+[ONT's Dorado Basecall Server GPU](https://community.nanoporetech.com/downloads) should be installed and running as a server.
 
 <details style="margin-top: 10px">
 <summary><span id="py-ve">Alternatively, install readfish into a python virtual-environment</span></summary>
@@ -146,8 +147,8 @@ pip install --upgrade pip
 # Install our readfish Software
 pip install readfish[all]
 
-# Install ont_pyguppy_client_lib that matches your guppy server version. E.G.
-pip install ont_pyguppy_client_lib==6.3.8
+# Install ont_pybasecall_client that matches your dorado basecall server version. E.G.
+pip install ont_pybasecall_client_lib==7.1.2
 ```
 
 </details>
@@ -562,10 +563,12 @@ And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com
 <!-- start-changelog -->
 # Changelog
 ## 2024.3.0
+### This release is breaking for ALL versions of `MinKNOW <= 6` and no longer supports Guppy.
+
 1. Introducing support for MinKNOW >=6.0.0 and deprecating support for earlier versions.
 1. Removing support for legacy guppy base caller and only supporting Dorado in future.
-1. Optimising batch sending to the base caller.
-1. Changing default accepted read types to receive from minknow.
+1. Optimising batch sending to the base caller through the use of `pass_reads` rather than `pass_read`
+1. Adding the new strand classifications as used by MinKNOW, including strand2 and short.
 
 ## 2024.2.0
 1. Add a dorado base-caller which addressed issue [#347](https://github.com/LooseLab/readfish/issues/347) - chiefly in Dorado 7.3.9 ONT have moved to `ont-pybasecall-client-lib`, 
