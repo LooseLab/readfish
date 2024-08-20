@@ -1,6 +1,7 @@
 """read_until_client.py
 Subclasses ONTs read_until_api ReadUntilClient added extra function that logs unblocks read_ids.
 """
+
 from __future__ import annotations
 import logging
 import time
@@ -92,24 +93,21 @@ class RUClient(ReadUntilClient):
         )
 
     def unblock_read_batch(
-        self, reads: list[tuple[int, int, str]], duration: float = 0.1
+        self, reads: list[tuple[int, str]], duration: float = 0.1
     ) -> None:
         """Request for a bunch of reads be unblocked.
 
-        ``reads`` is expected to be a list of (channel, ReadData.number)
+        ``reads`` is expected to be a list of (channel, ReadData.id)
 
-        :param reads: List of (channel, read_number, read_id)
+        :param reads: List of (channel, read_id)
         :param duration: time in seconds to apply unblock voltage.
         """
         actions = list()
-        for channel, read_number, *read_id in reads:
+        for channel, read_id in reads:
             actions.append(
-                self._generate_action(
-                    channel, read_number, "unblock", duration=duration
-                )
+                self._generate_action(channel, read_id, "unblock", duration=duration)
             )
-            if read_id:
-                self.unblock_logger.debug(read_id[0])
+            self.unblock_logger.debug(read_id)
         self.action_queue.put(actions)
 
     def unblock_read(
