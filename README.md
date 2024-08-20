@@ -532,7 +532,7 @@ These may or may not (!) be mistakes we have made already...
    - Double check your reference file is in the correct location.
    - Double check your targets exist in that reference file.
    - Double check your targets are correctly formatted with contig name matching the record names in your reference (Exclude description - i.e the contig name up to the first whitespace).
-1. **Where has my reference gone?** If you are using a _live TOML file - e.g running iter_align or iter_cent, the previous reference MMI file is deleted when a new one is added. This obviously saves on disk space use(!) but can lead to unfortunate side effects - i.e you delete your MMI file. These can of course be recreated but user **beware**.
+
 
 Happy readfish-ing!
 
