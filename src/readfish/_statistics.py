@@ -17,7 +17,7 @@ new performance and read records to the existing statistics.
     >>> from readfish._statistics import ReadfishStatistics, DEBUG_STATS_LOG_FIELDS
     >>> stats = ReadfishStatistics(None)
     >>> stats.add_batch_performance(1,1)
-    >>> stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, "test_read_id", 7, 1, 100, 3,\
+    >>> stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, "test_read_id", 7, 100, 3,\
  "single_on", "stop_receiving", "exp_region", None, None, False, 0.0))), region_name="naff",\
  overridden_action_name=None)
     >>> print(stats.get_batch_performance())
@@ -75,7 +75,7 @@ class ReadfishStatistics:
     >>> stats = ReadfishStatistics(None)
     >>> stats.add_batch_performance(1, 1)
     >>> stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS, (1, 2, "test_read_id",\
-7, 1, 100, 3, "single_on", "stop_receiving", "exp_region", None, None,\
+7, 100, 3, "single_on", "stop_receiving", "exp_region", None, None,\
 False, 0.0))), region_name="naff", overridden_action_name=None)
     >>> print(stats.get_batch_performance())
     0001R/1.0000s; Avg: 0001R/1.0000s; Seq:1; Unb:0; Pro:0; Slow batches (>1.00s): 0/1
@@ -98,7 +98,7 @@ False, 0.0))), region_name="naff", overridden_action_name=None)
     ...     stats = ReadfishStatistics(log_file=log_file_name)
     ...     # Use the log_read method to log a sample read
     ...     stats.log_read(**dict(zip(DEBUG_STATS_LOG_FIELDS,\
-(1, 2, "test_read_id", 7, 1, 100, 3, "single_on", "stop_receiving", "exp_region",\
+(1, 2, "test_read_id", 7, 100, 3, "single_on", "stop_receiving", "exp_region",\
 None, None, False, 0.0))), region_name="naff", overridden_action_name=None)
     ...     # in this test, we need a small amount of time to allow the logger to write the file
     ...     time.sleep(0.1)
@@ -107,7 +107,7 @@ None, None, False, 0.0))), region_name="naff", overridden_action_name=None)
     ...         content = log_file.read()
     ...     # Prepare the expected content
     ...     header = " ".join(DEBUG_STATS_LOG_FIELDS)
-    ...     expected_line = " ".join(map(str, (1, 2, "test_read_id", 7, 1, 100, 3, "single_on",\
+    ...     expected_line = " ".join(map(str, (1, 2, "test_read_id", 7, 100, 3, "single_on",\
 "stop_receiving", "exp_region", None, None, False, 0.0)))
     ...     expected = f"{header}\\n{expected_line}"
     ...     # Check that the content matches, don't ask about the replaces, it was the only way
