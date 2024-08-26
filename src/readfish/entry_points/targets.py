@@ -429,6 +429,7 @@ class Analysis:
                 )
 
         return (
+            action,
             previous_action,
             action_overridden,
             action.name if action_overridden else None,
@@ -497,6 +498,7 @@ class Analysis:
                 seen_count = self.chunk_tracker.seen(result.channel, result.read_id)
                 #  Check if there any conditions that override the action chose, exceed_max_chunks etc...
                 (
+                    action,
                     previous_action,
                     action_overridden,
                     overridden_action_name,

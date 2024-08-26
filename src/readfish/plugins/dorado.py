@@ -259,7 +259,6 @@ class Caller(CallerABC):
             # sleep_time = self.caller.throttle - t0
             # if sleep_time > 0:
             #     time.sleep(sleep_time)
-
         while reads_received < reads_sent:
             results = self.caller.get_completed_reads()
             # TODO: incorporate time_received into logging?
@@ -305,7 +304,7 @@ class Caller(CallerABC):
                     # TODO: Add Filter here
                     yield Result(
                         channel=channel,
-                        read_id=res["metadata"]["read_id"],
+                        read_id=read_id,
                         seq=res["datasets"]["sequence"],
                         barcode=barcode if barcode else None,
                         basecall_data=res,
