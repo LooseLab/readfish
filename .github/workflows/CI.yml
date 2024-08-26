@@ -151,12 +151,12 @@ jobs:
 
     steps:
       - name: Download HTML docs
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: html-docs
           path: _build/html
       - name: Download python package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: built-package
           path: dist
@@ -165,7 +165,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
 
       - name: Deploy docs to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: _build/html/
