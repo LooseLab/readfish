@@ -608,7 +608,7 @@ class ReadUntilClient(object):
                 raw_data_bytes = 0
                 last_msg_time = now
 
-    def _generate_action(self, read_channel, read_number, action, **params):
+    def _generate_action(self, read_channel, read_id, action, **params):
         """Returns an action request to be placed on the queue
 
         :param read_channel: a read's channel number.
@@ -622,7 +622,7 @@ class ReadUntilClient(object):
         action_kwargs = {
             "action_id": action_id,
             "channel": read_channel,
-            "id": read_number,
+            "id": read_id,
         }
         self.sent_actions[action_id] = action
         if action == "stop_further_data":
@@ -641,7 +641,7 @@ class ReadUntilClient(object):
             "Action %s on channel %s, read %s: %s",
             action_id,
             read_channel,
-            read_number,
+            read_id,
             action,
         )
         return action_request
