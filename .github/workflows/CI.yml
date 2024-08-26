@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: ${{env.PYTHON_LATEST}}
           cache: pip
-      - uses: "pre-commit/action@v3.0.0"
+      - uses: "pre-commit/action@v3.0.1"
 
   tests:
     name: "Test Python ${{ matrix.python-version }}"
