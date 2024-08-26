@@ -83,6 +83,7 @@ This prevents trying to unblock reads of unknown length.
 # Core imports
 from __future__ import annotations
 import argparse
+import traceback
 from packaging.version import Version
 import logging
 import time
@@ -279,8 +280,10 @@ class Analysis:
                     self.live_toml, self.client.channel_count, self.logger
                 )
             # FIXME: Broad exception
-            except Exception:
-                pass
+            except Exception as e:
+                if hasattr(e, "exceptions"):
+                    self.logger.error(getattr(e, "exceptions"))
+                    self.logger.error(traceback.format_exc())
             last_toml_mtime = self.live_toml.stat().st_mtime
         return last_toml_mtime
 
