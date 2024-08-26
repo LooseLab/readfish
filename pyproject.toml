@@ -36,7 +36,7 @@ dependencies = [
     "rtoml",
     "more_itertools",
     'exceptiongroup ; python_version<"3.11"',
-    "readfish_summarise >= 0.2.5",
+    "readfish_summarise >= 0.2.7",
     "readfish[all]",
 ]
 dynamic = ["version"]
@@ -53,7 +53,7 @@ dev = ["readfish[all,docs,tests]", "pre-commit"]
 # Running dependencies, this is a little bit clunky but works for now
 mappy = ["mappy"]
 mappy-rs = ["mappy-rs >= 0.0.6"]
-dorado = ["ont-pybasecall-client-lib"]
+dorado = ["ont-pybasecall-client-lib>=7.4.12"]
 all = ["readfish[mappy,mappy-rs,dorado]"]
 
 [project.urls]

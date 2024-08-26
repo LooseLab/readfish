@@ -84,11 +84,10 @@ def check_compatibility(
     >>> check_compatibility(Version("4.9.0"), (Version("5.0.0"), Version("5.9.7")))
     <DIRECTION.DOWNGRADE: 'downgrade'>
     >>> if (action := check_compatibility(Version("6.0.0"), MINKNOW_COMPATIBILITY_RANGE)) in (
-    ...     DIRECTION.UPGRADE,
-    ...     DIRECTION.DOWNGRADE,
+    ...     DIRECTION.JUST_RIGHT,
     ... ):
     ...     action
-    <DIRECTION.UPGRADE: 'upgrade'>
+    <DIRECTION.JUST_RIGHT: 'do nothing'>
     """
     (
         lowest_supported_version,

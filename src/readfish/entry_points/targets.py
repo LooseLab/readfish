@@ -601,7 +601,7 @@ If there isn't a newer version of readfish and readfish is failing, please open 
 
     if minknow_version < Version("6.0.0"):
         logger.critical(
-            f"This version of readfish ({__version__}) is not compatible with less than MinKNOW 6.X.X."
+            f"This version of readfish ({__version__}) is not compatible with less than MinKNOW 6.X.X, you downgrade to at least readfish 2024.2.0"
             f"This won't work, exiting..."
         )
         raise SystemExit(1)
