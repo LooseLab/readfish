@@ -12,6 +12,7 @@ Things we suggest that are validated:
   - **writable outputs** - Check permissions on output files
   - **sufficient space/RAM/resource** - Check Disk space at least
 """
+
 from __future__ import annotations
 import abc
 from typing import Iterable, TYPE_CHECKING
@@ -105,7 +106,7 @@ class CallerABC(abc.ABC):
         :param signal_dtype: The NumPy :func:`numpy.dtype` for the raw signal bytes.
         :param daq_values: Mapping of channel number to it's ``CALIBRATION`` values.
 
-        :returns: Yields ``Result`` classes with the ``Result.channel``, ``Result.read_number``, ``Result.read_id``, and ``Result.seq`` fields set.
+        :returns: Yields ``Result`` classes with the ``Result.channel``, ``Result.read_id``, and ``Result.seq`` fields set.
         """
 
     @abc.abstractmethod

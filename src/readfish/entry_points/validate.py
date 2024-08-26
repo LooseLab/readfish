@@ -83,7 +83,7 @@ def run(parser, args, extras) -> int:
         except Exception as exc:
             logger.error("Caller could not be initialised.")
             logger.error(
-                "Possible reasons for this include a mismatch between the ont basecaller client and the versions of guppy or dorado you are connecting to."
+                "Possible reasons for this include a mismatch between the ont basecaller client and the version dorado you are connecting to."
             )
             logger.error(
                 "Additional information is available here: https://looselab.github.io/readfish/FAQ.html#connection-error-bad-reply-could-not-interpret-message-from-server-for-request-load-config-reply-invalid-protocol"

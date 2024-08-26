@@ -12,7 +12,11 @@ wrong, let us know so we can add you to the GOTCHA hall of fame!
 > We also have more detailed documentation for your perusal at https://looselab.github.io/readfish
 
 > [!NOTE]  
-> Now also see our cool [FAQ](docs/FAQ.md).
+> Now also see our cool [FAQ](docs/FAQ.md). 
+
+> [!WARNING]
+Breaking for any version of `MinKNOW <= 6.0.0`
+As of `readfish >=2024.3.0` we no longer support guppy.
 
 readfish is a Python package that integrates with the
 [Read Until API](https://github.com/nanoporetech/read_until_api).
@@ -23,13 +27,13 @@ way most fit for purpose, and a return call can be made to the server to unblock
 the read in progress and so direct sequencing capacity towards reads of interest.
 
 
-**This implementation of readfish requires Guppy version >= 6.0.0 and MinKNOW version core >= 5.0.0 . It will not work on earlier versions.**
+**This implementation of readfish requires Dorado server version >= 7.3.9 and MinKNOW version core >= 6.0.0 . It will not work on earlier versions.**
 
-**Since MinKNOW version core >=5.9.0 and Dorado server version >=7.3.9, Dorado requires an alternate library, `ont-pybasecall-client-lib`. We have introduced a new`dorado` module to handle this.**
+**To run with earlier versions of MinKNOW please use an earlier version of readfish.**
 
 
-The code here has been tested with Guppy in GPU mode using GridION Mk1 and
-NVIDIA RTX2080 on live sequencing runs and an NVIDIA GTX1080 using playback
+The code here has been tested with Dorado in GPU mode using GridION Mk1 and
+NVIDIA RTX4090s on live sequencing runs and on MacOSX M2Max using playback
 on a simulated run (see below for how to test this).
 This code is run at your own risk as it DOES affect sequencing output. You
 are **strongly** advised to test your setup prior to running (see below for
@@ -41,6 +45,7 @@ The following platforms are supported:
 
 - **PromethION** Big Boy
 - **P2Solo** Smol Big Boy
+- **P2i** Not so Smol Big Boy
 - **GridION** Box
 - **MinION** Smol Boy
 
@@ -50,7 +55,7 @@ The following platforms are supported:
  The following OSs are supported:
 
  - **Linux** yay
- - **MacOS** boo (Apple Silicon, Only with Dorado)
+ - **MacOS** boo (Apple Silicon Only)
 
 
 > [!NOTE]  
@@ -128,7 +133,7 @@ conda activate readfish_dev
 | MinKNOW is transitioning from Guppy to Dorado. Until MinKNOW version 5.9 both Guppy and Dorado used ont-pyguppy-client-lib.<br/>As of MinKNOW version 5.9 and Dorado server version 7.3.9 and greater Dorado requires an alternate library, `ont-pybasecall-client-lib`.<br/>The listed `ont-pyguppy-client-lib` or `ont-pybasecaller-client-lib` version may not match the version installed on your system. To fix this, Please see this [issue](https://github.com/LooseLab/readfish/issues/221#issuecomment-1381529409), using the appropriate library. |
 
 
-[ONT's Guppy GPU](https://community.nanoporetech.com/downloads) should be installed and running as a server.
+[ONT's Dorado Basecall Server GPU](https://community.nanoporetech.com/downloads) should be installed and running as a server.
 
 <details style="margin-top: 10px">
 <summary><span id="py-ve">Alternatively, install readfish into a python virtual-environment</span></summary>
@@ -142,8 +147,8 @@ pip install --upgrade pip
 # Install our readfish Software
 pip install readfish[all]
 
-# Install ont_pyguppy_client_lib that matches your guppy server version. E.G.
-pip install ont_pyguppy_client_lib==6.3.8
+# Install ont_pybasecall_client that matches your dorado basecall server version. E.G.
+pip install ont_pybasecall_client_lib==7.1.2
 ```
 
 </details>
@@ -298,8 +303,9 @@ Steps:
     ``` 
     Change the text between the quotes to point to your downloaded bulk FAST5 file.
     <!-- end-obsolete -->
-1. Optional, If running GUPPY in GPU mode, set the parameter `break_reads_after_seconds = 1.0`
+1. Optional, If running Dorado in GPU mode,  you can set the parameter `break_reads_after_seconds = 1.0`
 to `break_reads_after_seconds = 0.4`. This results in a smaller read chunk. For R10.4 this is not required but can be tried. For adaptive sampling on PromethION, this should be left at 1 second.
+1. In MinKNOW >= 6.0.0 this value defaults to 0.8 which is a reasonable balance.
 1. In the MinKNOW GUI, right click on a sequencing position and select `Reload Scripts`.
 Your version of MinKNOW will now playback the bulkfile rather than live sequencing.
 1. Start a sequencing run as you would normally, selecting the corresponding flow
@@ -335,12 +341,9 @@ Note: The plots here are generated from running readfish unblock-all on an Apple
 <details style="margin-top: 10px">
 <summary id="testing-basecalling-and-mapping"><h3 style="display: inline;">Testing base-calling and mapping</h3></summary>
 
-To test selective sequencing you must have access to either a
-[guppy basecall server](https://community.nanoporetech.com/downloads/guppy/release_notes) (>=6.0.0) or a [dorado basecall server](https://community.nanoporetech.com/downloads/dorado/release_notes). 
+To test selective sequencing you must have access to a [dorado basecall server](https://community.nanoporetech.com/downloads/dorado/release_notes). 
 
 and a readfish TOML configuration file.
-
-NOTE: guppy and dorado are used here interchangeably as the basecall server. Dorado is gradually replacing guppy. All readfish code is compatible with Guppy >=6.0.0 and dorado >=0.4.0
 
 1. First make a local copy of the example TOML file:
     ```console
@@ -532,7 +535,7 @@ These may or may not (!) be mistakes we have made already...
    - Double check your reference file is in the correct location.
    - Double check your targets exist in that reference file.
    - Double check your targets are correctly formatted with contig name matching the record names in your reference (Exclude description - i.e the contig name up to the first whitespace).
-1. **Where has my reference gone?** If you are using a _live TOML file - e.g running iter_align or iter_cent, the previous reference MMI file is deleted when a new one is added. This obviously saves on disk space use(!) but can lead to unfortunate side effects - i.e you delete your MMI file. These can of course be recreated but user **beware**.
+
 
 Happy readfish-ing!
 
@@ -559,6 +562,14 @@ And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com
 
 <!-- start-changelog -->
 # Changelog
+## 2024.3.0
+### This release is breaking for ALL versions of `MinKNOW <= 6` and no longer supports Guppy.
+
+1. Introducing support for MinKNOW >=6.0.0 and deprecating support for earlier versions.
+1. Removing support for legacy guppy base caller and only supporting Dorado in future.
+1. Optimising batch sending to the base caller through the use of `pass_reads` rather than `pass_read`
+1. Adding the new strand classifications as used by MinKNOW, including strand2 and short.
+
 ## 2024.2.0
 1. Add a dorado base-caller which addressed issue [#347](https://github.com/LooseLab/readfish/issues/347) - chiefly in Dorado 7.3.9 ONT have moved to `ont-pybasecall-client-lib`, 
   and connections from `ont_pyguppy_client_lib` raise `Connection error. ...  LOAD_CONFIG. Reply: INVALID_PROTOCOL` [(#344)](https://github.com/LooseLab/readfish/pull/344)

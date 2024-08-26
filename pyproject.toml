@@ -36,7 +36,7 @@ dependencies = [
     "rtoml",
     "more_itertools",
     'exceptiongroup ; python_version<"3.11"',
-    "readfish_summarise >= 0.2.5",
+    "readfish_summarise >= 0.2.7",
     "readfish[all]",
 ]
 dynamic = ["version"]
@@ -48,14 +48,13 @@ readfish = "readfish._cli_base:main"
 # Development dependencies
 docs = ["sphinx-copybutton", "furo", "myst-parser", "faqtory"]
 tests = ["pytest", "coverage[toml]"]
-tests-mappy = ["readfish[tests,mappy,guppy]"]
+tests-mappy = ["readfish[tests,mappy,dorado]"]
 dev = ["readfish[all,docs,tests]", "pre-commit"]
 # Running dependencies, this is a little bit clunky but works for now
 mappy = ["mappy"]
 mappy-rs = ["mappy-rs >= 0.0.6"]
-guppy = ["ont_pyguppy_client_lib"]
-dorado = ["ont-pybasecall-client-lib"]
-all = ["readfish[mappy,mappy-rs,guppy,dorado]"]
+dorado = ["ont-pybasecall-client-lib>=7.4.12"]
+all = ["readfish[mappy,mappy-rs,dorado]"]
 
 [project.urls]
 Documentation = "https://looselab.github.io/readfish"

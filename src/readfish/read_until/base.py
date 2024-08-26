@@ -138,7 +138,7 @@ class ReadUntilClient(object):
         self.prefilter_classes = prefilter_classes
 
         # Stores the most recent read number that a decision has been made on (stop_receiving/unblock)
-        self.channel_read_latest_decision = defaultdict(int)
+        self.channel_read_latest_decision = defaultdict(str)
 
         try:
             self.connection = Connection(
@@ -274,7 +274,7 @@ class ReadUntilClient(object):
         #    requests before they are put on the gRPC stream.
         self.action_queue = queue.Queue()
 
-        self.channel_read_latest_decision = defaultdict(int)
+        self.channel_read_latest_decision = defaultdict(str)
 
         # the data_queue is used to store the latest chunk per channel
         self.data_queue = self.CacheType(size=self.cache_size)
@@ -349,7 +349,7 @@ class ReadUntilClient(object):
             data = [
                 (channel, read)
                 for (channel, read) in data
-                if read.number > self.channel_read_latest_decision[channel]
+                if read.id not in self.channel_read_latest_decision[channel]
             ]
         return data
 
@@ -571,10 +571,10 @@ class ReadUntilClient(object):
                         self.logger.debug(
                             "Rereceived %s:%s after stop request.",
                             read_channel,
-                            read.number,
+                            read.id,
                         )
                         continue
-                    self.stop_receiving_read(read_channel, read.number)
+                    self.stop_receiving_read(read_channel, read.id)
                 unique_reads.add(read.id)
                 read_samples_behind = progress.acquired - read.chunk_start_sample
                 samples_behind += read_samples_behind
@@ -622,7 +622,7 @@ class ReadUntilClient(object):
         action_kwargs = {
             "action_id": action_id,
             "channel": read_channel,
-            "number": read_number,
+            "id": read_number,
         }
         self.sent_actions[action_id] = action
         if action == "stop_further_data":

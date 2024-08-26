@@ -67,16 +67,19 @@ class Caller(CallerABC):
         self.supported_barcode_kits = None
         self.supported_basecall_models = None
         self.run_information = run_information
+
         if self.run_information:
-            self.guppy_version = (
-                self.run_information.software_versions.guppy_connected_version
+            self.basecaller_version = (
+                self.run_information.software_versions.basecaller_connected_version
             )
 
-            if parse_version(self.guppy_version) >= parse_version("7.3.9"):
-                logging.info(f"Connected to caller version {self.guppy_version}.")
+            if parse_version(self.basecaller_version) >= parse_version("7.4.12"):
+                logging.info(f"Connected to caller version {self.basecaller_version}.")
             else:
                 logging.info(
-                    f"Trying to use minKNOW with a caller version {self.guppy_version}. If this is causing readfish to crash, try using a version of Dorado >= 7.3.9. You should also check for any updates available to readfish."
+                    f"Trying to use minKNOW with a caller version {self.basecaller_version}."
+                    " If this is causing readfish to crash, try using a version of Dorado >= 7.3.9."
+                    " You should also check for any updates available to readfish."
                 )
 
         # Set our own priority
@@ -226,7 +229,8 @@ class Caller(CallerABC):
             # Attach the "RF-" prefix
             read_id = f"RF-{read.id}"
             t0 = time.time()
-            cache[read_id] = (channel, read.number, t0)
+            # cache the read id without the RF tag
+            cache[read_id] = (channel, read.id, t0)
             reads_to_send.append(
                 package_read(
                     read_id=read_id,
@@ -285,9 +289,9 @@ class Caller(CallerABC):
                         continue
 
                     try:
-                        channel, read_number, time_sent = cache.pop(read_id)
+                        channel, read_id, _time_sent = cache.pop(read_id)
                     except KeyError:
-                        channel, read_number, time_sent = skipped.pop(read_id)
+                        channel, read_id, _time_sent = skipped.pop(read_id)
                         reads_sent += 1
                     res["metadata"]["read_id"] = read_id[3:]
                     self.logger.debug(
@@ -301,7 +305,6 @@ class Caller(CallerABC):
                     # TODO: Add Filter here
                     yield Result(
                         channel=channel,
-                        read_number=read_number,
                         read_id=res["metadata"]["read_id"],
                         seq=res["datasets"]["sequence"],
                         barcode=barcode if barcode else None,
