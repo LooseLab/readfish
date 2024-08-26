@@ -292,10 +292,9 @@ class Caller(CallerABC):
                     except KeyError:
                         channel, read_id, _time_sent = skipped.pop(read_id)
                         reads_sent += 1
-                    res["metadata"]["read_id"] = read_id[3:]
                     self.logger.debug(
                         "@%s ch=%s\n%s\n+\n%s",
-                        res["metadata"]["read_id"],
+                        read_id,
                         channel,
                         res["datasets"]["sequence"],
                         res["datasets"]["qstring"],
