@@ -32,8 +32,8 @@ dev = ["readfish[all,docs,tests]"]
 # Running dependencies, this is a little bit clunky but works for now
 mappy = ["mappy"]
 mappy-rs = ["mappy-rs"]
-guppy = ["ont_pyguppy_client_lib"]
-all = ["readfish[mappy,mappy-rs,guppy]"]
+dorado = ["ont-pybasecall-client-lib"]
+all = ["readfish[mappy,mappy-rs,dorado]"]
 ```
 
 An example install command would be `pip install readfish[all]`.
@@ -159,11 +159,11 @@ Plugins are loaded as instances of `_PluginModules` - see source of `_PluginModu
 This would try to load the `foo` module from the `bar` package.
 
 ```toml
-[caller_settings.readfish.plugins.guppy]
+[caller_settings.readfish.plugins.dorado]
 ```
 
-This would load the readfish guppy `Caller` plugin explicitly.
-There are instances of "builtin" plugins, which are the included `mappy`, `mappy_rs` and `guppy` plugins.
+This would load the readfish dorado `Caller` plugin explicitly.
+There are instances of "builtin" plugins, which are the included `mappy`, `mappy_rs` and `dorado` plugins.
 See the source of `readfish._config._PluginModule.load_module` for more details.
 ```{eval-rst}
 .. automethod:: readfish._config._PluginModule.load_module
@@ -209,7 +209,7 @@ This next method is important. `validate()`
 
 The validate function is intended to be called in the __init__ method, before the actual `Aligner` or `Caller` is initialised. The contents of this method are left up to the author, however we suggest that people check for the things listed above.
 
-The purpose of `validate` is to check that the given parameters will create a valid `Aligner` or `Caller`. For example, in the `guppy.py` `Caller` plugin, we check the permissions of the provided `Guppy` socket. If these are insufficient, Guppy only errors out after a 10 minute timeout. However of this is caught in `validate`, everyone ends up being left a lot happier.
+The purpose of `validate` is to check that the given parameters will create a valid `Aligner` or `Caller`. For example, in the `dorado.py` `Caller` plugin, we check the permissions of the provided `dorado` socket. If these are insufficient, dorado only errors out after a 10 minute timeout. However if this is caught in `validate`, everyone ends up being left a lot happier.
 
 ```{literalinclude} ../src/readfish/plugins/_mappy.py
 :language: python

@@ -39,45 +39,45 @@ These are expanded on in the {ref}`barcode configuration <barcodes-config>` and 
 ## Plugin configuration
 
 Readfish uses "plugins" to configure basecalling and alignment.
-We provide some default plugins using Guppy (via [`ont-pyguppy-client-lib`]) and mappy (via [`mappy`]), for basecalling and alignment respectively.
+We provide some default plugins using Dorado (via [`ont-pybasecall-client-lib`]) and mappy (via [`mappy`]), for basecalling and alignment respectively.
 The way that you tell readfish what plugin to load is by specifying it after the table name, for example:
 
 ```toml
-[caller_settings.guppy]
+[caller_settings.dorado]
                # ^^^^^^
-               # Chooses the Guppy plugin
+               # Chooses the Dorado plugin
 ```
 
-This indicates that readfish should use Guppy for basecalling.
+This indicates that readfish should use Dorado for basecalling.
 
 ### Basecaller
 
-#### Guppy
+#### Dorado
 
-This section is specific to the Guppy plugin for basecalling.
-The `caller_settings.guppy` [table] specifies the basecalling parameters used by the basecaller.
+This section is specific to the Dorado plugin for basecalling.
+The `caller_settings.dorado` [table] specifies the basecalling parameters used by the basecaller.
 An example table is given below:
 
 ```toml
-[caller_settings.guppy]
+[caller_settings.dorado]
 config = "dna_r10.4.1_e8.2_400bps_hac"
 address = "ipc:///tmp/.guppy/5555"
 debug_log = "basecalled_chunks.fq" #optional
 ```
 
-The only required keys are `address` and `config` these indicate to Guppy what server to connect to and what basecalling model to load.
-The `config` parameter must a valid Guppy configuration excluding the file extension; these are found in the Guppy `data` folder (on linux `ls /opt/ont/guppy/data/*.cfg`).
-The `address` is the path to the IPC socket Guppy is listening on, for Guppy servers run by MinKNOW the default is `ipc:///tmp/.guppy/5555`.
+The only required keys are `address` and `config` these indicate to Dorado what server to connect to and what basecalling model to load.
+The `config` parameter must be a valid Dorado configuration excluding the file extension; these are found in the Dorado `data` folder (on linux `ls /opt/ont/dorado/data/*.cfg`).
+The `address` is the path to the IPC socket Dorado is listening on, for Dorado servers run by MinKNOW the default is `ipc:///tmp/.guppy/5555`. Why guppy? Blame history...
 The `debug_log` is an optional file that the basecalled FASTQ are written to.
 
 
-|           Key |  Type  |                                   Description                                  | Required |
-| ------------: | :----: | :----------------------------------------------------------------------------: | :------- |
-| `config` | string |                           Name of base calling config                          | True     |
-|    ` address` | string |            Address of Guppy socket - default ipc:///tmp/.guppy/5555            | True     |
+|           Key |  Type  |                                  Description                                   | Required |
+| ------------: | :----: |:------------------------------------------------------------------------------:| :------- |
+| `config` | string |                          Name of base calling config                           | True     |
+|    ` address` | string |           Address of Dorado socket - default ipc:///tmp/.guppy/5555            | True     |
 |   `debug_log` | string | Optional - Filepath to write out base-calls to - should end in a FASTQ suffix. | False    |
 
-Any extra key value pairs are passed varbatim to the `PyGuppyClient` instance upon initialisation as keyword arguments.
+Any extra key value pairs are passed verbatim to the `PyBasecallClient` instance upon initialisation as keyword arguments.
 
 For example:
 
@@ -85,27 +85,27 @@ For example:
 server_file_load_timeout = 60
 ```
 
-Will set the `server_file_load_timeout` parameter to 60 seconds for Guppy.
+Will set the `server_file_load_timeout` parameter to 60 seconds for Dorado.
 
 <details>
-<summary>Example Guppy server parameters</summary>
+<summary>Example Dorado server parameters</summary>
 
 <!-- blank line above is essential for this to work -->
 ```{eval-rst}
-.. automethod:: pyguppy_client_lib.pyclient.PyGuppyClient.set_params
+.. automethod:: pybasecall_client_lib.pyclient.PyBasecallClient.set_params
     :noindex:
 ```
 </details>
 
-To see parameters that _your_ Guppy installation has run the following python snippet in your `readfish` environment
+To see parameters that _your_ Dorado installation has run the following python snippet in your `readfish` environment
 
 ```console
-PAGER=cat python -c "import pyguppy_client_lib.pyclient as pgc; help(pgc.PyGuppyClient.set_params)"
+PAGER=cat python -c "import pybasecall_client_lib.pyclient as pgc; help(pgc.PyBasecallClient.set_params)"
 ```
 
 #### Basecaller no operation (`no_op`)
 
-In addition to the Guppy basecaller we provide a "no operation" basecaller.
+In addition to the Dorado basecaller we provide a "no operation" basecaller.
 This plugin does nothing.
 It will only iterate the live chunks of data and pass through the minimal amount of data that is needed for the next steps.
 This is added using:
@@ -306,10 +306,10 @@ Targets given in this format specify the entire contig as a target to select for
 (barcodes-config)=
 ## Barcode specific configuration
 
-If you are using Guppy for basecalling then the additional `barcode_kits` parameter is required on the `caller_settings` table.
+If you are using Dorado for basecalling then the additional `barcode_kits` parameter is required on the `caller_settings` table.
 
 ```toml
-[caller_settings.guppy]
+[caller_settings.dorado]
 config = "dna_r10.4.1_e8.2_400bps_fast"
 address = "ipc:///tmp/.guppy/5555"
 debug_log = "basecalled_chunks.fq"
@@ -405,7 +405,7 @@ This can be disabled by passing the `--no-describe` flag.
 [tables]: https://toml.io/en/v1.0.0#table
 [arrays of tables]: https://toml.io/en/v1.0.0#array-of-tables
 [key-value pairs]: https://toml.io/en/v1.0.0#keyvalue-pair
-[`ont-pyguppy-client-lib`]: https://pypi.org/p/ont-pyguppy-client-lib
+[`ont-pybasecall-client-lib`]: https://pypi.org/p/ont-pybasecall-client-lib
 [`mappy`]: https://github.com/lh3/minimap2/tree/master/python
 [`mappy-rs`]: https://github.com/Adoni5/mappy-rs
 [`mappy` documentation]: https://github.com/lh3/minimap2/tree/master/python#class-mappyaligner

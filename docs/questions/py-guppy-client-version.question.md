@@ -4,7 +4,11 @@ alt_titles:
   - "Error connecting to Guppy"
   - "LOAD_CONFIG error when connecting to py-guppy-client"
   - "INVALID_PROTOCOL error when connecting to Guppy"
+  - "INVALID PROTOCOL"
 ---
+
+## UPDATE 20/08/2024
+The same all holds true for `Dorado`, although it is necessary to replace `ont-pyguppy-client-lib` with `ont-pybasecall-client-lib`
 
 This is most likely a version mismatch between `ont-pyguppy-client-lib`, the python library that enables readfish to talk to Guppy and the installed version of Guppy.
 

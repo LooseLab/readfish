@@ -11,14 +11,14 @@ SEARCH_PATH = Path(TEST_DIR / "static")
 
 def ch_file_perms():
     """
-    Change the file permissions on the fake Guppy sockets, if they aren't correct.
+    Change the file permissions on the fake dorado sockets, if they aren't correct.
       Most likely this is the case after a fresh clone.
       Sets the no read socket (5555_fail_nr) to allow no one to read,
       and the no write socket (5555_fail_nw) to allow no one to write.
     """
 
-    nr_socket_path = SEARCH_PATH / "guppy_validation_test" / "fail" / "5555_fail_nr"
-    nw_socket_path = SEARCH_PATH / "guppy_validation_test" / "fail" / "5555_fail_nw"
+    nr_socket_path = SEARCH_PATH / "dorado_validation_test" / "fail" / "5555_fail_nr"
+    nw_socket_path = SEARCH_PATH / "dorado_validation_test" / "fail" / "5555_fail_nw"
 
     if os.access(nr_socket_path, os.R_OK):
         os.chmod(nr_socket_path, 0o260)
