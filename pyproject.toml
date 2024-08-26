@@ -48,7 +48,7 @@ readfish = "readfish._cli_base:main"
 # Development dependencies
 docs = ["sphinx-copybutton", "furo", "myst-parser", "faqtory"]
 tests = ["pytest", "coverage[toml]"]
-tests-mappy = ["readfish[tests,mappy]"]
+tests-mappy = ["readfish[tests,mappy,dorado]"]
 dev = ["readfish[all,docs,tests]", "pre-commit"]
 # Running dependencies, this is a little bit clunky but works for now
 mappy = ["mappy"]
