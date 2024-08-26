@@ -282,11 +282,7 @@ def stringify_grid(grid: list[list[str]]) -> str:
 
 
 def draw_flowcell_split(
-    flowcell_size: int,
-    split: int = 1,
-    axis: int = 1,
-    index: int = 0,
-    prefix: str = "\t",
+    flowcell_size: int, split: int = 1, axis: int = 1, index: int = 0
 ) -> str:
     """
     Draw unicode representation of the flowcell. If the flowcell is split more than once, and index is passed, the region of the
@@ -310,36 +306,24 @@ def draw_flowcell_split(
     00XX
     00XX
 
-
     :param flowcell_size: Number of channels on the flow cell
     :param split: The number of regions to split into, defaults to 1
     :param index: The index of the region to highlight, defaults to 0
-    :param prefix: Any leading string character to put on the row. Defaults to \t
     :return: String representation of the flowcell in ASCII art
     """
-    height, width = get_flowcell_array(flowcell_size).shape
-    height = round((height / 2) + 0.5)
-    # Flongle is a truly dumb shape - 10 rows of 13 columns, breaks maths above so just special case it
-    if flowcell_size == 126:
-        height -= 1
+    depth, width = get_flowcell_array(flowcell_size).shape
+    depth = round((depth / 2) + 0.5)
     cells = []
-    for _h in range(height):
+    for _h in range(depth):
         row = [
-            prefix,
+            "    ",
         ]
         for _w in range(width):
             row.append(".")
         cells.append(row)
     cells = np.array(cells)
     region = generate_flowcell(flowcell_size, split, axis)[index]
-    col, row = None, None
     for pos in region:
-        # Flongle has four channels which are "0", but are just placeholders
-        # in the array where there is no channel due to it's weird shape.
-        # Therefore we insert a whitespace for this character
-        if pos == 0 and flowcell_size == 126:
-            cells[(col // 2), row + 2] = " "
-            continue
         row, col = get_coords(pos, flowcell_size)
         cells[(col // 2), row + 1] = "#"
     return f"\n{stringify_grid(cells)}\n"
