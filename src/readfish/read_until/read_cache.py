@@ -78,7 +78,7 @@ class ReadCache(MutableMapping):
         with self.lock:
             # Check if same read
             if key in self._dict:
-                if self._dict[key].number == value.number:
+                if self._dict[key].id == value.id:
                     # Same read
                     self.replaced += 1
                 else:
@@ -219,7 +219,7 @@ class AccumulatingCache(ReadCache):
                 self._dict[key] = value
             else:
                 # Key exists
-                if self[key].number == value.number:
+                if self[key].id == value.id:
                     # Same read, update raw_data
                     self[key].raw_data += value.raw_data
                     self.replaced += 1

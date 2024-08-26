@@ -170,10 +170,10 @@ class _PluginModule:
         override=True, the builtin module names are ignored.
         """
         builtins = {
-            "guppy": "guppy",
             "dorado": "dorado",
             "mappy": "mappy",
             "mappy_rs": "mappy_rs",
+            "mappy-rs": "mappy_rs",
             "no_op": "_no_op",
         }
         if self.name in builtins and not override:

@@ -67,16 +67,19 @@ class Caller(CallerABC):
         self.supported_barcode_kits = None
         self.supported_basecall_models = None
         self.run_information = run_information
+
         if self.run_information:
-            self.guppy_version = (
-                self.run_information.software_versions.guppy_connected_version
+            self.basecaller_version = (
+                self.run_information.software_versions.basecaller_connected_version
             )
 
-            if parse_version(self.guppy_version) >= parse_version("7.3.9"):
-                logging.info(f"Connected to caller version {self.guppy_version}.")
+            if parse_version(self.basecaller_version) >= parse_version("7.4.12"):
+                logging.info(f"Connected to caller version {self.basecaller_version}.")
             else:
                 logging.info(
-                    f"Trying to use minKNOW with a caller version {self.guppy_version}. If this is causing readfish to crash, try using a version of Dorado >= 7.3.9. You should also check for any updates available to readfish."
+                    f"Trying to use minKNOW with a caller version {self.basecaller_version}."
+                    " If this is causing readfish to crash, try using a version of Dorado >= 7.3.9."
+                    " You should also check for any updates available to readfish."
                 )
 
         # Set our own priority
@@ -220,13 +223,15 @@ class Caller(CallerABC):
         #        successfully sent. Therefore we capture not sent reads
         cache, skipped = {}, {}
         reads_received, reads_sent = 0, 0
+        reads_to_send = []
         daq_values = _DefaultDAQValues if daq_values is None else daq_values
         for channel, read in reads:
             # Attach the "RF-" prefix
             read_id = f"RF-{read.id}"
             t0 = time.time()
-            cache[read_id] = (channel, read.number, t0)
-            success = self.caller.pass_read(
+            # cache the read id without the RF tag
+            cache[read_id] = (channel, read.id, t0)
+            reads_to_send.append(
                 package_read(
                     read_id=read_id,
                     raw_data=np.frombuffer(read.raw_data, signal_dtype),
@@ -236,18 +241,24 @@ class Caller(CallerABC):
                     start_time=int(read.start_sample),
                 )
             )
-            if not success:
-                logging.warning(f"Could not send read {read_id!r} to Dorado")
-                # FIXME: This is resolved in later versions of dorado.
-                skipped[read_id] = cache.pop(read_id)
-                continue
+            reads_sent += 1
+        success_pass = False
+        for _attempt in range(3):
+            # Only attempt to pass reads if there are reads to be passed
+            if not success_pass and reads_to_send:
+                success_pass = self.caller.pass_reads(reads_to_send)
             else:
-                reads_sent += 1
+                break
+        else:
+            logging.warning(
+                f"Could not send {len(reads_to_send)} reads to Dorado after 3 attempts, skipping!"
+            )
+            for read in reads_to_send:
+                skipped[read["read_id"]] = cache.pop(read["read_id"])
 
-            sleep_time = self.caller.throttle - t0
-            if sleep_time > 0:
-                time.sleep(sleep_time)
-
+            # sleep_time = self.caller.throttle - t0
+            # if sleep_time > 0:
+            #     time.sleep(sleep_time)
         while reads_received < reads_sent:
             results = self.caller.get_completed_reads()
             # TODO: incorporate time_received into logging?
@@ -260,31 +271,30 @@ class Caller(CallerABC):
             for res_batch in results:
                 for res in res_batch:
                     read_id = res["metadata"]["read_id"]
-                    '''
-                    Dorado sometimes returns two sub_tags for a read.
-
-                    An example result:
-                    RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c
-                    {'read_tag': 3605, 'sub_tag': 0, 'priority': <read_priority.high_priority: 0>, 'metadata': {'adapter_front_begin_index': -1, 'adapter_front_foundseq': 'NA', 'adapter_front_foundseq_length': 2, 'adapter_front_id': 'NA', 'adapter_front_refseq': 'NA', 'adapter_front_score': 0.0, 'adapter_mid_end_index': -1, 'adapter_mid_id': 'NA', 'adapter_mid_score': 0.0, 'adapter_rear_end_index': -1, 'adapter_rear_foundseq': 'NA', 'adapter_rear_foundseq_length': 2, 'adapter_rear_id': 'NA', 'adapter_rear_refseq': 'NA', 'adapter_rear_score': 0.0, 'barcode_arrangement': '', 'barcode_front_begin_index': 0, 'barcode_front_foundseq': 'NA', 'barcode_front_foundseq_length': 2, 'barcode_front_id': 'NA', 'barcode_front_id_inner': 'NA', 'barcode_front_refseq': 'NA', 'barcode_front_score': 0.0, 'barcode_front_score_inner': 0.0, 'barcode_full_arrangement': '', 'barcode_kit': '', 'barcode_mid_front_end_index': 0, 'barcode_mid_front_id': 'NA', 'barcode_mid_front_score': 0.0, 'barcode_mid_rear_end_index': 0, 'barcode_mid_rear_id': 'NA', 'barcode_mid_rear_score': 0.0, 'barcode_rear_end_index': 0, 'barcode_rear_foundseq': 'NA', 'barcode_rear_foundseq_length': 2, 'barcode_rear_id': 'NA', 'barcode_rear_id_inner': 'NA', 'barcode_rear_refseq': 'NA', 'barcode_rear_score': 0.0, 'barcode_rear_score_inner': 0.0, 'barcode_score': 0.0, 'barcode_variant': '', 'basecall_type': 'beam search', 'daq_offset': 0.0, 'daq_scaling': 0.25, 'duration': 8592, 'lamp_barcode_id': 'NA', 'lamp_barcode_score': 0.0, 'lamp_target_id': 'NA', 'lamp_target_score': 0.0, 'mean_qscore': 10.297822952270508, 'med_abs_dev': 0.01067463681101799, 'median': -373.5199890136719, 'model_stride': 6, 'model_version_id': 'dna_r10.4.1_e8.2_400bps_fast@v4.3.0', 'num_events': 1432, 'num_minknow_events': 0, 'primer_front_begin_index': -1, 'primer_front_foundseq': 'NA', 'primer_front_foundseq_length': 2, 'primer_front_id': 'NA', 'primer_front_refseq': 'NA', 'primer_front_score': 0.0, 'primer_rear_end_index': -1, 'primer_rear_foundseq': 'NA', 'primer_rear_foundseq_length': 2, 'primer_rear_id': 'NA', 'primer_rear_refseq': 'NA', 'primer_rear_score': 0.0, 'read_id': 'RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c', 'sampling_rate': 5000.0, 'scaling_med_abs_dev': 0.01067463681101799, 'scaling_median': -373.5199890136719, 'scaling_version': '', 'sequence_length': 340, 'start_time': 12462912, 'state_size': 0, 'strand_id': '441174ae-e18f-4612-bc46-0c86d301cb4d', 'trim_front': 0, 'trim_rear': 0, 'trimmed_duration': 8592, 'trimmed_events': 1432, 'trimmed_samples': 0}, 'datasets': {'raw_data': array([306, 289, 300, ..., 526, 537, 540], dtype=int16), 'sequence': 'CTACAGTGGTCGTCAATACTATTGCAACTCCAGCCTGGGCAACAGAGTGAGACCCTGTCTCAAAAAAAAACAGAAGGAAGCCAAAGCCCACAAAGACGCTGAGTATTTTACATTCCTTTTTTGTACGAATGCTTCAAAATCTGGTGTGTATCTTACAGTTATAAAATCTCTCAATTTAGCCACCAAATTTTCACCAGAAATGCATGAACTGTGTTCAGATTTCATAAACTTTCAGTTGATAAAGTAGATTCACATACTGAAGGTGTTCCAAACGTACTGGAAGACTTTCTAAAATGGATTTGAACACCAGTTTCCAGGTTTACATTTAAGTTAATTCAAA', 'qstring': '#(&&%(\'\'%&(#"""$\'%%$%$%*,)+()\'(\'\'*+AEHHH.-0410)200BGC4HKJJGGB77<DC3-\'.,,+\'&&%%+*(*1-778:C76+,=A.,-./*)+##9:JSGGGHD6432,5>H(\'(+,1-(,//:3640==6504C><357>4448FAFCIGI64-/9660=12HISOBGKLA@?1/59EGM>:::DEJSOM1D?>=GI11775:930,;;>H9/7122)*0:**-===>B55878&#+"#&\',,?@EIJBCLSM964\'(376528:5/-*)21\'##+-&$"#%+&#&%\'-./49?B=A960@7;ABB@6CIEFDD>H7)&45:DC5158B'}}
-                    RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c
-                    {'read_tag': 3605, 'sub_tag': 1, 'priority': <read_priority.high_priority: 0>, 'metadata': {'adapter_front_begin_index': -1, 'adapter_front_foundseq': 'NA', 'adapter_front_foundseq_length': 2, 'adapter_front_id': 'NA', 'adapter_front_refseq': 'NA', 'adapter_front_score': 0.0, 'adapter_mid_end_index': -1, 'adapter_mid_id': 'NA', 'adapter_mid_score': 0.0, 'adapter_rear_end_index': -1, 'adapter_rear_foundseq': 'NA', 'adapter_rear_foundseq_length': 2, 'adapter_rear_id': 'NA', 'adapter_rear_refseq': 'NA', 'adapter_rear_score': 0.0, 'barcode_arrangement': '', 'barcode_front_begin_index': 0, 'barcode_front_foundseq': 'NA', 'barcode_front_foundseq_length': 2, 'barcode_front_id': 'NA', 'barcode_front_id_inner': 'NA', 'barcode_front_refseq': 'NA', 'barcode_front_score': 0.0, 'barcode_front_score_inner': 0.0, 'barcode_full_arrangement': '', 'barcode_kit': '', 'barcode_mid_front_end_index': 0, 'barcode_mid_front_id': 'NA', 'barcode_mid_front_score': 0.0, 'barcode_mid_rear_end_index': 0, 'barcode_mid_rear_id': 'NA', 'barcode_mid_rear_score': 0.0, 'barcode_rear_end_index': 0, 'barcode_rear_foundseq': 'NA', 'barcode_rear_foundseq_length': 2, 'barcode_rear_id': 'NA', 'barcode_rear_id_inner': 'NA', 'barcode_rear_refseq': 'NA', 'barcode_rear_score': 0.0, 'barcode_rear_score_inner': 0.0, 'barcode_score': 0.0, 'barcode_variant': '', 'basecall_type': 'beam search', 'daq_offset': 0.0, 'daq_scaling': 0.25, 'duration': 321, 'lamp_barcode_id': 'NA', 'lamp_barcode_score': 0.0, 'lamp_target_id': 'NA', 'lamp_target_score': 0.0, 'mean_qscore': 12.145367622375488, 'med_abs_dev': 0.01067463681101799, 'median': -373.5199890136719, 'model_stride': 6, 'model_version_id': 'dna_r10.4.1_e8.2_400bps_fast@v4.3.0', 'num_events': 53, 'num_minknow_events': 0, 'primer_front_begin_index': -1, 'primer_front_foundseq': 'NA', 'primer_front_foundseq_length': 2, 'primer_front_id': 'NA', 'primer_front_refseq': 'NA', 'primer_front_score': 0.0, 'primer_rear_end_index': -1, 'primer_rear_foundseq': 'NA', 'primer_rear_foundseq_length': 2, 'primer_rear_id': 'NA', 'primer_rear_refseq': 'NA', 'primer_rear_score': 0.0, 'read_id': 'RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c', 'sampling_rate': 5000.0, 'scaling_med_abs_dev': 0.01067463681101799, 'scaling_median': -373.5199890136719, 'scaling_version': '', 'sequence_length': 16, 'start_time': 12477610, 'state_size': 0, 'strand_id': '3b536c09-3f73-4c59-a332-2a0f6cad4ed9', 'trim_front': 0, 'trim_rear': 0, 'trimmed_duration': 321, 'trimmed_events': 53, 'trimmed_samples': 0}, 'datasets': {'raw_data': array([306, 289, 300, ..., 526, 537, 540], dtype=int16), 'sequence': 'TTTTTGTGGGCTTTTA', 'qstring': "21;;B98'-213,*2&"}}
-
-                    The second sub_tag will cause the code to gail as it is not expected.
-
-                    Therefore we need to check for the sub_tag and if it is not 0, we need to skip the read.
-                    '''
+                    # Dorado sometimes returns two sub_tags for a read, where signal which was thought to be a single read has been split.
+                    #
+                    # An example result:
+                    # RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c
+                    # {'read_tag': 3605, 'sub_tag': 0, 'metadata': {'read_id': 'RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c'...},
+                    #    'datasets': {'raw_data': array([306, 289, 300, ..., 526, 537, 540], dtype=int16),
+                    #        'sequence': 'CTACAGTGGTCGTCAATACTATTGCAACTCCAGCCTGGGCAACAGAGTGAGACCCTGTCTCAAA...'.}}
+                    # RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c
+                    # {'read_tag': 3605, 'sub_tag': 1 , 'metadata': {'read_id': 'RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c'...}
+                    #    'datasets': {'raw_data': array([306, 289, 300, ..., 526, 537, 540], dtype=int16),
+                    #        'sequence': 'TTTTTGTGGGCTTTTA',}}
+                    # The second sub_tag will cause the code to fail as it is not expected.
+                    # Therefore we need to check for the sub_tag and if it is not 0, we need to skip the read.
                     if res["sub_tag"] > 0:
                         continue
 
                     try:
-                        channel, read_number, time_sent = cache.pop(read_id)
+                        channel, read_id, _time_sent = cache.pop(read_id)
                     except KeyError:
-                        channel, read_number, time_sent = skipped.pop(read_id)
+                        channel, read_id, _time_sent = skipped.pop(read_id)
                         reads_sent += 1
-                    res["metadata"]["read_id"] = read_id[3:]
                     self.logger.debug(
                         "@%s ch=%s\n%s\n+\n%s",
-                        res["metadata"]["read_id"],
+                        read_id,
                         channel,
                         res["datasets"]["sequence"],
                         res["datasets"]["qstring"],
@@ -293,8 +303,7 @@ class Caller(CallerABC):
                     # TODO: Add Filter here
                     yield Result(
                         channel=channel,
-                        read_number=read_number,
-                        read_id=res["metadata"]["read_id"],
+                        read_id=read_id,
                         seq=res["datasets"]["sequence"],
                         barcode=barcode if barcode else None,
                         basecall_data=res,

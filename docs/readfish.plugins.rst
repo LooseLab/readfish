@@ -22,10 +22,10 @@ readfish plugins API
 
 ----
 
-``readfish.plugins.guppy`` module
+``readfish.plugins.dorado`` module
 ---------------------------------
 
-.. automodule:: readfish.plugins.guppy
+.. automodule:: readfish.plugins.dorado
    :members:
    :undoc-members:
    :show-inheritance:

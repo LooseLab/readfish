@@ -1,6 +1,7 @@
 """utils.py
 functions and utilities used internally.
 """
+
 from __future__ import annotations
 import sys
 import logging
@@ -34,11 +35,11 @@ class ChunkTracker:
         # self.tracker = defaultdict(Counter)
         self.tracker = [Counter() for _ in range(channels + 1)]
 
-    def seen(self, channel, read_number):
-        if read_number not in self.tracker[channel]:
+    def seen(self, channel, read_id: str):
+        if read_id not in self.tracker[channel]:
             self.tracker[channel].clear()
-        self.tracker[channel][read_number] += 1
-        return self.tracker[channel][read_number]
+        self.tracker[channel][read_id] += 1
+        return self.tracker[channel][read_id]
 
 
 class Severity(IntEnum):

@@ -21,6 +21,7 @@ This is of little (essentially no) use outside of an unblock all or something co
 In addition the ``_no_op.Aligner`` will pass through the iterable from the caller module without modifying/adding anything.
 This behaviour can be useful if a plugin can complete it's entire decision in a single step.
 """
+
 from __future__ import annotations
 from typing import Iterable, TYPE_CHECKING
 
@@ -93,12 +94,11 @@ class Caller(CallerABC):
 
         :param chunks: Raw data wrapper from the MinKNOW RPC
 
-        :returns: Yields ``Result`` classes with the ``Result.channel``, ``Result.read_number``, ``Result.read_id``, and ``Result.seq`` fields set.
+        :returns: Yields ``Result`` classes with the ``Result.channel``, ``Result.read_id``, and ``Result.seq`` fields set.
         """
         for channel, read in chunks:
             yield Result(
                 channel=channel,
-                read_number=read.number,
                 read_id=read.id,
                 seq="",
             )

@@ -481,7 +481,6 @@ class Result:
     barcoder, and then the aligner.
 
     :param channel: The channel that this read is being sequenced on
-    :param read_number: The read number value from the Read Until API
     :param read_id: The read ID assigned to this read by MinKNOW
     :param seq: The basecalled sequence for this read
     :param decision: The ``Decision`` that has been made, this will by used to determine the ``Action``
@@ -491,7 +490,6 @@ class Result:
     """
 
     channel: int
-    read_number: int
     read_id: str
     seq: str
     decision: Decision = attrs.field(default=Decision.no_seq)

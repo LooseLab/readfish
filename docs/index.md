@@ -6,7 +6,7 @@ hidden: true
 getting-started
 toml
 readfish.console
-guppy-params
+basecalling-params
 FAQ
 post-analysis
 developers-guide

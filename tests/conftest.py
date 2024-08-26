@@ -9,7 +9,7 @@ def reset_file_perms():
     """
     TEST_DIR = Path(__file__).parent.resolve()
     SEARCH_PATH = Path(TEST_DIR / "static")
-    nr_socket_path = SEARCH_PATH / "guppy_validation_test" / "fail" / "5555_fail_nr"
+    nr_socket_path = SEARCH_PATH / "dorado_validation_test" / "fail" / "5555_fail_nr"
     os.chmod(nr_socket_path, 0o660)
 
 
