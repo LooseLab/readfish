@@ -20,11 +20,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: "actions/checkout@v4"
-      - uses: "actions/setup-python@v4"
+      - uses: "actions/setup-python@v5"
         with:
           python-version: ${{env.PYTHON_LATEST}}
           cache: pip
-      - uses: "pre-commit/action@v3.0.0"
+      - uses: "pre-commit/action@v3.0.1"
 
   tests:
     name: "Test Python ${{ matrix.python-version }}"
@@ -36,7 +36,7 @@ jobs:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "${{ matrix.python-version }}"
           cache: pip
@@ -49,26 +49,37 @@ jobs:
           python -m pip install -e ".[tests]"
           coverage run --omit "src/readfish/read_until/*.py,src/readfish/entry_points/targets.py" -pm pytest
       - name: Upload coverage data
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: coverage-data
+          name: my-artifact-${{ matrix.python-version }}
           path: .coverage*
           if-no-files-found: ignore
+
+  merge:
+    name: merge
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+        - name: Merge Artifacts
+          uses: actions/upload-artifact/merge@v4
+          with:
+            name: coverage-data
+            pattern: my-artifact-*
 
   coverage:
     name: Combine coverage
     runs-on: ubuntu-latest
-    needs: tests
+    needs: [tests, merge]
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_LATEST }}
           cache: pip
 
       - name: Download coverage data
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: coverage-data
 
@@ -84,7 +95,7 @@ jobs:
     needs: tests
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_LATEST }}
           cache: pip
@@ -94,7 +105,7 @@ jobs:
           python -m pip install build
           python -m build
       - name: Upload built package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: built-package
           path: dist/
@@ -106,7 +117,7 @@ jobs:
     needs: "pre_commit"
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_LATEST }}
           cache: pip
@@ -117,7 +128,7 @@ jobs:
           cd docs
           make html
       - name: Upload built HTML
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: html-docs
           path: docs/_build/html
@@ -140,12 +151,12 @@ jobs:
 
     steps:
       - name: Download HTML docs
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: html-docs
           path: _build/html
       - name: Download python package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: built-package
           path: dist
@@ -154,7 +165,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
 
       - name: Deploy docs to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: _build/html/
