@@ -66,10 +66,12 @@ jobs:
             name: coverage-data
             pattern: my-artifact-*
 
-  coverage:
+coverage:
     name: Combine coverage
     runs-on: ubuntu-latest
-    needs: tests
+    needs:
+        - tests
+        - merge
 
     steps:
       - uses: actions/checkout@v4
