@@ -310,6 +310,23 @@ def draw_flowcell_split(
     00XX
     00XX
 
+    >>> print(draw_flowcell_split(126, 13, index=1, axis=1, prefix=""))
+    <BLANKLINE>
+    .#...........
+    .#...........
+    .#...........
+    .#...........
+    .#...........
+    <BLANKLINE>
+
+    >>> print(draw_flowcell_split(126, 5, index=1, axis=0, prefix=""))
+    <BLANKLINE>
+    .............
+    .............
+    .............
+    #############
+    .............
+    <BLANKLINE>
 
     :param flowcell_size: Number of channels on the flow cell
     :param split: The number of regions to split into, defaults to 1
@@ -379,6 +396,14 @@ def generate_flowcell(
     Traceback (most recent call last):
         ...
     ValueError: The flowcell cannot be split evenly
+
+    >>> for x in generate_flowcell(126, 5, axis=0):
+    ...     print(len(x))
+    26
+    26
+    26
+    26
+    26
     """
     if odd_even:
         return [
