@@ -66,6 +66,7 @@ jobs:
           with:
             name: coverage-data
             pattern: my-artifact-*
+            include-hidden-files: true
 
   coverage:
     name: Combine coverage
