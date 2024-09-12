@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>pyguppy_client_lib.pyclient - readfish 2024.2.0</title>
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
+        <title>pybasecall_client_lib.pyclient - readfish 2024.3.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
     
     
@@ -98,19 +98,6 @@
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
-    </svg>
-  </symbol>
   <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
     <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -151,7 +138,7 @@
       <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
       <path d="M13.5 6.5l4 4" />
       <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
   <symbol id="svg-eye" viewBox="0 0 24 24">
@@ -189,7 +176,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">readfish 2024.2.0</div></a>
+      <a href="../../index.html"><div class="brand">readfish 2024.3.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -217,7 +204,7 @@
     <img class="sidebar-logo only-dark" src="../../_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.2.0</span>
+  <span class="sidebar-brand-text">readfish 2024.3.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -229,7 +216,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../toml.html">TOML files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../readfish.console.html">readfish console scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basecalling-params.html">Base-calling server parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developers-guide.html">Developer’s guide</a></li>
@@ -273,20 +260,20 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for pyguppy_client_lib.pyclient</h1><div class="highlight"><pre>
+          <h1>Source code for pybasecall_client_lib.pyclient</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">pyguppy_client_lib.client_lib</span> <span class="kn">import</span> <span class="n">GuppyClient</span>
-<span class="kn">from</span> <span class="nn">pyguppy_client_lib.helper_functions</span> <span class="kn">import</span> <span class="n">get_return_code_message</span>
+<span class="kn">from</span> <span class="nn">pybasecall_client_lib.client_lib</span> <span class="kn">import</span> <span class="n">BasecallClient</span>
+<span class="kn">from</span> <span class="nn">pybasecall_client_lib.helper_functions</span> <span class="kn">import</span> <span class="n">get_return_code_message</span>
 
 
-<span class="k">class</span> <span class="nc">PyGuppyClient</span><span class="p">(</span><span class="n">GuppyClient</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Python interface for guppy_basecall_server</span>
+<span class="k">class</span> <span class="nc">PyBasecallClient</span><span class="p">(</span><span class="n">BasecallClient</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Python client interface to dorado_basecall_server</span>
 
 <span class="sd">    Any optional server parameters can be accessed via the ``params`` attribute</span>
 
-<span class="sd">    :param address: The formatted address and port for the guppy_basecall_server,</span>
+<span class="sd">    :param address: The formatted address and port for the dorado_basecall_server,</span>
 <span class="sd">        eg &#39;127.0.0.1:5555&#39;</span>
 <span class="sd">    :type address: str</span>
 <span class="sd">    :param config: The basecalling config to initialise the server with.</span>
@@ -322,39 +309,23 @@
 <span class="sd">                Default is 10.</span>
 <span class="sd">            * ``priority`` `(ReadPriority)` Priority of the client (low, medium, or high). Default is</span>
 <span class="sd">                medium.</span>
-<span class="sd">            * ``move_and_trace_enabled`` `(bool)` Flag indicating whether to return trace and</span>
-<span class="sd">                move data. Default is True.</span>
-<span class="sd">            * ``post_out`` `(bool)` Flag indicating whether to return full posterior</span>
-<span class="sd">                state data. Default is False.</span>
+<span class="sd">            * ``move_enabled`` `(bool)` Flag indicating whether to return move data. Default is False.</span>
 <span class="sd">            * ``barcode_trimming_enabled`` `(bool)` Flag indicating that barcodes should be</span>
 <span class="sd">                trimmed. Default is False.</span>
 <span class="sd">            * ``align_ref`` `(str)` Filename of index file to use for alignment</span>
 <span class="sd">                (if any). Default is to not align.</span>
 <span class="sd">            * ``bed_file`` `(str)` Filename of BED file to use for alignment (if any). Default</span>
 <span class="sd">                is to not align.</span>
-<span class="sd">            * ``align_type`` `(str)` Type of alignment required. Valid values are &quot;auto&quot;, &quot;coarse&quot;, and &quot;full&quot;.</span>
 <span class="sd">            * ``server_file_load_timeout`` `(int)` Seconds to wait for files to be loaded on</span>
 <span class="sd">                the server. Default is 180.</span>
 <span class="sd">            * ``require_barcodes_both_ends`` `(bool)` Flag indicating that barcodes must be at</span>
 <span class="sd">                both ends. Default is False.</span>
-<span class="sd">            * ``detect_mid_strand_barcodes`` `(bool)` Flag indicating that read will be marked</span>
-<span class="sd">                as unclassified if barcodes appear within the strand itself. Default is False.</span>
-<span class="sd">            * ``detect_mid_strand_adapter`` `(bool)` Flag indicating that read will be marked</span>
-<span class="sd">                as unclassified if adapter sequence appears within the strand itself. Default is False.</span>
-<span class="sd">            * ``min_score_barcode_front`` `(float)` Minimum score for a front barcode to be</span>
-<span class="sd">                classified. Default is 60.</span>
-<span class="sd">            * ``min_score_barcode_rear`` `(float)` Minimum score for a rear barcode to be</span>
-<span class="sd">                classified. Default is to use the front minimum.</span>
-<span class="sd">            * ``min_score_barcode_mid`` `(float)` Minimum score for mid barcodes to be detected.</span>
-<span class="sd">                Default is 60.</span>
-<span class="sd">            * ``do_read_splitting`` `(bool)` Whether to attempt to split reads based on mid-strand adapter detection.</span>
-<span class="sd">                Default is False.</span>
-<span class="sd">            * ``min_score_read_splitting`` `(float)`  Minimum mid-strand adapter score for reads to be split.</span>
-<span class="sd">                Default is 50.</span>
+<span class="sd">            * ``chunk_size`` `(int)`  For adaptive sampling. Specify the chunk-size for basecalling. If you are</span>
+<span class="sd">                truncating reads, send the value you are truncating to.</span>
 
 <span class="sd">    :Example:</span>
 
-<span class="sd">    &gt;&gt;&gt; client = PyGuppyClient(</span>
+<span class="sd">    &gt;&gt;&gt; client = PyBasecallClient(</span>
 <span class="sd">        &quot;127.0.0.1:5555&quot;,</span>
 <span class="sd">        &quot;dna_r9.4.1_450bps_fast&quot;,</span>
 <span class="sd">        align_ref=&quot;/path/to/index.mmi&quot;,</span>
@@ -362,7 +333,7 @@
 <span class="sd">    )</span>
 <span class="sd">    &gt;&gt;&gt; client.connect()</span>
 
-<span class="sd">    .. note:: ``GuppyClient`` does `not` raise raise_errors. Each time an</span>
+<span class="sd">    .. note:: ``BasecallClient`` does `not` raise raise_errors. Each time an</span>
 <span class="sd">        action is made a code is returned and must be checked.</span>
 
 <span class="sd">         - ``result.align_index_unavailable``</span>
@@ -410,7 +381,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect to the guppy_basecall_server</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect to the dorado_basecall_server</span>
 
 <span class="sd">        On first connection external files will be loaded (minimap2 index and</span>
 <span class="sd">        bed file), the ``server_file_load_timeout`` parameter should be set</span>
@@ -643,8 +614,8 @@
         <span class="n">results</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_completed_reads</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">results</span>
 
-<div class="viewcode-block" id="PyGuppyClient.set_params">
-<a class="viewcode-back" href="../../toml.html#pyguppy_client_lib.pyclient.PyGuppyClient.set_params">[docs]</a>
+<div class="viewcode-block" id="PyBasecallClient.set_params">
+<a class="viewcode-back" href="../../toml.html#pybasecall_client_lib.pyclient.PyBasecallClient.set_params">[docs]</a>
     <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">return_code</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_params</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
@@ -708,10 +679,10 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=0af83669"></script>
+</div><script src="../../_static/documentation_options.js?v=7b2d7c30"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="readfish.html" /><link rel="prev" title="Readfish analysis" href="post-analysis.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Developer’s guide - readfish 2024.2.0</title>
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
+        <title>Developer’s guide - readfish 2024.3.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
     
     
@@ -99,19 +99,6 @@
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
-    </svg>
-  </symbol>
   <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
     <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -152,7 +139,7 @@
       <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
       <path d="M13.5 6.5l4 4" />
       <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
   <symbol id="svg-eye" viewBox="0 0 24 24">
@@ -190,7 +177,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">readfish 2024.2.0</div></a>
+      <a href="index.html"><div class="brand">readfish 2024.3.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -218,7 +205,7 @@
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.2.0</span>
+  <span class="sidebar-brand-text">readfish 2024.3.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -230,7 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="toml.html">TOML files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="readfish.console.html">readfish console scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basecalling-params.html">Base-calling server parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Developer’s guide</a></li>
@@ -312,8 +299,8 @@
 <span class="c1"># Running dependencies, this is a little bit clunky but works for now</span>
 <span class="n">mappy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;mappy&quot;</span><span class="p">]</span>
 <span class="n">mappy-rs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;mappy-rs&quot;</span><span class="p">]</span>
-<span class="n">guppy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ont_pyguppy_client_lib&quot;</span><span class="p">]</span>
-<span class="n">all</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;readfish[mappy,mappy-rs,guppy]&quot;</span><span class="p">]</span>
+<span class="n">dorado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ont-pybasecall-client-lib&quot;</span><span class="p">]</span>
+<span class="n">all</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;readfish[mappy,mappy-rs,dorado]&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>An example install command would be <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">readfish[all]</span></code>.</p>
@@ -510,11 +497,11 @@ For example:</p>
 </pre></div>
 </div>
 <p>This would try to load the <code class="docutils literal notranslate"><span class="pre">foo</span></code> module from the <code class="docutils literal notranslate"><span class="pre">bar</span></code> package.</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.readfish.plugins.guppy]</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.readfish.plugins.dorado]</span>
 </pre></div>
 </div>
-<p>This would load the readfish guppy <code class="docutils literal notranslate"><span class="pre">Caller</span></code> plugin explicitly.
-There are instances of “builtin” plugins, which are the included <code class="docutils literal notranslate"><span class="pre">mappy</span></code>, <code class="docutils literal notranslate"><span class="pre">mappy_rs</span></code> and <code class="docutils literal notranslate"><span class="pre">guppy</span></code> plugins.
+<p>This would load the readfish dorado <code class="docutils literal notranslate"><span class="pre">Caller</span></code> plugin explicitly.
+There are instances of “builtin” plugins, which are the included <code class="docutils literal notranslate"><span class="pre">mappy</span></code>, <code class="docutils literal notranslate"><span class="pre">mappy_rs</span></code> and <code class="docutils literal notranslate"><span class="pre">dorado</span></code> plugins.
 See the source of <code class="docutils literal notranslate"><span class="pre">readfish._config._PluginModule.load_module</span></code> for more details.</p>
 <dl class="py method">
 <dt class="sig sig-object py">
@@ -611,7 +598,7 @@ We do not need to call <code class="docutils literal notranslate"><span class="p
 <h3>validate()<a class="headerlink" href="#validate" title="Link to this heading">¶</a></h3>
 <p>This next method is important. <code class="docutils literal notranslate"><span class="pre">validate()</span></code></p>
 <p>The validate function is intended to be called in the <strong>init</strong> method, before the actual <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> or <code class="docutils literal notranslate"><span class="pre">Caller</span></code> is initialised. The contents of this method are left up to the author, however we suggest that people check for the things listed above.</p>
-<p>The purpose of <code class="docutils literal notranslate"><span class="pre">validate</span></code> is to check that the given parameters will create a valid <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> or <code class="docutils literal notranslate"><span class="pre">Caller</span></code>. For example, in the <code class="docutils literal notranslate"><span class="pre">guppy.py</span></code> <code class="docutils literal notranslate"><span class="pre">Caller</span></code> plugin, we check the permissions of the provided <code class="docutils literal notranslate"><span class="pre">Guppy</span></code> socket. If these are insufficient, Guppy only errors out after a 10 minute timeout. However of this is caught in <code class="docutils literal notranslate"><span class="pre">validate</span></code>, everyone ends up being left a lot happier.</p>
+<p>The purpose of <code class="docutils literal notranslate"><span class="pre">validate</span></code> is to check that the given parameters will create a valid <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> or <code class="docutils literal notranslate"><span class="pre">Caller</span></code>. For example, in the <code class="docutils literal notranslate"><span class="pre">dorado.py</span></code> <code class="docutils literal notranslate"><span class="pre">Caller</span></code> plugin, we check the permissions of the provided <code class="docutils literal notranslate"><span class="pre">dorado</span></code> socket. If these are insufficient, dorado only errors out after a 10 minute timeout. However if this is caught in <code class="docutils literal notranslate"><span class="pre">validate</span></code>, everyone ends up being left a lot happier.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
     <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -896,10 +883,10 @@ This is a more complicated function, so I’ve commented details more thoroughly
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=0af83669"></script>
+</div><script src="_static/documentation_options.js?v=7b2d7c30"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     </body>

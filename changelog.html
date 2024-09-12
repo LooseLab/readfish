@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="readfish plugins API" href="readfish.plugins.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Changelog - readfish 2024.2.0</title>
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
+        <title>Changelog - readfish 2024.3.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
     
     
@@ -99,19 +99,6 @@
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
-    </svg>
-  </symbol>
   <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
     <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -152,7 +139,7 @@
       <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
       <path d="M13.5 6.5l4 4" />
       <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
   <symbol id="svg-eye" viewBox="0 0 24 24">
@@ -190,7 +177,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">readfish 2024.2.0</div></a>
+      <a href="index.html"><div class="brand">readfish 2024.3.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -218,7 +205,7 @@
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.2.0</span>
+  <span class="sidebar-brand-text">readfish 2024.3.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -230,7 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="toml.html">TOML files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="readfish.console.html">readfish console scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guppy-params.html">Base-calling server parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basecalling-params.html">Base-calling server parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developers-guide.html">Developer’s guide</a></li>
@@ -283,15 +270,27 @@
           <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
 <section id="id1">
-<h2>2024.2.0<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<h2>2024.3.0<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<section id="this-release-is-breaking-for-all-versions-of-minknow-6-and-no-longer-supports-guppy">
+<h3>This release is breaking for ALL versions of <code class="docutils literal notranslate"><span class="pre">MinKNOW</span> <span class="pre">&lt;=</span> <span class="pre">6</span></code> and no longer supports Guppy.<a class="headerlink" href="#this-release-is-breaking-for-all-versions-of-minknow-6-and-no-longer-supports-guppy" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Introducing support for MinKNOW &gt;=6.0.0 and deprecating support for earlier versions.</p></li>
+<li><p>Removing support for legacy guppy base caller and only supporting Dorado in future.</p></li>
+<li><p>Optimising batch sending to the base caller through the use of <code class="docutils literal notranslate"><span class="pre">pass_reads</span></code> rather than <code class="docutils literal notranslate"><span class="pre">pass_read</span></code></p></li>
+<li><p>Adding the new strand classifications as used by MinKNOW, including strand2 and short.</p></li>
+</ol>
+</section>
+</section>
+<section id="id2">
+<h2>2024.2.0<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Add a dorado base-caller which addressed issue <a class="reference external" href="https://github.com/LooseLab/readfish/issues/347">#347</a> - chiefly in Dorado 7.3.9 ONT have moved to <code class="docutils literal notranslate"><span class="pre">ont-pybasecall-client-lib</span></code>,
 and connections from <code class="docutils literal notranslate"><span class="pre">ont_pyguppy_client_lib</span></code> raise <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">error.</span> <span class="pre">...</span>&#160; <span class="pre">LOAD_CONFIG.</span> <span class="pre">Reply:</span> <span class="pre">INVALID_PROTOCOL</span></code> <a class="reference external" href="https://github.com/LooseLab/readfish/pull/344">(#344)</a></p></li>
 <li><p>Adds version checking for MinKNOW and Guppy/Dorado, logs if not compatibile <a class="reference external" href="https://github.com/LooseLab/readfish/pull/351">(#351)</a></p></li>
 </ol>
 </section>
-<section id="id2">
-<h2>2024.1.0<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<section id="id3">
+<h2>2024.1.0<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>bug fix type for <code class="docutils literal notranslate"><span class="pre">--wait-on-ready</span></code> type and actual function <a class="reference external" href="https://github.com/LooseLab/readfish/pull/327">(#327)</a>, <a class="reference external" href="https://github.com/LooseLab/readfish/pull/323">(#323)</a></p></li>
 <li><p>mutiple suffix <code class="docutils literal notranslate"><span class="pre">.mmi</span></code> support <a class="reference external" href="https://github.com/LooseLab/readfish/pull/330">(#330)</a></p></li>
@@ -299,8 +298,8 @@ and connections from <code class="docutils literal notranslate"><span class="pre
 <li><p>Big dog Duplex feature - adds ability to select duplex reads that cover a target region. See pull request for details <a class="reference external" href="https://github.com/LooseLab/readfish/pull/324">(#324)</a></p></li>
 </ol>
 </section>
-<section id="id3">
-<h2>2023.1.1<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<section id="id4">
+<h2>2023.1.1<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Fix Readme Logo link 🥳 (#296)</p></li>
 <li><p>Fix bug where we had accidentally started requiring barcoded TOMLs to specify a region. Thanks to &#64;jamesemery for catching this. (#299)</p></li>
@@ -357,9 +356,13 @@ and connections from <code class="docutils literal notranslate"><span class="pre
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#id1">2024.2.0</a></li>
-<li><a class="reference internal" href="#id2">2024.1.0</a></li>
-<li><a class="reference internal" href="#id3">2023.1.1</a></li>
+<li><a class="reference internal" href="#id1">2024.3.0</a><ul>
+<li><a class="reference internal" href="#this-release-is-breaking-for-all-versions-of-minknow-6-and-no-longer-supports-guppy">This release is breaking for ALL versions of <code class="docutils literal notranslate"><span class="pre">MinKNOW</span> <span class="pre">&lt;=</span> <span class="pre">6</span></code> and no longer supports Guppy.</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">2024.2.0</a></li>
+<li><a class="reference internal" href="#id3">2024.1.0</a></li>
+<li><a class="reference internal" href="#id4">2023.1.1</a></li>
 </ul>
 </li>
 </ul>
@@ -371,10 +374,10 @@ and connections from <code class="docutils literal notranslate"><span class="pre
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=0af83669"></script>
+</div><script src="_static/documentation_options.js?v=7b2d7c30"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     </body>
