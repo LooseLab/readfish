@@ -53,7 +53,8 @@ jobs:
         with:
           name: my-artifact-${{ matrix.python-version }}
           path: .coverage*
-          if-no-files-found: ignore
+          if-no-files-found: warn
+          include-hidden-files: true
 
   merge:
     name: merge
@@ -65,6 +66,7 @@ jobs:
           with:
             name: coverage-data
             pattern: my-artifact-*
+            include-hidden-files: true
 
   coverage:
     name: Combine coverage
