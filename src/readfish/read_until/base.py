@@ -206,7 +206,8 @@ class ReadUntilClient(object):
         # Which raises a more informative gRPC error instead.
         # TODO - log the missing strands
         self.strand_classes = set(
-            self.lookup_read_class.get(x, "UhOhNoClassificationioh") for x in self.prefilter_classes
+            self.lookup_read_class.get(x, "UhOhNoClassificationioh")
+            for x in self.prefilter_classes
         )
 
         self.logger.debug("Strand-like classes are %s.", self.strand_classes)
