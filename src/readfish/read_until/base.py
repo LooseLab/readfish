@@ -202,7 +202,7 @@ class ReadUntilClient(object):
             filter_to,
         )
         # When there is no run on, MinKNOW only returns a subset of read classifications, and our prefilter classes are not amongst them.
-        # This would then throw an uniformative KeyError. We now just carry on, and get to the point where we try to query about the run 
+        # This would then throw an uniformative KeyError. We now just carry on, and get to the point where we try to query about the run
         # Which raises a more informative gRPC error instead.
         # TODO - log the missing strands
         self.strand_classes = set(
