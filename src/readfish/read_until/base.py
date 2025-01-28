@@ -201,9 +201,12 @@ class ReadUntilClient(object):
             self.CacheType.__name__,
             filter_to,
         )
-
+        # When there is no run on, MinKNOW only returns a subset of read classifications, and our prefilter classes are not amongst them.
+        # This would then throw an uniformative KeyError. We now just carry on, and get to the point where we try to query about the run 
+        # Which raises a more informative gRPC error instead.
+        # TODO - log the missing strands
         self.strand_classes = set(
-            self.lookup_read_class[x] for x in self.prefilter_classes
+            self.lookup_read_class.get(x, "UhOhNoClassificationioh") for x in self.prefilter_classes
         )
 
         self.logger.debug("Strand-like classes are %s.", self.strand_classes)
