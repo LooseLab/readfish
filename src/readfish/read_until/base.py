@@ -206,7 +206,7 @@ class ReadUntilClient(object):
         # Which raises a more informative gRPC error instead.
         # TODO - log the missing strands
         self.strand_classes = set(
-            self.lookup_read_class.get(x, "UhOhNoClassificationioh")
+            self.lookup_read_class.get(x, f"{x}_classification_unavailable")
             for x in self.prefilter_classes
         )
 
