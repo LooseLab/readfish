@@ -613,6 +613,17 @@ If there isn't a newer version of readfish and readfish is failing, please open 
 
     # Fetch sequencing device
     position = get_device(args.device, host=args.host, port=args.port)
+    flowcell_type = position.connect().protocol.get_run_info().flow_cell.user_specified_product_code
+
+    base_classes = {"strand", "adapter", "unknown_positive"}
+
+    if flowcell_type in ['FLO-MIN004RA', 'FLO-PRO004RA']:
+        prefilter_classes = base_classes
+        accepted_first_chunk_classifications = list(base_classes)
+    else:
+        extended_classes = base_classes | {"strand2", "short_strand"}
+        prefilter_classes = extended_classes
+        accepted_first_chunk_classifications = list(extended_classes)
 
     # Create a read until client
     read_until_client = RUClient(
@@ -621,13 +632,7 @@ If there isn't a newer version of readfish and readfish is failing, please open 
         filter_strands=True,
         cache_type=AccumulatingCache,
         timeout=args.wait_for_ready,
-        prefilter_classes={
-            "strand",
-            "strand2",
-            "short_strand",
-            "adapter",
-            "unknown_positive",
-        },
+        prefilter_classes=prefilter_classes,
     )
 
     # Load TOML configuration
@@ -652,13 +657,7 @@ If there isn't a newer version of readfish and readfish is failing, please open 
         first_channel=1,
         last_channel=read_until_client.channel_count,
         max_unblock_read_length_seconds=args.max_unblock_read_length_seconds,
-        accepted_first_chunk_classifications=[
-            "strand",
-            "strand2",
-            "short_strand",
-            "adapter",
-            "unknown_positive",
-        ],
+        accepted_first_chunk_classifications=accepted_first_chunk_classifications,
     )
 
     worker = Analysis(
