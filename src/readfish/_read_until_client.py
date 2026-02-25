@@ -14,12 +14,17 @@ from readfish.read_until.base import ReadUntilClient
 from readfish._loggers import setup_logger
 from grpc import RpcError
 
-# Check against these states to determine if Minknow is under the impression
-# The run has fully begun and readfish can be started
+# Check against these states to determine if MinKNOW still considers the run
+# active enough for readfish to remain connected.
 ACCEPTABLE_ACQUISITION_STATES = {
     AcquisitionState.ACQUISITION_RUNNING,
     AcquisitionState.ACQUISITION_STARTING,
 }
+# Some MinKNOW versions expose explicit pause states. Treat them as non-terminal
+# so readfish waits for sequencing to resume instead of disconnecting.
+for _state_name in ("ACQUISITION_PAUSING", "ACQUISITION_PAUSED"):
+    if hasattr(AcquisitionState, _state_name):
+        ACCEPTABLE_ACQUISITION_STATES.add(getattr(AcquisitionState, _state_name))
 # Any but these two states suggest the run has stopped
 ACCEPTABLE_PROTOCOL_STATES = {
     protocol_service.PROTOCOL_RUNNING,
