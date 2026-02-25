@@ -242,9 +242,9 @@ def get_flowcell_array(flowcell_size: int) -> npt.ArrayLike:
     Traceback (most recent call last):
         ...
     ValueError: flowcell_size is not recognised
-    >>> get_flowcell_array(126)[9][-1]
+    >>> int(get_flowcell_array(126)[9][-1])
     0
-    >>> get_flowcell_array(512)[15][-1]
+    >>> int(get_flowcell_array(512)[15][-1])
     1
 
     """
