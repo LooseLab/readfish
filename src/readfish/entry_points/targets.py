@@ -287,6 +287,18 @@ class Analysis:
             last_toml_mtime = self.live_toml.stat().st_mtime
         return last_toml_mtime
 
+    def _reinitialise_caller(self, reason: str) -> None:
+        """Reconnect the basecaller after recoverable runtime failures."""
+        self.logger.warning(f"Reinitialising caller: {reason}")
+        try:
+            self.caller.disconnect()
+        except Exception:
+            self.logger.exception("Error while disconnecting caller during recovery.")
+        self.caller = self.conf.caller_settings.load_object(
+            "Caller", run_information=self.run_information, sample_rate=self.sample_rate
+        )
+        self.logger.info("Caller reinitialised successfully.")
+
     def check_override_action(
         self,
         control: bool,
@@ -483,63 +495,70 @@ class Analysis:
             number_reads = 0
             unblock_batch_action_list = []
             stop_receiving_action_list = []
+            try:
+                chunks = self.client.get_read_chunks(self.client.channel_count, last=True)
+                calls = self.caller.basecall(
+                    chunks, self.client.signal_dtype, self.client.calibration_values
+                )
+                aligns = self.mapper.map_reads(calls)
 
-            chunks = self.client.get_read_chunks(self.client.channel_count, last=True)
-            calls = self.caller.basecall(
-                chunks, self.client.signal_dtype, self.client.calibration_values
-            )
-            aligns = self.mapper.map_reads(calls)
-
-            #######################################################################
-            for result in aligns:
-                number_reads += 1
-                control, condition = self.conf.get_conditions(
-                    result.channel, result.barcode
+                #######################################################################
+                for result in aligns:
+                    number_reads += 1
+                    control, condition = self.conf.get_conditions(
+                        result.channel, result.barcode
+                    )
+                    result.decision = make_decision(self.conf, result)
+                    action = condition.get_action(result.decision)
+                    seen_count = self.chunk_tracker.seen(result.channel, result.read_id)
+                    #  Check if there any conditions that override the action chose, exceed_max_chunks etc...
+                    (
+                        action,
+                        previous_action,
+                        action_overridden,
+                        overridden_action_name,
+                    ) = self.check_override_action(
+                        control,
+                        action,
+                        result,
+                        seen_count,
+                        condition,
+                        stop_receiving_action_list,
+                        unblock_batch_action_list,
+                    )
+                    self.loop_statistics.log_read(
+                        client_iteration=loop_counter,
+                        read_in_loop=number_reads,
+                        read_id=result.read_id,
+                        channel=result.channel,
+                        seq_len=len(result.seq),
+                        counter=seen_count,
+                        mode=result.decision.name,
+                        decision=action.name,
+                        condition=condition.name,
+                        barcode=result.barcode,
+                        previous_action=(
+                            previous_action.name
+                            if previous_action is not None
+                            else previous_action
+                        ),
+                        action_overridden=action_overridden,
+                        timestamp=time.time(),
+                        # Anything below here is not included in the Debug log
+                        region_name=(
+                            _region.name
+                            if (_region := self.conf.get_region(result.channel))
+                            else "flowcell"
+                        ),
+                        overridden_action_name=overridden_action_name,
+                    )
+            except Exception:
+                self.logger.exception(
+                    "Caller or mapper failed while sequencing; attempting caller reconnect."
                 )
-                result.decision = make_decision(self.conf, result)
-                action = condition.get_action(result.decision)
-                seen_count = self.chunk_tracker.seen(result.channel, result.read_id)
-                #  Check if there any conditions that override the action chose, exceed_max_chunks etc...
-                (
-                    action,
-                    previous_action,
-                    action_overridden,
-                    overridden_action_name,
-                ) = self.check_override_action(
-                    control,
-                    action,
-                    result,
-                    seen_count,
-                    condition,
-                    stop_receiving_action_list,
-                    unblock_batch_action_list,
-                )
-                self.loop_statistics.log_read(
-                    client_iteration=loop_counter,
-                    read_in_loop=number_reads,
-                    read_id=result.read_id,
-                    channel=result.channel,
-                    seq_len=len(result.seq),
-                    counter=seen_count,
-                    mode=result.decision.name,
-                    decision=action.name,
-                    condition=condition.name,
-                    barcode=result.barcode,
-                    previous_action=(
-                        previous_action.name
-                        if previous_action is not None
-                        else previous_action
-                    ),
-                    action_overridden=action_overridden,
-                    timestamp=time.time(),
-                    # Anything below here is not included in the Debug log
-                    region_name=(
-                        _region.name
-                        if (_region := self.conf.get_region(result.channel))
-                        else "flowcell"
-                    ),
-                    overridden_action_name=overridden_action_name,
-                )
+                self._reinitialise_caller("Runtime failure while sequencing")
+                time.sleep(self.throttle)
+                continue
 
             #######################################################################
             # Compile actions to be sent

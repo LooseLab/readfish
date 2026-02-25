@@ -36,6 +36,7 @@ __all__ = ["Caller"]
 
 logger = logging.getLogger("RU_basecaller")
 CALIBRATION = namedtuple("calibration", "scaling offset")
+BASECALL_COMPLETION_TIMEOUT_SECONDS = 30
 
 
 class DefaultDAQValues:
@@ -259,14 +260,24 @@ class Caller(CallerABC):
             # sleep_time = self.caller.throttle - t0
             # if sleep_time > 0:
             #     time.sleep(sleep_time)
+        waiting_for_results_since = time.monotonic()
         while reads_received < reads_sent:
             results = self.caller.get_completed_reads()
             # TODO: incorporate time_received into logging?
             # time_received = time.time()
 
             if not results:
+                if (
+                    time.monotonic() - waiting_for_results_since
+                    > BASECALL_COMPLETION_TIMEOUT_SECONDS
+                ):
+                    raise TimeoutError(
+                        "Timed out waiting for Dorado completed reads for more than "
+                        f"{BASECALL_COMPLETION_TIMEOUT_SECONDS} seconds."
+                    )
                 time.sleep(self.caller.throttle)
                 continue
+            waiting_for_results_since = time.monotonic()
 
             for res_batch in results:
                 for res in res_batch:
