@@ -126,7 +126,6 @@ dmypy.json
 
 # PyCharm
 .idea/
-*.toml
 *.csv
 
 # Other

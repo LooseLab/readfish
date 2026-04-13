@@ -174,6 +174,7 @@ class _PluginModule:
             "mappy": "mappy",
             "mappy_rs": "mappy_rs",
             "mappy-rs": "mappy_rs",
+            "random_classifier": "random_classifier",
             "no_op": "_no_op",
         }
         if self.name in builtins and not override:

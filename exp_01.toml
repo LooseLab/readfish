@@ -1,0 +1,31 @@
+# Summary: TOML config file for real-time basecalling with a random
+# accept/reject classifier for integration testing.
+# Replace [mapper_settings.mappy] with random_classifier plugin.
+# All other settings unchanged.
+
+[caller_settings.dorado]
+config = "dna_r10.4.1_e8.2_400bps_fast@v5.2.0||"
+address = "ipc:///tmp/.dorado/dorado-basecall-server.sock"
+debug_log = "live_reads.fq"
+
+# CHANGED: was [mapper_settings.mappy], now points to your random classifier
+[mapper_settings.random_classifier]
+fraction_keep = 0.5   # 50% kept, 50% rejected — change to 0.0 or 1.0 for sanity checks
+seed = 42
+debug_log = "random_classifier_debug.log"
+
+# CHANGED: targets removed (classifier ignores them), no_map changed to unblock
+[[regions]]
+name = "asm215696v1"
+min_chunks = 1
+max_chunks = 4
+targets = []                     # empty — random classifier doesn't use targets
+
+single_on        = "stop_receiving"
+multi_on         = "stop_receiving"
+single_off       = "unblock"
+multi_off        = "unblock"
+no_seq           = "proceed"
+no_map           = "unblock"     # CHANGED from "proceed" — this is your reject path
+above_max_chunks = "unblock"
+below_min_chunks = "proceed"
