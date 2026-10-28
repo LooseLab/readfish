@@ -28,7 +28,7 @@ jobs:
 
   tests:
     name: "Test Python ${{ matrix.python-version }}"
-    runs-on: "ubuntu-latest"
+    runs-on: ${{ matrix.os }}"
     needs: "pre_commit"
     timeout-minutes: 5
     strategy:
