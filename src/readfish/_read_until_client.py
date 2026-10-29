@@ -114,6 +114,7 @@ class RUClient(ReadUntilClient):
             )
             self.unblock_logger.debug(read_id)
         self.action_queue.put(actions)
+        self.channel_read_latest_decision.update(reads)
 
     def unblock_read(
         self,

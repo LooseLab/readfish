@@ -562,6 +562,12 @@ And for our Awesome Logo please checkout out [@tim_bassford](https://twitter.com
 
 <!-- start-changelog -->
 # Changelog
+
+## 26.1.0
+
+1. Removed Python 3.8 support
+2. Record unblocked reads in `channel_read_latest_decision` [(#416)](https://github.com/LooseLab/readfish/pull/416)
+
 ## 2024.3.0
 ### This release is breaking for ALL versions of `MinKNOW <= 6` and no longer supports Guppy.
 

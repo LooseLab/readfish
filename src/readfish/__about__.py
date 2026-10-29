@@ -2,4 +2,4 @@
 Version of the read until software
 """
 
-__version__ = "2024.3.0"
+__version__ = "2026.1.0"
