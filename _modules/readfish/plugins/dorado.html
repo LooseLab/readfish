@@ -1,15 +1,17 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="../../../">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
+        <link rel="prefetch" href="../../../_static/readfish_light.png" as="image">
+        <link rel="prefetch" href="../../../_static/readfish_dark.png" as="image">
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
-        <title>readfish.plugins.dorado - readfish 2024.3.0</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>readfish.plugins.dorado - readfish 2026.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
     
     
@@ -17,8 +19,8 @@
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   --font-stack--monospace: 'Ubuntu Mono', monospace;
   --code-font-size: 90%;
@@ -154,14 +156,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -171,17 +169,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">readfish 2024.3.0</div></a>
+      <a href="../../../index.html"><div class="brand">readfish 2026.1.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -189,8 +185,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -198,13 +193,12 @@
     <div class="sidebar-container">
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
-  
   <div class="sidebar-logo-container">
     <img class="sidebar-logo only-light" src="../../../_static/readfish_light.png" alt="Light Logo"/>
     <img class="sidebar-logo only-dark" src="../../../_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.3.0</span>
+  <span class="sidebar-brand-text">readfish 2026.1.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -220,7 +214,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developers-guide.html">Developer’s guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../readfish.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../readfish.html">API Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../readfish.plugins.html">readfish plugins API</a></li>
 </ul>
@@ -246,8 +240,7 @@
         </a>
         <div class="content-icon-container">
           <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -255,63 +248,62 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for readfish.plugins.dorado</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Dorado plugin module</span>
+<span></span><span class="sd">"""Dorado plugin module</span>
 
 <span class="sd">Extension of pyBaseCaller that maintains a connection to the basecaller</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="kn">from</span> <span class="nn">packaging.version</span> <span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_version</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
-<span class="kn">from</span> <span class="nn">minknow_api.protocol_pb2</span> <span class="kn">import</span> <span class="n">ProtocolRunInfo</span>
-<span class="kn">from</span> <span class="nn">minknow_api.device_pb2</span> <span class="kn">import</span> <span class="n">GetSampleRateResponse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">minknow_api.protocol_pb2</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtocolRunInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">minknow_api.device_pb2</span><span class="w"> </span><span class="kn">import</span> <span class="n">GetSampleRateResponse</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pybasecall_client_lib.helper_functions</span> <span class="kn">import</span> <span class="n">package_read</span>
-    <span class="kn">from</span> <span class="nn">pybasecall_client_lib.pyclient</span> <span class="kn">import</span> <span class="n">PyBasecallClient</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pybasecall_client_lib.helper_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">package_read</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pybasecall_client_lib.pyclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyBasecallClient</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">pass</span>
 
-<span class="kn">from</span> <span class="nn">readfish._loggers</span> <span class="kn">import</span> <span class="n">setup_logger</span>
-<span class="kn">from</span> <span class="nn">readfish.plugins.abc</span> <span class="kn">import</span> <span class="n">CallerABC</span>
-<span class="kn">from</span> <span class="nn">readfish.plugins.utils</span> <span class="kn">import</span> <span class="n">Result</span>
-<span class="kn">from</span> <span class="nn">readfish._utils</span> <span class="kn">import</span> <span class="n">nice_join</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">readfish._loggers</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">readfish.plugins.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallerABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">readfish.plugins.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">readfish._utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">nice_join</span>
 
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">minknow_api</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">minknow_api</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Caller&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Caller"</span><span class="p">]</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;RU_basecaller&quot;</span><span class="p">)</span>
-<span class="n">CALIBRATION</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;calibration&quot;</span><span class="p">,</span> <span class="s2">&quot;scaling offset&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"RU_basecaller"</span><span class="p">)</span>
+<span class="n">CALIBRATION</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">"calibration"</span><span class="p">,</span> <span class="s2">"scaling offset"</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">DefaultDAQValues</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides default calibration values</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DefaultDAQValues</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Provides default calibration values</span>
 
 <span class="sd">    Mimics the read_until_api calibration dict value from</span>
 <span class="sd">    https://github.com/nanoporetech/read_until_api/blob/2319bbe/read_until/base.py#L34</span>
 <span class="sd">    all keys return scaling=1.0 and offset=0.0</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">calibration</span> <span class="o">=</span> <span class="n">CALIBRATION</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calibration</span>
 
 
@@ -320,15 +312,15 @@
 
 <div class="viewcode-block" id="Caller">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.dorado.Caller">[docs]</a>
-<span class="k">class</span> <span class="nc">Caller</span><span class="p">(</span><span class="n">CallerABC</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Caller</span><span class="p">(</span><span class="n">CallerABC</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">run_information</span><span class="p">:</span> <span class="n">ProtocolRunInfo</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">sample_rate</span><span class="p">:</span> <span class="n">GetSampleRateResponse</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">debug_log</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="s2">&quot;readfish_dorado_logger&quot;</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="n">debug_log</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="s2">"readfish_dorado_logger"</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="n">debug_log</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_information</span> <span class="o">=</span> <span class="n">run_information</span>
@@ -338,20 +330,20 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">run_information</span><span class="o">.</span><span class="n">software_versions</span><span class="o">.</span><span class="n">basecaller_connected_version</span>
             <span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">parse_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basecaller_version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">parse_version</span><span class="p">(</span><span class="s2">&quot;7.4.12&quot;</span><span class="p">):</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connected to caller version </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">basecaller_version</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parse_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basecaller_version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">parse_version</span><span class="p">(</span><span class="s2">"7.4.12"</span><span class="p">):</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Connected to caller version </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">basecaller_version</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Trying to use minKNOW with a caller version </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">basecaller_version</span><span class="si">}</span><span class="s2">.&quot;</span>
-                    <span class="s2">&quot; If this is causing readfish to crash, try using a version of Dorado &gt;= 7.3.9.&quot;</span>
-                    <span class="s2">&quot; You should also check for any updates available to readfish.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Trying to use minKNOW with a caller version </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">basecaller_version</span><span class="si">}</span><span class="s2">."</span>
+                    <span class="s2">" If this is causing readfish to crash, try using a version of Dorado &gt;= 7.3.9."</span>
+                    <span class="s2">" You should also check for any updates available to readfish."</span>
                 <span class="p">)</span>
 
         <span class="c1"># Set our own priority</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span> <span class="o">=</span> <span class="n">kwargs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">&quot;priority&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PyBasecallClient</span><span class="o">.</span><span class="n">high_priority</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">"priority"</span><span class="p">]</span> <span class="o">=</span> <span class="n">PyBasecallClient</span><span class="o">.</span><span class="n">high_priority</span>
         <span class="c1"># Set our own client name to appear in the dorado server logs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">&quot;client_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Readfish_connection&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">"client_name"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Readfish_connection"</span>
 
         <span class="k">if</span> <span class="n">sample_rate</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sample_rate</span><span class="p">)</span>
@@ -364,8 +356,8 @@
 
 <div class="viewcode-block" id="Caller.validate">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.dorado.Caller.validate">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate the parameters passed to Dorado to ensure they will initialise py Basecall Client correctly</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Validate the parameters passed to Dorado to ensure they will initialise py Basecall Client correctly</span>
 
 <span class="sd">        Currently checks:</span>
 <span class="sd">            1. That the socket file exists</span>
@@ -374,28 +366,28 @@
 
 <span class="sd">        :return: None, if the parameters pass all the checks</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;address&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">):</span>
+<span class="sd">        """</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"address"</span><span class="p">,</span> <span class="s2">"config"</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Required `caller_settings.dorado` </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> was not found in provided TOML. Please add.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Required `caller_settings.dorado` </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> was not found in provided TOML. Please add."</span>
                 <span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ipc://&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">"address"</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"ipc://"</span><span class="p">):</span>
             <span class="c1"># User is attempting to connect to an IPC socket</span>
-            <span class="n">socket_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="mi">6</span><span class="p">:])</span>
+            <span class="n">socket_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">"address"</span><span class="p">][</span><span class="mi">6</span><span class="p">:])</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">socket_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The provided dorado base-caller socket address doesn&#39;t appear to exist. Please check your dorado Settings. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"The provided dorado base-caller socket address doesn't appear to exist. Please check your dorado Settings. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s1">'address'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
             <span class="c1"># check user permissions:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">socket_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The user account running readfish doesn&#39;t appear to have permissions to read the dorado base-caller socket. Please check permissions on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"The user account running readfish doesn't appear to have permissions to read the dorado base-caller socket. Please check permissions on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s1">'address'</span><span class="p">]</span><span class="si">}</span><span class="s2">. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">socket_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">W_OK</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The user account running readfish doesn&#39;t appear to have permissions to write to the dorado base-caller socket. Please check permissions on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"The user account running readfish doesn't appear to have permissions to write to the dorado base-caller socket. Please check permissions on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s1">'address'</span><span class="p">]</span><span class="si">}</span><span class="s2">. See https://github.com/LooseLab/readfish/issues/221#issuecomment-1375673490 for more information."</span>
                 <span class="p">)</span>
         <span class="c1"># If we are connected to a live run, test if the base-caller model is acceptable.</span>
         <span class="c1"># Connected to a live run via the minknow_api - get supported basecall and barcoding kits from the run info.</span>
@@ -404,64 +396,64 @@
             <span class="n">tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_information</span><span class="o">.</span><span class="n">meta_info</span><span class="o">.</span><span class="n">tags</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span>
-                <span class="s2">&quot;available basecall models&quot;</span>
+                <span class="s2">"available basecall models"</span>
             <span class="p">]</span><span class="o">.</span><span class="n">array_value</span>
             <span class="c1"># Make a CSV str a list of strings, removing quotes and square brackets</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span><span class="p">,</span> <span class="nb">str</span>
             <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;available basecall models&quot;</span><span class="p">]</span>
+                    <span class="n">tags</span><span class="p">[</span><span class="s2">"available basecall models"</span><span class="p">]</span>
                     <span class="o">.</span><span class="n">array_value</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-                    <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'"'</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="c1"># Faff on with sorting out available barcoding kits</span>
             <span class="c1"># See https://github.com/nanoporetech/minknow_api/blob/829dbe8ac8e49efdf268d385b50440c52473188b/python/minknow_api/tools/protocols.py#L97C1-L97C7</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;barcoding kits&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">array_value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span><span class="s2">"barcoding kits"</span><span class="p">]</span><span class="o">.</span><span class="n">array_value</span>
             <span class="c1"># workaround for the set of barcoding kits being returned as a string rather</span>
             <span class="c1"># that array of strings</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span><span class="p">,</span> <span class="nb">str</span>
             <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;barcoding kits&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">array_value</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                    <span class="n">tags</span><span class="p">[</span><span class="s2">"barcoding kits"</span><span class="p">]</span><span class="o">.</span><span class="n">array_value</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'"'</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;barcoding&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">bool_value</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="s2">&quot;kit&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">string_value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tags</span><span class="p">[</span><span class="s2">"barcoding"</span><span class="p">]</span><span class="o">.</span><span class="n">bool_value</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="s2">"kit"</span><span class="p">]</span><span class="o">.</span><span class="n">string_value</span><span class="p">)</span>
             <span class="c1"># If we are connected to a live run, and have suitable base calling models check the base-caller model is suitable for the flowcell and kit</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span>
-                <span class="ow">and</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.cfg&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.cfg&quot;</span>
+                <span class="ow">and</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s1">'config'</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'.cfg'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="si">}</span><span class="s2">.cfg"</span>
                 <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span>
             <span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-<span class="w">                    </span><span class="sd">&quot;&quot;&quot;The {} base-calling config listed in the readfish config TOML is not suitable for this flowcell and kit combination.</span>
+<span class="w">                    </span><span class="sd">"""The {} base-calling config listed in the readfish config TOML is not suitable for this flowcell and kit combination.</span>
 <span class="sd">    Please check the dorado value in the caller_settings.dorado section of your TOML file.</span>
-<span class="sd">    The following models are are given by ONT as suitable for this flow cell/kit combo:\n\t{}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">],</span>
+<span class="sd">    The following models are are given by ONT as suitable for this flow cell/kit combo:\n\t{}"""</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="s2">"config"</span><span class="p">],</span>
                         <span class="n">nice_join</span><span class="p">(</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">supported_basecall_models</span><span class="p">,</span>
-                            <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="n">conjunction</span><span class="o">=</span><span class="s2">&quot;and&quot;</span><span class="p">,</span>
+                            <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\n\t</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="n">conjunction</span><span class="o">=</span><span class="s2">"and"</span><span class="p">,</span>
                         <span class="p">),</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
             <span class="c1"># If we are barcoding and have connected to a live run - try checking the listed barcode kit works with the flowcell and kit</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="n">barcoding_kits</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;barcode_kits&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">barcoding_kits</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"barcode_kits"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">barcoding_kits</span> <span class="o">=</span> <span class="n">barcoding_kits</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">barcoding_kits</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">barcoding_kits</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span>
             <span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Barcoding kits specified in TOML </span><span class="si">{}</span><span class="s2"> not amongst those supported by the selected kit and protocol.</span><span class="se">\n</span><span class="s2">Supported kits are:</span><span class="se">\n\t</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">nice_join</span><span class="p">(</span><span class="n">barcoding_kits</span><span class="p">,</span> <span class="n">conjunction</span><span class="o">=</span><span class="s2">&quot;and&quot;</span><span class="p">),</span>
+                    <span class="s2">"Barcoding kits specified in TOML </span><span class="si">{}</span><span class="s2"> not amongst those supported by the selected kit and protocol.</span><span class="se">\n</span><span class="s2">Supported kits are:</span><span class="se">\n\t</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">nice_join</span><span class="p">(</span><span class="n">barcoding_kits</span><span class="p">,</span> <span class="n">conjunction</span><span class="o">=</span><span class="s2">"and"</span><span class="p">),</span>
                         <span class="n">nice_join</span><span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">conjunction</span><span class="o">=</span><span class="s2">&quot;and&quot;</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">supported_barcode_kits</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\n\t</span><span class="s2">"</span><span class="p">,</span> <span class="n">conjunction</span><span class="o">=</span><span class="s2">"and"</span>
                         <span class="p">),</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
@@ -470,20 +462,20 @@
 
 <div class="viewcode-block" id="Caller.disconnect">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.dorado.Caller.disconnect">[docs]</a>
-    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Call the disconnect method on the PyBasecallClient&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Call the disconnect method on the PyBasecallClient"""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Caller.basecall">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.dorado.Caller.basecall">[docs]</a>
-    <span class="k">def</span> <span class="nf">basecall</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">basecall</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">reads</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">minknow_api</span><span class="o">.</span><span class="n">data_pb2</span><span class="o">.</span><span class="n">GetLiveReadsResponse</span><span class="o">.</span><span class="n">ReadData</span><span class="p">]],</span>
         <span class="n">signal_dtype</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">DTypeLike</span><span class="p">,</span>
         <span class="n">daq_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">namedtuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Basecall live data from minknow RPC</span>
+<span class="w">        </span><span class="sd">"""Basecall live data from minknow RPC</span>
 
 <span class="sd">        :param reads: List or generator of tuples containing (channel, MinKNOW.rpc.Read)</span>
 <span class="sd">        :param signal_dtype: Numpy dtype of the raw data</span>
@@ -491,7 +483,7 @@
 <span class="sd">                           If not provided default values of 1.0 and 0.0 are used.</span>
 <span class="sd">        :yield:</span>
 <span class="sd">        :rtype: readfish.plugins.utils.Result</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># FIXME: Occasionally dorado can report a read as not sent when it is</span>
         <span class="c1">#        successfully sent. Therefore we capture not sent reads</span>
         <span class="n">cache</span><span class="p">,</span> <span class="n">skipped</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
@@ -499,8 +491,8 @@
         <span class="n">reads_to_send</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">daq_values</span> <span class="o">=</span> <span class="n">_DefaultDAQValues</span> <span class="k">if</span> <span class="n">daq_values</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">daq_values</span>
         <span class="k">for</span> <span class="n">channel</span><span class="p">,</span> <span class="n">read</span> <span class="ow">in</span> <span class="n">reads</span><span class="p">:</span>
-            <span class="c1"># Attach the &quot;RF-&quot; prefix</span>
-            <span class="n">read_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;RF-</span><span class="si">{</span><span class="n">read</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="c1"># Attach the "RF-" prefix</span>
+            <span class="n">read_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"RF-</span><span class="si">{</span><span class="n">read</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="c1"># cache the read id without the RF tag</span>
             <span class="n">cache</span><span class="p">[</span><span class="n">read_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">read</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">)</span>
@@ -524,10 +516,10 @@
                 <span class="k">break</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Could not send </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reads_to_send</span><span class="p">)</span><span class="si">}</span><span class="s2"> reads to Dorado after 3 attempts, skipping!&quot;</span>
+                <span class="sa">f</span><span class="s2">"Could not send </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reads_to_send</span><span class="p">)</span><span class="si">}</span><span class="s2"> reads to Dorado after 3 attempts, skipping!"</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">read</span> <span class="ow">in</span> <span class="n">reads_to_send</span><span class="p">:</span>
-                <span class="n">skipped</span><span class="p">[</span><span class="n">read</span><span class="p">[</span><span class="s2">&quot;read_id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">read</span><span class="p">[</span><span class="s2">&quot;read_id&quot;</span><span class="p">])</span>
+                <span class="n">skipped</span><span class="p">[</span><span class="n">read</span><span class="p">[</span><span class="s2">"read_id"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">read</span><span class="p">[</span><span class="s2">"read_id"</span><span class="p">])</span>
 
             <span class="c1"># sleep_time = self.caller.throttle - t0</span>
             <span class="c1"># if sleep_time &gt; 0:</span>
@@ -543,21 +535,21 @@
 
             <span class="k">for</span> <span class="n">res_batch</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">res_batch</span><span class="p">:</span>
-                    <span class="n">read_id</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;read_id&quot;</span><span class="p">]</span>
+                    <span class="n">read_id</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">][</span><span class="s2">"read_id"</span><span class="p">]</span>
                     <span class="c1"># Dorado sometimes returns two sub_tags for a read, where signal which was thought to be a single read has been split.</span>
                     <span class="c1">#</span>
                     <span class="c1"># An example result:</span>
                     <span class="c1"># RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c</span>
-                    <span class="c1"># {&#39;read_tag&#39;: 3605, &#39;sub_tag&#39;: 0, &#39;metadata&#39;: {&#39;read_id&#39;: &#39;RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c&#39;...},</span>
-                    <span class="c1">#    &#39;datasets&#39;: {&#39;raw_data&#39;: array([306, 289, 300, ..., 526, 537, 540], dtype=int16),</span>
-                    <span class="c1">#        &#39;sequence&#39;: &#39;CTACAGTGGTCGTCAATACTATTGCAACTCCAGCCTGGGCAACAGAGTGAGACCCTGTCTCAAA...&#39;.}}</span>
+                    <span class="c1"># {'read_tag': 3605, 'sub_tag': 0, 'metadata': {'read_id': 'RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c'...},</span>
+                    <span class="c1">#    'datasets': {'raw_data': array([306, 289, 300, ..., 526, 537, 540], dtype=int16),</span>
+                    <span class="c1">#        'sequence': 'CTACAGTGGTCGTCAATACTATTGCAACTCCAGCCTGGGCAACAGAGTGAGACCCTGTCTCAAA...'.}}</span>
                     <span class="c1"># RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c</span>
-                    <span class="c1"># {&#39;read_tag&#39;: 3605, &#39;sub_tag&#39;: 1 , &#39;metadata&#39;: {&#39;read_id&#39;: &#39;RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c&#39;...}</span>
-                    <span class="c1">#    &#39;datasets&#39;: {&#39;raw_data&#39;: array([306, 289, 300, ..., 526, 537, 540], dtype=int16),</span>
-                    <span class="c1">#        &#39;sequence&#39;: &#39;TTTTTGTGGGCTTTTA&#39;,}}</span>
+                    <span class="c1"># {'read_tag': 3605, 'sub_tag': 1 , 'metadata': {'read_id': 'RF-17774e44-8d3c-4bdd-8730-aaf8addd3e6c'...}</span>
+                    <span class="c1">#    'datasets': {'raw_data': array([306, 289, 300, ..., 526, 537, 540], dtype=int16),</span>
+                    <span class="c1">#        'sequence': 'TTTTTGTGGGCTTTTA',}}</span>
                     <span class="c1"># The second sub_tag will cause the code to fail as it is not expected.</span>
                     <span class="c1"># Therefore we need to check for the sub_tag and if it is not 0, we need to skip the read.</span>
-                    <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;sub_tag&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">"sub_tag"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">continue</span>
 
                     <span class="k">try</span><span class="p">:</span>
@@ -566,18 +558,18 @@
                         <span class="n">channel</span><span class="p">,</span> <span class="n">read_id</span><span class="p">,</span> <span class="n">_time_sent</span> <span class="o">=</span> <span class="n">skipped</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">read_id</span><span class="p">)</span>
                         <span class="n">reads_sent</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                        <span class="s2">&quot;@</span><span class="si">%s</span><span class="s2"> ch=</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">+</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="s2">"@</span><span class="si">%s</span><span class="s2"> ch=</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">+</span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                         <span class="n">read_id</span><span class="p">,</span>
                         <span class="n">channel</span><span class="p">,</span>
-                        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;datasets&quot;</span><span class="p">][</span><span class="s2">&quot;sequence&quot;</span><span class="p">],</span>
-                        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;datasets&quot;</span><span class="p">][</span><span class="s2">&quot;qstring&quot;</span><span class="p">],</span>
+                        <span class="n">res</span><span class="p">[</span><span class="s2">"datasets"</span><span class="p">][</span><span class="s2">"sequence"</span><span class="p">],</span>
+                        <span class="n">res</span><span class="p">[</span><span class="s2">"datasets"</span><span class="p">][</span><span class="s2">"qstring"</span><span class="p">],</span>
                     <span class="p">)</span>
-                    <span class="n">barcode</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;barcode_arrangement&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="n">barcode</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"barcode_arrangement"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                     <span class="c1"># TODO: Add Filter here</span>
                     <span class="k">yield</span> <span class="n">Result</span><span class="p">(</span>
                         <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
                         <span class="n">read_id</span><span class="o">=</span><span class="n">read_id</span><span class="p">,</span>
-                        <span class="n">seq</span><span class="o">=</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;datasets&quot;</span><span class="p">][</span><span class="s2">&quot;sequence&quot;</span><span class="p">],</span>
+                        <span class="n">seq</span><span class="o">=</span><span class="n">res</span><span class="p">[</span><span class="s2">"datasets"</span><span class="p">][</span><span class="s2">"sequence"</span><span class="p">],</span>
                         <span class="n">barcode</span><span class="o">=</span><span class="n">barcode</span> <span class="k">if</span> <span class="n">barcode</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
                         <span class="n">basecall_data</span><span class="o">=</span><span class="n">res</span><span class="p">,</span>
                     <span class="p">)</span>
@@ -586,16 +578,16 @@
 
 <div class="viewcode-block" id="Caller.describe">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins.dorado.Caller.describe">[docs]</a>
-    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Describe the Dorado Caller</span>
 
 <span class="sd">        :return: Description of parameters passed to this Dorado Caller plugin</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">description</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Utilising the Dorado base-caller plugin:&quot;</span><span class="p">]</span>
+<span class="sd">        """</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Utilising the Dorado base-caller plugin:"</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">- </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span></div>
+            <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">- </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dorado_params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -630,10 +622,10 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=7b2d7c30"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script src="../../../_static/documentation_options.js?v=b916904f"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>

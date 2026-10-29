@@ -1,15 +1,17 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="../../">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+        <link rel="prefetch" href="../../_static/readfish_light.png" as="image">
+        <link rel="prefetch" href="../../_static/readfish_dark.png" as="image">
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
-        <title>pybasecall_client_lib.pyclient - readfish 2024.3.0</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>pybasecall_client_lib.pyclient - readfish 2026.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
     
     
@@ -17,8 +19,8 @@
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   --font-stack--monospace: 'Ubuntu Mono', monospace;
   --code-font-size: 90%;
@@ -154,14 +156,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -171,17 +169,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">readfish 2024.3.0</div></a>
+      <a href="../../index.html"><div class="brand">readfish 2026.1.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -189,8 +185,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -198,13 +193,12 @@
     <div class="sidebar-container">
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
-  
   <div class="sidebar-logo-container">
     <img class="sidebar-logo only-light" src="../../_static/readfish_light.png" alt="Light Logo"/>
     <img class="sidebar-logo only-dark" src="../../_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.3.0</span>
+  <span class="sidebar-brand-text">readfish 2026.1.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -220,7 +214,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developers-guide.html">Developer’s guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../readfish.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../readfish.html">API Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../readfish.plugins.html">readfish plugins API</a></li>
 </ul>
@@ -246,8 +240,7 @@
         </a>
         <div class="content-icon-container">
           <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -255,28 +248,36 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pybasecall_client_lib.pyclient</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">pybasecall_client_lib.client_lib</span> <span class="kn">import</span> <span class="n">BasecallClient</span>
-<span class="kn">from</span> <span class="nn">pybasecall_client_lib.helper_functions</span> <span class="kn">import</span> <span class="n">get_return_code_message</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"BUILD_TYPE"</span><span class="p">,</span> <span class="s2">"Release"</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"DEBUG"</span>
+<span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pybasecall_client_lib.client_libd</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasecallClient</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pybasecall_client_lib.client_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasecallClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pybasecall_client_lib.helper_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_return_code_message</span>
 
 
-<span class="k">class</span> <span class="nc">PyBasecallClient</span><span class="p">(</span><span class="n">BasecallClient</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Python client interface to dorado_basecall_server</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyBasecallClient</span><span class="p">(</span><span class="n">BasecallClient</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Python client interface to dorado_basecall_server</span>
 
 <span class="sd">    Any optional server parameters can be accessed via the ``params`` attribute</span>
 
 <span class="sd">    :param address: The formatted address and port for the dorado_basecall_server,</span>
-<span class="sd">        eg &#39;127.0.0.1:5555&#39;</span>
+<span class="sd">        eg '127.0.0.1:5555'</span>
 <span class="sd">    :type address: str</span>
-<span class="sd">    :param config: The basecalling config to initialise the server with.</span>
+<span class="sd">    :param config: The basecalling config to initialise the server with. This can take the form of</span>
+<span class="sd">        a config file name or a model set.  Model sets are specified as a canonical basecall model,</span>
+<span class="sd">        followed by a `|` character, then a comma-separated list of (possibly zero) modbase models,</span>
+<span class="sd">        followed by a `|` character and then an optional duplex model.</span>
 <span class="sd">    :type config: str</span>
 <span class="sd">    :param throttle: Time, in seconds, to delay repeated requests to the server</span>
 <span class="sd">    :type throttle: float</span>
@@ -326,10 +327,10 @@
 <span class="sd">    :Example:</span>
 
 <span class="sd">    &gt;&gt;&gt; client = PyBasecallClient(</span>
-<span class="sd">        &quot;127.0.0.1:5555&quot;,</span>
-<span class="sd">        &quot;dna_r9.4.1_450bps_fast&quot;,</span>
-<span class="sd">        align_ref=&quot;/path/to/index.mmi&quot;,</span>
-<span class="sd">        bed_file=&quot;/path/to/targets.bed&quot;</span>
+<span class="sd">        "127.0.0.1:5555",</span>
+<span class="sd">        "dna_r10.4.1_e8.2_400bps_5khz_fast",</span>
+<span class="sd">        align_ref="/path/to/index.mmi",</span>
+<span class="sd">        bed_file="/path/to/targets.bed"</span>
 <span class="sd">    )</span>
 <span class="sd">    &gt;&gt;&gt; client.connect()</span>
 
@@ -347,9 +348,9 @@
 <span class="sd">         - ``result.not_ready``</span>
 <span class="sd">         - ``result.success``</span>
 <span class="sd">         - ``result.timed_out``</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -365,8 +366,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">num_clients</span> <span class="o">=</span> <span class="n">num_client_threads</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">kwargs</span>
 
-        <span class="c1"># Allow config to use &#39;.cfg&#39; suffix</span>
-        <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;.cfg&quot;</span>
+        <span class="c1"># Allow config to use '.cfg' suffix</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="s2">".cfg"</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">suffix</span><span class="p">)]</span>
 
@@ -380,8 +381,8 @@
         <span class="c1"># Pass any params</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect to the dorado_basecall_server</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Connect to the dorado_basecall_server</span>
 
 <span class="sd">        On first connection external files will be loaded (minimap2 index and</span>
 <span class="sd">        bed file), the ``server_file_load_timeout`` parameter should be set</span>
@@ -397,7 +398,7 @@
 <span class="sd">        .. Note::</span>
 <span class="sd">        If attempting to connect when already connected, the return code will be</span>
 <span class="sd">        ``already_connected``, but the client will remain connected.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">return_code</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">return_code</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">already_connected</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">]:</span>
             <span class="k">return</span>
@@ -420,7 +421,7 @@
             <span class="k">return</span>
         <span class="k">elif</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">failed</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span>
-                <span class="s2">&quot;Could not connect. Is the server running? Check your connection parameters. </span><span class="si">{!r}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Could not connect. Is the server running? Check your connection parameters. </span><span class="si">{!r}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">return_code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_error_message</span><span class="p">()</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -428,49 +429,60 @@
             <span class="n">exception_type</span><span class="p">,</span> <span class="n">exception_message</span> <span class="o">=</span> <span class="n">get_return_code_message</span><span class="p">(</span><span class="n">return_code</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">exception_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exception_message</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Something has gone wrong in the client software: </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">"Something has gone wrong in the client software: </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">return_code</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">raise</span> <span class="n">exception_type</span><span class="p">(</span><span class="n">exception_message</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(address=</span><span class="si">{!r}</span><span class="s2">,&quot;</span>
-            <span class="s2">&quot; config=</span><span class="si">{!r}</span><span class="s2">,&quot;</span>
-            <span class="s2">&quot; align_ref=</span><span class="si">{!r}</span><span class="s2">,&quot;</span>
-            <span class="s2">&quot; bed_file=</span><span class="si">{!r}</span><span class="s2">,&quot;</span>
-            <span class="s2">&quot; barcodes=</span><span class="si">{!r}</span><span class="s2">,&quot;</span>
-            <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span>
+            <span class="s2">"</span><span class="si">{}</span><span class="s2">(address=</span><span class="si">{!r}</span><span class="s2">,"</span>
+            <span class="s2">" config=</span><span class="si">{!r}</span><span class="s2">,"</span>
+            <span class="s2">" align_ref=</span><span class="si">{!r}</span><span class="s2">,"</span>
+            <span class="s2">" bed_file=</span><span class="si">{!r}</span><span class="s2">,"</span>
+            <span class="s2">" barcodes=</span><span class="si">{!r}</span><span class="s2">,"</span>
+            <span class="s2">" </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)"</span>
         <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;align_ref&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bed_file&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;barcode_kits&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"align_ref"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"bed_file"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"barcode_kits"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">(),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_error_message</span><span class="p">(),</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">pass_read</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pass_read</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">read</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">package_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pass a read to the basecall server</span>
+<span class="w">        </span><span class="sd">"""Pass a read to the basecall server</span>
 
 <span class="sd">        If ``read`` is a dict it must be initialised with the following fields:</span>
-<span class="sd">            - ``read_tag`` (`int`) 32-bit uint</span>
-<span class="sd">            - ``read_id`` (`str`) Non-empty string</span>
-<span class="sd">            - ``raw_data`` (`numpy.ndarray[numpy.int16]`) 1D NumPy array of int 16</span>
-<span class="sd">            - ``daq_offset`` (`float`) Offset value for conversion to pA</span>
-<span class="sd">            - ``daq_scaling`` (`float`) Scaling value for conversion to pA</span>
+<span class="sd">            - ``read_tag`` (`int`) 32-bit unsigned integer.</span>
+<span class="sd">            - ``read_id`` (`str`) Non-empty string.</span>
+<span class="sd">            - ``raw_data`` (`numpy.ndarray[numpy.int16]`) 1D NumPy array of int 16.</span>
+<span class="sd">            - ``daq_offset`` (`float`) Offset value for conversion to pA.</span>
+<span class="sd">            - ``daq_scaling`` (`float`) Scaling value for conversion to pA.</span>
+<span class="sd">            - ``start_time`` (`int`) 64-bit uint, start time of the read (in samples).</span>
+<span class="sd">              relative to the experiment start time.</span>
+<span class="sd">            - ``sampling_rate`` (`float`) The sampling rate of the raw read data.</span>
 
 <span class="sd">        If ``read`` is a dict it may also optionally contain the following fields:</span>
-<span class="sd">            - ``override_scaling`` (`bool`): Override automatic read scaling</span>
-<span class="sd">            - ``scaling_med`` (`float`): Median current value to use for manual scaling</span>
-<span class="sd">            - ``scaling_mad`` (`float`): Median absolute deviation to use for manual scaling</span>
+<span class="sd">            - ``channel`` (`int`): The channel the read came from.</span>
+<span class="sd">            - ``mux`` (`int`): The mux the read came from.</span>
+<span class="sd">            - ``run_id`` (`str`): Non-empty string containing the unique run-id.</span>
+<span class="sd">            - ``sequencing_kit`` (`str`): Non-empty string indicating the</span>
+<span class="sd">              sequencing-kit used.</span>
+<span class="sd">            - ``end_reason`` (`str`): Non-empty string indicating the reason the</span>
+<span class="sd">              read ended.</span>
+
+<span class="sd">        Note that duplex basecalling requires the ``channel``, ``mux``, and ``run_id``</span>
+<span class="sd">        fields in order to properly pair reads. The ``sequencing_kit`` field is needed</span>
+<span class="sd">        if you want to enable adapter and/or primer trimming.</span>
 
 <span class="sd">        :param read: Either a packaged read or object that can be packaged by</span>
 <span class="sd">            package_function</span>
@@ -486,16 +498,16 @@
 
 <span class="sd">        :return: True if read sent successfully, otherwise False</span>
 <span class="sd">        :rtype: bool</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">current_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">current_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span>
-                <span class="s2">&quot;Not connected to server. status code: </span><span class="si">{!r}</span><span class="s2">. </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Not connected to server. status code: </span><span class="si">{!r}</span><span class="s2">. </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">current_status</span><span class="p">,</span> <span class="bp">self</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="c1"># Make first attempt to pass read to guppy</span>
+        <span class="c1"># Make first attempt to pass read to the server</span>
         <span class="n">read</span> <span class="o">=</span> <span class="n">package_function</span><span class="p">(</span><span class="n">read</span><span class="p">)</span>
         <span class="n">return_code</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">pass_read</span><span class="p">(</span><span class="n">read</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_accepted</span><span class="p">:</span>
@@ -517,23 +529,23 @@
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">elif</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">bad_read</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Something went wrong, read dict might be malformed. return_code: </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Something went wrong, read dict might be malformed. return_code: </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">return_code</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_accepting_reads</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span>
-                <span class="s2">&quot;Not accepting reads (disconnected or finished). return_code: </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Not accepting reads (disconnected or finished). return_code: </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">return_code</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Undefined return_code: </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">return_code</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Undefined return_code: </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">return_code</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">pass_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reads</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pass multiple reads to the basecall server</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pass_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reads</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Pass multiple reads to the basecall server</span>
 
-<span class="sd">        :param reads: A list of read dicts formated as with the pass_read method.</span>
+<span class="sd">        :param reads: A list of read dicts formatted as with the pass_read method.</span>
 <span class="sd">        :type reads: list</span>
 
 <span class="sd">        :raises ValueError: When send fails, this is usually returned when a</span>
@@ -549,16 +561,16 @@
 <span class="sd">        that the client will accept the reads as long as its input queue is not already full. The</span>
 <span class="sd">        caller should make sure that the number of reads passed to the client in a single call to</span>
 <span class="sd">        this function is not excessive, to avoid using too much memory.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">current_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">current_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span>
-                <span class="s2">&quot;Not connected to server. status code: </span><span class="si">{!r}</span><span class="s2">. </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Not connected to server. status code: </span><span class="si">{!r}</span><span class="s2">. </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">current_status</span><span class="p">,</span> <span class="bp">self</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="c1"># Make first attempt to pass reads to guppy</span>
+        <span class="c1"># Make first attempt to pass reads to the server</span>
         <span class="n">return_code</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">pass_reads</span><span class="p">(</span><span class="n">reads</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_accepted</span><span class="p">:</span>
             <span class="c1"># Reads passed successfully, return</span>
@@ -579,21 +591,21 @@
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">elif</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">bad_read</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Something went wrong, read dict might be malformed. return_code: </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Something went wrong, read dict might be malformed. return_code: </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">return_code</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_accepting_reads</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span>
-                <span class="s2">&quot;Not accepting reads (disconnected or finished). return_code: </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Not accepting reads (disconnected or finished). return_code: </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">return_code</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Undefined return_code: </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">return_code</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Undefined return_code: </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">return_code</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">get_completed_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get completed reads from the server</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_completed_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Get completed reads from the server</span>
 
 <span class="sd">        :raises ConnectionError: When not connected to server</span>
 <span class="sd">        :raises RuntimeError: When could not retrieve reads or an unexpected</span>
@@ -601,12 +613,15 @@
 
 <span class="sd">        :return: List of dictionaries, where each sub-list contains all splits of the original read and each dict is a called split read</span>
 <span class="sd">        :rtype: list[list[dict]]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper for get_completed_reads&quot;&quot;&quot;</span>
+
+<span class="sd">        .. Note::</span>
+<span class="sd">        Any reads which were too short to be basecalled (less than 100 samples) will have empty sequences and qstrings.</span>
+<span class="sd">        """</span>
+<span class="w">        </span><span class="sd">"""Wrapper for get_completed_reads"""</span>
         <span class="n">current_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">current_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span>
-                <span class="s2">&quot;Not connected to server. status code: </span><span class="si">{!r}</span><span class="s2">. </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Not connected to server. status code: </span><span class="si">{!r}</span><span class="s2">. </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">current_status</span><span class="p">,</span> <span class="nb">super</span><span class="p">()</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -616,36 +631,38 @@
 
 <div class="viewcode-block" id="PyBasecallClient.set_params">
 <a class="viewcode-back" href="../../toml.html#pybasecall_client_lib.pyclient.PyBasecallClient.set_params">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="n">return_code</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_params</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
             <span class="k">if</span> <span class="n">return_code</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">already_connected</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                        <span class="s2">&quot;Attempting to set connection parameters while connected is not supported. Please set parameters before connecting.&quot;</span>
+                        <span class="s2">"Attempting to set connection parameters while connected is not supported. Please set parameters before connecting."</span>
                     <span class="p">)</span>
                 <span class="k">elif</span> <span class="n">return_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">failed</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;Could not set server parameter </span><span class="si">{!r}</span><span class="s2"> using value </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="s2">"Could not set server parameter </span><span class="si">{!r}</span><span class="s2"> using value </span><span class="si">{!r}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="n">key</span><span class="p">,</span>
                             <span class="n">value</span><span class="p">,</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unexpected response from guppy server&quot;</span><span class="p">)</span></div>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Unexpected response from basecall server"</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make a connection to the server.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Make a connection to the server.</span>
 
 <span class="sd">        This could be slow on the first connection due to loading the alignment</span>
 <span class="sd">        index</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the connection to the server.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Close the connection to the server."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
 </pre></div>
         </article>
@@ -679,10 +696,10 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=7b2d7c30"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script src="../../_static/documentation_options.js?v=b916904f"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

@@ -1,16 +1,18 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="./">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="readfish.html" /><link rel="prev" title="Readfish analysis" href="post-analysis.html" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="API Reference" href="readfish.html"><link rel="prev" title="Readfish analysis" href="post-analysis.html">
+        <link rel="prefetch" href="_static/readfish_light.png" as="image">
+        <link rel="prefetch" href="_static/readfish_dark.png" as="image">
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
-        <title>Developer’s guide - readfish 2024.3.0</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Developer’s guide - readfish 2026.1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
     
     
@@ -18,8 +20,8 @@
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   --font-stack--monospace: 'Ubuntu Mono', monospace;
   --code-font-size: 90%;
@@ -155,14 +157,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -172,17 +170,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">readfish 2024.3.0</div></a>
+      <a href="index.html"><div class="brand">readfish 2026.1.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -190,8 +186,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -199,13 +194,12 @@
     <div class="sidebar-container">
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
-  
   <div class="sidebar-logo-container">
     <img class="sidebar-logo only-light" src="_static/readfish_light.png" alt="Light Logo"/>
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.3.0</span>
+  <span class="sidebar-brand-text">readfish 2026.1.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -221,7 +215,7 @@
 <li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Developer’s guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="readfish.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="readfish.html">API Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readfish.plugins.html">readfish plugins API</a></li>
 </ul>
@@ -253,8 +247,7 @@
   </a>
 </div>
 <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -262,8 +255,7 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
@@ -293,14 +285,14 @@
 <p>Installation candidates are listed in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> like so</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.optional-dependencies]</span>
 <span class="c1"># Development dependencies</span>
-<span class="n">docs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;sphinx-copybutton&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;furo&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;myst-parser&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;faqtory&quot;</span><span class="p">]</span>
-<span class="n">tests</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pytest&quot;</span><span class="p">]</span>
-<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;readfish[all,docs,tests]&quot;</span><span class="p">]</span>
+<span class="n">docs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"sphinx-copybutton"</span><span class="p">,</span><span class="w"> </span><span class="s2">"furo"</span><span class="p">,</span><span class="w"> </span><span class="s2">"myst-parser"</span><span class="p">,</span><span class="w"> </span><span class="s2">"faqtory"</span><span class="p">]</span>
+<span class="n">tests</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"pytest"</span><span class="p">]</span>
+<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"readfish[all,docs,tests]"</span><span class="p">]</span>
 <span class="c1"># Running dependencies, this is a little bit clunky but works for now</span>
-<span class="n">mappy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;mappy&quot;</span><span class="p">]</span>
-<span class="n">mappy-rs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;mappy-rs&quot;</span><span class="p">]</span>
-<span class="n">dorado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ont-pybasecall-client-lib&quot;</span><span class="p">]</span>
-<span class="n">all</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;readfish[mappy,mappy-rs,dorado]&quot;</span><span class="p">]</span>
+<span class="n">mappy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"mappy"</span><span class="p">]</span>
+<span class="n">mappy-rs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"mappy-rs"</span><span class="p">]</span>
+<span class="n">dorado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"ont-pybasecall-client-lib"</span><span class="p">]</span>
+<span class="n">all</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"readfish[mappy,mappy-rs,dorado]"</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>An example install command would be <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">readfish[all]</span></code>.</p>
@@ -449,15 +441,15 @@ These are found in <code class="docutils literal notranslate"><span class="pre">
 Excepting <code class="docutils literal notranslate"><span class="pre">validate.py</span></code>, ideally these wrap <code class="docutils literal notranslate"><span class="pre">targets.py</span></code>, which performs the bare minimum <code class="docutils literal notranslate"><span class="pre">read_until</span></code> loop, calling the Aligner and Caller plugins.</p>
 <p>If adding an entry point, they must also be included in <a class="reference download internal" download="" href="_downloads/e5cce9a507ee6899044ad73c69e96fe5/_cli_base.py"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">src/readfish/_cli_base.py</span></code></span></a>,adding to this <code class="docutils literal notranslate"><span class="pre">cmds</span></code> list</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">cmds</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;targets&quot;</span><span class="p">,</span> <span class="s2">&quot;targets&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;barcode-targets&quot;</span><span class="p">,</span> <span class="s2">&quot;targets&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;unblock-all&quot;</span><span class="p">,</span> <span class="s2">&quot;unblock_all&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;validate&quot;</span><span class="p">,</span> <span class="s2">&quot;validate&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="s2">&quot;stats&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"targets"</span><span class="p">,</span> <span class="s2">"targets"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"barcode-targets"</span><span class="p">,</span> <span class="s2">"targets"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"unblock-all"</span><span class="p">,</span> <span class="s2">"unblock_all"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"validate"</span><span class="p">,</span> <span class="s2">"validate"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"stats"</span><span class="p">,</span> <span class="s2">"stats"</span><span class="p">),</span>
     <span class="p">]</span>
     <span class="c1"># Entry point is imported during runtime, and added as a sub command to readfish</span>
     <span class="k">for</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
-        <span class="n">_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;readfish.entry_points.</span><span class="si">{</span><span class="n">module</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s2">"readfish.entry_points.</span><span class="si">{</span><span class="n">module</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">_module</span><span class="o">.</span><span class="n">_help</span><span class="p">)</span>
         <span class="k">for</span> <span class="o">*</span><span class="n">flags</span><span class="p">,</span> <span class="n">opts</span> <span class="ow">in</span> <span class="n">_module</span><span class="o">.</span><span class="n">_cli</span><span class="p">:</span>
             <span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="o">*</span><span class="n">flags</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">)</span>
@@ -481,13 +473,13 @@ For example:</p>
 <p>Plugins are loaded as instances of <code class="docutils literal notranslate"><span class="pre">_PluginModules</span></code> - see source of <code class="docutils literal notranslate"><span class="pre">_PluginModules</span></code> for more details.</p>
 <dl class="py class">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">_PluginModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">readfish._config.</span></span><span class="sig-name descname"><span class="pre">_PluginModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/readfish/_config.html#_PluginModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>A plugin module</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the plugin module.</p></li>
-<li><p><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – A dictionary of parameters to be passed to the plugin module.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – The name of the plugin module.</p></li>
+<li><p><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>) – A dictionary of parameters to be passed to the plugin module.</p></li>
 </ul>
 </dd>
 </dl>
@@ -517,7 +509,7 @@ Otherwise, it is loaded using the importlib library.</p>
 <dd class="field-even"><p>The loaded module.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ModuleNotFoundError" title="(in Python v3.12)"><strong>ModuleNotFoundError</strong></a> – If the plugin module cannot be found or loaded.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ModuleNotFoundError" title="(in Python v3.15)"><strong>ModuleNotFoundError</strong></a> – If the plugin module cannot be found or loaded.</p>
 </dd>
 </dl>
 <p>Note that this method is intended to be used as part of a plugin system, where
@@ -545,8 +537,8 @@ It is <strong>Required</strong> that the class name be <code class="docutils lit
 We inherit the <code class="docutils literal notranslate"><span class="pre">AlignerABC</span></code> class, which provides the required methods for an <code class="docutils literal notranslate"><span class="pre">Aligner</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
 
-<span class="k">class</span> <span class="nc">_Aligner</span><span class="p">(</span><span class="n">AlignerABC</span><span class="p">):</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_Aligner</span><span class="p">(</span><span class="n">AlignerABC</span><span class="p">):</span>
+    <span class="s2">"""</span>
 <span class="s2">    A wrapper class for mappy.Aligner providing an interface to either `mappy` or `mappy-rs` aligner implementations.</span>
 
 <span class="s2">    :param Aligners mappy_impl: Specifies which mappy implementation to use, represented by an `Aligners` enum instance.</span>
@@ -558,7 +550,7 @@ We inherit the <code class="docutils literal notranslate"><span class="pre">Alig
 <span class="s2">    Example:</span>
 <span class="s2">        .. code-block:: python</span>
 
-<span class="s2">            aligner = _Aligner(mappy_impl=Aligners.C_MAPPY, debug_log=&quot;debug.log&quot;, preset=&quot;map-ont&quot;)</span>
+<span class="s2">            aligner = _Aligner(mappy_impl=Aligners.C_MAPPY, debug_log="debug.log", preset="map-ont")</span>
 
 <span class="s2">    .. note::</span>
 <span class="s2">        The actual aligner instance is created during initialization based on the provided `mappy_impl`, and is accessible via the `aligner` attribute of the instance.</span>
@@ -569,7 +561,7 @@ We inherit the <code class="docutils literal notranslate"><span class="pre">Alig
 <h3><strong>init</strong>()<a class="headerlink" href="#init" title="Link to this heading">¶</a></h3>
 <p>Firstly, as with most python classes, we initialise the class.
 We do not need to call <code class="docutils literal notranslate"><span class="pre">super().init()</span></code> as we aren’t actually using the initialised <code class="docutils literal notranslate"><span class="pre">AlignerABC</span></code> just the inherited methods.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="s2">&quot;&quot;&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="s2">"""</span>
 
 <span class="s2">    def __init__(self, mappy_impl: Aligners, debug_log: Optional[str] = None, **kwargs):</span>
 <span class="s2">        # Variant of the mappy aligner to use - `mappy` or `mappy_rs`</span>
@@ -588,7 +580,7 @@ We do not need to call <code class="docutils literal notranslate"><span class="p
 <span class="s2">            import mappy_rs</span>
 
 <span class="s2">            self.aligner = mappy_rs.Aligner(**self.aligner_params)</span>
-<span class="s2">            threads = self.aligner_params.get(&quot;n_threads&quot;, 1)</span>
+<span class="s2">            threads = self.aligner_params.get("n_threads", 1)</span>
 <span class="s2">            self.aligner.enable_threading(threads)</span>
 <span class="s2">        else:</span>
 </pre></div>
@@ -600,27 +592,27 @@ We do not need to call <code class="docutils literal notranslate"><span class="p
 <p>The validate function is intended to be called in the <strong>init</strong> method, before the actual <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> or <code class="docutils literal notranslate"><span class="pre">Caller</span></code> is initialised. The contents of this method are left up to the author, however we suggest that people check for the things listed above.</p>
 <p>The purpose of <code class="docutils literal notranslate"><span class="pre">validate</span></code> is to check that the given parameters will create a valid <code class="docutils literal notranslate"><span class="pre">Aligner</span></code> or <code class="docutils literal notranslate"><span class="pre">Caller</span></code>. For example, in the <code class="docutils literal notranslate"><span class="pre">dorado.py</span></code> <code class="docutils literal notranslate"><span class="pre">Caller</span></code> plugin, we check the permissions of the provided <code class="docutils literal notranslate"><span class="pre">dorado</span></code> socket. If these are insufficient, dorado only errors out after a 10 minute timeout. However if this is caught in <code class="docutils literal notranslate"><span class="pre">validate</span></code>, everyone ends up being left a lot happier.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
-    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Check that this aligner can be initialised without any issues. Catches any problems and raises helpful errors.</span>
 <span class="sd">        Currently checks:</span>
 <span class="sd">         1. that the Reference (fn_idx_in) exists, IF one is provided</span>
 <span class="sd">         2. That the reference is an .mmi file, or a FASTA or FASTQ, either uncompressed or Gzipped, IF a fn_idx_in is provided.</span>
 
 <span class="sd">        :return: None, if the Aligner is setup with valid paths and permissions</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">index</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aligner_params</span><span class="p">[</span><span class="s2">&quot;fn_idx_in&quot;</span><span class="p">]</span>
-        <span class="n">file_extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;.fna&quot;</span><span class="p">,</span> <span class="s2">&quot;.fsa&quot;</span><span class="p">,</span> <span class="s2">&quot;.fa&quot;</span><span class="p">,</span> <span class="s2">&quot;.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;.fq&quot;</span><span class="p">]</span>
-        <span class="n">file_extensions</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">.gz&quot;</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">file_extensions</span><span class="p">])</span>
-        <span class="n">file_extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.mmi&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">index</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aligner_params</span><span class="p">[</span><span class="s2">"fn_idx_in"</span><span class="p">]</span>
+        <span class="n">file_extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".fasta"</span><span class="p">,</span> <span class="s2">".fna"</span><span class="p">,</span> <span class="s2">".fsa"</span><span class="p">,</span> <span class="s2">".fa"</span><span class="p">,</span> <span class="s2">".fastq"</span><span class="p">,</span> <span class="s2">".fq"</span><span class="p">]</span>
+        <span class="n">file_extensions</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">.gz"</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">file_extensions</span><span class="p">])</span>
+        <span class="n">file_extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".mmi"</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">((</span><span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">(),</span> <span class="n">index</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> does not exist"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span> <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">file_extensions</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Provided index file appears to be of an incorrect type - should be one of </span><span class="si">{</span><span class="n">file_extensions</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Provided index file appears to be of an incorrect type - should be one of </span><span class="si">{</span><span class="n">file_extensions</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </pre></div>
 </div>
 </section>
@@ -635,13 +627,13 @@ We do not need to call <code class="docutils literal notranslate"><span class="p
 <section id="initialised">
 <h3>initialised()<a class="headerlink" href="#initialised" title="Link to this heading">¶</a></h3>
 <p>Required <code class="docutils literal notranslate"><span class="pre">initialised``</span> <span class="pre">method.</span> <span class="pre">In</span> <span class="pre">this</span> <span class="pre">case,</span> <span class="pre">we</span> <span class="pre">are</span> <span class="pre">initialised</span> <span class="pre">if</span> <span class="pre">the</span> <span class="pre">Aligner</span> <span class="pre">has</span> <span class="pre">an</span> <span class="pre">index</span> <span class="pre">loaded</span> <span class="pre">-</span> <span class="pre">which</span> <span class="pre">is</span> <span class="pre">when</span> <span class="pre">a</span> </code>mappy.Aligner<code class="docutils literal notranslate"><span class="pre">or</span></code>mappy_rs.Aligner<code class="docutils literal notranslate"><span class="pre">evaluates</span> <span class="pre">to</span></code>true`</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="w">        </span><span class="sd">&quot;&quot;&quot;Is the mappy Aligner initialised?</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="w">        </span><span class="sd">"""Is the mappy Aligner initialised?</span>
 
 <span class="sd">        If ``False`` the ``Aligner`` is unlikely to work for mapping.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aligner</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">map_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basecall_results</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">map_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basecall_results</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">]:</span>
 </pre></div>
 </div>
 </section>
@@ -669,7 +661,7 @@ as long as the <code class="docutils literal notranslate"><span class="pre">Resu
         <span class="o">..</span> <span class="n">note</span><span class="p">::</span>
             <span class="n">This</span> <span class="n">method</span> <span class="n">logs</span> <span class="n">the</span> <span class="n">mapping</span> <span class="n">results</span> <span class="ow">or</span> <span class="err">`</span><span class="n">UNMAPPED_PAF</span><span class="err">`</span> <span class="k">for</span> <span class="n">unmapped</span> <span class="n">reads</span><span class="p">,</span>
             <span class="ow">and</span> <span class="n">the</span> <span class="n">actual</span> <span class="n">mapping</span> <span class="ow">is</span> <span class="n">performed</span> <span class="n">by</span> <span class="err">`</span><span class="n">_c_mappy_wrapper</span><span class="err">`</span> <span class="ow">or</span> <span class="err">`</span><span class="n">_rust_mappy_wrapper</span><span class="err">`</span> <span class="n">methods</span> <span class="n">based</span> <span class="n">on</span> <span class="n">the</span> <span class="err">`</span><span class="n">mappy_impl</span><span class="err">`</span><span class="o">.</span>
-        <span class="s2">&quot;&quot;&quot;</span>
+        <span class="s2">"""</span>
 <span class="s2">        # Map with MAPPY_RS</span>
 <span class="s2">        if self.mappy_impl is Aligners.MAPPY_RS:</span>
 <span class="s2">            iter_ = self._rust_mappy_wrapper(basecall_results)</span>
@@ -677,15 +669,15 @@ as long as the <code class="docutils literal notranslate"><span class="pre">Resu
 <span class="s2">        elif self.mappy_impl is Aligners.C_MAPPY:</span>
 <span class="s2">            iter_ = self._c_mappy_wrapper(basecall_results)</span>
 <span class="s2">        else:</span>
-<span class="s2">            raise NotImplementedError(&quot;Aligner not configured&quot;)</span>
+<span class="s2">            raise NotImplementedError("Aligner not configured")</span>
 <span class="s2">        # Iterate over the results and log them, then yield, now with Alignment data</span>
 <span class="s2">        # If there were alignments</span>
 <span class="s2">        for result in iter_:</span>
-<span class="s2">            paf_info = f&quot;</span><span class="si">{result.read_id}</span><span class="se">\t</span><span class="s2">{len(result.seq)}&quot;</span>
+<span class="s2">            paf_info = f"</span><span class="si">{result.read_id}</span><span class="se">\t</span><span class="s2">{len(result.seq)}"</span>
 <span class="s2">            for al in result.alignment_data:</span>
-<span class="s2">                self.logger.debug(f&quot;</span><span class="si">{paf_info}</span><span class="se">\t</span><span class="si">{al}</span><span class="s2">&quot;)</span>
+<span class="s2">                self.logger.debug(f"</span><span class="si">{paf_info}</span><span class="se">\t</span><span class="si">{al}</span><span class="s2">")</span>
 <span class="s2">            if not result.alignment_data:</span>
-<span class="s2">                self.logger.debug(f&quot;</span><span class="si">{paf_info}</span><span class="se">\t</span><span class="si">{UNMAPPED_PAF}</span><span class="s2">&quot;)</span>
+<span class="s2">                self.logger.debug(f"</span><span class="si">{paf_info}</span><span class="se">\t</span><span class="si">{UNMAPPED_PAF}</span><span class="s2">")</span>
 <span class="s2">            yield result</span>
 
 <span class="s2">    def _c_mappy_wrapper(self, basecalls: Iterable[Result]) -&gt; Result:</span>
@@ -699,7 +691,7 @@ describing what the aligner is seeing before it starts. This will be logged in t
 so things to bear in mind are things that will be useful when retrospectively analysing the run.
 This function is called in <code class="docutils literal notranslate"><span class="pre">targets.py</span></code> to be logged to the terminal.
 This is a more complicated function, so I’ve commented details more thoroughly below.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Provides a human-readable description of the mappy Aligner plugin instance. This description</span>
 <span class="sd">        includes details about the plugin, the reference used, target regions, and barcodes, making it useful</span>
 <span class="sd">        for logging and debugging purposes.</span>
@@ -721,13 +713,13 @@ This is a more complicated function, so I’ve commented details more thoroughly
 <span class="sd">            insights into the configuration and status of the aligner instance, reference used, and target specifics.</span>
 <span class="sd">            If the Aligner is not initialised yet, it will return a message indicating that no reference has been</span>
 <span class="sd">            provided, and the Aligner needs initialisation before proceeding.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># List to store strings, that will be concatenated at the end and returned.</span>
         <span class="n">description</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># Check we have a reference.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialised</span><span class="p">:</span>
             <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Using the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mappy_impl</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> plugin. Using reference: </span><span class="si">{</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aligner_params</span><span class="p">[</span><span class="s1">&#39;fn_idx_in&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Using the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mappy_impl</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> plugin. Using reference: </span><span class="si">{</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aligner_params</span><span class="p">[</span><span class="s1">'fn_idx_in'</span><span class="p">])</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="c1"># All the contig names that are in the reference.</span>
             <span class="n">seq_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aligner</span><span class="o">.</span><span class="n">seq_names</span><span class="p">)</span>
@@ -737,8 +729,8 @@ This is a more complicated function, so I’ve commented details more thoroughly
             <span class="n">ref_len</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">*</span> <span class="mi">2</span>
             <span class="c1"># Print out for each region and barcode. Zip an identifying string in with the class containing the Condition data.</span>
             <span class="k">for</span> <span class="n">condition</span><span class="p">,</span> <span class="n">region_or_barcode_str</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span>
-                <span class="nb">zip</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">repeat</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">))),</span>
-                <span class="nb">zip</span><span class="p">(</span><span class="n">barcodes</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">repeat</span><span class="p">(</span><span class="s2">&quot;Barcode&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">barcodes</span><span class="p">))),</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">repeat</span><span class="p">(</span><span class="s2">"Region"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">))),</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="n">barcodes</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">repeat</span><span class="p">(</span><span class="s2">"Barcode"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">barcodes</span><span class="p">))),</span>
             <span class="p">):</span>
                 <span class="c1"># Create a set of all contigs listed as targets so contigs are unique</span>
                 <span class="n">unique_contigs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">_targets</span><span class="p">[</span><span class="n">Strand</span><span class="o">.</span><span class="n">forward</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -747,15 +739,15 @@ This is a more complicated function, so I’ve commented details more thoroughly
                 <span class="p">)</span>
                 <span class="n">num_unique_contigs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_contigs</span><span class="p">)</span>
                 <span class="c1"># More than one contig should be plural!</span>
-                <span class="n">pluralise</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">num_unique_contigs</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
+                <span class="n">pluralise</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">""</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">num_unique_contigs</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">)</span>
                 <span class="n">num_in_ref_contigs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_contigs</span> <span class="o">&amp;</span> <span class="n">seq_names</span><span class="p">)</span>
                 <span class="c1"># Check all targets are in the reference.</span>
                 <span class="n">num_not_in_ref_contigs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_contigs</span> <span class="o">-</span> <span class="n">seq_names</span><span class="p">)</span>
                 <span class="c1"># NOTE - we raise an error if we have a contig in the targets that is not in the reference.</span>
                 <span class="n">warn_not_found</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;NOTE - The following </span><span class="si">{</span><span class="n">num_not_in_ref_contigs</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;contigs are listed as targets but have&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">num_not_in_ref_contigs</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;contig is listed as a target but has&#39;</span><span class="si">}</span><span class="s2"> not been found on the target reference:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">nice_join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unique_contigs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">seq_names</span><span class="p">),</span><span class="w"> </span><span class="n">conjunction</span><span class="o">=</span><span class="s1">&#39;and&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"NOTE - The following </span><span class="si">{</span><span class="n">num_not_in_ref_contigs</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'contigs are listed as targets but have'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">num_not_in_ref_contigs</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'contig is listed as a target but has'</span><span class="si">}</span><span class="s2"> not been found on the target reference:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">nice_join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unique_contigs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">seq_names</span><span class="p">),</span><span class="w"> </span><span class="n">conjunction</span><span class="o">=</span><span class="s1">'and'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
                     <span class="k">if</span> <span class="n">num_not_in_ref_contigs</span>
-                    <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+                    <span class="k">else</span> <span class="s2">""</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">warn_not_found</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">warn_not_found</span><span class="p">)</span>
@@ -766,12 +758,12 @@ This is a more complicated function, so I’ve commented details more thoroughly
                 <span class="p">)</span>
                 <span class="c1"># Append a nicely formatted summation for each region or barcode</span>
                 <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">region_or_barcode_str</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">condition</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has targets on </span><span class="si">{</span><span class="n">num_unique_contigs</span><span class="si">}</span><span class="s2"> contig</span><span class="si">{</span><span class="n">pluralise</span><span class="si">}</span><span class="s2">, with </span><span class="si">{</span><span class="n">num_in_ref_contigs</span><span class="si">}</span><span class="s2"> found in the provided reference.</span>
-<span class="s2">This </span><span class="si">{</span><span class="n">region_or_barcode_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="n">num_targets</span><span class="si">}</span><span class="s2"> total targets (+ve and -ve strands), covering approximately </span><span class="si">{</span><span class="n">ref_covered</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> of the genome.</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+                    <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">region_or_barcode_str</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">condition</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has targets on </span><span class="si">{</span><span class="n">num_unique_contigs</span><span class="si">}</span><span class="s2"> contig</span><span class="si">{</span><span class="n">pluralise</span><span class="si">}</span><span class="s2">, with </span><span class="si">{</span><span class="n">num_in_ref_contigs</span><span class="si">}</span><span class="s2"> found in the provided reference.</span>
+<span class="s2">This </span><span class="si">{</span><span class="n">region_or_barcode_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="n">num_targets</span><span class="si">}</span><span class="s2"> total targets (+ve and -ve strands), covering approximately </span><span class="si">{</span><span class="n">ref_covered</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> of the genome.</span><span class="se">\n</span><span class="s2">"""</span>
                 <span class="p">)</span>
             <span class="c1"># Join the list of strings together with newlines and return.</span>
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;Aligner is not initialised yet. No reference has been provided, readfish will not proceed until the Aligner is initialised.&quot;</span>
+            <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"Aligner is not initialised yet. No reference has been provided, readfish will not proceed until the Aligner is initialised."</span>
 </pre></div>
 </div>
 </section>
@@ -782,7 +774,7 @@ This is a more complicated function, so I’ve commented details more thoroughly
 
         <span class="p">:</span><span class="n">param</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">]</span> <span class="n">basecalls</span><span class="p">:</span> <span class="n">An</span> <span class="n">iterable</span> <span class="n">of</span> <span class="n">basecalled</span> <span class="n">read</span> <span class="n">results</span> <span class="n">to</span> <span class="n">be</span> <span class="n">mapped</span><span class="o">.</span>
         <span class="p">:</span><span class="k">return</span><span class="p">:</span> <span class="n">A</span> <span class="n">generator</span> <span class="n">yielding</span> <span class="n">mapped</span> <span class="n">read</span> <span class="n">results</span><span class="o">.</span>
-        <span class="s2">&quot;&quot;&quot;</span>
+        <span class="s2">"""</span>
 <span class="s2">        for result in basecalls:</span>
 <span class="s2">            result.alignment_data = list(self.aligner.map(result.seq))</span>
 <span class="s2">            yield result</span>
@@ -883,10 +875,10 @@ This is a more complicated function, so I’ve commented details more thoroughly
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=7b2d7c30"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script src="_static/documentation_options.js?v=b916904f"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     </body>

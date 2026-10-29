@@ -1,16 +1,18 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="./">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="readfish console scripts" href="readfish.console.html" /><link rel="prev" title="Getting Started" href="getting-started.html" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="readfish console scripts" href="readfish.console.html"><link rel="prev" title="Getting Started" href="getting-started.html">
+        <link rel="prefetch" href="_static/readfish_light.png" as="image">
+        <link rel="prefetch" href="_static/readfish_dark.png" as="image">
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
-        <title>TOML files - readfish 2024.3.0</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>TOML files - readfish 2026.1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
     
     
@@ -18,8 +20,8 @@
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   --font-stack--monospace: 'Ubuntu Mono', monospace;
   --code-font-size: 90%;
@@ -155,14 +157,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -172,17 +170,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">readfish 2024.3.0</div></a>
+      <a href="index.html"><div class="brand">readfish 2026.1.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -190,8 +186,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -199,13 +194,12 @@
     <div class="sidebar-container">
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
-  
   <div class="sidebar-logo-container">
     <img class="sidebar-logo only-light" src="_static/readfish_light.png" alt="Light Logo"/>
     <img class="sidebar-logo only-dark" src="_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.3.0</span>
+  <span class="sidebar-brand-text">readfish 2026.1.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -221,7 +215,7 @@
 <li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developers-guide.html">Developer’s guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="readfish.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="readfish.html">API Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readfish.plugins.html">readfish plugins API</a></li>
 </ul>
@@ -253,8 +247,7 @@
   </a>
 </div>
 <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -262,8 +255,7 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
@@ -322,9 +314,9 @@ The way that you tell readfish what plugin to load is by specifying it after the
 The <code class="docutils literal notranslate"><span class="pre">caller_settings.dorado</span></code> [table] specifies the basecalling parameters used by the basecaller.
 An example table is given below:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.dorado]</span>
-<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dna_r10.4.1_e8.2_400bps_hac&quot;</span>
-<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ipc:///tmp/.guppy/5555&quot;</span>
-<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;basecalled_chunks.fq&quot;</span><span class="w"> </span><span class="c1">#optional</span>
+<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dna_r10.4.1_e8.2_400bps_hac"</span>
+<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"ipc:///tmp/.guppy/5555"</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"basecalled_chunks.fq"</span><span class="w"> </span><span class="c1">#optional</span>
 </pre></div>
 </div>
 <p>The only required keys are <code class="docutils literal notranslate"><span class="pre">address</span></code> and <code class="docutils literal notranslate"><span class="pre">config</span></code> these indicate to Dorado what server to connect to and what basecalling model to load.
@@ -370,11 +362,11 @@ The <code class="docutils literal notranslate"><span class="pre">debug_log</span
 <!-- blank line above is essential for this to work -->
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">PyBasecallClient.</span></span><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pybasecall_client_lib.client_lib.BasecallClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">apps::Result</span></span></span><a class="reference internal" href="_modules/pybasecall_client_lib/pyclient.html#PyBasecallClient.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyBasecallClient.</span></span><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pybasecall_client_lib.client_lib.BasecallClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">apps::Result</span></span></span><a class="reference internal" href="_modules/pybasecall_client_lib/pyclient.html#PyBasecallClient.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Parameter setter for connection to the server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – Dictionary of named parameters.</p>
+<dd class="field-odd"><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>) – Dictionary of named parameters.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A code indicating whether the call was success.</p>
@@ -420,6 +412,8 @@ will be non-blocking.</p>
 </dd>
 </dl>
 </li>
+<li><p>estimate_poly_a (bool):               Flag indicating whether to perform polyA/T tail length estimation.</p></li>
+<li><p>poly_a_config (str):                  Filename of a custom polyA/T configuration to use for estimation.</p></li>
 </ul>
 <p>Possible return values are:</p>
 <ul class="simple">
@@ -431,7 +425,7 @@ will be non-blocking.</p>
 
 </details>
 <p>To see parameters that <em>your</em> Dorado installation has run the following python snippet in your <code class="docutils literal notranslate"><span class="pre">readfish</span></code> environment</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">PAGER=cat python -c &quot;import pybasecall_client_lib.pyclient as pgc; help(pgc.PyBasecallClient.set_params)&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">PAGER=cat python -c "import pybasecall_client_lib.pyclient as pgc; help(pgc.PyBasecallClient.set_params)"</span>
 </pre></div>
 </div>
 </section>
@@ -473,9 +467,9 @@ The <code class="docutils literal notranslate"><span class="pre">debug_log</span
 <p><code class="docutils literal notranslate"><span class="pre">mappy-rs</span></code> also takes an optional <code class="docutils literal notranslate"><span class="pre">n_threads</span></code> field, which determines the number of threads which are used for alignment.
 <code class="docutils literal notranslate"><span class="pre">n_threads</span></code> defaults to 1, so if you need more you must set it!</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[mapper_settings.mappy_rs]</span>
-<span class="n">fn_idx_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/Path/To/Reference.mmi&quot;</span>
+<span class="n">fn_idx_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"/Path/To/Reference.mmi"</span>
 <span class="n">n_threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
-<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mapped_chunks.paf&quot;</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mapped_chunks.paf"</span>
 </pre></div>
 </div>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -560,9 +554,9 @@ The default value is 1, so this only needs setting if you wish to split horizont
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">split_axis</span><span class="o">=</span><span class="mi">0</span>
 
 <span class="k">[caller_settings.dorado]</span>
-<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dna_r10.4.1_e8.2_400bps_hac&quot;</span>
-<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ipc:///tmp/.guppy/5555&quot;</span>
-<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;basecalled_chunks.fq&quot;</span><span class="w"> </span><span class="c1">#optional</span>
+<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dna_r10.4.1_e8.2_400bps_hac"</span>
+<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"ipc:///tmp/.guppy/5555"</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"basecalled_chunks.fq"</span><span class="w"> </span><span class="c1">#optional</span>
 <span class="p">.........</span><span class="w"> </span><span class="c1"># and so on</span>
 </pre></div>
 </div>
@@ -571,16 +565,16 @@ The default value is 1, so this only needs setting if you wish to split horizont
 <p>When wanting to apply a single targeting strategy over the flow cell a single region can be provided.
 This can be specified like so:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[regions]]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;condition name&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"condition name"</span>
 <span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
-<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path/to/targets.bed&quot;</span>
-<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;stop_receiving&quot;</span>
-<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="s2">&quot;stop_receiving&quot;</span>
-<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
-<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"path/to/targets.bed"</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"stop_receiving"</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="s2">"stop_receiving"</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"proceed"</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"proceed"</span>
 </pre></div>
 </div>
 <p>A full table of keys that can be given can be found in <a class="reference internal" href="#regions-sub-tables">region sub-table</a>.</p>
@@ -590,12 +584,12 @@ This can be specified like so:</p>
 <p>Experiments with multiple regions (for example those with an analysis and control condition) regions can be specified for each condition.
 For example:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[regions]]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;analysis&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"analysis"</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="p">...</span>
 
 <span class="k">[[regions]]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;control&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"control"</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">...</span>
 </pre></div>
@@ -738,10 +732,10 @@ chr2,3000,4000,-
 <span id="barcodes-config"></span><h2>Barcode specific configuration<a class="headerlink" href="#barcode-specific-configuration" title="Link to this heading">¶</a></h2>
 <p>If you are using Dorado for basecalling then the additional <code class="docutils literal notranslate"><span class="pre">barcode_kits</span></code> parameter is required on the <code class="docutils literal notranslate"><span class="pre">caller_settings</span></code> table.</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[caller_settings.dorado]</span>
-<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dna_r10.4.1_e8.2_400bps_fast&quot;</span>
-<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ipc:///tmp/.guppy/5555&quot;</span>
-<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;basecalled_chunks.fq&quot;</span>
-<span class="n">barcode_kits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;EXP-NBD196&quot;</span>
+<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dna_r10.4.1_e8.2_400bps_fast"</span>
+<span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"ipc:///tmp/.guppy/5555"</span>
+<span class="n">debug_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"basecalled_chunks.fq"</span>
+<span class="n">barcode_kits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"EXP-NBD196"</span>
 </pre></div>
 </div>
 <p>Note, to specify multiple barcode kits, the format to use is a space separated string, not an array. For example, <code class="docutils literal notranslate"><span class="pre">&quot;KIT1</span> <span class="pre">KIT2&quot;</span></code>.</p>
@@ -753,43 +747,43 @@ This table has two required sub-tables <code class="docutils literal notranslate
 These are the fallback configurations for unspecified barcodes.
 For specific barcodes a <a class="reference internal" href="#regions-sub-tables">full configuration table</a> should be specified using the barcode name, e.g. <code class="docutils literal notranslate"><span class="pre">barcodes.barcode01</span></code> for “barcode01”.</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[barcodes.classified]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;classified_reads&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"classified_reads"</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
 <span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
-<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
-<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"proceed"</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"proceed"</span>
 
 <span class="k">[barcodes.unclassified]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unclassified_reads&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unclassified_reads"</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
 <span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
-<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
-<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"proceed"</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"proceed"</span>
 
 <span class="k">[barcodes.barcode01]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;barcode01_targets&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"barcode01_targets"</span>
 <span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="n">min_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">max_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
-<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;chr1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;chr2&quot;</span><span class="p">]</span>
-<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;stop_receiving&quot;</span>
-<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;stop_receiving&quot;</span>
-<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unblock&quot;</span>
-<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
-<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proceed&quot;</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"chr1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"chr2"</span><span class="p">]</span>
+<span class="n">single_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"stop_receiving"</span>
+<span class="n">multi_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"stop_receiving"</span>
+<span class="n">single_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">multi_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"unblock"</span>
+<span class="n">no_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"proceed"</span>
+<span class="n">no_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"proceed"</span>
 </pre></div>
 </div>
 </section>
@@ -803,12 +797,12 @@ For specific barcodes a <a class="reference internal" href="#regions-sub-tables"
 <p>As an example - if the reference is missing.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2023-06-27 16:07:03,041 readfish /home/adoni5/mambaforge/envs/readfish_dev/bin/readfish validate docs/_static/example_tomls/human_chr_selection.toml
 2023-06-27 16:07:03,041 readfish check_plugins=True
-2023-06-27 16:07:03,041 readfish command=&#39;validate&#39;
+2023-06-27 16:07:03,041 readfish command='validate'
 2023-06-27 16:07:03,042 readfish log_file=None
-2023-06-27 16:07:03,042 readfish log_format=&#39;%(asctime)s %(name)s %(message)s&#39;
-2023-06-27 16:07:03,042 readfish log_level=&#39;info&#39;
+2023-06-27 16:07:03,042 readfish log_format='%(asctime)s %(name)s %(message)s'
+2023-06-27 16:07:03,042 readfish log_level='info'
 2023-06-27 16:07:03,042 readfish prom=False
-2023-06-27 16:07:03,042 readfish toml=&#39;docs/_static/human_chr_selection.toml&#39;
+2023-06-27 16:07:03,042 readfish toml='docs/_static/human_chr_selection.toml'
 2023-06-27 16:07:03,042 readfish.validate eJxtUNtOxCAUfOcrGp4NLU1N1MSnffcHmoZQOLRkuS0Xo38vdOOqWc8TM8wMc5gFNwYiS5CzdlsiWwnhc0HCO6W37rXD0nEW6UAmQhk8kZFNw7CGxHYuMOJSRkip6XQQL33fZxv6a0j/WAcjCWvZmPFHWIaUWQQulU47UReM0Gx5CL8bNFwb3Pv2YrljYm9aAyJr70jgqmXMEbYK07Igxy00y1VzyEfKxhEjq5u7uHPrS5HlHz9wQpnHDXI7z/jtxIY640AoxQ/dDVPyjBeUak0DzCvV3iluNV6ca3wxWd+x32J3dMo+1PUF6PdK3yz/3jlf17y0mxC9AJAHVT/nD9XmC4XQlII=
 2023-06-27 16:07:03,047 readfish.validate Loaded TOML config without error
 2023-06-27 16:07:03,047 readfish.validate Initialising Caller
@@ -918,10 +912,10 @@ This can be disabled by passing the <code class="docutils literal notranslate"><
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=7b2d7c30"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script src="_static/documentation_options.js?v=b916904f"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     </body>

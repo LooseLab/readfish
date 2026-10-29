@@ -1,15 +1,17 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="../../">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+        <link rel="prefetch" href="../../_static/readfish_light.png" as="image">
+        <link rel="prefetch" href="../../_static/readfish_dark.png" as="image">
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
-        <title>readfish._cli_args - readfish 2024.3.0</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>readfish._cli_args - readfish 2026.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
     
     
@@ -17,8 +19,8 @@
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   --font-stack--monospace: 'Ubuntu Mono', monospace;
   --code-font-size: 90%;
@@ -154,14 +156,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -171,17 +169,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">readfish 2024.3.0</div></a>
+      <a href="../../index.html"><div class="brand">readfish 2026.1.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -189,8 +185,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -198,13 +193,12 @@
     <div class="sidebar-container">
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
-  
   <div class="sidebar-logo-container">
     <img class="sidebar-logo only-light" src="../../_static/readfish_light.png" alt="Light Logo"/>
     <img class="sidebar-logo only-dark" src="../../_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.3.0</span>
+  <span class="sidebar-brand-text">readfish 2026.1.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -220,7 +214,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developers-guide.html">Developer’s guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../readfish.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../readfish.html">API Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../readfish.plugins.html">readfish plugins API</a></li>
 </ul>
@@ -246,8 +240,7 @@
         </a>
         <div class="content-icon-container">
           <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -255,168 +248,167 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for readfish._cli_args</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Store for command line arguments and defaults, these are used by readfish entry points.</span>
+<span></span><span class="sd">"""Store for command line arguments and defaults, these are used by readfish entry points.</span>
 
 <span class="sd">These are held here in an agnostic format and the actual CLI is generated by ``readfish._cli_base``.</span>
 <span class="sd">The two primary items that are exported are ``BASE_ARGS`` and ``DEVICE_BASE_ARGS`` which define different sets of command line arguments for different purposes.</span>
 <span class="sd">``BASE_ARGS`` are the minimal required arguments for _all_ entry points as they used for initialising loggers.</span>
 <span class="sd">``DEVICE_BASE_ARGS`` are the set of arguments that are used for connecting to a sequencer (device) and some other related settings for selective sequencing scripts.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
-<span class="kn">from</span> <span class="nn">readfish._utils</span> <span class="kn">import</span> <span class="n">nice_join</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">readfish._utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">nice_join</span>
 
 
 <div class="viewcode-block" id="Chemistry">
 <a class="viewcode-back" href="../../readfish.html#readfish._cli_args.Chemistry">[docs]</a>
 <span class="nd">@unique</span>
-<span class="k">class</span> <span class="nc">Chemistry</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="c1">#: For the &quot;smarter&quot; version of duplex - does this read map to the previous reads opposite strand on the same contig. Won&#39;t work for no map based decisions</span>
-    <span class="n">DUPLEX</span> <span class="o">=</span> <span class="s2">&quot;duplex&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Chemistry</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="c1">#: For the "smarter" version of duplex - does this read map to the previous reads opposite strand on the same contig. Won't work for no map based decisions</span>
+    <span class="n">DUPLEX</span> <span class="o">=</span> <span class="s2">"duplex"</span>
     <span class="c1">#: Normal simplex chemistry - no duplex override shenanigans</span>
-    <span class="n">SIMPLEX</span> <span class="o">=</span> <span class="s2">&quot;simplex&quot;</span>
+    <span class="n">SIMPLEX</span> <span class="o">=</span> <span class="s2">"simplex"</span>
     <span class="c1">#: Simple duplex - if we are going to unblock a read given the previous read on the same channel was stop receiving, sequence the current read instead.</span>
-    <span class="n">DUPLEX_SIMPLE</span> <span class="o">=</span> <span class="s2">&quot;duplex_simple&quot;</span></div>
+    <span class="n">DUPLEX_SIMPLE</span> <span class="o">=</span> <span class="s2">"duplex_simple"</span></div>
 
 
 
-<span class="n">DEFAULT_SERVER_HOST</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span>
+<span class="n">DEFAULT_SERVER_HOST</span> <span class="o">=</span> <span class="s2">"127.0.0.1"</span>
 <span class="n">DEFAULT_SERVER_PORT</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">DEFAULT_LOG_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(name)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
-<span class="n">DEFAULT_LOG_LEVEL</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
+<span class="n">DEFAULT_LOG_FORMAT</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(name)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">"</span>
+<span class="n">DEFAULT_LOG_LEVEL</span> <span class="o">=</span> <span class="s2">"info"</span>
 <span class="n">DEFAULT_UNBLOCK</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">DEFAULT_THROTTLE</span> <span class="o">=</span> <span class="mf">0.4</span>
 <span class="n">DEFAULT_MIN_CHUNK</span> <span class="o">=</span> <span class="mi">2000</span>
-<span class="n">LOG_LEVELS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;warning&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;critical&quot;</span><span class="p">)</span>
+<span class="n">LOG_LEVELS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"debug"</span><span class="p">,</span> <span class="s2">"info"</span><span class="p">,</span> <span class="s2">"warning"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"critical"</span><span class="p">)</span>
 <span class="n">DEFAULT_MAX_UNBLOCK_READ_LENGTH_SECONDS</span> <span class="o">=</span> <span class="mi">5</span>
 
 <span class="n">BASE_ARGS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--log-level&quot;</span><span class="p">,</span>
+        <span class="s2">"--log-level"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;LOG-LEVEL&quot;</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"LOG-LEVEL"</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">"store"</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_LOG_LEVEL</span><span class="p">,</span>
             <span class="n">choices</span><span class="o">=</span><span class="n">LOG_LEVELS</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;One of: </span><span class="si">{</span><span class="n">nice_join</span><span class="p">(</span><span class="n">LOG_LEVELS</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">"One of: </span><span class="si">{</span><span class="n">nice_join</span><span class="p">(</span><span class="n">LOG_LEVELS</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--log-format&quot;</span><span class="p">,</span>
+        <span class="s2">"--log-format"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;LOG-FORMAT&quot;</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"LOG-FORMAT"</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">"store"</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_LOG_FORMAT</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;A standard Python logging format string (default: </span><span class="si">{!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">DEFAULT_LOG_FORMAT</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%%</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"A standard Python logging format string (default: </span><span class="si">{!r}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">DEFAULT_LOG_FORMAT</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"%"</span><span class="p">,</span> <span class="s2">"</span><span class="si">%%</span><span class="s2">"</span><span class="p">)</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--log-file&quot;</span><span class="p">,</span>
+        <span class="s2">"--log-file"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;LOG-FILE&quot;</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"LOG-FILE"</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">"store"</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;A filename to write logs to, or None to write to the standard stream (default: None)&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"A filename to write logs to, or None to write to the standard stream (default: None)"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">DEVICE_BASE_ARGS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--host&quot;</span><span class="p">,</span>
+        <span class="s2">"--host"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;HOST&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;MinKNOW server host (default: </span><span class="si">{</span><span class="n">DEFAULT_SERVER_HOST</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"HOST"</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">"MinKNOW server host (default: </span><span class="si">{</span><span class="n">DEFAULT_SERVER_HOST</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_SERVER_HOST</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--port&quot;</span><span class="p">,</span>
+        <span class="s2">"--port"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;PORT&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;MinKNOW server port, if not specified automatically chosen by the MinKNOW API&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"PORT"</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"MinKNOW server port, if not specified automatically chosen by the MinKNOW API"</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_SERVER_PORT</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--device&quot;</span><span class="p">,</span>
+        <span class="s2">"--device"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;DEVICE&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"DEVICE"</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of the sequencing position e.g. MS29042 or X1 etc.&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"Name of the sequencing position e.g. MS29042 or X1 etc."</span><span class="p">,</span>
             <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--experiment-name&quot;</span><span class="p">,</span>
+        <span class="s2">"--experiment-name"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;EXPERIMENT-NAME&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"EXPERIMENT-NAME"</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Describe the experiment being run, enclose in quotes&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"Describe the experiment being run, enclose in quotes"</span><span class="p">,</span>
             <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--unblock-duration&quot;</span><span class="p">,</span>
+        <span class="s2">"--unblock-duration"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;UNBLOCK-DURATION&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"UNBLOCK-DURATION"</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Time, in seconds, to apply unblock voltage (default: </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"Time, in seconds, to apply unblock voltage (default: </span><span class="si">{}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">DEFAULT_UNBLOCK</span>
             <span class="p">),</span>
             <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_UNBLOCK</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="c1"># TODO: Determine if we need a minimum value for throttle which shouldn&#39;t be overridden.</span>
-        <span class="s2">&quot;--throttle&quot;</span><span class="p">,</span>
+        <span class="c1"># TODO: Determine if we need a minimum value for throttle which shouldn't be overridden.</span>
+        <span class="s2">"--throttle"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;THROTTLE&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"THROTTLE"</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Time interval, in seconds, between requests to the ReadUntilClient (default: </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"Time interval, in seconds, between requests to the ReadUntilClient (default: </span><span class="si">{}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">DEFAULT_THROTTLE</span>
             <span class="p">),</span>
             <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_THROTTLE</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--max-unblock-read-length-seconds&quot;</span><span class="p">,</span>
+        <span class="s2">"--max-unblock-read-length-seconds"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s2">"SECONDS"</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Maximum read length, in seconds, that MinKNOW will attempt to unblock (default: </span><span class="si">{</span><span class="n">DEFAULT_MAX_UNBLOCK_READ_LENGTH_SECONDS</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Maximum read length, in seconds, that MinKNOW will attempt to unblock (default: </span><span class="si">{</span><span class="n">DEFAULT_MAX_UNBLOCK_READ_LENGTH_SECONDS</span><span class="si">}</span><span class="s2">)."</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_MAX_UNBLOCK_READ_LENGTH_SECONDS</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--dry-run&quot;</span><span class="p">,</span>
+        <span class="s2">"--dry-run"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Run the readfish Until experiment without sending unblock commands&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"Run the readfish Until experiment without sending unblock commands"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--wait-for-ready&quot;</span><span class="p">,</span>
+        <span class="s2">"--wait-for-ready"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Timeout for the MinKNOW data folder to appear, and the device to report it is ready to start sequencing in seconds. (default: 120s).&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"Timeout for the MinKNOW data folder to appear, and the device to report it is ready to start sequencing in seconds. (default: 120s)."</span><span class="p">,</span>
             <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="p">(</span>
-        <span class="s2">&quot;--chemistry&quot;</span><span class="p">,</span>
+        <span class="s2">"--chemistry"</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;**EXPERIMENTAL** Choose between duplex and simplex chemistry mode. duplex_simple accepts a read if the previous channels read was stop receiving,&quot;</span>
-            <span class="s2">&quot;duplex checks that the previous reads alignment was on the same contig and opposite strand. default: SIMPLEX&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">"**EXPERIMENTAL** Choose between duplex and simplex chemistry mode. duplex_simple accepts a read if the previous channels read was stop receiving,"</span>
+            <span class="s2">"duplex checks that the previous reads alignment was on the same contig and opposite strand. default: SIMPLEX"</span><span class="p">,</span>
             <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="n">Chemistry</span><span class="o">.</span><span class="n">SIMPLEX</span><span class="p">,</span>
@@ -456,10 +448,10 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=7b2d7c30"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script src="../../_static/documentation_options.js?v=b916904f"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

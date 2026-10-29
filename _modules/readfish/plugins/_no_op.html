@@ -1,15 +1,17 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="../../../">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
+        <link rel="prefetch" href="../../../_static/readfish_light.png" as="image">
+        <link rel="prefetch" href="../../../_static/readfish_dark.png" as="image">
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
-        <title>readfish.plugins._no_op - readfish 2024.3.0</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>readfish.plugins._no_op - readfish 2026.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
     
     
@@ -17,8 +19,8 @@
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   --font-stack: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   --font-stack--monospace: 'Ubuntu Mono', monospace;
   --code-font-size: 90%;
@@ -154,14 +156,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -171,17 +169,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">readfish 2024.3.0</div></a>
+      <a href="../../../index.html"><div class="brand">readfish 2026.1.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -189,8 +185,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -198,13 +193,12 @@
     <div class="sidebar-container">
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
-  
   <div class="sidebar-logo-container">
     <img class="sidebar-logo only-light" src="../../../_static/readfish_light.png" alt="Light Logo"/>
     <img class="sidebar-logo only-dark" src="../../../_static/readfish_dark.png" alt="Dark Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">readfish 2024.3.0</span>
+  <span class="sidebar-brand-text">readfish 2026.1.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -220,7 +214,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQ.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../post-analysis.html">Readfish analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developers-guide.html">Developer’s guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../readfish.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../readfish.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../readfish.html">API Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../readfish.plugins.html">readfish plugins API</a></li>
 </ul>
@@ -246,8 +240,7 @@
         </a>
         <div class="content-icon-container">
           <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -255,13 +248,12 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for readfish.plugins._no_op</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A no operation plugin module, used for pass through behaviour.</span>
+<span></span><span class="sd">"""A no operation plugin module, used for pass through behaviour.</span>
 
 <span class="sd">This module implements a basic Aligner and Caller that do nothing and the minimum required behaviours respectively.</span>
 <span class="sd">They are here for when readfish expects an action that may not be required.</span>
@@ -275,74 +267,74 @@
 <span class="sd">        channel=&lt;channel number&gt;,</span>
 <span class="sd">        read_number=&lt;read_number&gt;,</span>
 <span class="sd">        read_id=&lt;read_id&gt;,</span>
-<span class="sd">        seq=&quot;&quot;,</span>
+<span class="sd">        seq="",</span>
 <span class="sd">    )</span>
 
 <span class="sd">The ``seq`` field will always be empty.</span>
-<span class="sd">This is of little (essentially no) use outside of an unblock all or something completely random where you don&#39;t want or need any sequence.</span>
+<span class="sd">This is of little (essentially no) use outside of an unblock all or something completely random where you don't want or need any sequence.</span>
 
 <span class="sd">In addition the ``_no_op.Aligner`` will pass through the iterable from the caller module without modifying/adding anything.</span>
-<span class="sd">This behaviour can be useful if a plugin can complete it&#39;s entire decision in a single step.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This behaviour can be useful if a plugin can complete it's entire decision in a single step.</span>
+<span class="sd">"""</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
-<span class="kn">from</span> <span class="nn">readfish.plugins.abc</span> <span class="kn">import</span> <span class="n">AlignerABC</span><span class="p">,</span> <span class="n">CallerABC</span>
-<span class="kn">from</span> <span class="nn">readfish.plugins.utils</span> <span class="kn">import</span> <span class="n">Result</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">readfish.plugins.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">AlignerABC</span><span class="p">,</span> <span class="n">CallerABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">readfish.plugins.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">minknow_api</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">minknow_api</span>
 
 
 <div class="viewcode-block" id="Aligner">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner">[docs]</a>
-<span class="k">class</span> <span class="nc">Aligner</span><span class="p">(</span><span class="n">AlignerABC</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;No state is created, anything can be passed at initialisation</span>
-<span class="sd">        it will all be ignored.&quot;&quot;&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Aligner</span><span class="p">(</span><span class="n">AlignerABC</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""No state is created, anything can be passed at initialisation</span>
+<span class="sd">        it will all be ignored."""</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="Aligner.validate">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.validate">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Validate the &quot;Aligner&quot; - will always return None, as there is no Aligner</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Validate the "Aligner" - will always return None, as there is no Aligner</span>
 
 <span class="sd">        :return: None, always</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="Aligner.initialised">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.initialised">[docs]</a>
-    <span class="k">def</span> <span class="nf">initialised</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Will always return ``True``&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialised</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Will always return ``True``"""</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="Aligner.map_reads">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.map_reads">[docs]</a>
-    <span class="k">def</span> <span class="nf">map_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basecall_results</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pass through the ``basecall_results`` iterable that is supplied.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">map_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basecall_results</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Pass through the ``basecall_results`` iterable that is supplied."""</span>
         <span class="k">return</span> <span class="n">basecall_results</span></div>
 
 
 <div class="viewcode-block" id="Aligner.describe">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.describe">[docs]</a>
-    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Describe the no_op Aligner instance</span>
 
 <span class="sd">        :return: _description_</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;Using the `no_op` Aligner. No alignments will be performed, and all Results will be passed through.&quot;</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="s2">"Using the `no_op` Aligner. No alignments will be performed, and all Results will be passed through."</span></div>
 
 
 <div class="viewcode-block" id="Aligner.disconnect">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Aligner.disconnect">[docs]</a>
-    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Will always return ``None``, does nothing.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Will always return ``None``, does nothing."""</span>
         <span class="k">return</span></div>
 </div>
 
@@ -350,32 +342,32 @@
 
 <div class="viewcode-block" id="Caller">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller">[docs]</a>
-<span class="k">class</span> <span class="nc">Caller</span><span class="p">(</span><span class="n">CallerABC</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;No state is created, anything can be passed at initialisation</span>
-<span class="sd">        it will all be ignored.&quot;&quot;&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Caller</span><span class="p">(</span><span class="n">CallerABC</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""No state is created, anything can be passed at initialisation</span>
+<span class="sd">        it will all be ignored."""</span>
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="Caller.validate">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.validate">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Validate the &quot;Caller&quot; - will always return None, as there is no Caller</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Validate the "Caller" - will always return None, as there is no Caller</span>
 
 <span class="sd">        :return: None, always</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="Caller.basecall">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.basecall">[docs]</a>
-    <span class="k">def</span> <span class="nf">basecall</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">basecall</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">chunks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">minknow_api</span><span class="o">.</span><span class="n">data_pb2</span><span class="o">.</span><span class="n">GetLiveReadsResponse</span><span class="o">.</span><span class="n">ReadData</span><span class="p">]],</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Result</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Create a minimal ``Result`` instance from live data from the Read Until API.</span>
 
 <span class="sd">        This will use the actual channel, read number, and read ID but will set an empty string for the ``seq`` field.</span>
@@ -383,30 +375,30 @@
 <span class="sd">        :param chunks: Raw data wrapper from the MinKNOW RPC</span>
 
 <span class="sd">        :returns: Yields ``Result`` classes with the ``Result.channel``, ``Result.read_id``, and ``Result.seq`` fields set.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">channel</span><span class="p">,</span> <span class="n">read</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">Result</span><span class="p">(</span>
                 <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
                 <span class="n">read_id</span><span class="o">=</span><span class="n">read</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                <span class="n">seq</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">seq</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
             <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Caller.describe">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.describe">[docs]</a>
-    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Describe the `no_op` Caller.</span>
 
 <span class="sd">        :return: A description string for the `no_op` Caller instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;Using the `no_op` Caller. No base-calling will be performed, and minimum viable results will be yielded back for each read provided.&quot;</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="s2">"Using the `no_op` Caller. No base-calling will be performed, and minimum viable results will be yielded back for each read provided."</span></div>
 
 
 <div class="viewcode-block" id="Caller.disconnect">
 <a class="viewcode-back" href="../../../readfish.plugins.html#readfish.plugins._no_op.Caller.disconnect">[docs]</a>
-    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Will always return ``None``, does nothing.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Will always return ``None``, does nothing."""</span>
         <span class="k">return</span></div>
 </div>
 
@@ -442,10 +434,10 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=7b2d7c30"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script src="../../../_static/documentation_options.js?v=b916904f"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>
