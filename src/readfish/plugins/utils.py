@@ -254,7 +254,7 @@ def coord_validator(row: dict[str, str]) -> tuple[dict, list[str]]:
     for f in ("start", "end"):
         try:
             row[f] = int(row[f])
-        except ValueError:
+        except (ValueError, TypeError):
             errors.append(
                 f"{{target_specification_format}} {{line_number}} {f} coordinate {row[f]!r} could not be converted to an integer"
             )

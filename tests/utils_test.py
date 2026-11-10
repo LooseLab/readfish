@@ -154,3 +154,25 @@ def test_summary_percent_reference_covered(mock_aligner, mock_targets, expected_
             _summary_percent_reference_covered(ref_len, mock_targets, genomes) * 100
         )
         assert result == pytest.approx(e)  # Expected result based on provided data
+
+def test_coord_validator_missing_coordinate_reports_error():
+    # a missing coordinate (e.g. a short CSV row) must be reported as a
+    # validation error, not escape as a TypeError from int(None)
+    from readfish.plugins.utils import coord_validator
+
+    row, errors = coord_validator({"start": "1000", "end": None})
+
+    assert row == {"start": 1000, "end": None}
+    assert len(errors) == 1
+    assert "could not be converted to an integer" in errors[0]
+
+
+def test_row_checker_short_csv_row_reports_errors_not_crash():
+    # a CSV row with only chrom,start must not crash the validator
+    from readfish.plugins.utils import row_checker
+
+    row, errors = row_checker(
+        {"chrom": "chr1", "start": "1000", "end": None, "strand": None}, mode="csv"
+    )
+
+    assert errors
